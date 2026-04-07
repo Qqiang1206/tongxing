@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品中心 | 同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
+        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .product-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .img-container {
+            background-color: #F5F5F7;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; opacity: 0.9; mix-blend-mode: multiply; }
+        .product-card:hover .img-zoom { transform: scale(1.08); opacity: 1; }
+
+        .filter-btn { transition: all 0.3s ease; }
+        .filter-btn.active { background-color: #1D1D1F; color: #FFFFFF; border-color: #1D1D1F; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        .product-item { transition: opacity 0.5s ease, transform 0.5s ease; }
+        .product-item.hidden-item { display: none; opacity: 0; transform: scale(0.95); }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <!-- 🌐 顶部导航 -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">首页</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
+            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">解决方案</a>
+            <a href="products.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">产品中心</a>
+            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="products.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="products-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="products-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 手机下拉菜单 -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#86868B]">首页</a>
+            <a href="about.html" class="text-[#86868B]">关于我们</a>
+            <a href="solutions.html" class="text-[#86868B]">解决方案</a>
+            <a href="products.html" class="text-[#FF6B00]">产品中心</a>
+            <a href="news.html" class="text-[#86868B]">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B]">联系我们</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="products.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="products-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="products-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 P1. 产品中心头部 -->
+    <header class="pt-40 pb-10 px-6 md:px-24 w-full text-center fade-up">
+        <div class="max-w-[1000px] mx-auto fade-up mt-6">
+            <h1 class="hero-title text-[4rem] md:text-[6.5rem] leading-[1.05] mb-8 text-gradient">
+                核心智造矩阵
+            </h1>
+            <p class="text-xl md:text-2xl text-[#86868B] font-medium mb-16 max-w-3xl mx-auto leading-[1.6] tracking-wide">
+                从高精度单机柔性单元到整厂无人化产线输出。<br class="hidden md:block">覆盖电子制造全链条的自动化装备。
+            </p>
+        </div>
+    </header>
+
+    <!-- 📍 P2. 产品筛选器 -->
+    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
+        <div class="max-w-[1400px] mx-auto flex justify-start md:justify-center overflow-x-auto hide-scrollbar space-x-2 pb-4">
+            <button id="filter-all" class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">全部产品</button>
+            <button id="filter-line" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="line">整线交付</button>
+            <button id="filter-dispensing" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="dispensing">点胶装配</button>
+            <button id="filter-flip" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="flip">翻转检测</button>
+            <button id="filter-screw" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="screw">锁付组装</button>
+            <button id="filter-optical" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="optical">光学元件组装</button>
+            <button id="filter-transfer" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="transfer">搬运移载</button>
+            <button id="filter-packaging" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="packaging">后段包装</button>
+            <button id="filter-robot" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="robot">机器人集成</button>
+            <button id="filter-software" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="software">软件控制</button>
+        </div>
+    </section>
+
+    <!-- 📍 P3. 产品网格 -->
+    <section class="pb-32 px-6 md:px-24 min-h-[600px]">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+
+            <!-- 高精度贴合机 -->
+            <a href="product-detail.html?id=1" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <img src="产品图片/自动贴合机-001.png" alt="贴合机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALM-01</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">全自动高精度贴合机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        专为玻璃与显示模组设计。贴合精度突破极限达 <strong class="text-[#1D1D1F]">±0.075mm</strong>，附带恒定保压功能，极速节拍达 80 秒。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0.075mm</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">保压控制</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- OC 卡合机组 -->
+            <a href="product-detail.html?id=2" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <img src="产品图片/OC卡合机组.png" alt="OC卡合" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">OC 智能卡合系统</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        全自动完成 Open Cell 与背光模组精准组装。采用 <strong class="text-[#1D1D1F]">UVW 视觉对位平台</strong>，彻底解决人工卡合导致的玻璃破裂问题。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">UVW 对位</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">零破损</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- TV/商显柔性总装线 -->
+            <a href="product-detail.html?id=3" class="product-card product-item fade-up" data-category="line">
+                <div class="img-container">
+                    <img src="产品图片/商用显示柔性装配产线.png" alt="装配产线" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">COMPLETE LINE</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">TV/商用显示柔性装配产线</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        覆盖点胶、放支架、卡合、翻转画检到后段套袋码垛的全自动化流程。一键兼容多尺寸（含 65~110寸超大屏）。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">柔性生产</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">交钥匙</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 高精度机器人点胶机 -->
+            <a href="product-detail.html?id=4" class="product-card product-item fade-up" data-category="dispensing">
+                <div class="img-container">
+                    <img src="产品图片/自动点胶机.png" alt="点胶机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AGD 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动点胶机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        单轴机器人协同多胶枪矩阵，定位误差 <strong class="text-[#1D1D1F]">±0.2mm</strong>，单排点胶仅需 0.25 秒。无缝支持 CAD 导图一键换型。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0.2mm</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">CAD直导</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 六轴机器人智能码垛系统 -->
+            <a href="product-detail.html?id=11" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <img src="产品图片/机器人码垛.png" alt="码垛系统" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-PR 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">六轴机器人智能码垛系统</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        完美解决重型成品堆垛难题。支持假机码垛与叠子母卡板，精度控制在 <strong class="text-[#1D1D1F]">±0.5mm</strong>，极速效率达 12秒/件。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">高频作业</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">子母卡板兼容</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 180度重载翻转单元 -->
+            <a href="product-detail.html?id=9" class="product-card product-item fade-up" data-category="flip">
+                <div class="img-container">
+                    <img src="产品图片/180度翻转机.png" alt="重载翻转" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">HEAVY DUTY SERIES</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">180度重载翻转单元</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        专为超大尺寸教育机、液晶面板设计的力学翻转装备。彻底消除人工翻转导致的产品破损与安全隐患。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">重载平稳</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">零破损</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 机器人自动打背板螺丝 -->
+            <a href="product-detail.html?id=8" class="product-card product-item fade-up" data-category="screw">
+                <div class="img-container">
+                    <img src="产品图片/自动打背板螺丝-001.png" alt="自动打螺丝" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASBS-01</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">机器人自动打背板螺丝</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        一次可抓取并自动锁附多达 12 颗背板螺丝，单颗扭矩实时可调，效率高达 1.8 秒/颗。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">扭矩精控</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">1.8s/颗</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 后段包装与自动套箱机 -->
+            <a href="product-detail.html?id=12" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <img src="产品图片/自动套箱.png" alt="自动套箱" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AET 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">后段包装与自动套箱系统</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        集成自动放托盘（卡板）、开箱、成型与整机套箱。机械刚性定位全兼容，20秒完成单块卡板归中。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">全自动后段</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">错位兼容</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 工业大脑控制软件开发 -->
+            <a href="product-detail.html?id=17" class="product-card product-item fade-up" data-category="software">
+                <div class="img-container">
+                    <img src="control-system.jpg" alt="控制软件" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">SOFTWARE SYSTEM</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">工业大脑控制软件开发</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        软硬件深度融合，自主开发 WMS、WCS、MES 及底层 TCP/IP 视觉通讯组件。打破车间信息孤岛，实现数字化透明管理。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">WMS/WCS</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">数据透视</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 旋转台 -->
+            <a href="product-detail.html?id=18" class="product-card product-item fade-up" data-category="transfer">
+                <div class="img-container">
+                    <img src="产品图片/旋转台.png" alt="旋转台" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RT 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">旋转台</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于产品多工位加工或检测的精密旋转设备，可实现产品多角度自动化处理。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">精密定位</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">多工位</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 升降机组 -->
+            <a href="product-detail.html?id=19" class="product-card product-item fade-up" data-category="transfer">
+                <div class="img-container">
+                    <img src="产品图片/升降机组.png" alt="升降机组" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-LG 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">升降机组</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于产品在不同高度工位之间转运的升降输送设备，实现生产线的高度无缝对接。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">平稳升降</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">负载强</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 模组移载机 -->
+            <a href="product-detail.html?id=20" class="product-card product-item fade-up" data-category="transfer">
+                <div class="img-container">
+                    <img src="产品图片/模组移载机.png" alt="模组移载机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MM 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">模组移载机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于电子模组在不同工位之间自动转运的精密设备，支持多种产品尺寸。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">精确移载</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">柔性生产</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 自动卡扳机 -->
+            <a href="product-detail.html?id=21" class="product-card product-item fade-up" data-category="screw">
+                <div class="img-container">
+                    <img src="产品图片/自动卡扳机.png" alt="自动卡扳机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACT 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动卡扳机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于自动安装卡扣或扳手的自动化设备，精密定位，快速完成卡合组装。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">自动卡合</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">高效率</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 辅助封袋机 -->
+            <a href="product-detail.html?id=22" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <img src="产品图片/辅助封袋机.png" alt="辅助封袋机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-SE 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">辅助封袋机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于产品包装袋的自动化封口设备，采用热封技术，封口美观牢固。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">热封技术</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">品控稳</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 机器人下线套袋 -->
+            <a href="product-detail.html?id=23" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <img src="产品图片/机器人下线套袋.png" alt="机器人下线套袋" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">机器人下线套袋</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        配合机器人自动完成产品下线后的套袋包装工序，实现后段包装全自动化。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">自动套袋</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">机器人协同</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 机器人自动投背板 -->
+            <a href="product-detail.html?id=24" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <img src="产品图片/机器人自动投背板.png" alt="机器人自动投背板" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RBP 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">机器人自动投背板</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于将背板自动投放到产品组装工位的自动化设备，配合机器人完成精密组装。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">自动投放</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">精准定位</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 包装与物流自动化设备 -->
+            <a href="product-detail.html?id=25" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <img src="产品图片/包装与物流自动化设备.jpg" alt="包装与物流自动化设备" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-PL 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">包装与物流自动化设备</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        涵盖产线后段包装、输送、分拣全流程的物流自动化系统集成解决方案。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">系统集成</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">智能分拣</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 机器人单元设备 -->
+            <a href="product-detail.html?id=26" class="product-card product-item fade-up" data-category="transfer">
+                <div class="img-container">
+                    <img src="产品图片/机器人单元设备.jpg" alt="机器人单元设备" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RCU 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">机器人单元设备</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        以机器人为核心的模块化单元设备，可根据工艺需求灵活配置和集成。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">模块化</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">灵活配置</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=5" class="product-card product-item fade-up" data-category="dispensing">
+                <div class="img-container">
+                    <img src="产品图片/自动喷胶机.png" alt="自动喷胶机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASM 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动喷胶机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        将胶水均匀喷涂于目标物体，适用于更大尺寸面板。喷涂效率高，兼容性强。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">0.6-0.8m/s</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">75"-全兼容</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=6" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <img src="产品图片/自动放灯支撑.png" alt="自动放灯支架机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALPS 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动放灯支架机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        精准抓取并放置扩散支架，为显示设备光学组件提供稳定支撑。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0.2mm</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">振动盘供料</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=7" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <img src="产品图片/自动放灯条.png" alt="自动放灯条机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALSI-01/02</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动放灯条机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        精准快速将LED灯条放置于指定位置，可一次抓取多条灯条。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0.2mm</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">7个/批</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=10" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <img src="产品图片/自动卡钢化玻璃架.png" alt="自动钢化玻璃边框安装机" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACTGR-01/02</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动钢化玻璃边框安装机</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        为教育显示器自动安装钢化玻璃边框，采用视觉定位。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0.15mm</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">视觉定位</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=15" class="product-card product-item fade-up" data-category="flip">
+                <div class="img-container">
+                    <img src="产品图片/辅助画检单元.png" alt="辅助视觉检测单元" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">辅助视觉检测单元</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        通过自动翻转及图像识别，辅助或替代人工进行产品外观质量检测。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">自动翻转</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">视觉检测</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=13" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <img src="产品图片/机器人集成码垛.png" alt="机器人一体化码垛方案" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RIP-001</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">机器人一体化码垛方案</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        更强大的集成码垛方案，包含子母托盘堆叠、自动垫板放置、扫描等特殊功能。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">功能集成</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">扫描功能</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=14" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <img src="产品图片/机器人立机单元.png" alt="机器人立式单元" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">机器人立式单元</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        自动将产品从卧式转换为立式状态，采用CCD视觉确定产品位置。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">CCD视觉</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">平稳高效</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=16" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <img src="产品图片/自动保压单元.png" alt="自动保压单元" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动保压单元</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        对组装完成的零部件施加并保持恒定压力，确保粘接或组装工艺质量。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">恒压控制</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">品质保障</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=27" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <img src="产品图片/辅助上线翻转单元.png" alt="辅助上线翻转单元" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AUFE 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">辅助上线翻转单元</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于产品上线工位的辅助翻转设备，配合主设备实现自动化上下料。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">自动翻转</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">上线辅助</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=28" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <img src="产品图片/辅助下线翻转单元.png" alt="辅助下线翻转单元" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ADFE 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">辅助下线翻转单元</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        用于产品下线工位的辅助翻转设备，配合主设备实现自动化下料。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">自动翻转</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">下线辅助</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=29" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <img src="产品图片/人工辅助套袋.png" alt="人工辅助套袋" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB-M 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">人工辅助套袋</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        人工辅助套袋设备，配合自动化机械完成产品套袋包装。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">人工配合</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">辅助自动化</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="product-detail.html?id=30" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <img src="产品图片/机器人自动上悬挂链.png" alt="机器人自动上悬挂链" class="img-zoom">
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RAHC 系列</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">机器人自动上悬挂链</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        配合机器人自动将产品挂载到悬挂输送链上的自动化设备。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">自动上链</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">悬挂输送</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- 📍 Footer -->
+    <div data-footer-placeholder></div>
+
+    <!-- ⚙️ 交互脚本 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
+                else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const productItems = document.querySelectorAll('.product-item');
+
+            function applyFilter(filterValue) {
+                const targetBtn = document.querySelector(`[data-filter="${filterValue}"]`);
+                if (!targetBtn) return;
+                
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+                    b.classList.add('text-[#86868B]', 'border-[#E5E5EA]');
+                });
+                targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+                targetBtn.classList.remove('text-[#86868B]', 'border-[#E5E5EA]');
+
+                productItems.forEach(item => {
+                    item.classList.remove('hidden-item');
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        setTimeout(() => { item.style.display = 'flex'; }, 50);
+                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 100);
+                    } else {
+                        item.style.opacity = '0'; item.style.transform = 'scale(0.95)';
+                        setTimeout(() => { item.style.display = 'none'; }, 400);
+                    }
+                });
+            }
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    applyFilter(btn.getAttribute('data-filter'));
+                    // 筛选后滚动到产品网格
+                    setTimeout(() => {
+                        const productGrid = document.getElementById('product-grid');
+                        if (productGrid) {
+                            const top = productGrid.getBoundingClientRect().top + window.pageYOffset - 220;
+                            window.scrollTo({ top: top, behavior: 'smooth' });
+                        }
+                    }, 100);
+                });
+            });
+
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                applyFilter(hash);
+            }
+        });
+    </script>
+    <script src="footer.js"></script>
+</body>
+</html>

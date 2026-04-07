@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en-US" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | TXAM - China's Leading Automation Equipment Supplier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
+        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .apple-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .apple-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .group:hover .img-zoom { transform: scale(1.05); }
+
+        .client-logo { 
+            transition: all 0.4s ease; 
+        }
+        .client-card:hover .client-logo { 
+            transform: scale(1.1); 
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <!-- 🌐 Top Navigation -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Home</a>
+            <a href="about-en.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">About Us</a>
+            <a href="solutions-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Solutions</a>
+            <a href="products-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Products</a>
+            <a href="news-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">News</a>
+            <a href="contact-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Contact Us</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="about.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="about-en.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="about-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index-en.html" class="text-[#86868B]">Home</a>
+            <a href="about-en.html" class="text-[#FF6B00]">About Us</a>
+            <a href="solutions-en.html" class="text-[#86868B]">Solutions</a>
+            <a href="products-en.html" class="text-[#86868B]">Products</a>
+            <a href="news-en.html" class="text-[#86868B]">News</a>
+            <a href="contact-en.html" class="text-[#86868B]">Contact Us</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="about.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="about-en.html" class="px-4 py-2 text-[#FF6B00] font-bold">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="about-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 P1. Brand Introduction & Factory Image -->
+    <header class="pt-40 pb-20 px-6 md:px-24 w-full relative">
+        <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
+            
+            <h1 class="hero-title text-[4rem] md:text-[6.5rem] leading-[1.05] mb-8 text-gradient">
+                For 19 Years, We've Focused on<br>One Thing: Intelligent Manufacturing.
+            </h1>
+            
+            <p class="text-lg md:text-xl text-[#86868B] font-medium mb-16 max-w-4xl leading-[1.8] tracking-wide">
+                Guangdong TXAM Intelligent Equipment Co., Ltd. (abbreviated as "TXAM"), originated in 1998, officially established in 2007 in Shenzhen, a national technology hub. We have always adhered to our corporate philosophy of <strong class="text-[#1D1D1F] font-bold">Dedication, Steady Development, Reputation First, Quality Supreme</strong>, committed to providing world-class enterprises with one-stop delivery services for intelligent equipment.
+            </p>
+
+            <div class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group">
+                <img src="factory-hero.jpg" alt="TXAM Dual Factory Base" class="w-full h-full object-cover img-zoom">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                <div class="absolute bottom-8 left-10 text-left">
+                    <p class="text-white/90 text-sm font-bold tracking-widest mb-1">TXAM HEADQUARTERS & FACTORY</p>
+                    <p class="text-white text-2xl md:text-3xl font-bold">100,000㎡ Shenzhen HQ & Huizhou Manufacturing Dual Base</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 📍 P2. Core Data Display -->
+    <section class="py-20 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-[#E5E5EA] pt-16">
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">19</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Years of Automation Manufacturing</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">98</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Core Inventions & Patents</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">7</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Key Industries Covered</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">15<span class="text-3xl ml-1 text-gray-300">Countries</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Global Equipment Export Coverage</p>
+                </div>
+                <div class="pl-6 border-l-4 border-[#FF6B00]">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1">万㎡</span></div>
+                    <p class="text-xs font-bold text-[#1D1D1F] tracking-widest uppercase">Shenzhen-Huizhou Dual Core Factory Capacity</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P2.5 Corporate Culture -->
+    <section class="py-32 bg-[#1D1D1F] text-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto text-center fade-up relative z-10">
+            <h2 class="text-4xl md:text-[5rem] font-black tracking-tighter mb-20 leading-tight">
+                Providing Exceptional Intelligent Equipment<br>to World-Class Enterprises.
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-white/10 pt-20 text-left">
+                <!-- Vision -->
+                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                    <h3 class="text-[#FF6B00] font-black text-2xl mb-6 tracking-widest uppercase">【 Corporate Vision 】</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed font-light">Build a highly internationally competitive<br>automation benchmark enterprise.</p>
+                </div>
+                <!-- Mission -->
+                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                    <h3 class="text-[#FF6B00] font-black text-2xl mb-6 tracking-widest uppercase">【 Corporate Mission 】</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed font-light">Lead China's intelligent manufacturing era,<br>reshaping global industry delivery standards.</p>
+                </div>
+                <!-- Core Values -->
+                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                    <h3 class="text-[#FF6B00] font-black text-2xl mb-6 tracking-widest uppercase">【 Core Values 】</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed font-light">Customer-centric, collaborating with partners, achieving mutual success.<br>Ensuring safety first, pursuing efficiency first.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P3. Development History -->
+    <section class="py-32 bg-[#F5F5F7] px-6 md:px-24 relative border-y border-[#E5E5EA]">
+        <div class="max-w-[1200px] mx-auto fade-up">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Development History</h2>
+                <p class="text-[#86868B] text-xl">A steady evolution history of intelligent manufacturing.</p>
+            </div>
+            
+            <!-- Desktop Timeline -->
+            <div class="hidden md:block relative max-w-4xl mx-auto py-10">
+                <div class="absolute inset-0 flex justify-center">
+                    <div class="w-1 bg-[#E5E5EA] h-full"></div>
+                </div>
+                
+                <!-- Node 1 (Left) -->
+                <div class="flex items-center justify-between w-full mb-16 fade-up">
+                    <div class="w-5/12 text-right pr-10">
+                        <h3 class="text-4xl font-black text-[#1D1D1F] mb-3 mono-num">1998/2007</h3>
+                        <p class="text-[#86868B] text-sm leading-relaxed">Technical team prototype born, officially registered "Shenzhen TXAM Industrial Automation Equipment Co., Ltd." in Shenzhen in 2007, embarking on the journey of non-standard automated production line exploration and intelligent manufacturing.</p>
+                    </div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md shadow-orange-500/30"></div>
+                    </div>
+                    <div class="w-5/12"></div>
+                </div>
+                
+                <!-- Node 2 (Right) -->
+                <div class="flex items-center justify-between w-full mb-16 fade-up">
+                    <div class="w-5/12"></div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    </div>
+                    <div class="w-5/12 pl-10">
+                        <h3 class="text-4xl font-black text-[#1D1D1F] mb-3 mono-num">2015</h3>
+                        <p class="text-[#86868B] text-sm leading-relaxed">Business footprint fully expanded. With exceptional quality, officially became a core intelligent manufacturing supplier for major home appliance and commercial display leading enterprises including TCL, Skyworth, Konka, and Midea, establishing an industry leadership position.</p>
+                    </div>
+                </div>
+
+                <!-- Node 3 (Left) -->
+                <div class="flex items-center justify-between w-full mb-16 fade-up">
+                    <div class="w-5/12 text-right pr-10">
+                        <h3 class="text-4xl font-black text-[#1D1D1F] mb-3 mono-num">2023</h3>
+                        <p class="text-[#86868B] text-sm leading-relaxed">New energy intelligent equipment R&D team established. With self-developed "Circular Automatic Lifting Machine" and other core equipment, debuted at CIBF International Battery Exhibition, fully entering the new energy and立体仓储物流 track.</p>
+                    </div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    </div>
+                    <div class="w-5/12"></div>
+                </div>
+
+                <!-- Node 4 (Right - Highlight) -->
+                <div class="flex items-center justify-between w-full fade-up">
+                    <div class="w-5/12"></div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md shadow-orange-500/30"></div>
+                    </div>
+                    <div class="w-5/12 pl-10">
+                        <h3 class="text-4xl font-black text-[#FF6B00] mb-3 mono-num">NOW</h3>
+                        <p class="text-[#1D1D1F] font-bold text-sm leading-relaxed mb-2">100,000㎡ Shenzhen-Huizhou dual base pattern fully formed.</p>
+                        <p class="text-[#86868B] text-sm leading-relaxed">Self-developed core technologies including UVW platform calibration and ultra-large screen lifting have won nearly 100 patents. Equipment exported to 15 countries and regions including North America, Europe, and Southeast Asia.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Timeline -->
+            <div class="md:hidden relative border-l-2 border-[#E5E5EA] ml-4 mt-10">
+                <div class="mb-10 ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">1998/2007</h3>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Registered "Shenzhen TXAM", embarked on non-standard automated production line intelligent manufacturing journey.</p>
+                </div>
+                <div class="mb-10 ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">2015</h3>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Became core supplier for major enterprises including TCL, Skyworth, Konka, and Midea.</p>
+                </div>
+                <div class="mb-10 ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">2023</h3>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Established new energy equipment R&D team, debuted core equipment at CIBF Battery Exhibition.</p>
+                </div>
+                <div class="ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#FF6B00] mb-2 mono-num">NOW</h3>
+                    <p class="text-[#1D1D1F] text-sm leading-relaxed">100,000㎡ dual base formed, 98 patents won, equipment exported to 15 countries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P4. Qualifications & Patents Gallery -->
+    <section class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Corporate Qualifications & Core Patents</h2>
+                <p class="text-[#86868B] text-xl">Proven strength through genuine honors and 98 patent certificates.</p>
+            </div>
+            
+            <!-- Section 1: Honor Qualifications -->
+            <div class="mb-24">
+                <h3 class="text-2xl font-bold text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Honor Qualifications</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="apple-card p-3 pb-5 flex flex-col items-center">
+                        <div class="w-full bg-white rounded-2xl overflow-hidden">
+                            <img src="企业资质与核心专利/荣誉资质/官方资质-高新技术企业证书.png" alt="High-Tech Enterprise Certificate" class="w-full h-full object-contain">
+                        </div>
+                        <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">High-Tech Enterprise Certificate</p>
+                    </div>
+                    <div class="apple-card p-3 pb-5 flex flex-col items-center">
+                        <div class="w-full bg-white rounded-2xl overflow-hidden">
+                            <img src="企业资质与核心专利/荣誉资质/官方资质-创新型中小企业.png" alt="Innovation SME Certificate" class="w-full h-full object-contain">
+                        </div>
+                        <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Innovation SME Certificate</p>
+                    </div>
+                    <div class="apple-card p-3 pb-5 flex flex-col items-center">
+                        <div class="w-full bg-white rounded-2xl overflow-hidden">
+                            <img src="企业资质与核心专利/荣誉资质/官方资质-专精特新中小企业.png" alt="Specialized & Distinctive SME Certificate" class="w-full h-full object-contain">
+                        </div>
+                        <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Specialized & Distinctive SME Certificate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Quality Qualifications -->
+            <div class="mb-24">
+                <h3 class="text-2xl font-bold text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Quality Qualifications</h3>
+                <div class="relative overflow-hidden">
+                    <div class="patent-carousel flex gap-6 animate-marquee" style="animation: marquee 40s linear infinite;">
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img src="企业资质与核心专利/质量资质/微信图片_20260330114404_97_27.png" alt="Quality Certification" class="w-full h-full object-contain">
+                            </div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img src="企业资质与核心专利/质量资质/微信图片_20260330114503_107_27.png" alt="Quality Certification" class="w-full h-full object-contain">
+                            </div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img src="企业资质与核心专利/质量资质/微信图片_20260330114504_108_27.png" alt="Quality Certification" class="w-full h-full object-contain">
+                            </div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img src="企业资质与核心专利/质量资质/微信图片_20260330114505_109_27.png" alt="Quality Certification" class="w-full h-full object-contain">
+                            </div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img src="企业资质与核心专利/质量资质/微信图片_20260330114506_110_27.png" alt="Quality Certification" class="w-full h-full object-contain">
+                            </div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img src="企业资质与核心专利/质量资质/微信图片_20260330114507_111_27.png" alt="Quality Certification" class="w-full h-full object-contain">
+                            </div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img src="企业资质与核心专利/质量资质/微信图片_20260330114508_112_27.png" alt="Quality Certification" class="w-full h-full object-contain">
+                            </div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Patent Qualifications -->
+            <div>
+                <h3 class="text-2xl font-bold text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Patent Qualifications</h3>
+                <div class="relative overflow-hidden">
+                    <div class="patent-carousel flex gap-6 animate-marquee" style="animation: marquee 60s linear infinite;">
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114509_113_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.113</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114511_115_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.115</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114513_117_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.117</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114515_119_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.119</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114516_121_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.121</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114517_122_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.122</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114518_123_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.123</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114519_124_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.124</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114519_125_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.125</p>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img src="企业资质与核心专利/专利资质/微信图片_20260330114520_126_27.png" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.126</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P5. Client Logo Wall -->
+    <section class="py-32 bg-[#F5F5F7] px-6 md:px-24 border-t border-[#E5E5EA]">
+        <div class="max-w-[1400px] mx-auto fade-up text-center">
+            <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Our Clients</h2>
+            <p class="text-[#86868B] text-xl mb-16">The Choice of World-Class Manufacturing Enterprises.</p>
+            
+            <div id="client-logos-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6"></div>
+        </div>
+    </section>
+
+    <!-- 📍 Footer -->
+    <div data-footer-placeholder></div>
+
+    <!-- ⚙️ Interactive Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
+                else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+            const clientLogos = [
+                { src: '合作客户logo/tcl.jpeg', alt: 'TCL' },
+                { src: '合作客户logo/创维.jpeg', alt: 'Skyworth' },
+                { src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Huawei_logo_icon_170010.svg', alt: 'Huawei' },
+                { src: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Midea_Group_logo.svg', alt: 'Midea' },
+                { src: '合作客户logo/富士康.jpg', alt: 'Foxconn' },
+                { src: '合作客户logo/京东方.jpeg', alt: 'BOE' },
+                { src: '合作客户logo/宁德时代.jpg', alt: 'CATL' },
+                { src: '合作客户logo/洲明.jpg', alt: 'Unilumin' },
+                { src: '合作客户logo/利通电子.png', alt: 'LTON' },
+                { src: '合作客户logo/群创光电.png', alt: 'Qunchuang' },
+                { src: '合作客户logo/日立.png', alt: 'Hitachi' },
+                { src: '合作客户logo/联想.jpg', alt: 'Lenovo' },
+                { src: '合作客户logo/华科.png', alt: 'HUAK' },
+                { src: '合作客户logo/惠科.jpg', alt: 'HKC' },
+                { src: '合作客户logo/希沃.jpg', alt: 'Seewo' },
+                { src: '合作客户logo/康佳.jpeg', alt: 'Kongjia' },
+                { src: '合作客户logo/长虹.gif', alt: 'Changhong' },
+            ];
+
+            const grid = document.getElementById('client-logos-grid');
+            if (grid) {
+                clientLogos.forEach(logo => {
+                    const card = document.createElement('div');
+                    card.className = 'client-card h-28 bg-white border border-[#E5E5EA] rounded-2xl flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300';
+                    const img = document.createElement('img');
+                    img.src = logo.src;
+                    img.alt = logo.alt;
+                    img.className = 'max-h-full max-w-full client-logo';
+                    img.onerror = function() { this.parentElement.style.display = 'none'; };
+                    card.appendChild(img);
+                    grid.appendChild(card);
+                });
+            }
+        });
+    </script>
+    <script src="footer-en.js"></script>
+</body>
+</html>

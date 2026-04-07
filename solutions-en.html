@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en-US" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions - TXAM</title>
+    <meta name="description" content="TXAM provides turnkey automation solutions for TV, commercial displays, air conditioners, refrigerators, washing machines and other manufacturers.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .apple-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 32px;
+            overflow: hidden;
+        }
+        .apple-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .img-zoom {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .apple-card:hover .img-zoom {
+            transform: scale(1.05);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+        .solution-card-icon {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .solution-card:hover .solution-card-icon {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #FF6B00 0%, #FF8534 100%);
+        }
+        .solution-card:hover .solution-card-icon svg {
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <!-- 🌐 Top Navigation -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Home</a>
+            <a href="about-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">About Us</a>
+            <a href="solutions-en.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Solutions</a>
+            <a href="products-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Products</a>
+            <a href="news-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">News</a>
+            <a href="contact-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Contact</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="solutions.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="solutions-en.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="solutions-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 Mobile Menu -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index-en.html" class="text-[#86868B]">Home</a>
+            <a href="about-en.html" class="text-[#86868B]">About Us</a>
+            <a href="solutions-en.html" class="text-[#FF6B00]">Solutions</a>
+            <a href="products-en.html" class="text-[#86868B]">Products</a>
+            <a href="news-en.html" class="text-[#86868B]">News</a>
+            <a href="contact-en.html" class="text-[#86868B]">Contact</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="solutions.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="solutions-en.html" class="px-4 py-2 text-[#FF6B00] font-bold">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="solutions-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 Hero Section -->
+    <header class="pt-40 pb-20 px-6 md:px-24 w-full relative bg-gradient-to-b from-[#F5F5F7] to-[#FBFBFD]">
+        <div class="max-w-[1400px] mx-auto text-center fade-up">
+            <h1 class="hero-title text-[3rem] md:text-[5rem] mb-8">
+                Our <span class="text-gradient">Solutions</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-[#86868B] font-medium mb-16 max-w-4xl mx-auto leading-[1.8]">
+                TXAM specializes in providing turnkey automation solutions for global manufacturers. From product design and equipment manufacturing to installation and commissioning, we deliver complete engineering solutions to help enterprises achieve smart manufacturing transformation.
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-[#1D1D1F] mb-2">30+</div>
+                    <div class="text-sm text-[#86868B]">Years Experience</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-[#1D1D1F] mb-2">200+</div>
+                    <div class="text-sm text-[#86868B]">Success Cases</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-[#1D1D1F] mb-2">98+</div>
+                    <div class="text-sm text-[#86868B]">Core Patents</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-black text-[#1D1D1F] mb-2">100%</div>
+                    <div class="text-sm text-[#86868B]">Turnkey Engineering</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 📍 Solutions Showcase -->
+    <section class="py-24 px-6 md:px-24 bg-white">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl md:text-4xl font-black text-[#1D1D1F] mb-4">Covering 10 Major Manufacturing Fields</h2>
+                <p class="text-[#86868B] text-lg">We specialize in turnkey automation solutions across multiple industries</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- TV Production Line -->
+                <a href="product-detail-en.html?id=31" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">TV Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for TV manufacturers, covering dispensing, lamination, flipping, inspection, bagging and palletizing. Supports flexible production for 65~110 inch ultra-large screens.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Full Line Automation</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">65-110 inch</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Commercial Display Production Line -->
+                <a href="product-detail-en.html?id=31" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Commercial Display Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey solutions for commercial displays, education all-in-one machines, and digital signage manufacturers. Flexible production adapts to multi-size products.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Full Line Automation</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Multi-size</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Air Conditioner Production Line -->
+                <a href="product-detail-en.html?id=33" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.17 16.83a4 4 0 016.66 0M9 13h.01M15 13h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Air Conditioner Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for air conditioner manufacturers, covering heat exchanger assembly, compressor installation, piping, vacuum evacuation, refrigerant charging and final inspection packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Full Line Automation</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Flexible Production</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Helium Leak Detection</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Refrigerator Production Line -->
+                <a href="product-detail-en.html?id=32" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Refrigerator Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for refrigerator manufacturers, covering compressor installation, panel assembly, piping, electrical wiring and final inspection packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Full Line Automation</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Multi-model</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Washing Machine Production Line -->
+                <a href="product-detail-en.html?id=34" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Washing Machine Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for washing machine manufacturers, covering inner tub assembly, outer shell assembly, shock absorption system installation, electrical wiring and final inspection packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Full Line Automation</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Multi-model</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Microwave Oven Production Line -->
+                <a href="product-detail-en.html?id=35" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Microwave Oven Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for microwave oven manufacturers, covering cavity assembly, door installation, magnetron installation, electrical wiring and final inspection packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Full Line Automation</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Flexible Production</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Tablet Production Line -->
+                <a href="product-detail-en.html?id=36" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Tablet Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for tablet manufacturers, covering display assembly, battery installation, motherboard assembly, shell lamination and final inspection packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Precision Assembly</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Vision Inspection</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Automotive Lamp Production Line -->
+                <a href="product-detail-en.html?id=37" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Automotive Lamp Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for automotive lamp manufacturers, covering lens assembly, reflector installation, LED module assembly, sealing inspection and final packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Precision Assembly</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Sealing Inspection</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Capacitor Production Line -->
+                <a href="product-detail-en.html?id=38" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Capacitor Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for capacitor manufacturers, covering winding, assembly, electrolyte filling, aging and final inspection packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">High-speed Winding</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Electrolyte Sealing</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+                <!-- Coffee Machine Production Line -->
+                <a href="product-detail-en.html?id=39" class="solution-card apple-card p-8 fade-up block relative z-10">
+                    <div class="solution-card-icon w-16 h-16 rounded-2xl bg-[#F5F5F7] flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3">Coffee Machine Production Line</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6">
+                        Turnkey automation solutions for coffee machine manufacturers, covering heating element assembly, water pump installation, PCB assembly, shell assembly and final inspection packaging.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Precision Assembly</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Function Testing</span>
+                        <span class="text-xs bg-[#F5F5F7] text-[#86868B] px-3 py-1 rounded-full">Turnkey</span>
+                    </div>
+                    <span class="inline-flex items-center text-[#FF6B00] font-bold text-sm">
+                        Learn More →
+                    </span>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 Why Choose TXAM -->
+    <section class="py-24 px-6 md:px-24 bg-[#F5F5F7]">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl md:text-4xl font-black text-[#1D1D1F] mb-4">Why Choose TXAM</h2>
+                <p class="text-[#86868B] text-lg">Your professional, reliable and efficient turnkey automation partner</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-3xl p-10 text-center fade-up">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-[#FF6B00]/10 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Turnkey Engineering</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8]">
+                        From solution design to after-sales operation, we provide full-process one-stop service, saving customers time and effort.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-10 text-center fade-up">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-[#FF6B00]/10 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Flexible Production</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8]">
+                        Supports multi-size, multi-model product production on the same line. One-click model change, short debugging time, high efficiency.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-10 text-center fade-up">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-[#FF6B00]/10 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Professional Team</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8]">
+                        30+ years of industry experience technical team, providing customized turnkey solutions for customers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 CTA -->
+    <section class="py-24 px-6 md:px-24 bg-[#1D1D1F]">
+        <div class="max-w-[1400px] mx-auto text-center fade-up">
+            <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Ready to Start Your Smart Manufacturing Transformation?</h2>
+            <p class="text-white/70 text-lg mb-12 max-w-2xl mx-auto">
+                Contact us for customized turnkey automation solutions. Our professional team will provide consultation within 24 hours.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <a href="contact-en.html" class="bg-[#FF6B00] text-white px-12 py-5 rounded-full text-lg font-bold hover:bg-[#FF8534] transition-colors shadow-xl">
+                    Contact Us Now
+                </a>
+                <a href="products-en.html" class="bg-white/10 border border-white/30 text-white px-12 py-5 rounded-full text-lg font-bold hover:bg-white/20 transition-colors">
+                    Browse More Products
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 Footer -->
+    <div data-footer-placeholder></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
+                else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            var observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+    <script src="footer-en.js"></script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-US" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXAM - China's Leading Automation Equipment Supplier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
+        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .apple-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 32px;
+            overflow: hidden;
+        }
+        .apple-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .img-zoom {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .apple-card:hover .img-zoom {
+            transform: scale(1.05);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <!-- 🌐 Top Navigation -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index-en.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Home</a>
+            <a href="about-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">About Us</a>
+            <a href="solutions-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Solutions</a>
+            <a href="products-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Products</a>
+            <a href="news-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">News</a>
+            <a href="contact-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Contact Us</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="index.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="index-en.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="index-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index-en.html" class="text-[#FF6B00]">Home</a>
+            <a href="about-en.html" class="text-[#86868B]">About Us</a>
+            <a href="solutions-en.html" class="text-[#86868B]">Solutions</a>
+            <a href="products-en.html" class="text-[#86868B]">Products</a>
+            <a href="news-en.html" class="text-[#86868B]">News</a>
+            <a href="contact-en.html" class="text-[#86868B]">Contact Us</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="index.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="index-en.html" class="px-4 py-2 text-[#FF6B00] font-bold">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="index-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 P1. Hero Section -->
+    <header class="pt-40 pb-20 px-6 md:px-24 w-full relative">
+        <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
+            
+            <h1 class="hero-title text-[4rem] md:text-[6.5rem] leading-[1.05] mb-8 text-gradient">
+                Precision Manufacturing, TXAM Delivers
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-[#86868B] font-medium mb-16 max-w-3xl leading-[1.6] tracking-wide">
+                One-stop service for intelligent equipment to world-class enterprises. Now proudly positioned as a high-end supplier of non-standard automation, intelligent manufacturing, and industrial robot integration.
+            </p>
+            
+            <div class="flex space-x-6 mb-20">
+                <a href="products-en.html" class="bg-[#1D1D1F] text-white px-10 py-4 rounded-full text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">
+                    Explore Core Products
+                </a>
+                <a href="about-en.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 rounded-full text-base font-bold hover:bg-gray-50 transition-colors">
+                    Learn About Our Strengths
+                </a>
+            </div>
+
+            <a href="product-detail-en.html?id=31" class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group block">
+                <img src="产品图片/商用显示柔性装配产线.png" alt="TV/Commercial Display Flexible Assembly Line" class="w-full h-full object-cover img-zoom">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 right-10 text-left">
+                    <p class="text-[#FF6B00] text-sm font-bold tracking-widest mb-3 uppercase">Featured Product</p>
+                    <p class="text-white text-3xl md:text-4xl font-black mb-2">TV/Commercial Display Flexible Assembly Line</p>
+                    <p class="text-white/80 text-base md:text-lg">One-key Compatibility 65~110" | Fully Automated Assembly | Turnkey Solutions</p>
+                    <div class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 rounded-full text-sm font-bold">
+                        View Product Details →
+                    </div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- 📍 P2. About TXAM -->
+    <section id="about" class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-24">
+                <div class="lg:w-2/3">
+                    <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] mb-8 tracking-tighter">Driving World-Class Intelligent Manufacturing</h2>
+                    <div class="w-12 h-1.5 bg-[#FF6B00] mb-8"></div>
+                    <p class="text-lg md:text-xl text-[#86868B] leading-[1.8] font-light max-w-4xl">
+                        Guangdong TXAM Intelligent Equipment Co., Ltd. was founded in Shenzhen, a national technology hub. Over nearly two decades, we have adhered to our corporate philosophy of <strong class="text-[#1D1D1F] font-bold">Dedication, Steady Development, Reputation First, Quality Supreme</strong>, focusing on non-standard automated production line design and manufacturing.<br><br>
+                        As a long-term partner of major enterprises including <strong class="text-[#1D1D1F] font-bold">TCL, Changhong, Konka, Midea, and Skyworth</strong>, we have achieved integrated operations in R&D, production, sales, and service.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-[#E5E5EA] pt-16">
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">19</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Years of Automation Equipment Manufacturing</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">98</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Core Inventions & Patents</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">7</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Major Industries Covered</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">15<span class="text-3xl ml-1 text-gray-300">Countries</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Countries & Regions Exported</p>
+                </div>
+                <div class="pl-6 border-l-4 border-[#FF6B00]">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1">万㎡</span></div>
+                    <p class="text-xs font-bold text-[#1D1D1F] tracking-widest uppercase">Shenzhen + Huizhou Dual Factories</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P3. Products -->
+    <section id="products" class="py-32 md:py-40 bg-[#F5F5F7] px-6 md:px-24 relative">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="mb-20 text-center">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Four Core Product Categories</h2>
+                <p class="text-[#86868B] text-xl">From single flexible machines to complete factory automation, providing full-spectrum intelligent manufacturing solutions.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                
+                <!-- Core Line 1: Automated Production Lines -->
+                <a href="products-en.html#line" class="apple-card md:col-span-2 md:row-span-2 p-10 md:p-14 flex flex-col justify-between min-h-[550px] md:min-h-[550px] group relative bg-white no-underline overflow-hidden">
+                    <div class="relative z-10 w-full md:w-2/3">
+                        <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Automated Lines</div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-[#1D1D1F] mb-4">Full-Chain Display Equipment Automated Production Line</h3>
+                        <p class="text-[#86868B] text-base leading-[1.8] mb-6 md:mb-8">Covering core assembly (dispensing, bracket placement, OC lamination), intermediate processes (flipping, visual inspection), to final packaging (bagging, standing, palletizing). Specially designed for TV, educational displays and electronic products, achieving standardized high-yield production.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-sm px-4 py-2 rounded-full border border-gray-200">Dispensing Assembly</span>
+                            <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-sm px-4 py-2 rounded-full border border-gray-200">Flipping Inspection</span>
+                            <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-sm px-4 py-2 rounded-full border border-gray-200">Bagging Palletizing</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 md:absolute md:-right-10 md:-bottom-10 md:mt-0 md:w-[60%] md:h-[60%] rounded-[32px] overflow-hidden border-[8px] border-white shadow-2xl">
+                        <img src="automation-line.jpg" alt="Automated Production Line" class="w-full h-full object-cover img-zoom">
+                    </div>
+                </a>
+
+                <!-- Core Line 2: Packaging & Logistics -->
+                <a href="products-en.html#logistics" class="apple-card md:col-span-1 flex flex-col justify-between min-h-[380px] group bg-white p-0 no-underline">
+                    <div class="p-10 pb-0">
+                        <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Packaging & Logistics</div>
+                        <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">Packaging & Logistics Automation Equipment</h3>
+                        <p class="text-[#86868B] text-sm leading-[1.6]">Including automatic palletizers, robot full-stack/single-unit palletizing solutions, and integrated automatic boxing systems. Neat and stable stacking, compatible with mock machine palletizing, precision up to ±0.5mm, greatly improving warehouse logistics efficiency.</p>
+                    </div>
+                    <div class="w-full h-40 mt-6 bg-gray-50 overflow-hidden">
+                        <img src="warehouse-robot.jpg" alt="Packaging & Logistics Warehousing" class="w-full h-full object-cover img-zoom">
+                    </div>
+                </a>
+
+                <!-- Core Line 3: Single Machines -->
+                <a href="products-en.html#single" class="apple-card md:col-span-1 flex flex-col justify-between min-h-[380px] group bg-white p-0 no-underline">
+                    <div class="p-10 pb-0">
+                        <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Single Machines</div>
+                        <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">Robot Single Machine Units</h3>
+                        <p class="text-[#86868B] text-sm leading-[1.6]">High-flexibility systems solving specific process bottlenecks. Such as: high-precision robot dispensing machine (±0.2mm), 180-degree flipping unit, and OC lamination units using UVW platform. Supports CAD import for one-key product changeover.</p>
+                    </div>
+                    <div class="w-full h-40 mt-6 bg-gray-50 overflow-hidden">
+                        <img src="robot-arm.jpg" alt="Robot Single Machine Equipment" class="w-full h-full object-cover img-zoom">
+                    </div>
+                </a>
+
+                <!-- Core Line 4: Vision & Control Software -->
+                <a href="products-en.html#software" class="apple-card md:col-span-3 flex flex-col md:flex-row items-stretch group bg-[#1D1D1F] border-none overflow-hidden relative no-underline">
+                    <div class="absolute left-0 top-0 w-2 h-full bg-[#FF6B00]"></div>
+                    <div class="md:w-1/2 p-10 md:p-14 relative z-10 flex flex-col justify-center">
+                        <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Vision & Control System</div>
+                        <h3 class="text-3xl font-bold text-white mb-4">Vision-Guided &底层 Control Software</h3>
+                        <p class="text-gray-400 text-base leading-[1.8]">Full production line equipment highly integrated with CCD vision inspection and robot collaboration technology. Supports TCP/IP communication, real-time equipment status interconnection, seamless integration with intelligent factory systems, achieving digitalization and transparent control of production data.</p>
+                    </div>
+                    <div class="md:w-1/2 w-full h-64 md:h-auto overflow-hidden relative">
+                        <img src="control-system.jpg" alt="Software Vision System Development" class="w-full h-full object-cover img-zoom opacity-80 mix-blend-screen">
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P4. Service System -->
+    <section id="service" class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="text-center mb-24">
+                <h2 class="text-3xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tight mb-4">Standardized Service Process</h2>
+                <p class="text-[#86868B] text-xl">Rigorous and transparent process-driven approach to ensure timely, high-quality project delivery.</p>
+            </div>
+            
+            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left">
+                <!-- Center line -->
+                <div class="hidden md:block absolute top-[28px] left-[12%] w-[76%] h-[2px] bg-[#F5F5F7] z-0"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#1D1D1F] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:bg-[#1D1D1F] group-hover:text-white transition-colors mx-auto md:mx-0 shadow-sm">01</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Solution</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">Research & Communication · Solution Planning<br>Solution Confirmation · Business Cooperation</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:border-[#1D1D1F] transition-colors mx-auto md:mx-0 shadow-sm">02</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Design</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">Mechanical Design · Electrical Design<br>Software Development · Design Review</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:border-[#1D1D1F] transition-colors mx-auto md:mx-0 shadow-sm">03</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Manufacturing</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">Drawing Release · Manufacturing<br>Quality Inspection · Equipment Delivery</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2">
+                    <div class="w-14 h-14 bg-white border-2 border-[#FF6B00] text-[#FF6B00] rounded-full flex items-center justify-center font-black text-xl mb-6 group-hover:bg-[#FF6B00] group-hover:text-white transition-colors mx-auto md:mx-0 shadow-md shadow-orange-500/20">04</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">After-Sales</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">365*7*24 · On-Site Service<br>Training Handover · 2-Year Warranty</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P5. News & Corporate Culture -->
+    <section id="news" class="py-32 bg-[#FBFBFD] px-6 md:px-24 border-t border-[#E5E5EA]">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between fade-up">
+            <div class="md:w-1/3 mb-12 md:mb-0 pr-10">
+                <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] mb-6 tracking-tighter">Company Updates</h2>
+                <div class="mb-10">
+                    <p class="text-[#1D1D1F] font-bold text-lg mb-2">Our Original Aspiration</p>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Aligned with customers, thriving with partners. Focused on goals, going all out to achieve extreme customer satisfaction.</p>
+                </div>
+                <a href="news-en.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 rounded-full text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
+                    Visit News Center
+                </a>
+            </div>
+            
+            <div class="md:w-2/3 flex flex-col border-t-2 border-[#1D1D1F]">
+                <a href="news-detail-en.html?id=1" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-[#FF6B00] mb-3 tracking-widest uppercase">Company News</span>
+                        <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">Providing Exceptional Intelligent Equipment to World-Class Enterprises</h3>
+                        <p class="text-sm text-[#86868B]">Building a digital, visual, transparent, and standardized management system.</p>
+                    </div>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0 font-mono">2023.05.16</span>
+                </a>
+                <a href="news-detail-en.html?id=2" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-[#86868B] mb-3 tracking-widest uppercase">Project Updates</span>
+                        <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">High-Precision Assembly Line Successfully Deployed at Leading Appliance Manufacturer</h3>
+                        <p class="text-sm text-[#86868B]">Upholding quality first, completing installation and integration of multiple automation equipment.</p>
+                    </div>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0 font-mono">2023.02.28</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 Footer -->
+    <div data-footer-placeholder></div>
+
+    <!-- ⚙️ Interactive Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+    <script src="footer-en.js"></script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
+        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .apple-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 32px;
+            overflow: hidden;
+        }
+        .apple-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .img-zoom {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .apple-card:hover .img-zoom {
+            transform: scale(1.05);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <!-- 🌐 顶部导航 -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">首页</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
+            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">解决方案</a>
+            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">产品中心</a>
+            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="index.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="index-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="index-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 手机下拉菜单 -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#FF6B00]">首页</a>
+            <a href="about.html" class="text-[#86868B]">关于我们</a>
+            <a href="solutions.html" class="text-[#86868B]">解决方案</a>
+            <a href="products.html" class="text-[#86868B]">产品中心</a>
+            <a href="news.html" class="text-[#86868B]">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B]">联系我们</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="index.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="index-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="index-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 P1. Hero Section -->
+    <header class="pt-40 pb-20 px-6 md:px-24 w-full relative">
+<div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
+            <h1 class="hero-title text-[4rem] md:text-[6.5rem] leading-[1.05] mb-8 text-gradient">
+                精工制臻 同兴必达
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-[#86868B] font-medium mb-16 max-w-3xl leading-[1.6] tracking-wide">
+                为世界一流企业提供智能装备的一站式服务。现已成功跻身非标自动化、智能制造及工业机器人集成配套的高端产品供应商之列。
+            </p>
+            
+            <div class="flex space-x-6 mb-20">
+                <a href="products.html" class="bg-[#1D1D1F] text-white px-10 py-4 rounded-full text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">
+                    探索核心产品
+                </a>
+                <a href="about.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 rounded-full text-base font-bold hover:bg-gray-50 transition-colors">
+                    了解企业实力
+                </a>
+            </div>
+
+            <a href="product-detail.html?id=31" class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group block">
+                <img src="解决方案/TV商业显示器柔性装配产线.png" alt="TV/商用显示柔性装配产线" class="w-full h-full object-cover img-zoom">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 right-10 text-left">
+                    <p class="text-[#FF6B00] text-sm font-bold tracking-widest mb-3 uppercase">明星产品</p>
+                    <p class="text-white text-3xl md:text-4xl font-black mb-2">TV/商业显示器生产线解决方案</p>
+                    <p class="text-white/80 text-base md:text-lg">一机兼容 65~110寸 | 全自动装配</p>
+                    <div class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 rounded-full text-sm font-bold">
+                        查看产品详情 →
+                    </div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- 📍 P2. 关于同兴 -->
+    <section id="about" class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-24">
+                <div class="lg:w-2/3">
+                    <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] mb-8 tracking-tighter">驱动世界一流智造</h2>
+                    <div class="w-12 h-1.5 bg-[#FF6B00] mb-8"></div>
+                    <p class="text-lg md:text-xl text-[#86868B] leading-[1.8] font-light max-w-4xl">
+                        广东同兴高科智能装备有限公司创立于国家科技中心城市深圳。在近二十年，我们始终坚守"敬业、稳步发展、信誉第一、品质至上"的企业理念，专注于非标自动化产线的设计与制造。<br><br>
+                        作为 <strong class="text-[#1D1D1F] font-bold">TCL、长虹、康佳、美的、创维</strong> 等大中型企业的长期合作伙伴，我们已实现技术研发、生产、销售和服务的综合一体化经营。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-[#E5E5EA] pt-16">
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">19<span class="text-3xl ml-1 text-gray-300">年</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">非标自动化设备制造经验</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">98<span class="text-3xl ml-1 text-gray-300">项</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">核心发明与专利</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">7<span class="text-3xl ml-1 text-gray-300">大</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">重点行业全覆盖</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">15<span class="text-3xl ml-1 text-gray-300">国</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">跨国出口国家与地区</p>
+                </div>
+                <div class="pl-6 border-l-4 border-[#FF6B00]">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1">万㎡</span></div>
+                    <p class="text-xs font-bold text-[#1D1D1F] tracking-widest uppercase">深圳+惠州双核工厂</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P3. 产品中心 -->
+    <section id="products" class="py-32 md:py-40 bg-[#F5F5F7] px-6 md:px-24 relative">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="mb-20 text-center">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">三大核心产品类目</h2>
+                <p class="text-[#86868B] text-xl">从单机设备到整厂柔性自动化，提供全方位智造矩阵。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                
+                <!-- 核心线 1：自动化生产线 -->
+                <a href="products.html#line" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Automated Lines</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">显示设备全链条自动化产线</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">覆盖从核心装配（点胶，放支架、OC卡合），到中间工序（翻转、画检），再到后段包装（套袋、立机、码垛）的全套工艺流程。专为 TV电视、教育机及平板电脑定制，全面实现标准化高良率生产。</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">点胶装配</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">翻转画检</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">套袋码垛</span>
+                    </div>
+                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
+                        <img src="显示设备全链条自动化产线.png" alt="自动化生产线" class="w-full h-full object-cover img-zoom">
+                    </div>
+                </a>
+
+                <!-- 核心线 2：包装与物流 -->
+                <a href="products.html#logistics" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Packaging & Logistics</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">包装与物流自动化产线</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">包含自动卡板机、机器人整垛/单台码垛方案及集成自动套箱系统。堆垛整齐稳定，兼容假机码垛，精度高达 ±0.5mm，大幅提升仓储物流效率。</p>
+                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
+                        <img src="包装与物流自动化产线.jpg" alt="包装与物流仓储" class="w-full h-full object-cover img-zoom">
+                    </div>
+                </a>
+
+                <!-- 核心线 3：单机设备 -->
+                <a href="products.html#single" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Single Machines</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">机器人单元设备</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">解决特定工艺瓶颈的高柔性系统。如：高精度机器人点胶机（±0.2mm）、180度翻转单元、以及采用 UVW 平台的 OC 卡合机组。支持 CAD 导图一键换型。</p>
+                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
+                        <img src="机器人单元设备.jpg" alt="机器人单机设备" class="w-full h-full object-cover img-zoom">
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P4. 服务体系闭环 -->
+    <section id="service" class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="text-center mb-24">
+                <h2 class="text-3xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tight mb-4">标准化定制服务流程</h2>
+                <p class="text-[#86868B] text-xl">严谨透明的流程式推进，保障项目如期高品质落地。</p>
+            </div>
+            
+            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left">
+                <div class="hidden md:block absolute top-[28px] left-[12%] w-[76%] h-[2px] bg-[#F5F5F7] z-0"></div>
+
+                <!-- 步骤 1 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#1D1D1F] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:bg-[#1D1D1F] group-hover:text-white transition-colors mx-auto md:mx-0 shadow-sm">01</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">解决方案</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">调研交流 · 方案规划<br>方案确认 · 商务合作</p>
+                </div>
+                
+                <!-- 步骤 2 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:border-[#1D1D1F] transition-colors mx-auto md:mx-0 shadow-sm">02</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">设计</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">机械设计 · 电气设计<br>软件开发 · 设计评审</p>
+                </div>
+
+                <!-- 步骤 3 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:border-[#1D1D1F] transition-colors mx-auto md:mx-0 shadow-sm">03</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">制造</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">图纸下发 · 生产制造<br>品质检验 · 设备交付</p>
+                </div>
+
+                <!-- 步骤 4 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2">
+                    <div class="w-14 h-14 bg-white border-2 border-[#FF6B00] text-[#FF6B00] rounded-full flex items-center justify-center font-black text-xl mb-6 group-hover:bg-[#FF6B00] group-hover:text-white transition-colors mx-auto md:mx-0 shadow-md shadow-orange-500/20">04</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">售后服务</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">365*7*24 · 驻场服务<br>培训交接 · 2年维保</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P5. 新闻与企业文化 -->
+    <section id="news" class="py-32 bg-[#FBFBFD] px-6 md:px-24 border-t border-[#E5E5EA]">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between fade-up">
+            <div class="md:w-1/3 mb-12 md:mb-0 pr-10">
+                <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] mb-6 tracking-tighter">企业动态</h2>
+                <div class="mb-10">
+                    <p class="text-[#1D1D1F] font-bold text-lg mb-2">企业初心</p>
+                    <p class="text-[#86868B] text-sm leading-relaxed">与客户同心、与伙伴同兴。共同以目标为核心，为达到客户的极度满意全力以赴。</p>
+                </div>
+                <a href="news.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 rounded-full text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
+                    访问新闻中心
+                </a>
+            </div>
+            
+            <div class="md:w-2/3 flex flex-col border-t-2 border-[#1D1D1F]">
+                <a href="news-detail.html?id=1" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-[#FF6B00] mb-3 tracking-widest uppercase">企业资讯</span>
+                        <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">为世界一流企业提供卓越的智能装备</h3>
+                        <p class="text-sm text-[#86868B]">构建数字化、可视化、透明化、标准化的经营管理体系。</p>
+                    </div>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0 font-mono">2023.05.16</span>
+                </a>
+                <a href="news-detail.html?id=2" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-[#86868B] mb-3 tracking-widest uppercase">项目纪实</span>
+                        <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">高精度装配产线成功入驻知名电器厂商</h3>
+                        <p class="text-sm text-[#86868B]">坚守品质第一的原则，完成多台自动化设备的安装与联调。</p>
+                    </div>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0 font-mono">2023.02.28</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 Footer -->
+    <div data-footer-placeholder></div>
+
+    <!-- ⚙️ 交互脚本 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+    <script src="footer.js"></script>
+</body>
+</html>

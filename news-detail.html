@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新闻详情 | 同兴高科 - 中国领先自动化设备供应商</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
+        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+        .prose-content h2 { font-size: 1.75rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1rem; }
+        .prose-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #86868B; }
+        .prose-content img { border-radius: 16px; margin: 2rem 0; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="同兴高科" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">首页</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
+            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">解决方案</a>
+            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">产品中心</a>
+            <a href="news.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="news-detail.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="news-detail-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="news-detail-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#86868B]">首页</a>
+            <a href="about.html" class="text-[#86868B]">关于我们</a>
+            <a href="solutions.html" class="text-[#86868B]">解决方案</a>
+            <a href="products.html" class="text-[#86868B]">产品中心</a>
+            <a href="news.html" class="text-[#FF6B00]">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B]">联系我们</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="news-detail.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="news-detail-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="news-detail-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <article class="pt-40 pb-32 px-6 md:px-24">
+        <div class="max-w-[900px] mx-auto">
+            <a href="news.html" class="inline-flex items-center text-[#86868B] hover:text-[#FF6B00] transition-colors mb-8">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                返回新闻中心
+            </a>
+
+            <header class="mb-12 fade-up">
+                <span id="news-category" class="text-[#FF6B00] font-bold text-xs tracking-widest uppercase mb-4 block">公司新闻</span>
+                <h1 id="news-title" class="hero-title text-[3rem] md:text-[4rem] leading-[1.1] mb-6 text-gradient">
+                    为世界一流企业提供优质智能装备
+                </h1>
+                <div class="flex items-center text-[#86868B] text-sm">
+                    <span id="news-date" class="font-mono">2023.05.16</span>
+                    <span class="mx-3">|</span>
+                    <span>同兴高科</span>
+                </div>
+            </header>
+
+            <div class="w-full h-[400px] md:h-[500px] rounded-[24px] overflow-hidden mb-12 fade-up">
+                <img id="news-cover" src="building-office.jpg" alt="新闻封面" class="w-full h-full object-cover">
+            </div>
+
+            <div id="news-content" class="prose-content fade-up">
+                <p>同兴高科宣布，深圳、惠州两大智能制造基地全面竣工投产，标志着公司正式迈入规模化发展的新阶段。</p>
+                
+                <h2>双基地格局形成</h2>
+                <p>随着同兴高科惠州60000㎡智能制造基地的成功封顶，同兴高科已形成以深圳总部为核心、惠州为产能扩充的"双核"布局。这一格局将为公司承接全球一流企业亿元级订单提供强有力的生产和交付保障。</p>
+                
+                <p>惠州基地采用行业领先的智能化生产线设计，配备完整的装配、测试、包装系统，实现从零件加工到最终交付的全流程自主可控。</p>
+                
+                <h2>数字化管理升级</h2>
+                <p>在提升产能的同时，同兴高科持续推进数字化转型。通过部署先进的MES制造执行系统和WMS仓库管理系统，同兴高科实现了生产数据的实时采集、监控和分析，极大提升了生产效率和产品质量稳定性。</p>
+                
+                <p>公司表示，将继续加大研发投入，深耕非标自动化领域，为中国智能制造贡献更多力量。</p>
+            </div>
+
+            <div class="mt-16 pt-12 border-t border-[#E5E5EA] fade-up">
+                <h3 class="text-lg font-bold text-[#1D1D1F] mb-6">相关文章</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="news-detail.html?id=2" class="group apple-card p-6 flex gap-4">
+                        <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                            <img src="产品图片/商用显示柔性装配产线.png" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-[#86868B] tracking-widest uppercase">项目故事</span>
+                            <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">高精度机器人组装线成功部署于知名家电制造商</h4>
+                            <span class="text-xs text-[#86868B] mt-2 block">2023.02.28</span>
+                        </div>
+                    </a>
+                    <a href="news-detail.html?id=3" class="group apple-card p-6 flex gap-4">
+                        <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                            <img src="news-tech.jpg" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-[#86868B] tracking-widest uppercase">公司新闻</span>
+                            <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">同兴高科惊艳亮相CIBF国际电池展</h4>
+                            <span class="text-xs text-[#86868B] mt-2 block">2025.05.16</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <div data-footer-placeholder></div>
+
+    <script>
+        const newsData = {
+            '1': {
+                category: '公司新闻',
+                title: '为世界一流企业提供优质智能装备',
+                date: '2023.05.16',
+                cover: 'building-office.jpg',
+                content: `
+                    <p>同兴高科宣布，深圳、惠州两大智能制造基地全面竣工投产，标志着公司正式迈入规模化发展的新阶段。</p>
+                    
+                    <h2>双基地格局形成</h2>
+                    <p>随着同兴高科惠州60000㎡智能制造基地的成功封顶，同兴高科已形成以深圳总部为核心、惠州为产能扩充的"双核"布局。这一格局将为公司承接全球一流企业亿元级订单提供强有力的生产和交付保障。</p>
+                    
+                    <p>惠州基地采用行业领先的智能化生产线设计，配备完整的装配、测试、包装系统，实现从零件加工到最终交付的全流程自主可控。</p>
+                    
+                    <h2>数字化管理升级</h2>
+                    <p>在提升产能的同时，同兴高科持续推进数字化转型。通过部署先进的MES制造执行系统和WMS仓库管理系统，同兴高科实现了生产数据的实时采集、监控和分析，极大提升了生产效率和产品质量稳定性。</p>
+                    
+                    <p>公司表示，将继续加大研发投入，深耕非标自动化领域，为中国智能制造贡献更多力量。</p>
+                `
+            },
+            '2': {
+                category: '项目故事',
+                title: '高精度机器人组装线成功部署于知名家电制造商',
+                date: '2023.02.28',
+                cover: '产品图片/商用显示柔性装配产线.png',
+                content: `
+                    <p>同兴高科为某知名家电制造商定制的高精度机器人组装线已成功完成安装调试，正式投入生产运营。</p>
+                    
+                    <h2>项目背景</h2>
+                    <p>该家电制造商国内外多条现代化生产线，对自动化设备的精度和稳定性要求极为严苛。同兴高科凭借19年行业经验和技术积累，成功中标并承担了本次重大项目的设计及交付工作。</p>
+                    
+                    <h2>技术亮点</h2>
+                    <p>整线采用同兴高科自主研发的UVW视觉对位平台，配合六轴工业机器人，实现±0.1mm级别的组装精度。通过CAD导入一键换型功能，整线可在15分钟内完成产品切换，极大提高了生产灵活性。</p>
+                    
+                    <p>项目交付后，客户单线生产节拍缩短至12秒/件，良品率突破99.9%，获得客户高度认可。</p>
+                `
+            },
+            '3': {
+                category: '公司新闻',
+                title: '同兴高科惊艳亮相CIBF国际电池展，"循环举升机"备受瞩目',
+                date: '2025.05.16',
+                cover: 'news-tech.jpg',
+                content: `
+                    <p>2025年5月，同兴高科携自主研发的"循环自动举升机"等核心设备亮相CIBF国际电池技术展，全面进军新能源、智能仓储物流新赛道。</p>
+                    
+                    <h2>新能源赛道布局</h2>
+                    <p>在"双碳"目标指引下，新能源产业蓬勃发展，自动化设备需求急剧增长。同兴高科顺势而为，成立新能源智能装备研发团队，聚焦锂电池模组PACK生产线、智能仓储物流系统等领域的设备研发与制造。</p>
+                    
+                    <h2>核心产品亮相</h2>
+                    <p>本次展出的"循环自动举升机"采用先进伺服驱动系统及精密导轨结构，具有运行平稳、定位精准、效率高等特点。可广泛应用于新能源电池仓储物流场景。</p>
+                    
+                    <p>展会期间，同兴高科展位吸引众多国内外客户参观洽谈，现场达成多项合作意向。</p>
+                `
+            },
+            '4': {
+                category: '公司新闻',
+                title: '里程碑：同兴高科深圳&惠州双制造基地十万平米全面落成',
+                date: '2026.03.15',
+                cover: 'building-office.jpg',
+                content: `
+                    <p>2026年3月，同兴高科惠州智能制造基地正式全面投产，标志着公司"深圳惠州双基地十万平米智能制造基地"战略格局正式形成。</p>
+                    
+                    <h2>双核驱动，产能飞跃</h2>
+                    <p>惠州基地占地60000㎡，采用行业领先的智能化生产线设计，配备完整的装配、测试、包装系统。投产后，公司整体产能将实现翻番以上，年产值有望达到数亿元。</p>
+                    
+                    <h2>服务全球一流客户</h2>
+                    <p>依托扩大的产能和19年的技术积累，同兴高科已具备承接全球一流企业亿元级订单的能力。公司将继续深耕非标自动化领域，为TCL、创维、美的、康佳等长期合作伙伴提供更优质的产品和服务。</p>
+                    
+                    <p>展望未来，同兴高科将继续推进智能制造升级，为中国智能制造贡献更多力量。</p>
+                `
+            },
+            '5': {
+                category: '项目故事',
+                title: '成功交付86"商业显示屏全自动化组装线至墨西哥',
+                date: '2026.02.28',
+                cover: 'shipping-container.jpg',
+                content: `
+                    <p>2026年2月，同兴高科成功为墨西哥某知名商业显示屏制造商交付定制化的86"商业显示屏全自动化组装线，5集装箱整线设备跨境发运。</p>
+                    
+                    <h2>项目概况</h2>
+                    <p>该生产线覆盖自动点胶、高精度贴合及自动锁螺丝等核心工艺，完美解决了超大尺寸柔性屏幕无损组装的难题。这是同兴高科继东南亚市场之后，在美洲市场的又一次重大突破。</p>
+                    
+                    <h2>技术亮点</h2>
+                    <p>整线采用同兴高科自主研发的高精度机器人点胶系统（±0.2mm），配合UVW视觉对位平台，实现大尺寸面板的高精度贴合。通过智能控制系统，生产线可实现一键产品切换，兼容65~110"多尺寸产品。</p>
+                    
+                    <p>海外交付后，设备运行稳定，受到客户高度好评，为后续深度合作奠定了坚实基础。</p>
+                `
+            },
+            '6': {
+                category: '行业洞察',
+                title: '洞察：新能源动力电池组装技术的"下半场"',
+                date: '2025.08.05',
+                cover: 'factory-hero.jpg',
+                content: `
+                    <p>随着新能源汽车市场的爆发式增长，动力电池组装技术正迎来新的发展机遇。本文将探讨新能源动力电池组装技术的"下半场"趋势。</p>
+                    
+                    <h2>自动化成为刚需</h2>
+                    <p>在"双碳"目标指引下，新能源产业蓬勃发展，动力电池需求急剧增长。传统人工组装方式已无法满足规模化、高效率、高质量的生产需求，自动化组装技术成为行业刚需。</p>
+                    
+                    <h2>深度软硬件融合</h2>
+                    <p>无人工厂的核心不在于硬件堆砌，而在于数据流贯通。WCS仓库控制系统与自动化机械臂的高效融合，是实现智能化生产的关键。通过TCP/IP通信协议，实现设备状态实时互联和生产数据的数字化透明管理。</p>
+                    
+                    <p>同兴高科依托19年在自动化领域的深厚积累，成功研发出适用于新能源电池模组PACK生产线的系列设备，已在多家头部企业投入应用。</p>
+                `
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id') || '1';
+            const news = newsData[id] || newsData['1'];
+
+            document.getElementById('news-category').textContent = news.category;
+            document.getElementById('news-title').textContent = news.title;
+            document.getElementById('news-date').textContent = news.date;
+            document.getElementById('news-cover').src = news.cover;
+            document.getElementById('news-content').innerHTML = news.content;
+            document.title = news.title + ' | 同兴高科';
+
+            var observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+        });
+    </script>
+    <script src="footer.js"></script>
+</body>
+</html>

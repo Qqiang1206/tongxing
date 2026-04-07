@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали продукта | TXAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { 
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif !important;
+            font-weight: 900 !important; 
+            letter-spacing: 0.02em !important; 
+            line-height: 1.1 !important; 
+        }
+
+        .label-en {
+            font-family: Impact, 'Arial Black', 'Haettenschweiler', sans-serif !important;
+            letter-spacing: 0.2em !important;
+            text-transform: uppercase !important;
+            font-weight: 900 !important;
+            font-size: 1.1rem !important;
+        }
+
+        .mono-num { 
+            font-family: Impact, 'Arial Black', 'Haettenschweiler', sans-serif !important;
+            font-weight: 900 !important;
+            letter-spacing: -0.02em !important;
+        }
+
+        .section-title {
+            font-family: Impact, 'Arial Black', 'Haettenschweiler', sans-serif !important;
+            letter-spacing: 0.1em !important;
+            text-transform: uppercase !important;
+            font-weight: 900 !important;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+        .spec-tag { background: #F5F5F7; border: 1px solid #E5E5EA; color: #1D1D1F; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; }
+        .group:hover .img-zoom { transform: scale(1.05); }
+        .apple-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 32px;
+            overflow: hidden;
+        }
+        .apple-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+        .specs-grid { border-top: 1px solid #1D1D1F; }
+        .specs-row { border-bottom: 1px solid #E5E5EA; transition: background 0.3s ease; }
+        .specs-row:hover { background-color: #F5F5F7; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Главная</a>
+            <a href="about-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">О нас</a>
+            <a href="solutions-ru.html" id="nav-solutions" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Решения</a>
+            <a href="products-ru.html" id="nav-products" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Продукция</a>
+            <a href="news-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Новости</a>
+            <a href="contact-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="solutions-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">�?/a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="solutions-detail-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="solutions-detail-ru.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index-ru.html" class="text-[#86868B]">Главная</a>
+            <a href="about-ru.html" class="text-[#86868B]">О нас</a>
+            <a href="solutions-ru.html" id="mobile-nav-solutions" class="text-[#86868B]">Решения</a>
+            <a href="products-ru.html" id="mobile-nav-products" class="text-[#FF6B00]">Продукция</a>
+            <a href="news-ru.html" class="text-[#86868B]">Новости</a>
+            <a href="contact-ru.html" class="text-[#86868B]">Контакты</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="solutions-detail.html" class="px-4 py-2 text-[#86868B]">�?/a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="solutions-detail-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="solutions-detail-ru.html" class="px-4 py-2 text-[#FF6B00] font-bold">RU</a>
+        </div>
+    </div>
+
+    <!-- P1. Header Section -->
+    <header class="pt-40 pb-20 px-6 md:px-24 w-full relative">
+        <div class="max-w-[1400px] mx-auto fade-up mt-6">
+            
+            <!-- Хлебные крошки -->
+            <div class="text-[#86868B] text-xs font-bold tracking-widest mb-10 flex items-center uppercase">
+                <a href="index-ru.html" class="hover:text-[#1D1D1F] transition">Главная</a>
+                <span class="mx-3">/</span>
+                <a id="breadcrumb-middle" href="solutions-ru.html" class="hover:text-[#1D1D1F] transition">Решения</a>
+                <span class="mx-3">/</span>
+                <span id="breadcrumb-product" class="text-[#FF6B00]">Product Name</span>
+            </div>
+            
+            <!-- Заголовок решения -->
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 mb-16">
+                <div class="lg:w-2/3">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span id="product-category" class="text-[#FF6B00] font-bold text-xs tracking-widest uppercase">Единичное оборудование</span>
+                        <span id="product-model" class="text-[#86868B] font-mono text-sm"></span>
+                    </div>
+                    <h1 id="product-name" class="hero-title text-[3rem] md:text-[5rem] text-[#1D1D1F] mb-6 text-gradient leading-tight">
+                        Высокоточный ламинатор
+                    </h1>
+                    <p id="product-desc" class="text-lg md:text-xl text-[#86868B] font-medium leading-[1.8]">
+                        Разработан для стекла и дисплейных модулей. Точность ламинации до ±0.075mm, с функцией постоянного давления, цикл до 80 секунд.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Основное изображение -->
+            <div class="w-full h-[400px] md:h-[500px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-xl relative group">
+                <img id="product-image" src="robot-arm.jpg" alt="Изображение продукта" class="w-full h-full object-cover img-zoom opacity-90">
+                <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+            </div>
+
+            <!-- Три ключевых показателя -->
+            <div id="metrics-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            </div>
+
+        </div>
+    </header>
+
+    <!-- P2. Pain Points & Solutions -->
+    <section class="py-24 bg-[#F5F5F7] px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <h2 class="text-3xl md:text-[2.5rem] font-black text-[#1D1D1F] mb-16 tracking-tight text-center">Стандартизированные решения для нестандартных задач</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Традиционные проблемы (тёмная тема) -->
+                <div class="bg-[#1D1D1F] rounded-[32px] p-12 text-white relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 text-[10rem] font-black text-white/5 tracking-tighter leading-none -mt-4 mr-4">PAIN</div>
+                    <div class="relative z-10">
+                        <div class="text-gray-400 font-bold text-sm tracking-widest mb-8 uppercase">/ Традиционные производственные проблемы</div>
+                        <ul class="space-y-8">
+                            <li>
+                                <h4 class="text-xl font-bold mb-2 flex items-center"><span class="text-[#FF6B00] mr-3">�?/span>Низкая эффективность ручных операций</h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">Традиционная ручная сборка требует много времени и неэффективна</p>
+                            </li>
+                            <li>
+                                <h4 class="text-xl font-bold mb-2 flex items-center"><span class="text-[#FF6B00] mr-3">�?/span>Сложно обеспечить точность</h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">Ручные операции подвержены влиянию усталости</p>
+                            </li>
+                            <li>
+                                <h4 class="text-xl font-bold mb-2 flex items-center"><span class="text-[#FF6B00] mr-3">�?/span>Длительная переналадка линии</h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">Переключение продукта требует повторной настройки</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Решение TXAM (светлая тема) -->
+                <div class="bg-white rounded-[32px] p-12 border border-[#E5E5EA] shadow-xl relative overflow-hidden group hover:border-[#FF6B00] transition-colors duration-500">
+                    <div class="absolute right-0 top-0 text-[10rem] font-black text-gray-50 tracking-tighter leading-none -mt-4 mr-4 transition-transform duration-700 group-hover:scale-110">SOL</div>
+                    <div class="relative z-10">
+                        <div class="text-[#FF6B00] font-bold text-sm tracking-widest mb-8 uppercase">/ Решение TXAM</div>
+                        <ul class="space-y-8">
+                            <li>
+                                <h4 class="text-xl font-bold text-[#1D1D1F] mb-2 flex items-center"><span class="text-[#FF6B00] mr-3 font-black">�?/span>Полностью автоматизированные операции</h4>
+                                <p id="pain-solution-1" class="text-sm text-[#86868B] leading-relaxed">Значительно повышает эффективность</p>
+                            </li>
+                            <li>
+                                <h4 class="text-xl font-bold text-[#1D1D1F] mb-2 flex items-center"><span class="text-[#FF6B00] mr-3 font-black">�?/span>Гарантия высокой точности</h4>
+                                <p id="pain-solution-2" class="text-sm text-[#86868B] leading-relaxed">Стабильная и надежная точность оборудования</p>
+                            </li>
+                            <li>
+                                <h4 class="text-xl font-bold text-[#1D1D1F] mb-2 flex items-center"><span class="text-[#FF6B00] mr-3 font-black">�?/span>Быстрое переключение, гибкое производство</h4>
+                                <p id="pain-solution-3" class="text-sm text-[#86868B] leading-relaxed">Сокращает время переналадки</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- P3. Core Manufacturing Process -->
+    <section class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="mb-20">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Основной производственный процесс</h2>
+                <p class="text-[#86868B] text-xl">Прецизионное производство, мастерство, обеспечение качества.</p>
+            </div>
+            
+            <div class="space-y-6" id="process-flow">
+                <!-- Динамическая генерация процессов -->
+            </div>
+        </div>
+    </section>
+
+    <!-- P4. Technical Specifications -->
+    <section class="py-24 bg-[#FBFBFD] px-6 md:px-24 mb-20">
+        <div class="max-w-[1000px] mx-auto fade-up">
+            <h2 class="text-2xl font-bold text-[#1D1D1F] mb-10">Основные технические характеристики</h2>
+            
+            <div id="specs-table" class="specs-grid">
+                <!-- Динамическая генерация -->
+            </div>
+            
+            <p class="text-xs text-gray-400 mt-6">* Конкретная конфигурация оборудования может варьироваться в зависимости от нестандартной настройки. Окончательное подтверждение согласно нашим инженерным чертежам.</p>
+        </div>
+    </section>
+
+    <!-- P5. Связанные продукты -->
+    <section class="py-24 bg-[#F5F5F7] px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <h2 class="text-3xl md:text-[2.5rem] font-black text-[#1D1D1F] tracking-tight mb-12">Связанные продукты</h2>
+            <div id="related-products" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            </div>
+        </div>
+    </section>
+
+    <div data-footer-placeholder></div>
+
+    <script>
+        const productData = {
+            '1': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS-ALM-01',
+                name: 'Высокоточный ламинатор',
+                image: '产品图片/自动贴合�?001.png',
+                specs: ['±0.075mm точность', '80 сек цикл', 'Постоянное давление', 'Мульти-размер'],
+                desc: 'Разработан для стекла и дисплейных модулей. Точность ламинации до ±0.075mm, с функцией постоянного давления, цикл до 80 секунд.',
+                detail: `
+                    <p>Высокоточный ламинатор - это высококлассное интеллектуальное оборудование, самостоятельно разработанное TXAM, специально разработанное для высокоточной ламинации стекла и дисплейных модулей.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Оборудование использует точную механическую структуру с продвинутой системой управления движением для достижения автоматической загрузки, точного позиционирования, высокоточной ламинации и обработки под давлением.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Точность ламинации до ±0.075mm, значительно превышает отраслевые стандарты</li>
+                        <li>Функция постоянного давления обеспечивает прочную ламинацию без пузырьков</li>
+                        <li>80-секундный сверхбыстрый цикл</li>
+                        <li>Поддерживает различные размеры продукции</li>
+                    </ul>
+                    <h3>Области применения</h3>
+                    <p>Широко используется в процессах ламинации стекла для ТВ, образовательных панелей, коммерческих дисплеев.</p>
+                `
+            },
+            '2': {
+                category: 'Единичное оборудование',
+                model: 'TXM-A Серия',
+                name: 'OC Интеллектуальная система ламинации',
+                image: '产品图片/OC卡合机组.png',
+                specs: ['UVW визуальное выравнивание', '±0.15mm точность', '25 сек цикл', 'Нулевой бой стекла'],
+                desc: 'Полностью автоматическая сборка Open Cell и модуля подсветки. С использованием UVW платформы визуального выравнивания, полностью решает проблему боя стекла при ручной ламинации.',
+                detail: `
+                    <p>OC Интеллектуальная система ламинации - это автоматическое оборудование, самостоятельно разработанное TXAM для ключевого процесса производства дисплейных панелей.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Оборудование использует UVW платформу визуального выравнивания для автоматического определения положения продукта, направляя робота на выполнение точной сборки OC и модуля подсветки.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Точность ламинации до ±0.15mm до ±0.4mm</li>
+                        <li>Фиксированный цикл 25 секунд</li>
+                        <li>Полностью решает проблему боя стекла</li>
+                        <li>Одно нажатие для смены продукта</li>
+                    </ul>
+                `
+            },
+            '3': {
+                category: 'Производственные линии',
+                model: 'COMPLETE LINE',
+                name: 'Гибкая линия сборки TV/Дисплеев',
+                image: '解决方案/TV商业显示器柔性装配产�?png',
+                specs: ['Сборка с дозированием', 'Переворот и контроль', 'Упаковка и паллетирование', '65-110" совместимость'],
+                desc: 'Полная автоматизация от нанесения клея, установки кронштейнов, ламинации, переворота и контроля до окончательной упаковки и паллетирования.',
+                detail: `
+                    <p>Гибкая линия сборки TV/Дисплеев - это решение "под ключ" от TXAM для производителей дисплейного оборудования.</p>
+                    <h3>Состав линии</h3>
+                    <p>Полная линия охватывает все процессы от основной сборки (дозирование, установка кронштейнов, ламинация), через промежуточные процессы (переворот, визуальный контроль), до окончательной упаковки (упаковка в пакеты, установка, паллетирование).</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Совместимость с 65~110" мульти-размерами</li>
+                        <li>Полная линия использует роботизированную автоматизацию</li>
+                        <li>Импорт CAD для быстрой смены продукта</li>
+                        <li>Высокая эффективность линии</li>
+                    </ul>
+                `
+            },
+            '4': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS-AGD Серия',
+                name: 'Высокоточный робот-дозатор',
+                image: '产品图片/自动点胶�?png',
+                specs: ['±0.2mm позиционирование', '0.25 сек/ряд', 'Импорт CAD', 'TCP/IP связь'],
+                desc: 'Одноосный робот с матрицей нескольких клеевых пистолетов, погрешность позиционирования ±0.2mm, однорядное дозирование всего 0.25 секунды.',
+                detail: `
+                    <p>Высокоточный робот-дозатор - это основное оборудование, разработанное TXAM для процессов прецизионного покрытия.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Использует одноосный робот с матрицей нескольких клеевых пистолетов, достигая быстрого и равномерного дозирования через систему точного управления движением.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Погрешность позиционирования только ±0.2mm</li>
+                        <li>Скорость дозирования 0.25 секунды/ряд</li>
+                        <li>Поддержка прямого импорта CAD</li>
+                        <li>Протокол связи TCP/IP</li>
+                    </ul>
+                `
+            },
+            '5': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS-ASM Серия',
+                name: 'Автоматическая машина для распыления клея',
+                image: '产品图片/自动喷胶�?png',
+                specs: ['0.6-0.8м/с скорость', '75"-Полная совместимость', 'Подача из блока клея', 'Несколько моделей'],
+                desc: 'Равномерно распыляет клей на целевые объекты, подходит для панелей большего размера. Высокая эффективность распыления, сильная совместимость.',
+                detail: `
+                    <p>Автоматическая машина для распыления клея - это автоматическое оборудование, разработанное TXAM для нужд распыления клея на крупные панели.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Оборудование использует метод подачи клея из блока, нагревая твердые блоки клея и равномерно нанося их на поверхность продукта через распылительную головку.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Скорость распыления 0.6-0.8м/с</li>
+                        <li>Совместимость от 75" до полного размера</li>
+                        <li>Несколько моделей TX-NS-ASM-01/02/03</li>
+                    </ul>
+                `
+            },
+            '6': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS-ALPS Серия',
+                name: 'Автоматическая установка опор рассеивателя',
+                image: '产品图片/自动放灯支撑.png',
+                specs: ['±0.2mm позиционирование', '1 сек/захват', 'Вибропитатель', '10-20 шт/партия'],
+                desc: 'Точно захватывает и размещает опоры рассеивателя, обеспечивая стабильную поддержку оптических компонентов дисплейного устройства.',
+                detail: `
+                    <p>Оборудование для автоматической установки опор рассеивателя используется для точного размещения опор рассеивателя в процессе сборки дисплейных продуктов.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Оборудование автоматически подает через вибропитатель, робот точно захватывает опоры и размещает их в указанном положении.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Точность позиционирования ±0.2mm</li>
+                        <li>Быстрый захват, 1 секунда на захват</li>
+                        <li>Автоматическая подача вибропитателем</li>
+                    </ul>
+                `
+            },
+            '7': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS-ALSI-01/02',
+                name: 'Автоматическая установка светодиодных полос',
+                image: '产品图片/自动放灯�?png',
+                specs: ['±0.2mm точность', '7 шт/партия', 'С функцией прижима', 'Робот+Ручное сотрудничество'],
+                desc: 'Точно и быстро размещает светодиодные полосы в указанном положении. Может захватывать несколько полос одновременно.',
+                detail: `
+                    <p>Автоматическая установка светодиодных полос �?это роботизированный модуль для автоматического размещения светодиодных полос.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Использует робот с системой технического зрения, может точно захватить 7 светодиодных полос одновременно.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Точность сборки ±0.2mm</li>
+                        <li>Может захватить 7 полос за раз</li>
+                        <li>С функцией прижима</li>
+                    </ul>
+                `
+            },
+            '8': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS-ASBS-01',
+                name: 'Робот для автоматической закрутки винтов',
+                image: '产品图片/自动打背板螺�?001.png',
+                specs: ['12 шт/партия', '1.8 сек/шт', 'Регулируемый крутящий момент', 'Высокая эффективность'],
+                desc: 'Может захватывать и автоматически затягивать до 12 винтов задней панели одновременно, крутящий момент регулируется в реальном времени.',
+                detail: `
+                    <p>Робот для автоматической закрутки винтов - это автоматическое оборудование, разработанное TXAM для прецизионных процессов крепления.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Оборудование использует робот с интеллектуальной системой затяжки, может захватить 12 винтов одновременно.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Может захватить 12 винтов за раз</li>
+                        <li>Скорость 1.8 секунды/винт</li>
+                        <li>Регулируемый крутящий момент</li>
+                    </ul>
+                `
+            },
+            '9': {
+                category: 'Единичное оборудование',
+                model: 'TXM-B-105 Серия / 205A',
+                name: '180-градусный переворотный узел',
+                image: '产品图片/180度翻转机.png',
+                specs: ['15-55 сек цикл', 'Одно нажатие', 'Сильная грузоподъемность', 'Несколько моделей'],
+                desc: 'Специально разработан для переворота крупногабаритных или тяжелых продуктов, достигая 180-градусного точного переворота.',
+                detail: `
+                    <p>180-градусный переворотный узел - это основное оборудование, разработанное TXAM для переворота крупногабаритных тяжелых продуктов.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Оборудование использует точную механическую структуру и серводвигательную систему для достижения 180-градусного переворота.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Цикл переворота 15-55 секунд</li>
+                        <li>Одно нажатие для операции</li>
+                        <li>Сильная грузоподъемность</li>
+                    </ul>
+                `
+            },
+            '10': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS-ACTGR-01/02',
+                name: 'Автоматическая установка рамки закаленного стекла',
+                image: '产品图片/自动卡钢化玻璃架.png',
+                specs: ['±0.15mm точность', 'Визуальное позиционирование', 'Автоматическая установка', 'Для образовательных панелей'],
+                desc: 'Автоматически устанавливает рамки закаленного стекла для образовательных панелей. Использует визуальное позиционирование с точностью до ±0.15mm.',
+                detail: `
+                    <p>Оборудование для автоматической установки рамки закаленного стекла - это автоматизированный блок сборки, разработанный TXAM для продуктов образовательных панелей.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Оборудование использует систему технического зрения CCD для автоматического определения положения продукта.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Точность позиционирования ±0.15mm</li>
+                        <li>Визуальное позиционирование</li>
+                    </ul>
+                `
+            },
+            '11': {
+                category: 'Логистика и складирование',
+                model: 'TX-NS-PR Серия',
+                name: 'Интеллектуальная система паллетирования',
+                image: '产品图片/机器人码�?png',
+                specs: ['±0.5mm точность', '12 сек/шт', 'Фиктивная паллетизация', 'Совместимость с поддонами'],
+                desc: 'Идеально решает проблемы штабелирования тяжелых готовых продуктов. Поддерживает фиктивную паллетизацию и поддоны, точность ±0.5mm.',
+                detail: `
+                    <p>Интеллектуальная система паллетирования - это основное оборудование, разработанное TXAM для логистической автоматизации.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Использует шестиосный промышленный робот с интеллектуальной системой управления.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Точность паллетирования ±0.5mm</li>
+                        <li>Эффективность до 12 секунд/шт</li>
+                        <li>Поддержка различных типов поддонов</li>
+                    </ul>
+                `
+            },
+            '12': {
+                category: 'Логистика и складирование',
+                model: 'TX-NS-AET Серия',
+                name: 'Упаковка и автоматическая окоробка',
+                image: '产品图片/自动套箱.png',
+                specs: ['20 сек/шт', 'Автоматическое штабелирование', 'Механическое позиционирование', 'Полная совместимость'],
+                desc: 'Интегрированная автоматическая загрузка поддонов, распаковка, формовка и полная окоробка. 20 секунд для центрирования поддона.',
+                detail: `
+                    <p>Упаковка и автоматическая окоробка - это автоматическое оборудование, разработанное TXAM для упаковочных процессов.</p>
+                    <h3>Принцип работы</h3>
+                    <p>Интегрирует автоматический паллетизатор, машину для распаковки, формовщик и окоробщик.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Цикл центрирования поддона 20 секунд</li>
+                        <li>Механическое жесткое позиционирование</li>
+                    </ul>
+                `
+            },
+            '13': {
+                category: 'Логистика и складирование',
+                model: 'TX-NS-RIP-001',
+                name: 'Роботизированное интегрированное паллетирование',
+                image: '产品图片/机器人集成码�?png',
+                specs: ['Интегрированные функции', 'Суб-родительский поддон', 'Авто резиновый лист', 'Функция сканирования'],
+                desc: 'Более мощное интегрированное решение для паллетирования, включая суб-родительские поддоны, автоматическую укладку резиновых листов, сканирование.',
+                detail: `
+                    <p>Роботизированное интегрированное паллетирование - это полнофункциональная система паллетирования, разработанная TXAM для высококлассных клиентов.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Полные функции для всего процесса логистики</li>
+                        <li>Функция паллетирования суб-родительских поддонов</li>
+                        <li>Автоматическая укладка резиновых листов</li>
+                        <li>Функция сканирования</li>
+                    </ul>
+                `
+            },
+            '14': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS Серия',
+                name: 'Роботизированный блок вертикализации',
+                image: '产品图片/机器人立机单�?png',
+                specs: ['CCD техническое зрение', 'Плавно и эффективно', 'Экономия труда', 'Настраиваемый'],
+                desc: 'Автоматически преобразует продукты из горизонтального в вертикальное состояние. Использует CCD для определения положения продукта.',
+                detail: `
+                    <p>Роботизированный блок вертикализации - это автоматическое оборудование, разработанное TXAM для преобразования позы продукта.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>CCD управление, точное позиционирование</li>
+                        <li>Плавный процесс вертикализации</li>
+                        <li>Экономия труда</li>
+                    </ul>
+                `
+            },
+            '15': {
+                category: 'Единичное оборудование',
+                model: 'TXM-A Серия',
+                name: 'Вспомогательный блок визуального контроля',
+                image: '产品图片/辅助画检单元.png',
+                specs: ['Автоматический переворот', 'Снижение трудоемкости', 'Повышение эффективности контроля', 'Снижение ошибок'],
+                desc: 'Через автоматический переворот и распознавание изображений помогает или заменяет ручной визуальный контроль качества продукции.',
+                detail: `
+                    <p>Вспомогательный блок визуального контроля - это автоматическое вспомогательное оборудование, разработанное TXAM для контроля качества.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Автоматический переворот</li>
+                        <li>Сотрудничество с системой технического зрения</li>
+                        <li>Повышение эффективности контроля</li>
+                    </ul>
+                `
+            },
+            '16': {
+                category: 'Единичное оборудование',
+                model: 'TX-NS Серия',
+                name: 'Автоматический блок прижима',
+                image: '产品图片/自动保压单元.png',
+                specs: ['Константный контроль давления', 'Длительное поддержание давления', 'Сильная адаптивность', 'Гарантия качества'],
+                desc: 'Прикладывает и поддерживает постоянное давление на собранные компоненты, обеспечивая качество склеивания или сборки.',
+                detail: `
+                    <p>Автоматический блок прижима - это автоматическое оборудование, разработанное TXAM для процессов склеивания.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Точный контроль давления</li>
+                        <li>Длительное поддержание давления</li>
+                        <li>Сильная адаптивность</li>
+                    </ul>
+                `
+            },
+            '17': {
+                category: 'ПО и управление',
+                model: 'SOFTWARE SYSTEM',
+                name: 'Разработка ПО "Индустриальный мозг"',
+                image: 'control-system.jpg',
+                specs: ['WMS/WCS', 'MES', 'TCP/IP связь', 'Аналитика данных'],
+                desc: 'Глубокая интеграция аппаратного и программного обеспечения, самостоятельная разработка WMS, WCS, MES. Устранение информационных silos, цифровое прозрачное управление.',
+                detail: `
+                    <p>ПО "Индустриальный мозг" - это программная система, самостоятельно разработанная TXAM для реализации интеллектуальной фабрики.</p>
+                    <h3>Состав системы</h3>
+                    <p>Система включает WMS систему управления складом, WCS систему управления складом, MES систему исполнения производства.</p>
+                    <h3>Технические преимущества</h3>
+                    <ul>
+                        <li>Устранение информационных silos</li>
+                        <li>Мониторинг в реальном времени</li>
+                        <li>Цифровое прозрачное управление</li>
+                    </ul>
+                `
+            },
+            '18': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-RT Series',
+    name: 'Поворотный стол',
+    image: '产品图片/旋转�?png',
+    specs: ['Точное позиционирование', 'Многостанционный', 'Автовращение', 'Высокая адаптивность'],
+    desc: 'Прецизионное ротационное оборудование для многостанционной обработки или контроля, обеспечивающее многоугловую автоматическую обработку изделий.',
+    detail: `
+        <p>Поворотный стол - это автоматизированное оборудование, разработанное TXAM для нужд многостанционной обработки.</p>
+        <h3>Принцип работы</h3>
+        <p>Оборудование использует прецизионную сервоприводную систему для достижения многоуглового вращения и позиционирования изделий.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Точное позиционирование, высокая повторяемость</li>
+            <li>Многостанционная конструкция, повышение эффективности</li>
+            <li>Высокая автоматизация, сокращение ручного труда</li>
+            <li>Высокая адаптивность к различным изделиям</li>
+        </ul>
+    `
+},
+'19': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-LG Series',
+    name: 'Подъемный модуль',
+    image: '产品图片/升降机组.png',
+    specs: ['Плавный подъем', 'Большая грузоподъемность', 'Автоуправление', 'Совместимость с линией'],
+    desc: 'Подъемно-транспортное оборудование для перемещения изделий между станциями разной высоты, обеспечивающее бесшовное соединение по высоте.',
+    detail: `
+        <p>Подъемный модуль - это автоматизированное транспортное оборудование, разработанное TXAM для соединения по высоте.</p>
+        <h3>Принцип работы</h3>
+        <p>Оборудование использует сервоприводную систему с точными направляющими для плавного подъема изделий.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Плавный подъем, большая грузоподъемность</li>
+            <li>Автоматическое управление, идеальная интеграция</li>
+            <li>Стабильная конструкция, долгий срок службы</li>
+            <li>Настраиваемый ход и нагрузка</li>
+        </ul>
+    `
+},
+'20': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-MM Series',
+    name: 'Транспортер модулей',
+    image: '产品图片/模组移载�?png',
+    specs: ['Точная передача', 'Многостанционный', 'Автоматизация', 'Гибкое производство'],
+    desc: 'Прецизионное оборудование для автоматической передачи электронных модулей между различными станциями.',
+    detail: `
+        <p>Транспортер модулей - это автоматизированное оборудование, разработанное TXAM для передачи электронных модулей.</p>
+        <h3>Принцип работы</h3>
+        <p>Использует систему точного управления движением для точной передачи модулей между несколькими станциями.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Высокая точность передачи, точное позиционирование</li>
+            <li>Многостанционная конфигурация, высокая гибкость</li>
+            <li>Высокая автоматизация, сокращение ручного труда</li>
+            <li>Легкая смена изделий, адаптация к многономенклатурному производству</li>
+        </ul>
+    `
+},
+'21': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-ACT Series',
+    name: 'Автомат защелок и ключей',
+    image: '产品图片/自动卡扳�?png',
+    specs: ['Автозащелкивание', 'Точное позиционирование', 'Высокая эффективность', 'Мультиразмер'],
+    desc: 'Автоматизированное оборудование для автоматической установки защелок или ключей, точного позиционирования и быстрой сборки.',
+    detail: `
+        <p>Автомат защелок и ключей - это автоматизированное оборудование, разработанное TXAM для сборки защелок.</p>
+        <h3>Принцип работы</h3>
+        <p>Использует прецизионную механическую структуру с сервоприводом для автоматического захвата, позиционирования и установки.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Автоматическая сборка защелок, высокая эффективность</li>
+            <li>Точное позиционирование, высокая точность сборки</li>
+            <li>Система технического зрения для контроля качества</li>
+            <li>Адаптация к различным размерам изделий</li>
+        </ul>
+    `
+},
+'22': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-SE Series',
+    name: 'Вспомогательный запайщик пакетов',
+    image: '产品图片/辅助封袋�?png',
+    specs: ['Автозапайка', 'Термо запайка', 'Высокая эффективность', 'Стабильное качество'],
+    desc: 'Автоматизированное оборудование для запайки упаковочных пакетов с использованием технологии термо запайки.',
+    detail: `
+        <p>Вспомогательный запайщик пакетов - это автоматизированное оборудование, разработанное TXAM для запайки.</p>
+        <h3>Принцип работы</h3>
+        <p>Использует технологию термо запайки для автоматической запайки упаковочных пакетов изделий.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Термо запайка, аккуратная и прочная запайка</li>
+            <li>Высокая автоматизация, высокая эффективность</li>
+            <li>Стабильное качество, однородное качество запайки</li>
+            <li>Простая эксплуатация, низкие затраты на обслуживание</li>
+        </ul>
+    `
+},
+'23': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-MAB Series',
+    name: 'Робот упаковки в пакеты',
+    image: '产品图片/机器人下线套�?png',
+    specs: ['Автоупаковка', 'Робот-сотрудничество', 'Эффективная упаковка', 'Высокая адаптивность'],
+    desc: 'Совместно с роботом автоматически выполняет упаковку в пакеты после схода изделия с линии.',
+    detail: `
+        <p>Робот упаковки в пакеты - это автоматизированное оборудование, разработанное TXAM для упаковки.</p>
+        <h3>Принцип работы</h3>
+        <p>Оборудование совместно с шестиосевым роботом автоматически захватывает пакеты и надевает их на изделия.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Роботизированная автоматизация, высокая эффективность</li>
+            <li>Точное положение упаковки, хорошая защита изделий</li>
+            <li>Высокая автоматизация, сокращение ручного труда</li>
+            <li>Адаптация к различным размерам изделий</li>
+        </ul>
+    `
+},
+'24': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-RBP Series',
+    name: 'Робот загрузки задних панелей',
+    image: '产品图片/机器人自动投背板.png',
+    specs: ['Автозагрузка', 'Точное позиционирование', 'Высокая эффективность', 'Гарантия качества'],
+    desc: 'Автоматизированное оборудование для автоматической загрузки задних панелей в сборочные станции совместно с роботом.',
+    detail: `
+        <p>Робот загрузки задних панелей - это автоматизированное оборудование, разработанное TXAM для загрузки.</p>
+        <h3>Принцип работы</h3>
+        <p>Использует робота с системой точного позиционирования для автоматического захвата и загрузки задних панелей.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Роботизированная автоматическая загрузка, высокая эффективность</li>
+            <li>Точное позиционирование, гарантия точности сборки</li>
+            <li>Высокая автоматизация, сокращение ручного труда</li>
+            <li>Стабильное качество, хорошая однородность изделий</li>
+        </ul>
+    `
+},
+'25': {
+    category: 'Логистика и складирование',
+    model: 'TX-NS-PL Series',
+    name: 'Упаковочное и логистическое оборудование',
+    image: '产品图片/包装与物流自动化设备.jpg',
+    specs: ['Автоупаковка', 'Логистический транспорт', 'Эффективная сортировка', 'Системная интеграция'],
+    desc: 'Решения по интеграции логистической автоматизации, охватывающие упаковку, транспортировку и сортировку.',
+    detail: `
+        <p>Упаковочное и логистическое оборудование - это решение по интеграции системы, разработанное TXAM.</p>
+        <h3>Состав системы</h3>
+        <p>Система охватывает автоматическое упаковочное оборудование, конвейерные линии, сортировочное оборудование и систему управления складом.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Интеграция системы, полная автоматизация логистики</li>
+            <li>Эффективная сортировка, повышение эффективности логистики</li>
+            <li>Интеллектуальное управление, цифровая прозрачность</li>
+            <li>Настраивается по потребностям заказчика</li>
+        </ul>
+    `
+},
+'26': {
+    category: 'Единицы оборудования',
+    model: 'TX-NS-RCU Series',
+    name: 'Робототехнические ячейки',
+    image: '解决方案/机器人单元设�?jpg',
+    specs: ['Модульная конструкция', 'Гибкая конфигурация', 'Простая интеграция', 'Эффективность и надежность'],
+    desc: 'Модульное оборудование с роботом в качестве ядра, может быть гибко сконфигурировано по требованиям процесса.',
+    detail: `
+        <p>Робототехнические ячейки - это модульное автоматизированное оборудование, разработанное TXAM для гибкого производства.</p>
+        <h3>Принцип работы</h3>
+        <p>Использует шестиосевого робота в качестве ядра с различными концевыми инструментами для формирования модульных ячеек.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Модульная конструкция, гибкая конфигурация</li>
+            <li>Многофункциональное использование, повышение использования оборудования</li>
+            <li>Легко интегрируется в существующие производственные линии</li>
+            <li>Эффективность и надежность, простое обслуживание</li>
+        </ul>
+    `
+},
+'27': {
+    category: 'Упаковка и логистика',
+    model: 'TX-NS-AUFE Серия',
+    name: 'Вспомогательный блок переворота на линии',
+    image: '产品图片/辅助上线翻转单元.png',
+    specs: ['Авто переворот', 'Вспомогательный на линии', 'Эффективное сотрудничество', 'Гарантия качества'],
+    desc: 'Вспомогательное оборудование для переворота продукта на позиции подачи, работающее совместно с основным оборудованием для автоматической загрузки и выгрузки.',
+    detail: `
+        <p>Вспомогательный блок переворота на линии - это вспомогательное оборудование для переворота, разработанное TXAM для позиций подачи производственной линии.</p>
+        <h3>Принцип работы</h3>
+        <p>Оборудование работает совместно с основной производственной линией, обеспечивая автоматический переворот и позиционирование продукта на позиции подачи для подготовки к следующему процессу.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Автоматический переворот, повышение эффективности подачи</li>
+            <li>Эффективное сотрудничество с основным оборудованием</li>
+            <li>Гарантия качества, снижение повреждения продукции</li>
+            <li>Простая эксплуатация, низкие затраты на обслуживание</li>
+        </ul>
+    `
+},
+'28': {
+    category: 'Упаковка и логистика',
+    model: 'TX-NS-ADFE Серия',
+    name: 'Вспомогательный блок переворота на выходе',
+    image: '产品图片/辅助下线翻转单元.png',
+    specs: ['Авто переворот', 'Вспомогательный на выходе', 'Эффективное сотрудничество', 'Гарантия качества'],
+    desc: 'Вспомогательное оборудование для переворота продукта на позиции выхода, работающее совместно с основным оборудованием для автоматической выгрузки.',
+    detail: `
+        <p>Вспомогательный блок переворота на выходе - это вспомогательное оборудование для переворота, разработанное TXAM для позиций выхода производственной линии.</p>
+        <h3>Принцип работы</h3>
+        <p>Оборудование работает совместно с основной производственной линией, обеспечивая автоматический переворот и сборку продукта на позиции выхода для подготовки к упаковке.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Автоматический переворот, повышение эффективности выхода</li>
+            <li>Эффективное сотрудничество с основным оборудованием</li>
+            <li>Гарантия качества, снижение повреждения продукции</li>
+            <li>Простая эксплуатация, низкие затраты на обслуживание</li>
+        </ul>
+    `
+},
+'29': {
+    category: 'Упаковка и логистика',
+    model: 'TX-NS-MAB-M Серия',
+    name: 'Ручная вспомогательная упаковка в пакеты',
+    image: '产品图片/人工辅助套袋.png',
+    specs: ['Ручное сотрудничество', 'Вспомогательная автоматизация', 'Упаковка в пакеты', 'Гарантия качества'],
+    desc: 'Ручное вспомогательное оборудование для упаковки в пакеты, работающее совместно с автоматическим оборудованием для завершения процесса упаковки.',
+    detail: `
+        <p>Ручная вспомогательная упаковка в пакеты - это ручное вспомогательное оборудование, разработанное TXAM для процесса упаковки.</p>
+        <h3>Принцип работы</h3>
+        <p>Оборудование работает совместно с ручным управлением, обеспечивая полуавтоматическую упаковку в пакеты, повышая эффективность упаковки и снижая затраты на оборудование.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Сочетание ручного труда и автоматизации, гибкость и эффективность</li>
+            <li>Гарантия качества упаковки</li>
+            <li>Снижение затрат на оборудование</li>
+            <li>Простая эксплуатация, низкие затраты на обучение</li>
+        </ul>
+    `
+},
+'30': {
+    category: 'Логистика и складирование',
+    model: 'TX-NS-RAHC Серия',
+    name: 'Робот автоматической загрузки на подвесной конвейер',
+    image: '产品图片/机器人自动上悬挂�?png',
+    specs: ['Авто загрузка на цепь', 'Подвесной конвейер', 'Робот-сотрудничество', 'Эффективная автоматизация'],
+    desc: 'Совместно с роботом автоматически загружает продукцию на подвесной конвейер для транспортировки.',
+    detail: `
+        <p>Робот автоматической загрузки на подвесной конвейер - это автоматическое оборудование, разработанное TXAM для подвесного конвейера.</p>
+        <h3>Принцип работы</h3>
+        <p>Оборудование работает совместно с шестиосевым роботом, автоматически захватывая продукцию и загружая её на подвесной конвейер, обеспечивая автоматическую транспортировку.</p>
+        <h3>Технические преимущества</h3>
+        <ul>
+            <li>Роботизированная автоматическая загрузка, высокая эффективность</li>
+            <li>Подвесной конвейер, экономия производственных площадей</li>
+            <li>Высокая автоматизация, сокращение ручного труда</li>
+            <li>Идеальное взаимодействие с производственной линией</li>
+        </ul>
+    `
+},
+'31': {
+    category: 'Решения',
+    model: 'TXAM-SOL-TV',
+    name: 'Гибкая производственная линия для TV/коммерческих дисплеев',
+    image: '解决方案/TV商业显示器柔性装配产�?png',
+    specs: ['Полная автоматизация', 'Гибкое производство', '65-110"', 'Под ключ'],
+    desc: 'Комплексные решения автоматизации для производителей телевизоров, коммерческих дисплеев, интерактивных панелей и цифровых вывесок. Охватывает дозирование, ламинирование, переворот, контроль качества, упаковку и палетирование.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Гибкая производственная линия для TV/коммерческих дисплеев - это <strong class="text-[#1D1D1F]">инженерные решения под ключ</strong>, предоставляемые TXAM для производителей дисплеев.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">дозирование, установку кронштейнов, ламинацию, переворот и контроль, окончательную упаковку</span> - полная автоматизация от сырья до готовой продукции.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Совместимость с мульти-размерами 65~110"</strong> одним нажатием</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Полная автоматизация</strong> роботизированными операциями</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Импорт CAD одним нажатием</strong>, короткое время отладки</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Высокий выход годных</strong>, хорошая однородность продукции</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Настоящая инженерия под ключ</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'32': {
+    category: 'Решения',
+    model: 'TXAM-SOL-FR',
+    name: 'Холодильник - решения для производственных линий',
+    image: '解决方案/冰箱生产�?png',
+    specs: ['Полная автоматизация линии', 'Гибкое производство', 'Мульти-модель совместимость', 'Под ключ'],
+    desc: 'Полные решения по автоматизации линий для производителей холодильников, охватывающие весь процесс от сборки до упаковки.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Холодильник - решения для производственных линий - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей бытовой техники.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">установку компрессора, сборку панелей, трубопроводы, электропроводку</span> и окончательную проверку и упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Высокая степень полной автоматизации линии</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Гибкое мульти-модельное производство</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированная проверка</strong> обеспечивает качество</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Эффективная система упаковки</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'33': {
+    category: 'Решения',
+    model: 'TXAM-SOL-AC',
+    name: 'Кондиционер - решения для производственных линий',
+    image: '解决方案/空调生产�?png',
+    specs: ['Полная автоматизация линии', 'Гибкое производство', 'Мульти-модель совместимость', 'Под ключ'],
+    desc: 'Полные решения по автоматизации линий для производителей кондиционеров, охватывающие весь процесс от сборки до упаковки.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Кондиционер - решения для производственных линий - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей бытовой техники.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">сборку теплообменника, установку компрессора, трубопроводы, вакуумирование, заправку хладагента, электропроводку</span> и окончательную проверку и упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Высокая степень полной автоматизации линии</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Гибкое переключение мульти-моделей</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированное обнаружение утечек гелия</strong> обеспечивает герметичность</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Эффективная система упаковки</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'34': {
+    category: 'Решения',
+    model: 'TXAM-SOL-WA',
+    name: 'Стиральная машина - решения для производственных линий',
+    image: '解决方案/洗衣机生产线.png',
+    specs: ['Полная автоматизация линии', 'Гибкое производство', 'Мульти-модель совместимость', 'Под ключ'],
+    desc: 'Полные решения по автоматизации линий для производителей стиральных машин, охватывающие весь процесс от сборки до упаковки.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Стиральная машина - решения для производственных линий - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей бытовой техники.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">сборку внутреннего барабана, сборку корпуса, установку системы виброгашения, электропроводку</span> и окончательную проверку и упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Высокая степень полной автоматизации линии</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Гибкое мульти-модельное производство</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированная проверка</strong> обеспечивает качество</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Эффективная система упаковки</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'35': {
+    category: 'Решения',
+    model: 'TXAM-SOL-MW',
+    name: 'Производственная линия для микроволновых печей',
+    image: '解决方案/微波炉生产线.png',
+    specs: ['Полная автоматизация линии', 'Гибкое производство', 'Мульти-модель', 'Под ключ'],
+    desc: 'Комплексные решения автоматизации для производителей микроволновых печей, охватывающие сборку камеры, установку дверцы, электропроводку и окончательную проверку и упаковку.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Производственная линия для микроволновых печей - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей бытовой техники.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">сборку камеры, установку дверцы, монтаж магнетрона, электропроводку</span> и окончательную проверку и упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Высокая степень полной автоматизации линии</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Гибкое мульти-модельное производство</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированная проверка</strong> обеспечивает безопасность продукции</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Эффективная система упаковки</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'36': {
+    category: 'Решения',
+    model: 'TXAM-SOL-TB',
+    name: 'Производственная линия для планшетов',
+    image: '解决方案/平板电脑生产�?png',
+    specs: ['Прецизионная сборка', 'Визуальный контроль', 'Гибкое производство', 'Под ключ'],
+    desc: 'Комплексные решения автоматизации для производителей планшетов, охватывающие сборку дисплея, установку аккумулятора, сборку материнской платы и окончательную проверку и упаковку.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Производственная линия для планшетов - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей потребительской электроники.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">сборку сенсорного экрана, установку аккумулятора, сборку материнской платы, установку камеры</span> и окончательную проверку и упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Прецизионная сборка</strong> обеспечивает качество продукции</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированный визуальный контроль</strong> повышает точность</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Гибкое переключение моделей</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Эффективная система упаковки</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'37': {
+    category: 'Решения',
+    model: 'TXAM-SOL-AL',
+    name: 'Производственная линия для автомобильных фар',
+    image: '解决方案/车灯生产�?png',
+    specs: ['Прецизионная сборка', 'Проверка герметичности', 'Гибкое производство', 'Под ключ'],
+    desc: 'Комплексные решения автоматизации для производителей автомобильных фар, охватывающие сборку линзы, установку отражателя, сборку LED-модуля и окончательную упаковку.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Производственная линия для автомобильных фар - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей автомобильных компонентов.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">сборку линзы, установку отражателя, сборку LED-модуля, проводку, проверку герметичности</span> и окончательную упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Прецизионная сборка</strong> обеспечивает оптическую производительность</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированное испытание на герметичность гелием</strong> обеспечивает герметичность</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Гибкое производство</strong> для нескольких моделей</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Соответствие стандартам автомобильной промышленности</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'38': {
+    category: 'Решения',
+    model: 'TXAM-SOL-CP',
+    name: 'Производственная линия для конденсаторов',
+    image: '解决方案/电容器生产线.png',
+    specs: ['Высокоскоростная намотка', 'Герметизация', 'Автотестирование', 'Под ключ'],
+    desc: 'Комплексные решения автоматизации для производителей конденсаторов, охватывающие намотку, сборку, герметизацию, старение и окончательную проверку и упаковку.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Производственная линия для конденсаторов - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей электронных компонентов.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">металлизированную пленочную намотку, сборку сердечника, герметизацию, сварку, испытание на старение</span> и окончательную проверку и упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Высокоскоростная намотка</strong> увеличивает производительность</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированная герметизация</strong> обеспечивает надежность</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Испытание на старение</strong> обеспечивает долговечность продукции</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Полная автоматизация процесса</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'39': {
+    category: 'Решения',
+    model: 'TXAM-SOL-CM',
+    name: 'Производственная линия для кофемашин',
+    image: '解决方案/咖啡机生产线.png',
+    specs: ['Прецизионная сборка', 'Функциональное тестирование', 'Гибкое производство', 'Под ключ'],
+    desc: 'Комплексные решения автоматизации для производителей кофемашин, охватывающие сборку нагревательного элемента, установку водяного насоса и окончательную проверку и упаковку.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Производственная линия для кофемашин - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для производителей бытовой техники.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Полная линия охватывает <span class="text-[#1D1D1F] font-medium">сборку нагревательного элемента, установку водяного насоса, сборку печатной платы, трубопроводы, сборку корпуса</span> и окончательную проверку и упаковку.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Прецизионная сборка</strong> обеспечивает качество продукции</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Автоматизированное функциональное тестирование</strong> обеспечивает безопасность</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Гибкое производство</strong> для нескольких моделей</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Эффективная система упаковки</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+},
+'40': {
+    category: 'Решения',
+    model: 'TXAM-SOL-PL',
+    name: 'Упаковка и логистика',
+    image: '解决方案/包装与物流自动化产线.png',
+    specs: ['Авто палетирование', 'Авто упаковка', '±0,5 мм точность', 'Под ключ'],
+    desc: 'Автоматические палетирующие машины, роботизированные решения для штабелирования и интегрированные системы упаковки. Точность до ±0,5 мм.',
+    detail: `
+        <div class="bg-[#F5F5F7] rounded-2xl p-8 mb-8">
+            <p class="text-lg">Упаковка и логистика - это <strong class="text-[#1D1D1F]">решения по автоматизации под ключ</strong>, предоставляемые TXAM для предприятий.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">1</span>
+                Состав решения
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">Включает <span class="text-[#1D1D1F] font-medium">автоматические палетирующие машины, роботизированные решения для штабелирования</span> и интегрированные системы упаковки.</p>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">2</span>
+                Преимущества решения
+            </h3>
+            <ul class="space-y-3 pl-11">
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span>Стабильное и аккуратное штабелирование, совместимость с палетными схемами</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span>Точность до <strong class="text-[#1D1D1F]">±0,5 мм</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span>Значительное повышение эффективности логистики и складирования</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-[#FF6B00] mr-3 mt-1">�?/span>
+                    <span><strong class="text-[#1D1D1F]">Роботизированные операции</strong></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 class="text-xl font-bold text-[#1D1D1F] mb-4 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#FF6B00] text-white flex items-center justify-center text-sm font-black mr-3">3</span>
+                Содержание услуги
+            </h3>
+            <p class="text-[#86868B] leading-relaxed pl-11">TXAM предоставляет <strong class="text-[#1D1D1F]">полную поддержку</strong> от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания.</p>
+        </div>
+    `
+}
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id') || '1';
+            const product = productData[id] || productData['1'];
+
+            if (product.category === 'Решения') {
+                document.getElementById('nav-solutions').classList.remove('text-[#86868B]');
+                document.getElementById('nav-solutions').classList.add('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
+                document.getElementById('nav-products').classList.remove('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
+                document.getElementById('nav-products').classList.add('text-[#86868B]');
+                
+                document.getElementById('mobile-nav-solutions').classList.remove('text-[#86868B]');
+                document.getElementById('mobile-nav-solutions').classList.add('text-[#FF6B00]');
+                document.getElementById('mobile-nav-products').classList.remove('text-[#FF6B00]');
+                document.getElementById('mobile-nav-products').classList.add('text-[#86868B]');
+            }
+
+            document.getElementById('breadcrumb-product').textContent = product.name;
+            const breadcrumbMiddle = document.getElementById('breadcrumb-middle');
+            if (product.category === 'Решения') {
+                breadcrumbMiddle.textContent = 'Решения';
+                breadcrumbMiddle.href = 'solutions-ru.html';
+            } else {
+                breadcrumbMiddle.textContent = 'Продукция';
+                breadcrumbMiddle.href = 'products-ru.html';
+            }
+            document.getElementById('product-category').textContent = product.category;
+            document.getElementById('product-model').textContent = product.model;
+            document.getElementById('product-name').textContent = product.name;
+            document.getElementById('product-image').src = product.image;
+            document.getElementById('product-desc').textContent = product.desc;
+            document.title = product.name + ' | TXAM';
+
+            const metricsGrid = document.getElementById('metrics-grid');
+            if (product.specs && product.specs.length > 0) {
+                const metricsHtml = product.specs.slice(0, 3).map((spec, i) => {
+                    const valueParts = spec.split(' ');
+                    const metricValue = valueParts[0];
+                    const metricUnit = valueParts.slice(1).join(' ');
+                    const metricDesc = metricUnit || '';
+                    const icons = [
+                        { num: '65-110', unit: 'дюйм', label: 'Широкая совместимость размеров', desc: 'Переключение одним нажатием, гибкое многорозмерное производство.' },
+                        { num: '99.9', unit: '%', label: 'Выход годных при сборке', desc: 'Высокая точность, полный визуальный контроль.' },
+                        { num: '25', unit: 'с', label: 'Стандартный цикл', desc: 'Сверхбыстрая сборка, высокая производительность.' }
+                    ];
+                    const m = icons[i] || { num: metricValue, unit: metricUnit, label: spec, desc: '' };
+                    return `
+                        <div class="bg-gray-50 border border-gray-200 rounded-3xl p-8 flex flex-col justify-center">
+                            <p class="text-[#FF6B00] font-black text-4xl mono-num mb-2">${m.num}<span class="text-lg text-[#1D1D1F] ml-1">${m.unit}</span></p>
+                            <p class="text-[#1D1D1F] font-bold text-base mb-1">${m.label}</p>
+                            <p class="text-[#86868B] text-sm">${m.desc}</p>
+                        </div>
+                    `;
+                }).join('');
+                metricsGrid.innerHTML = metricsHtml;
+            } else {
+                metricsGrid.innerHTML = `
+                    <div class="bg-gray-50 border border-gray-200 rounded-3xl p-8 flex flex-col justify-center">
+                        <p class="text-[#FF6B00] font-black text-4xl mono-num mb-2">${product.category}</p>
+                        <p class="text-[#1D1D1F] font-bold text-base mb-1">Категория</p>
+                        <p class="text-[#86868B] text-sm">${product.name}</p>
+                    </div>
+                `;
+            }
+
+            const painSolution1 = document.getElementById('pain-solution-1');
+            const painSolution2 = document.getElementById('pain-solution-2');
+            const painSolution3 = document.getElementById('pain-solution-3');
+            if (product.category === 'Решения') {
+                painSolution1.innerHTML = 'Комплексные решения <strong class="text-[#1D1D1F]">автоматизации всего производства</strong> для производителей ' + product.name + '.';
+                painSolution2.innerHTML = 'Полный охват <strong class="text-[#1D1D1F]">производства, контроля и упаковки</strong> �?всё автоматизировано.';
+                painSolution3.innerHTML = 'Предоставление <strong class="text-[#1D1D1F]">полного сервиса под ключ</strong> �?от проектирования до запуска.';
+            } else {
+                painSolution1.innerHTML = 'Высокая точность <strong class="text-[#1D1D1F]">' + (product.specs[0] || 'автоматизация') + '</strong> �?эффективность значительно повышается.';
+                painSolution2.innerHTML = 'Стабильная и надежная <strong class="text-[#1D1D1F]">гарантия качества</strong> �?высокая стабильность продукции.';
+                painSolution3.innerHTML = 'Быстрое переключение <strong class="text-[#1D1D1F]">гибкого производства</strong> �?повышение использования оборудования.';
+            }
+
+            const processFlow = document.getElementById('process-flow');
+            const processSteps = [
+                { num: '01', title: 'Прецизионная сборка', desc: 'Использование передовых систем управления движением для автоматической загрузки, точного позиционирования, высокоточной сборки. Полный автоматический контроль процесса обеспечивает точность и стабильное качество.', tags: ['Точность', 'Автоконтроль'] },
+                { num: '02', title: 'Контроль качества', desc: 'Оснащен прецизионной системой контроля для всесторонней проверки качества продукции. Автоматическое распознавание дефектов гарантирует 100% безупречный выход продукции.', tags: ['Визуальный контроль', 'Автоинспекция'] },
+                { num: '03', title: 'Интеллектуальная упаковка', desc: 'Полностью автоматическая упаковочная линия с интеграцией автоматической распаковки, упаковки в пакеты и формовки. Интеллектуальная роботизированная паллетизация с прямым подключением к складской системе.', tags: ['Автоупаковка', 'Интеллект'] },
+                { num: '04', title: 'Сервис и доставка', desc: 'Полная поддержка от проектирования решения, производства оборудования, установки и ввода в эксплуатацию до послепродажного обслуживания. Настоящий подход "под ключ".', tags: ['Под ключ', 'Сервис'] }
+            ];
+            
+            const processHtml = processSteps.map((step, i) => {
+                const isReversed = i % 2 === 1;
+                const isLastDark = i === 3;
+                return `
+                    <div class="apple-card p-10 md:p-14 flex flex-col lg:flex-row ${isReversed ? 'lg:flex-row-reverse' : ''} items-center justify-between gap-12 group relative ${isLastDark ? 'bg-[#1D1D1F] border-none' : ''}">
+                        <div class="absolute ${isReversed ? '-right-10' : '-left-10'} top-0 text-[15rem] font-black ${isLastDark ? 'text-white/5' : 'text-gray-50'} tracking-tighter leading-none pointer-events-none group-hover:text-[#FF6B00]/5 transition-colors duration-700 z-0">${step.num}</div>
+                        <div class="lg:w-1/2 relative z-10 ${isReversed ? 'lg:pr-10 lg:text-right border-r-4' : 'lg:pl-10 border-l-4'} border-[#FF6B00]">
+                            <h3 class="text-3xl font-bold ${isLastDark ? 'text-white' : 'text-[#1D1D1F]'} mb-4">${step.title}</h3>
+                            <p class="${isLastDark ? 'text-gray-400' : 'text-[#86868B]'} text-base leading-[1.8] mb-6">${step.desc}</p>
+                            <div class="flex gap-4 ${isReversed ? 'lg:justify-end' : ''}">
+                                ${step.tags.map(tag => `<span class="${isLastDark ? 'bg-[#333] text-white border border-gray-700' : 'bg-gray-100 text-[#1D1D1F]'} text-xs font-bold px-4 py-2 rounded-lg">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="lg:w-5/12 w-full h-64 bg-gray-100 rounded-2xl overflow-hidden relative z-10">
+                            <img src="${product.image}" class="img-zoom" alt="${step.title}">
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            processFlow.innerHTML = processHtml;
+
+            const specsTable = document.getElementById('specs-table');
+            const specsData = [
+                { label: 'Модель', value: product.model },
+                { label: 'Категория', value: product.category },
+                { label: 'Ключевые характеристики', value: product.specs ? product.specs.join(' / ') : 'Автоматическое оборудование' },
+                { label: 'Описание', value: product.desc },
+                { label: 'Технические преимущества', value: 'Высокая точность / Высокая эффективность / Автоматизация / Гарантия качества' }
+            ];
+            
+            const specsHtml = specsData.map(row => `
+                <div class="specs-row flex flex-col md:flex-row py-6 px-4">
+                    <div class="md:w-1/3 font-bold text-[#1D1D1F] mb-2 md:mb-0">${row.label}</div>
+                    <div class="md:w-2/3 text-[#86868B] text-sm">${row.value}</div>
+                </div>
+            `).join('');
+            specsTable.innerHTML = specsHtml;
+
+            const relatedHtml = Object.keys(productData)
+                .filter(pid => pid !== id)
+                .filter(pid => productData[pid].category === product.category)
+                .slice(0, 3)
+                .map(pid => {
+                    const p = productData[pid];
+                    return `
+                        <a href="solutions-detail-ru.html?id=${pid}" class="group p-6 bg-white rounded-2xl border border-[#E5E5EA] hover:shadow-lg transition-all">
+                            <div class="w-full h-32 rounded-xl overflow-hidden mb-4">
+                                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                            </div>
+                            <span class="text-xs text-[#86868B] uppercase tracking-wider">${p.model}</span>
+                            <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">${p.name}</h4>
+                        </a>
+                    `;
+                }).join('');
+            document.getElementById('related-products').innerHTML = relatedHtml;
+
+            var observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+        });
+    </script>
+    <script src="footer-ru.js"></script>
+</body>
+</html>

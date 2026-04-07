@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости | TXAM - Ведущий поставщик автоматизации в Китае</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
+        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .news-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .news-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .img-container { overflow: hidden; position: relative; background-color: #F5F5F7; }
+        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; }
+        .news-card:hover .img-zoom { transform: scale(1.05); }
+
+        .filter-btn { transition: all 0.3s ease; }
+        .filter-btn.active { background-color: #1D1D1F; color: #FFFFFF; border-color: #1D1D1F; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        .news-item { transition: opacity 0.5s ease, transform 0.5s ease; }
+        .news-item.hidden-item { display: none; opacity: 0; transform: scale(0.95); }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Главная</a>
+            <a href="about-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">О нас</a>
+            <a href="solutions-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Решения</a>
+            <a href="products-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Продукция</a>
+            <a href="news-ru.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Новости</a>
+            <a href="contact-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="news.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="news-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="news-ru.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index-ru.html" class="text-[#86868B]">Главная</a>
+            <a href="about-ru.html" class="text-[#86868B]">О нас</a>
+            <a href="solutions-ru.html" class="text-[#86868B]">Решения</a>
+            <a href="products-ru.html" class="text-[#86868B]">Продукция</a>
+            <a href="news-ru.html" class="text-[#FF6B00]">Новости</a>
+            <a href="contact-ru.html" class="text-[#86868B]">Контакты</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="news.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="news-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="news-ru.html" class="px-4 py-2 text-[#FF6B00] font-bold">RU</a>
+        </div>
+    </div>
+
+    <header class="pt-40 pb-10 px-6 md:px-24 w-full text-center fade-up">
+        <div class="max-w-[1000px] mx-auto fade-up mt-6">
+            <h1 class="hero-title text-[4rem] md:text-[6.5rem] leading-[1.05] mb-8 text-gradient">
+                Аналитика переднего края автоматизации
+            </h1>
+            <p class="text-xl md:text-2xl text-[#86868B] font-medium mb-16 max-w-3xl mx-auto leading-[1.6] tracking-wide">
+                Узнавайте о корпоративных обновлениях TXAM, глобальных проектах<br class="hidden md:block">и углубленный анализ тенденций нестандартной автоматизации.
+            </p>
+        </div>
+    </header>
+
+    <section class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
+        <div class="max-w-[1400px] mx-auto flex justify-start md:justify-center overflow-x-auto hide-scrollbar space-x-2 md:space-x-4 pb-4">
+            <button class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">Все</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="company">Компания</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="project">Проекты</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="industry">Отрасль</button>
+        </div>
+    </section>
+
+    <section class="pb-32 px-6 md:px-24 min-h-[800px]">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
+            
+            <a href="news-detail-ru.html?id=4" class="news-card news-item fade-up md:col-span-2 lg:col-span-2" data-category="company">
+                <div class="img-container h-64 md:h-80">
+                    <img src="building-office.jpg" alt="Шэньчжэнь-Хуэйчжоу база" class="img-zoom">
+                    <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Компания</div>
+                </div>
+                <div class="p-8 md:p-10 flex-grow flex flex-col justify-between bg-white group">
+                    <div>
+                        <span class="text-[#FF6B00] text-sm font-mono font-bold mb-4 block">2026.03.15</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-[#1D1D1F] mb-4 group-hover:text-[#FF6B00] transition-colors leading-tight">Веха: Две производственные базы TXAM 100,000㎡ в Шэньчжэне и Хуэйчжоу полностью готовы</h3>
+                        <p class="text-[#86868B] text-base leading-[1.8] line-clamp-2 md:line-clamp-3">
+                            С успешным завершением строительства 60,000㎡ интеллектуального производства в Хуэйчжоу, производственные мощности TXAM готовы к экспоненциальному росту, обеспечивая абсолютное производство и поставки для глобальных заказов.
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="news-detail-ru.html?id=5" class="news-card news-item fade-up" data-category="project">
+                <div class="img-container h-64">
+                    <img src="shipping-container.jpg" alt="Экспорт в Мексику" class="img-zoom">
+                    <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Проект</div>
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
+                    <div>
+                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2026.02.28</span>
+                        <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">Успешная поставка линии полной сборки 86" коммерческих дисплеев в Мексику</h3>
+                        <p class="text-[#86868B] text-sm leading-[1.6] line-clamp-3">
+                            5 контейнеров полной линии отправлены за границу. Включая автоматическое дозирование, прецизионную ламинацию и автоматическую закрутку шурупов, идеально решая проблемы сборки сверхбольших гибких экранов.
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="news-detail-ru.html?id=3" class="news-card news-item fade-up" data-category="company">
+                <div class="img-container h-64">
+                    <img src="news-tech.jpg" alt="Выставка CIBF" class="img-zoom">
+                    <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Компания</div>
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
+                    <div>
+                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2025.05.16</span>
+                        <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">TXAM поразила CIBF International Battery Exhibition "Циркулярным подъемником"</h3>
+                        <p class="text-[#86868B] text-sm leading-[1.6] line-clamp-3">
+                            Команда R&D продемонстрировала основное оборудование, полностью выходя на рынок литий-батарей и интеллектуальной логистики склада (WMS/WCS).
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="news-detail-ru.html?id=2" class="news-card news-item fade-up" data-category="project">
+                <div class="img-container h-64">
+                    <img src="产品图片/商用显示柔性装配产线.png" alt="Робот" class="img-zoom">
+                    <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Проект</div>
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
+                    <div>
+                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2025.11.20</span>
+                        <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">Высокоточная роботизированная линия сборки успешно развернута у ведущего производителя</h3>
+                        <p class="text-[#86868B] text-sm leading-[1.6] line-clamp-3">
+                            Благодаря UVW визионному выравниванию и многоосной робототехнике, удалось сократить цикл до 12 секунд, с дефектностью менее 0.1%.
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="news-detail-ru.html?id=6" class="news-card news-item fade-up" data-category="industry">
+                <div class="img-container h-64">
+                    <img src="factory-hero.jpg" alt="Новая энергия" class="img-zoom">
+                    <div class="absolute top-6 left-6 bg-[#1D1D1F] px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-sm border border-gray-800">Отрасль</div>
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
+                    <div>
+                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2025.08.05</span>
+                        <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">Анализ: "Второй тайм" технологии сборки аккумуляторов</h3>
+                        <p class="text-[#86868B] text-sm leading-[1.6] line-clamp-3">
+                            Исследуем эффективные пути интеграции базовых WCS систем управления и автоматизированных роботов. Ядро беспилотных заводов заключается не в нагромождении оборудования, а в связывании данных.
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="mt-20 text-center fade-up">
+            <button class="bg-transparent border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 rounded-full text-sm font-bold hover:bg-[#F5F5F7] transition-colors shadow-sm">
+                Загрузить ещё
+            </button>
+        </div>
+    </section>
+
+    <div data-footer-placeholder></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
+                else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const newsItems = document.querySelectorAll('.news-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+                        b.classList.add('text-[#86868B]', 'border-[#E5E5EA]');
+                    });
+                    btn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+                    btn.classList.remove('text-[#86868B]', 'border-[#E5E5EA]');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    newsItems.forEach(item => {
+                        item.classList.remove('hidden-item');
+                        
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            setTimeout(() => { item.style.display = 'flex'; }, 50);
+                            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 100);
+                        } else {
+                            item.style.opacity = '0'; item.style.transform = 'scale(0.95)';
+                            setTimeout(() => { item.style.display = 'none'; }, 400); 
+                        }
+                    });
+
+                    setTimeout(() => {
+                        const newsGrid = document.getElementById('news-grid');
+                        if (newsGrid) {
+                            const top = newsGrid.getBoundingClientRect().top + window.pageYOffset - 220;
+                            window.scrollTo({ top: top, behavior: 'smooth' });
+                        }
+                    }, 100);
+                });
+            });
+        });
+    </script>
+    <script src="footer-ru.js"></script>
+</body>
+</html>
