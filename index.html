@@ -70,6 +70,18 @@
         #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
         .menu-open { transform: translateY(0%); opacity: 1; }
         .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        
+        /* 服务流程连接线 - 动态跟随网格 */
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 28px;
+            right: calc(-1 * var(--grid-gap, 2rem) / 2);
+            width: var(--grid-gap, 2rem);
+            height: 2px;
+            background: #F5F5F7;
+            z-index: 0;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
@@ -251,25 +263,24 @@
                 <p class="text-[#86868B] text-xl">严谨透明的流程式推进，保障项目如期高品质落地。</p>
             </div>
             
-            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left">
-                <div class="hidden md:block absolute top-[28px] left-[12%] w-[76%] h-[2px] bg-[#F5F5F7] z-0"></div>
+            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left" style="--grid-gap: 3rem;">
 
                 <!-- 步骤 1 -->
-                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
                     <div class="w-14 h-14 bg-white border-2 border-[#1D1D1F] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:bg-[#1D1D1F] group-hover:text-white transition-colors mx-auto md:mx-0 shadow-sm">01</div>
                     <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">解决方案</h3>
                     <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">调研交流 · 方案规划<br>方案确认 · 商务合作</p>
                 </div>
                 
                 <!-- 步骤 2 -->
-                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
                     <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:border-[#1D1D1F] transition-colors mx-auto md:mx-0 shadow-sm">02</div>
                     <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">设计</h3>
                     <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">机械设计 · 电气设计<br>软件开发 · 设计评审</p>
                 </div>
 
                 <!-- 步骤 3 -->
-                <div class="relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
                     <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-xl mb-6 group-hover:border-[#1D1D1F] transition-colors mx-auto md:mx-0 shadow-sm">03</div>
                     <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">制造</h3>
                     <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">图纸下发 · 生产制造<br>品质检验 · 设备交付</p>

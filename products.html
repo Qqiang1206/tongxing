@@ -32,14 +32,14 @@
         .fade-up {
             opacity: 0;
             transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
 
         .product-card {
             background: #FFFFFF;
             border: 1px solid var(--border-light);
-            border-radius: 24px;
+            border-radius: 32px;
             overflow: hidden;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
@@ -81,7 +81,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 
     <!-- 🌐 顶部导航 -->
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-64 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <img src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10">
         </div>
