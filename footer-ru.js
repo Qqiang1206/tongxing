@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="absolute bottom-[25px] max-w-[1600px] mx-auto flex flex-row items-center text-sm font-light tracking-wide text-[#666] gap-4">
             <p>&copy; 2007-2026 Guangdong Tongxing High-Tech Intelligent Equipment Co., Ltd.</p>
             <span>|</span>
-            <a href="#" class="hover:text-white transition-colors">ICP Регистрация XXXXXXX</a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" class="hover:text-white transition-colors">粤ICP备16101583号-1</a>
         </div>
     </footer>
     `;

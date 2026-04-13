@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block access to large media folders to save bandwidth
+Disallow: /产品图片/
+Disallow: /解决方案/
+
+# Sitemap location
+Sitemap: https://www.sztxgk.com/sitemap.xml
