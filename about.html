@@ -146,44 +146,6 @@
             100% { transform: translateX(-50%); }
         }
         .animate-marquee { animation: marquee 30s linear infinite; }
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* 统一图片遮罩与缩放动画 */
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .group:hover .img-zoom { transform: scale(1.05); }
-
-        /* 合作客户 Logo */
-        .client-logo { 
-            transition: all 0.4s ease; 
-        }
-        .client-card:hover .client-logo { 
-            transform: scale(1.1); 
-        }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-
-        /* 专利滚动动画 */
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            animation: marquee 30s linear infinite;
-        }
     </style>
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
