@@ -13,10 +13,42 @@
     
     <style>
         :root {
+            /* === Design System: VoltAgent awesome-design-md inspired === */
+            /* Spacing Scale (8px baseline) */
+            --space-1: 8px;
+            --space-2: 16px;
+            --space-3: 24px;
+            --space-4: 32px;
+            --space-5: 40px;
+            --space-6: 48px;
+            --space-8: 64px;
+            --space-10: 80px;
+            --space-12: 96px;
+            --space-16: 128px;
+            
+            /* Typography Scale */
+            --text-xs: 12px;
+            --text-sm: 14px;
+            --text-base: 16px;
+            --text-lg: 18px;
+            --text-xl: 20px;
+            --text-2xl: 24px;
+            --text-3xl: 30px;
+            --text-4xl: 36px;
+            --text-5xl: 48px;
+            
+            /* Line Heights */
+            --leading-tight: 1.1;
+            --leading-snug: 1.25;
+            --leading-normal: 1.5;
+            --leading-relaxed: 1.7;
+            
+            /* Colors */
             --txam-orange: #FF6B00; 
             --txam-dark: #1D1D1F; 
             --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA; 
+            --border-light: #E5E5EA;
+            --text-muted: #86868B;
         }
         
         body {
@@ -24,11 +56,23 @@
             color: var(--txam-dark);
             font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
             overflow-x: hidden;
+            line-height: var(--leading-normal);
         }
 
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
+        /* Typography System */
+        .hero-title { 
+            font-weight: 900; 
+            letter-spacing: -0.04em; 
+            line-height: var(--leading-tight);
+        }
+        .section-heading {
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: var(--leading-tight);
+        }
         .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
 
+        /* Animation System */
         .fade-up {
             opacity: 0;
             transform: translateY(40px);
@@ -36,6 +80,7 @@
         }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
 
+        /* Card Component */
         .product-card {
             background: #FFFFFF;
             border: 1px solid var(--border-light);
@@ -46,6 +91,52 @@
             display: flex;
             flex-direction: column;
         }
+        .product-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        /* Button States */
+        .btn-primary {
+            background: var(--txam-dark);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-primary:hover {
+            background: var(--txam-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.2);
+        }
+        .btn-secondary {
+            background: white;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-secondary:hover {
+            background: #F5F5F7;
+            transform: translateY(-2px);
+        }
+
+        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; opacity: 0.9; mix-blend-mode: multiply; }
+        .product-card:hover .img-zoom { transform: scale(1.08); opacity: 1; }
+
+        /* Filter Button */
+        .filter-btn { transition: all 0.3s ease; }
+        .filter-btn.active { background-color: var(--txam-dark); color: #FFFFFF; border-color: var(--txam-dark); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        /* Product Item */
+        .product-item { transition: opacity 0.5s ease, transform 0.5s ease; }
+        .product-item.hidden-item { display: none; opacity: 0; transform: scale(0.95); }
+
+        /* Scrollbar */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Mobile Menu */
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
         .product-card:hover {
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             transform: translateY(-6px);
