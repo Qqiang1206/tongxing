@@ -123,7 +123,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="w-full h-[400px] rounded-[24px] overflow-hidden bg-gray-100">
-                        <img id="product-image" src="" alt="Solution Image" class="w-full h-full object-cover">
+                        <img loading="lazy" id="product-image" src="" alt="Solution Image" class="w-full h-full object-cover">
                     </div>
                 </div>
                 <div class="fade-up">
@@ -412,7 +412,7 @@
                     return `
                         <a href="solutions-detail-en.html?id=${sid}" class="group p-6 bg-white rounded-2xl border border-[#E5E5EA] hover:shadow-lg transition-all">
                             <div class="w-full h-32 rounded-xl overflow-hidden mb-4">
-                                <img src="${s.image}" alt="${s.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                <img loading="lazy" src="${s.image}" alt="${s.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                             </div>
                             <span class="text-xs text-[#86868B] uppercase tracking-wider">${s.model}</span>
                             <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">${s.name}</h4>

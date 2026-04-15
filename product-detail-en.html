@@ -938,7 +938,7 @@
                     return `
                         <a href="product-detail-en.html?id=${pid}" class="group p-6 bg-white rounded-2xl border border-[#E5E5EA] hover:shadow-lg transition-all">
                             <div class="w-full h-32 rounded-xl overflow-hidden mb-4">
-                                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                <img loading="lazy" src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                             </div>
                             <span class="text-xs text-[#86868B] uppercase tracking-wider">${p.model}</span>
                             <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">${p.name}</h4>
