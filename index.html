@@ -1,263 +1,41 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="同兴高科(TXAM)-19年非标自动化设备制造商，为TCL、长虹、康佳等提供智能生产线解决方案。拥有98项专利，产品出口15国。">
     <meta property="og:title" content="同兴高科 TXAM - 中国领先的自动化品牌供应商">
-    <meta property="og:description" content="专业非标自动化产线设计与制造，TV/商用显示器、冰箱、空调等七大行业解决方案">
+    <meta property="og:description" content="专业非标自动化产线设计与制造，TV/商用显示器、refrigerator、ac等七大行业解决方案">
     <meta property="og:image" content="https://www.sztxgk.com/factory-hero.jpg">
     <meta property="og:type" content="website">
+    <link rel="canonical" href="https://www.sztxgk.com/index.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-            <link rel="icon" type="image/png" href="favicon.png">
-            <link rel="apple-touch-icon" href="favicon.png">
     
-    <style>
-        :root {
-            /* === Design System: VoltAgent awesome-design-md inspired === */
-            /* Spacing Scale (8px baseline) */
-            --space-1: 8px;
-            --space-2: 16px;
-            --space-3: 24px;
-            --space-4: 32px;
-            --space-5: 40px;
-            --space-6: 48px;
-            --space-8: 64px;
-            --space-10: 80px;
-            --space-12: 96px;
-            --space-16: 128px;
-            
-            /* Typography Scale */
-            --text-xs: 12px;
-            --text-sm: 14px;
-            --text-base: 16px;
-            --text-lg: 18px;
-            --text-xl: 20px;
-            --text-2xl: 24px;
-            --text-3xl: 30px;
-            --text-4xl: 36px;
-            --text-5xl: 48px;
-            
-            /* Line Heights */
-            --leading-tight: 1.1;
-            --leading-snug: 1.25;
-            --leading-normal: 1.5;
-            --leading-relaxed: 1.7;
-            
-            /* Colors */
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA;
-            --text-muted: #86868B;
-            
-            /* Breakpoints (for reference) */
-            /* sm: 640px, md: 768px, lg: 1024px, xl: 1280px, 2xl: 1536px */
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-            line-height: var(--leading-normal);
-        }
-
-        /* Typography System - Fluid Type Scale (clamp for smooth responsive scaling) */
-        .text-display {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-        }
-        .text-h1 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-        }
-        .text-h2 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.15;
-        }
-        .text-h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            line-height: 1.3;
-        }
-        .text-body-lg {
-            font-size: 1.125rem;
-            line-height: 1.6;
-        }
-        .text-body {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        .text-sm {
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-        .text-caption {
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            line-height: 1.4;
-        }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-
-        /* Animation System */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        /* Card Component */
-        .apple-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 32px;
-            overflow: hidden;
-        }
-        .apple-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        /* Button States */
-        .btn-primary {
-            background: var(--txam-dark);
-            color: white;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-primary:hover {
-            background: var(--txam-orange);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.2);
-        }
-        .btn-secondary {
-            background: white;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-secondary:hover {
-            background: #F5F5F7;
-            transform: translateY(-2px);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Image Zoom */
-        .img-zoom {
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .apple-card:hover .img-zoom {
-            transform: scale(1.05);
-        }
-
-        /* Scrollbar */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Mobile Menu */
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-        
-        /* Service Process Connector - Dynamic Grid Follow */
-        .process-step:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 28px;
-            right: calc(-1 * var(--grid-gap, 2rem) / 2);
-            width: var(--grid-gap, 2rem);
-            height: 2px;
-            background: #F5F5F7;
-            z-index: 0;
-        }
-        
-        /* Mobile: Hide horizontal connectors, show vertical connectors */
-        @media (max-width: 767px) {
-            .process-step:not(:last-child)::after {
-                display: none;
-            }
-            /* Vertical connector line on mobile - between stacked items */
-            .process-step:not(:last-child) {
-                border-left: 2px solid #F5F5F7;
-                padding-left: 2rem;
-                margin-left: 0.75rem;
-            }
-        }
-    </style>
+    <!-- Preload -->
+    <link rel="preload" as="image" href="solutions/tv-flex-line.jpg" type="image/webp">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    
+    <!-- Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 
-    <!-- 🌐 顶部导航 -->
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:px-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10">
-        </div>
-        
-        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
-            <a href="index.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">首页</a>
-            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
-            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">解决方案</a>
-            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">产品中心</a>
-            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
-            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
-            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="index.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="index-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="index-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
-            </div>
-        </div>
-
-        <div class="md:hidden flex items-center relative z-50">
-            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-    </nav>
-
-    <!-- 📱 手机下拉菜单 -->
-    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
-        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
-            <a href="index.html" class="text-[#FF6B00]">首页</a>
-            <a href="about.html" class="text-[#86868B]">关于我们</a>
-            <a href="solutions.html" class="text-[#86868B]">解决方案</a>
-            <a href="products.html" class="text-[#86868B]">产品中心</a>
-            <a href="news.html" class="text-[#86868B]">新闻中心</a>
-            <a href="contact.html" class="text-[#86868B]">联系我们</a>
-        </div>
-        <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="index.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="index-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="index-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
-        </div>
-    </div>
+    <!-- Header Placeholder -->
+    <div data-header-placeholder></div>
 
     <!-- 📍 P1. Hero Section -->
     <header class="pt-40 pb-24 px-6 md:px-24 w-full relative">
-<div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
+        <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
             <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
                 精工制臻 同兴必达
             </h1>
@@ -276,7 +54,7 @@
             </div>
 
             <a href="tv-display-solution.html" class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group block">
-                <img src="解决方案/TV商业显示器柔性装配产线.jpg" alt="TV/商用显示柔性装配产线" class="w-full h-full object-cover img-zoom">
+                <img loading="lazy" src="solutions/tv-flex-line.jpg" alt="TV/商业显示器柔性生产线 - 全自动装配设备" class="w-full h-full object-cover img-zoom">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                 <div class="absolute bottom-10 left-10 right-10 text-left">
                     <p class="text-[#FF6B00] text-sm font-bold tracking-widest mb-3 uppercase">标杆方案</p>
@@ -339,14 +117,14 @@
                 <a href="tv-display-solution.html" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Automated Lines</div>
                     <h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">TV/商业显示器生产线解决方案</h3>
-                    <p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">覆盖从核心装配（点胶，放支架、OC卡合），到中间工序（翻转、画检），再到后段包装（套袋、立机、码垛）的全套工艺流程。专为 TV电视、教育机及平板电脑定制，全面实现标准化高良率生产。</p>
+                    <p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">覆盖从核心装配（点胶，放支架、OC卡合），到中间工序（翻转、画检），再到后段包装（套袋、立机、码垛）的全套工艺流程。专为 TV电视、教育机及tablet电脑定制，全面实现标准化高良率生产。</p>
                     <div class="flex flex-wrap gap-2 mb-6">
                         <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">点胶装配</span>
                         <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">翻转画检</span>
                         <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">套袋码垛</span>
                     </div>
                     <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
-                        <img loading="lazy" src="显示设备全链条自动化产线.jpg" alt="自动化生产线" class="w-full h-full object-cover img-zoom">
+                        <img loading="lazy" src="display-automation-line.jpg" alt="TV显示器自动化生产线设备" class="w-full h-full object-cover img-zoom">
                     </div>
                 </a>
 
@@ -354,14 +132,14 @@
                 <a href="packaging-solution.html" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Packaging & Logistics</div>
                     <h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">包装与物流自动化产线</h3>
-                    <p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">包含自动卡板机、机器人整垛/单台码垛方案及集成自动套箱系统。堆垛整齐稳定，兼容假机码垛，精度高达 ±0.5mm，大幅提升仓储物流效率。</p>
+                    <p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">包含自动卡板机、机器人整垛/单台码垛方案及集成auto-boxing系统。堆垛整齐稳定，兼容假机码垛，精度高达 ±0.5mm，大幅提升仓储物流效率。</p>
                     <div class="flex flex-wrap gap-2 mb-6">
                         <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">自动码垛</span>
                         <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">智能分拣</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">自动套箱</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">auto-boxing</span>
                     </div>
                     <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
-                        <img loading="lazy" src="包装与物流自动化产线.jpg" alt="包装与物流仓储" class="w-full h-full object-cover img-zoom">
+                        <img loading="lazy" src="pkg-logistics-line.jpg" alt="包装与物流仓储自动化系统" class="w-full h-full object-cover img-zoom">
                     </div>
                 </a>
 
@@ -376,7 +154,10 @@
                         <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">UVW对位</span>
                     </div>
                     <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
-                        <img loading="lazy" src="机器人单元设备.jpg" alt="机器人单机设备" class="w-full h-full object-cover img-zoom">
+                        <picture>
+                            <source srcset="robot-unit.webp" type="image/webp">
+                            <img loading="lazy" src="robot-unit.jpg" alt="工业机器人单机设备" class="w-full h-full object-cover img-zoom">
+                        </picture>
                     </div>
                 </a>
 
@@ -446,7 +227,7 @@
                         <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">为世界一流企业提供卓越的智能装备</h3>
                         <p class="text-sm text-[#86868B]">构建数字化、可视化、透明化、标准化的经营管理体系。</p>
                     </div>
-                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">2023.05.16</span>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">2026.03.15</span>
                 </a>
                 <a href="news-detail.html?id=2" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">
                     <div class="flex flex-col">
@@ -454,44 +235,17 @@
                         <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">高精度装配产线成功入驻知名电器厂商</h3>
                         <p class="text-sm text-[#86868B]">坚守品质第一的原则，完成多台自动化设备的安装与联调。</p>
                     </div>
-                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">2023.02.28</span>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">2026.02.28</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 📍 Footer -->
+    <!-- Footer -->
     <div data-footer-placeholder></div>
 
-    <!-- ⚙️ 交互脚本 -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } else { navbar.classList.remove('shadow-sm'); }
-            });
-
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIcon = document.getElementById('menu-icon');
-            let isMenuOpen = false;
-            mobileBtn.addEventListener('click', () => {
-                isMenuOpen = !isMenuOpen;
-                if(isMenuOpen) { 
-                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
-                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
-                } else { 
-                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
-                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
-                }
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
-        });
-    </script>
-    <script src="footer.js"></script>
+    <!-- Scripts -->
+    <script src="header.js" defer></script>
+    <script src="footer.js" defer></script>
 </body>
 </html>
