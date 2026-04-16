@@ -2,6 +2,7 @@
 <html lang="en-US" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <link rel="preload" as="image" href="products/auto-lamination-001.webp" type="image/webp">
     <meta name="description" content="TXAM Product Center - Dispensing, flipping detection, screw driving, optical components, material handling, packaging. 30+ products">
 <meta property="og:title" content="Products | TXAM">
 <meta property="og:description" content="30+ automation equipment products for TV display, consumer electronics, home appliances, automotive industries">
@@ -9,84 +10,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products | TXAM - China's Leading Automation Equipment Supplier</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
     
-    <style>
-        :root {
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA; 
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        .product-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: 24px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            display: flex;
-            flex-direction: column;
-        }
-        .product-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        .img-container {
-            background-color: #F5F5F7;
-            height: 280px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; opacity: 0.9; mix-blend-mode: multiply; }
-        .product-card:hover .img-zoom { transform: scale(1.08); opacity: 1; }
-
-        .filter-btn { transition: all 0.3s ease; }
-        .filter-btn.active { background-color: #1D1D1F; color: #FFFFFF; border-color: #1D1D1F; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        
-        .product-item { transition: opacity 0.5s ease, transform 0.5s ease; }
-        .product-item.hidden-item { display: none; opacity: 0; transform: scale(0.95); }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-    </style>
+    
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+    <div data-header-placeholder></div>
 
     <!-- 🌐 Top Navigation -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -166,7 +104,7 @@
             <!-- High-Precision Laminating Machine -->
             <a href="product-1-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动贴合机-001.jpg" alt="Laminating Machine" class="img-zoom">
+                    <picture><source srcset="products/auto-lamination-001.webp" type="image/webp"><img loading="lazy" src="products/auto-lamination-001.jpg" alt="Laminating Machine" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALM-01</div>
@@ -184,7 +122,7 @@
             <!-- OC Lamination Unit -->
             <a href="product-2-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/OC卡合机组.jpg" alt="OC Lamination" class="img-zoom">
+                    <picture><source srcset="products/OCkahejizu.webp" type="image/webp"><img loading="lazy" src="products/OCkahejizu.jpg" alt="OC Lamination" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A Series</div>
@@ -202,7 +140,7 @@
             <!-- High-Precision Robot Dispensing -->
             <a href="product-4-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动点胶机.jpg" alt="Robot Dispensing" class="img-zoom">
+                    <picture><source srcset="products/auto-dispensing.webp" type="image/webp"><img loading="lazy" src="products/auto-dispensing.jpg" alt="Robot Dispensing" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AGD Series</div>
@@ -220,7 +158,7 @@
             <!-- Robot Palletizing System -->
             <a href="product-11-en.html" class="product-card product-item fade-up" data-category="logistics">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人码垛.jpg" alt="Robot Palletizing" class="img-zoom">
+                    <picture><source srcset="products/robot-palletizing.webp" type="image/webp"><img loading="lazy" src="products/robot-palletizing.jpg" alt="Robot Palletizing" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-PR Series</div>
@@ -238,7 +176,7 @@
             <!-- 180-Degree Heavy Flipper -->
             <a href="product-9-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/180度翻转机.jpg" alt="Heavy Flipper" class="img-zoom">
+                    <picture><source srcset="products/turnover-180.webp" type="image/webp"><img loading="lazy" src="products/turnover-180.jpg" alt="Heavy Flipper" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">HEAVY DUTY SERIES</div>
@@ -256,7 +194,7 @@
             <!-- Auto Screw Machine -->
             <a href="product-8-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动打背板螺丝-001.jpg" alt="Auto Screw" class="img-zoom">
+                    <picture><source srcset="products/zidongdabeibanluosi-001.webp" type="image/webp"><img loading="lazy" src="products/zidongdabeibanluosi-001.jpg" alt="Auto Screw" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASBS-01</div>
@@ -274,7 +212,7 @@
             <!-- Auto Palletizer & Boxer -->
             <a href="product-12-en.html" class="product-card product-item fade-up" data-category="logistics">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动套箱.jpg" alt="Auto Palletizer" class="img-zoom">
+                    <picture><source srcset="products/auto-boxing.webp" type="image/webp"><img loading="lazy" src="products/auto-boxing.jpg" alt="Auto Palletizer" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AET Series</div>
@@ -291,7 +229,7 @@
 
             <a href="product-18-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/旋转台.jpg" alt="Rotary Table" class="img-zoom">
+                    <picture><source srcset="products/xuanzhuantai.webp" type="image/webp"><img loading="lazy" src="products/xuanzhuantai.jpg" alt="Rotary Table" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RT Series</div>
@@ -308,7 +246,7 @@
 
             <a href="product-19-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/升降机组.jpg" alt="Lift Module" class="img-zoom">
+                    <picture><source srcset="products/shengjiangjizu.webp" type="image/webp"><img loading="lazy" src="products/shengjiangjizu.jpg" alt="Lift Module" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-LG Series</div>
@@ -325,7 +263,7 @@
 
             <a href="product-20-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/模组移载机.jpg" alt="Module Transfer" class="img-zoom">
+                    <picture><source srcset="products/mozuyizaiji.webp" type="image/webp"><img loading="lazy" src="products/mozuyizaiji.jpg" alt="Module Transfer" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MM Series</div>
@@ -342,7 +280,7 @@
 
             <a href="product-21-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动卡扳机.jpg" alt="Auto Clip" class="img-zoom">
+                    <picture><source srcset="products/zidongkabanji.webp" type="image/webp"><img loading="lazy" src="products/zidongkabanji.jpg" alt="Auto Clip" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACT Series</div>
@@ -359,7 +297,7 @@
 
             <a href="product-22-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助封袋机.jpg" alt="Bag Sealer" class="img-zoom">
+                    <picture><source srcset="products/fuzhufengdaiji.webp" type="image/webp"><img loading="lazy" src="products/fuzhufengdaiji.jpg" alt="Bag Sealer" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-SE Series</div>
@@ -376,7 +314,7 @@
 
             <a href="product-23-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人下线套袋.jpg" alt="Robot Bagging" class="img-zoom">
+                    <picture><source srcset="products/jiqirenxiaxiantaodai.webp" type="image/webp"><img loading="lazy" src="products/jiqirenxiaxiantaodai.jpg" alt="Robot Bagging" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB Series</div>
@@ -393,7 +331,7 @@
 
             <a href="product-24-en.html" class="product-card product-item fade-up" data-category="single">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人自动投背板.jpg" alt="Backplane Loading" class="img-zoom">
+                    <picture><source srcset="products/jiqirenzidongtoubeiban.webp" type="image/webp"><img loading="lazy" src="products/jiqirenzidongtoubeiban.jpg" alt="Backplane Loading" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RBP Series</div>
@@ -410,7 +348,7 @@
 
             <a href="product-5-en.html" class="product-card product-item fade-up" data-category="dispensing">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动喷胶机.jpg" alt="Automatic Glue Spraying Machine" class="img-zoom">
+                    <picture><source srcset="products/zidongpenjiaoji.webp" type="image/webp"><img loading="lazy" src="products/zidongpenjiaoji.jpg" alt="Automatic Glue Spraying Machine" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASM Series</div>
@@ -427,7 +365,7 @@
 
             <a href="product-6-en.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动放灯支撑.jpg" alt="Automatic Light Bracket Machine" class="img-zoom">
+                    <picture><source srcset="products/zidongfangdengzhicheng.webp" type="image/webp"><img loading="lazy" src="products/zidongfangdengzhicheng.jpg" alt="Automatic Light Bracket Machine" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALPS Series</div>
@@ -444,7 +382,7 @@
 
             <a href="product-7-en.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动放灯条.jpg" alt="Automatic LED Light Bar Placement Machine" class="img-zoom">
+                    <picture><source srcset="products/zidongfangdengtiao.webp" type="image/webp"><img loading="lazy" src="products/zidongfangdengtiao.jpg" alt="Automatic LED Light Bar Placement Machine" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALSI-01/02</div>
@@ -461,7 +399,7 @@
 
             <a href="product-10-en.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动卡钢化玻璃架.jpg" alt="Automatic Tempered Glass Frame Installation Machine" class="img-zoom">
+                    <picture><source srcset="products/zidongkaganghuabolijia.webp" type="image/webp"><img loading="lazy" src="products/zidongkaganghuabolijia.jpg" alt="Automatic Tempered Glass Frame Installation Machine" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACTGR-01/02</div>
@@ -478,7 +416,7 @@
 
             <a href="product-15-en.html" class="product-card product-item fade-up" data-category="flip">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助画检单元.jpg" alt="Auxiliary Vision Inspection Unit" class="img-zoom">
+                    <picture><source srcset="products/fuzhuhuajiandanyuan.webp" type="image/webp"><img loading="lazy" src="products/fuzhuhuajiandanyuan.jpg" alt="Auxiliary Vision Inspection Unit" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A Series</div>
@@ -495,7 +433,7 @@
 
             <a href="product-13-en.html" class="product-card product-item fade-up" data-category="robot">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人集成码垛.jpg" alt="Robot Integrated Palletizing Solution" class="img-zoom">
+                    <picture><source srcset="products/jiqirenjichengmaduo.webp" type="image/webp"><img loading="lazy" src="products/jiqirenjichengmaduo.jpg" alt="Robot Integrated Palletizing Solution" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RIP-001</div>
@@ -512,7 +450,7 @@
 
             <a href="product-14-en.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人立机单元.jpg" alt="Robot Vertical Unit" class="img-zoom">
+                    <picture><source srcset="products/jiqirenlijidanyuan.webp" type="image/webp"><img loading="lazy" src="products/jiqirenlijidanyuan.jpg" alt="Robot Vertical Unit" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS Series</div>
@@ -529,7 +467,7 @@
 
             <a href="product-16-en.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动保压单元.jpg" alt="Automatic Pressure Holding Unit" class="img-zoom">
+                    <picture><source srcset="products/zidongbaoyadanyuan.webp" type="image/webp"><img loading="lazy" src="products/zidongbaoyadanyuan.jpg" alt="Automatic Pressure Holding Unit" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS Series</div>
@@ -546,7 +484,7 @@
 
             <a href="product-27-en.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助上线翻转单元.jpg" alt="Auxiliary Online Flip Unit" class="img-zoom">
+                    <picture><source srcset="products/fuzhushangxianfanzhuandanyuan.webp" type="image/webp"><img loading="lazy" src="products/fuzhushangxianfanzhuandanyuan.jpg" alt="Auxiliary Online Flip Unit" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AUFE Series</div>
@@ -563,7 +501,7 @@
 
             <a href="product-28-en.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助下线翻转单元.jpg" alt="Auxiliary Offline Flip Unit" class="img-zoom">
+                    <picture><source srcset="products/fuzhuxiaxianfanzhuandanyuan.webp" type="image/webp"><img loading="lazy" src="products/fuzhuxiaxianfanzhuandanyuan.jpg" alt="Auxiliary Offline Flip Unit" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ADFE Series</div>
@@ -580,7 +518,7 @@
 
             <a href="product-29-en.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/人工辅助套袋.jpg" alt="Manual Assisted Bagging" class="img-zoom">
+                    <picture><source srcset="products/rengongfuzhutaodai.webp" type="image/webp"><img loading="lazy" src="products/rengongfuzhutaodai.jpg" alt="Manual Assisted Bagging" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB-M Series</div>
@@ -597,7 +535,7 @@
 
             <a href="product-30-en.html" class="product-card product-item fade-up" data-category="robot">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人自动上悬挂链.jpg" alt="Robot Automatic Hanging Chain Loading" class="img-zoom">
+                    <picture><source srcset="products/jiqirenzidongshangxuangualian.webp" type="image/webp"><img loading="lazy" src="products/jiqirenzidongshangxuangualian.jpg" alt="Robot Automatic Hanging Chain Loading" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RAHC Series</div>
@@ -692,6 +630,7 @@
             }
         });
     </script>
-    <script src="footer-en.js"></script>
+    <script src="header.js" defer></script>
+    <script src="footer-en.js" defer></script>
 </body>
 </html>

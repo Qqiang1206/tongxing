@@ -1,764 +1,610 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="同兴高科行业解决方案-TV显示、冰箱、空调、洗衣机、微波炉、咖啡机、平板电脑、车灯、电容器等9大行业">
-    <meta property="og:title" content="解决方案 | 同兴高科 TXAM">
-    <meta property="og:description" content="一站式智能制造解决方案，从单机设备到整厂柔性自动化">
-    <meta property="og:type" content="website">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>解决方案 | 同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
+﻿<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preload" as="image" href="solutions/tv-flex-line.jpg">
+    <meta name="description" content="同兴高科行业解决方案-TV显示、refrigerator、ac、washer、microwave、coffee机、tablet电脑、headlight、capacitor等9大行业">
+    <meta property="og:title" content="解决方案 | 同兴高科 TXAM">
+    <meta property="og:description" content="一站式智能制造解决方案，从单机设备到整厂柔性自动化">
+    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解决方案 | 同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-            <link rel="icon" type="image/png" href="favicon.png">
-            <link rel="apple-touch-icon" href="favicon.png">
-    
-    <style>
-        :root {
-            /* === Design System: VoltAgent awesome-design-md inspired === */
-            /* Spacing Scale (8px baseline) */
-            --space-1: 8px;
-            --space-2: 16px;
-            --space-3: 24px;
-            --space-4: 32px;
-            --space-5: 40px;
-            --space-6: 48px;
-            --space-8: 64px;
-            --space-10: 80px;
-            --space-12: 96px;
-            --space-16: 128px;
-            
-            /* Typography Scale */
-            --text-xs: 12px;
-            --text-sm: 14px;
-            --text-base: 16px;
-            --text-lg: 18px;
-            --text-xl: 20px;
-            --text-2xl: 24px;
-            --text-3xl: 30px;
-            --text-4xl: 36px;
-            --text-5xl: 48px;
-            
-            /* Line Heights */
-            --leading-tight: 1.1;
-            --leading-snug: 1.25;
-            --leading-normal: 1.5;
-            --leading-relaxed: 1.7;
-            
-            /* Colors */
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA;
-            --text-muted: #86868B;
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-            line-height: var(--leading-normal);
-        }
-
-        /* Typography System - Fluid Type Scale */
-        .text-display {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-        }
-        .text-h1 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-        }
-        .text-h2 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.15;
-        }
-        .text-h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            line-height: 1.3;
-        }
-        .text-body-lg {
-            font-size: 1.125rem;
-            line-height: 1.6;
-        }
-        .text-body {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        .text-sm {
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-        .text-caption {
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            line-height: 1.4;
-        }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-        
-        /* Legacy class mappings */
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
-        .section-heading { font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
-
-        /* Animation System */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        /* Card Component */
-        .apple-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 32px;
-            overflow: hidden;
-        }
-        .apple-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        /* Button States */
-        .btn-primary {
-            background: var(--txam-dark);
-            color: white;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-primary:hover {
-            background: var(--txam-orange);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.2);
-        }
-        .btn-secondary {
-            background: white;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-secondary:hover {
-            background: #F5F5F7;
-            transform: translateY(-2px);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Image Zoom */
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; }
-        .group:hover .img-zoom { transform: scale(1.05); }
-
-        /* Scrollbar */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Mobile Menu */
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-    </style>
-</head>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+            <link rel="icon" type="image/png" href="favicon.png">
+            <link rel="apple-touch-icon" href="favicon.png">
+    
+    
+</head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-
-    <!-- 🌐 顶部导航 (from solutions.html) -->
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10">
-        </div>
-        
-        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
-            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">首页</a>
-            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
-            <a href="solutions.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">解决方案</a>
-            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">产品中心</a>
-            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
-            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
-            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="solutions.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="solutions-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="solutions-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
-            </div>
-        </div>
-
-        <div class="md:hidden flex items-center relative z-50">
-            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-    </nav>
-
-    <!-- 📱 手机下拉菜单 -->
-    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
-        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
-            <a href="index.html" class="text-[#86868B]">首页</a>
-            <a href="about.html" class="text-[#86868B]">关于我们</a>
-            <a href="solutions.html" class="text-[#FF6B00]">解决方案</a>
-            <a href="products.html" class="text-[#86868B]">产品中心</a>
-            <a href="news.html" class="text-[#86868B]">新闻中心</a>
-            <a href="contact.html" class="text-[#86868B]">联系我们</a>
-        </div>
-        <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="solutions.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="solutions-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="solutions-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
-        </div>
-    </div>
-
-    <!-- 📍 P1. 头部视觉 (from q.html) -->
-<header class="pt-40 pb-20 px-6 md:px-24 w-full text-center fade-up mt-6">
-    <div class="max-w-[1000px] mx-auto">
-        <div class="text-[#FF6B00] font-bold text-xs md:text-sm tracking-[0.2em] mb-6 uppercase flex items-center justify-center">
-        </div>
-        <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
-            重构智造法则
-        </h1>
-        <p class="text-body-lg text-[#86868B] font-medium mb-16 max-w-3xl mx-auto leading-relaxed">
-            不只是提供冷冰冰的机械，更是交付卓越的整体生产力。<br class="hidden md:block">同兴高科为您深度拆解非标工艺，提供从蓝图到量产的交钥匙工程。
-        </p>
-        
-        <!-- 核心价值三支柱 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
-            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8">
-                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">1</div>
-                <h3 class="font-bold text-[#1D1D1F] mb-2">100% 柔性定制</h3>
-                <p class="text-sm text-[#86868B] leading-relaxed">模块化矩阵设计，从容应对频繁的产品换型与工艺更迭。</p>
-            </div>
-            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8">
-                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">2</div>
-                <h3 class="font-bold text-[#1D1D1F] mb-2">软硬深度融合</h3>
-                <p class="text-sm text-[#86868B] leading-relaxed">搭载自研 WMS/WCS 与底层视觉算法，消除所有信息孤岛。</p>
-            </div>
-            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8">
-                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">3</div>
-                <h3 class="font-bold text-[#1D1D1F] mb-2">极速交付节拍</h3>
-                <p class="text-sm text-[#86868B] leading-relaxed">基于 10万㎡ 双基地的超级吞吐量，保障大型产线如期落地。</p>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <!-- 📍 P2. 核心解决方案矩阵 (Z字型沉浸式排版) -->
-    <section class="py-20 bg-white">
-        
-        <!-- 方案 01：TV/商用显示柔性装配产线 (左文右图) -->
-        <div class="w-full border-t border-[#E5E5EA] py-32">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-5/12">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 01</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        TV/商用显示<br>柔性装配产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        打破超大尺寸显示屏组装的物理极限。为 <strong class="text-[#1D1D1F]">65寸至110寸</strong> 超级商显及教育机，提供从 OC卡合、自动点胶、无损翻转画检，到自动打螺丝与后段套袋码垛的完整闭环。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">攻克大尺寸力学难题</h4>
-                                <p class="text-sm text-[#86868B]">采用独家抬升装置与180度重载翻转单元，彻底告别碎屏风险。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">高精度点胶与贴合</h4>
-                                <p class="text-sm text-[#86868B]">±0.2mm定位精度的单轴机器人多胶枪协同，提升密封性能。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="tv-display-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
-                    <img src="解决方案/TV商业显示器柔性装配产线.jpg" alt="TV商显生产线" class="img-zoom">
-                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">99.9% <span class="text-sm font-bold text-[#1D1D1F]">良品率</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 02：冰箱生产线 (左图右文) -->
-        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
-                    <img loading="lazy" src="解决方案/冰箱生产线.png" alt="冰箱生产线" class="img-zoom">
-                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">15s <span class="text-sm font-bold text-[#1D1D1F]">节拍/件</span></p>
-                    </div>
-                </div>
-                <div class="lg:w-5/12 order-1 lg:order-2">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 02</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        冰箱<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        面向冰箱整机组装的全自动化产线解决方案。从零部件上料、预组装、主体合装到最终检测包装，实现全程自动化。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">整线自动化集成</h4>
-                                <p class="text-sm text-[#86868B]">从零部件到成品冰箱的全流程自动化。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">高节拍高产能</h4>
-                                <p class="text-sm text-[#86868B]">高节拍设计，满足大规模量产需求。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="refrigerator-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 03：包装与物流自动化产线 (左文右图) -->
-        <div class="w-full py-32">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-5/12">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 03</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        包装与物流<br>自动化产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        涵盖产线后段包装、输送、分拣全流程的物流自动化系统集成解决方案。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">全自动包装</h4>
-                                <p class="text-sm text-[#86868B]">开箱、成型、套箱一体化完成。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">智能分拣系统</h4>
-                                <p class="text-sm text-[#86868B]">高效准确的自动分拣与归类。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="packaging-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
-                    <img loading="lazy" src="解决方案/包装与物流自动化产线.png" alt="包装与物流自动化产线" class="img-zoom">
-                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">20s <span class="text-sm font-bold text-[#1D1D1F]">包装节拍</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 04：洗衣机生产线 (左图右文) -->
-        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
-                    <img loading="lazy" src="解决方案/洗衣机生产线.png" alt="洗衣机生产线" class="img-zoom">
-                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">30s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
-                    </div>
-                </div>
-                <div class="lg:w-5/12 order-1 lg:order-2">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 04</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        洗衣机<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        面向洗衣机整机组装的全自动化产线解决方案，覆盖从零部件到成品的全流程自动化装配与检测。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">整机组装自动化</h4>
-                                <p class="text-sm text-[#86868B]">从零部件到成品的全流程自动化。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">质量检测集成</h4>
-                                <p class="text-sm text-[#86868B]">在线检测，确保每台产品品质。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="washer-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 05：电容器生产线 (左文右图) -->
-        <div class="w-full py-32">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-5/12">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 05</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        电容器<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        针对电容器生产的专用自动化解决方案，实现高效、精准的电容器组装与检测。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密元件组装</h4>
-                                <p class="text-sm text-[#86868B]">高精度装配设备确保产品质量。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">自动检测分选</h4>
-                                <p class="text-sm text-[#86868B]">在线检测分选，保证产品一致性。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="capacitor-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
-                    <img loading="lazy" src="解决方案/电容器生产线.png" alt="电容器生产线" class="img-zoom">
-                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">99.5% <span class="text-sm font-bold text-[#1D1D1F]">良品率</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 06：空调生产线 (左图右文) -->
-        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
-                    <img loading="lazy" src="解决方案/空调生产线.png" alt="空调生产线" class="img-zoom">
-                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">25s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
-                    </div>
-                </div>
-                <div class="lg:w-5/12 order-1 lg:order-2">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 06</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        空调<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        面向空调室内外机整机组装的全自动化产线解决方案，实现高节拍、高品质的量产目标。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">高节拍生产</h4>
-                                <p class="text-sm text-[#86868B]">满足大规模空调生产的产能需求。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">质量保障体系</h4>
-                                <p class="text-sm text-[#86868B]">全程质量检测与追溯。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="ac-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 07：微波炉生产线 (左文右图) -->
-        <div class="w-full py-32">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-5/12">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 07</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        微波炉<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        面向微波炉整机组装的全自动化产线解决方案，实现高效、低成本的大规模生产。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">高效装配</h4>
-                                <p class="text-sm text-[#86868B]">自动化装配提升生产效率。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">品质一致</h4>
-                                <p class="text-sm text-[#86868B]">标准化作业保证产品一致性。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="microwave-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
-                    <img loading="lazy" src="解决方案/微波炉生产线.png" alt="微波炉生产线" class="img-zoom">
-                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">20s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 08：咖啡机生产线 (左图右文) -->
-        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
-                    <img loading="lazy" src="解决方案/咖啡机生产线.png" alt="咖啡机生产线" class="img-zoom">
-                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">30s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
-                    </div>
-                </div>
-                <div class="lg:w-5/12 order-1 lg:order-2">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 08</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        咖啡机<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        面向咖啡机整机组装的全自动化产线解决方案，实现精密装配与高效生产的完美结合。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密装配</h4>
-                                <p class="text-sm text-[#86868B]">高精度设备确保装配质量。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">功能测试</h4>
-                                <p class="text-sm text-[#86868B]">在线功能测试与品质把控。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="coffee-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 09：平板电脑生产线 (左文右图) -->
-        <div class="w-full py-32">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-5/12">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 09</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        平板电脑<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        面向平板电脑整机组装的全自动化产线解决方案，实现精密元器件的高效装配。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密装配</h4>
-                                <p class="text-sm text-[#86868B]">高精度点胶与贴合设备。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">视觉检测</h4>
-                                <p class="text-sm text-[#86868B]">AI视觉系统保障产品质量。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="tablet-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
-                    <img loading="lazy" src="解决方案/平板电脑生产线.png" alt="平板电脑生产线" class="img-zoom">
-                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">±0.1mm <span class="text-sm font-bold text-[#1D1D1F]">装配精度</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 10：车灯生产线 (左图右文) -->
-        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
-                    <img loading="lazy" src="解决方案/车灯生产线.png" alt="车灯生产线" class="img-zoom">
-                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">99.8% <span class="text-sm font-bold text-[#1D1D1F]">良品率</span></p>
-                    </div>
-                </div>
-                <div class="lg:w-5/12 order-1 lg:order-2">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 10</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        车灯<br>自动化生产线
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        面向汽车车灯总成组装的全自动化产线解决方案，实现高精度、高可靠性的车灯生产。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密定位</h4>
-                                <p class="text-sm text-[#86868B]">高精度装配确保车灯光学性能。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">密封检测</h4>
-                                <p class="text-sm text-[#86868B]">严格的气密性检测保障产品可靠性。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="headlight-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 方案 11：机器人单元设备 (左文右图) -->
-        <div class="w-full py-32">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
-                <div class="lg:w-5/12">
-                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 11</div>
-                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
-                        机器人<br>单元设备
-                    </h2>
-                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
-                        以机器人为核心的模块化单元设备，可根据工艺需求灵活配置和集成，适配各种自动化场景。
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">模块化设计</h4>
-                                <p class="text-sm text-[#86868B]">可根据需求灵活配置。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
-                            <div>
-                                <h4 class="font-bold text-[#1D1D1F] mb-1">快速集成</h4>
-                                <p class="text-sm text-[#86868B]">缩短项目交付周期。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="robot-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
-                        查看详情
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
-                    <img loading="lazy" src="解决方案/机器人单元设备.jpg" alt="机器人单元设备" class="img-zoom">
-                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
-                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
-                        <p class="text-[#FF6B00] font-black text-2xl mono-num">±0.05mm <span class="text-sm font-bold text-[#1D1D1F]">重复精度</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </section>
-
-    <!-- 📍 Footer (from solutions.html) -->
-    <div data-footer-placeholder></div>
-
-    <!-- ⚙️ 交互脚本 (from solutions.html) -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
-                else { navbar.classList.remove('shadow-sm'); }
-            });
-
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIcon = document.getElementById('menu-icon');
-            let isMenuOpen = false;
-            mobileBtn.addEventListener('click', () => {
-                isMenuOpen = !isMenuOpen;
-                if(isMenuOpen) { 
-                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
-                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
-                } else { 
-                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
-                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
-                }
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
-        });
-    </script>
-    <script src="footer.js"></script>
-</body>
+    <div data-header-placeholder></div>
+
+    <!-- 🌐 顶部导航 (from solutions.html) -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10"></picture>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">首页</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
+            <a href="solutions.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">解决方案</a>
+            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">产品中心</a>
+            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="solutions.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="solutions-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="solutions-ru.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 手机下拉菜单 -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#86868B]">首页</a>
+            <a href="about.html" class="text-[#86868B]">关于我们</a>
+            <a href="solutions.html" class="text-[#FF6B00]">解决方案</a>
+            <a href="products.html" class="text-[#86868B]">产品中心</a>
+            <a href="news.html" class="text-[#86868B]">新闻中心</a>
+            <a href="contact.html" class="text-[#86868B]">联系我们</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="solutions.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="solutions-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="solutions-ru.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 P1. 头部视觉 (from q.html) -->
+<header class="pt-40 pb-20 px-6 md:px-24 w-full text-center fade-up mt-6">
+    <div class="max-w-[1000px] mx-auto">
+        <div class="text-[#FF6B00] font-bold text-xs md:text-sm tracking-[0.2em] mb-6 uppercase flex items-center justify-center">
+        </div>
+        <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
+            重构智造法则
+        </h1>
+        <p class="text-body-lg text-[#86868B] font-medium mb-16 max-w-3xl mx-auto leading-relaxed">
+            不只是提供冷冰冰的机械，更是交付卓越的整体生产力。<br class="hidden md:block">同兴高科为您深度拆解非标工艺，提供从蓝图到量产的交钥匙工程。
+        </p>
+        
+        <!-- 核心价值三支柱 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">1</div>
+                <h3 class="font-bold text-[#1D1D1F] mb-2">100% 柔性定制</h3>
+                <p class="text-sm text-[#86868B] leading-relaxed">模块化矩阵设计，从容应对频繁的产品换型与工艺更迭。</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">2</div>
+                <h3 class="font-bold text-[#1D1D1F] mb-2">软硬深度融合</h3>
+                <p class="text-sm text-[#86868B] leading-relaxed">搭载自研 WMS/WCS 与底层视觉算法，消除所有信息孤岛。</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">3</div>
+                <h3 class="font-bold text-[#1D1D1F] mb-2">极速交付节拍</h3>
+                <p class="text-sm text-[#86868B] leading-relaxed">基于 10万㎡ 双基地的超级吞吐量，保障大型产线如期落地。</p>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <!-- 📍 P2. 核心解决方案矩阵 (Z字型沉浸式排版) -->
+    <section class="py-20 bg-white">
+        
+        <!-- 方案 01：TV/comm-display-flex-line (左文右图) -->
+        <div class="w-full border-t border-[#E5E5EA] py-32">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-5/12">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 01</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        TV/商用显示<br>柔性装配产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        打破超大尺寸显示屏组装的物理极限。为 <strong class="text-[#1D1D1F]">65寸至110寸</strong> 超级商显及教育机，提供从 OC卡合、自动点胶、无损翻转画检，到自动打螺丝与后段套袋码垛的完整闭环。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">攻克大尺寸力学难题</h4>
+                                <p class="text-sm text-[#86868B]">采用独家抬升装置与180度重载翻转单元，彻底告别碎屏风险。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">高精度点胶与贴合</h4>
+                                <p class="text-sm text-[#86868B]">±0.2mm定位精度的单轴机器人多胶枪协同，提升密封性能。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="tv-display-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
+                    <img loading="lazy" src="solutions/tv-flex-line.jpg" alt="TV商显生产线" class="img-zoom">
+                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">99.9% <span class="text-sm font-bold text-[#1D1D1F]">良品率</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 02：refrigerator生产线 (左图右文) -->
+        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
+                    <picture><source srcset="solutions/refrigeratorshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/refrigeratorshengchanxian.png" alt="refrigerator生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">15s <span class="text-sm font-bold text-[#1D1D1F]">节拍/件</span></p>
+                    </div>
+                </div>
+                <div class="lg:w-5/12 order-1 lg:order-2">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 02</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        refrigerator<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        面向refrigerator整机组装的全自动化产线解决方案。从零部件上料、预组装、主体合装到最终检测包装，实现全程自动化。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">整线自动化集成</h4>
+                                <p class="text-sm text-[#86868B]">从零部件到成品refrigerator的全流程自动化。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">高节拍高产能</h4>
+                                <p class="text-sm text-[#86868B]">高节拍设计，满足大规模量产需求。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="refrigerator-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 03：包装与物流自动化产线 (左文右图) -->
+        <div class="w-full py-32">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-5/12">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 03</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        包装与物流<br>自动化产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        涵盖产线后段包装、输送、分拣全流程的物流自动化系统集成解决方案。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">全自动包装</h4>
+                                <p class="text-sm text-[#86868B]">开箱、成型、套箱一体化完成。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">智能分拣系统</h4>
+                                <p class="text-sm text-[#86868B]">高效准确的自动分拣与归类。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="packaging-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
+                    <img loading="lazy" src="solutions/pkg-logistics-line.png" alt="包装与物流自动化产线" class="img-zoom">
+                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">20s <span class="text-sm font-bold text-[#1D1D1F]">包装节拍</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 04：washer生产线 (左图右文) -->
+        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
+                    <picture><source srcset="solutions/washershengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/washershengchanxian.png" alt="washer生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">30s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
+                    </div>
+                </div>
+                <div class="lg:w-5/12 order-1 lg:order-2">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 04</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        washer<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        面向washer整机组装的全自动化产线解决方案，覆盖从零部件到成品的全流程自动化装配与检测。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">整机组装自动化</h4>
+                                <p class="text-sm text-[#86868B]">从零部件到成品的全流程自动化。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">质量检测集成</h4>
+                                <p class="text-sm text-[#86868B]">在线检测，确保每台产品品质。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="washer-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 05：capacitor生产线 (左文右图) -->
+        <div class="w-full py-32">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-5/12">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 05</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        capacitor<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        针对capacitor生产的专用自动化解决方案，实现高效、精准的capacitor组装与检测。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密元件组装</h4>
+                                <p class="text-sm text-[#86868B]">高精度装配设备确保产品质量。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">自动检测分选</h4>
+                                <p class="text-sm text-[#86868B]">在线检测分选，保证产品一致性。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="capacitor-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
+                    <picture><source srcset="solutions/capacitorshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/capacitorshengchanxian.png" alt="capacitor生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">99.5% <span class="text-sm font-bold text-[#1D1D1F]">良品率</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 06：ac生产线 (左图右文) -->
+        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
+                    <picture><source srcset="solutions/acshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/acshengchanxian.png" alt="ac生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">25s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
+                    </div>
+                </div>
+                <div class="lg:w-5/12 order-1 lg:order-2">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 06</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        ac<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        面向ac室内外机整机组装的全自动化产线解决方案，实现高节拍、高品质的量产目标。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">高节拍生产</h4>
+                                <p class="text-sm text-[#86868B]">满足大规模ac生产的产能需求。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">质量保障体系</h4>
+                                <p class="text-sm text-[#86868B]">全程质量检测与追溯。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="ac-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 07：microwave生产线 (左文右图) -->
+        <div class="w-full py-32">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-5/12">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 07</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        microwave<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        面向microwave整机组装的全自动化产线解决方案，实现高效、低成本的大规模生产。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">高效装配</h4>
+                                <p class="text-sm text-[#86868B]">自动化装配提升生产效率。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">品质一致</h4>
+                                <p class="text-sm text-[#86868B]">标准化作业保证产品一致性。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="microwave-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
+                    <picture><source srcset="solutions/microwaveshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/microwaveshengchanxian.png" alt="microwave生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">20s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 08：coffee机生产线 (左图右文) -->
+        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
+                    <picture><source srcset="solutions/coffeejishengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/coffeejishengchanxian.png" alt="coffee机生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">30s <span class="text-sm font-bold text-[#1D1D1F]">节拍/台</span></p>
+                    </div>
+                </div>
+                <div class="lg:w-5/12 order-1 lg:order-2">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 08</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        coffee机<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        面向coffee机整机组装的全自动化产线解决方案，实现精密装配与高效生产的完美结合。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密装配</h4>
+                                <p class="text-sm text-[#86868B]">高精度设备确保装配质量。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">功能测试</h4>
+                                <p class="text-sm text-[#86868B]">在线功能测试与品质把控。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="coffee-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 09：tablet电脑生产线 (左文右图) -->
+        <div class="w-full py-32">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-5/12">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 09</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        tablet电脑<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        面向tablet电脑整机组装的全自动化产线解决方案，实现精密元器件的高效装配。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密装配</h4>
+                                <p class="text-sm text-[#86868B]">高精度点胶与贴合设备。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">视觉检测</h4>
+                                <p class="text-sm text-[#86868B]">AI视觉系统保障产品质量。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="tablet-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
+                    <picture><source srcset="solutions/tabletdiannaoshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/tabletdiannaoshengchanxian.png" alt="tablet电脑生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">±0.1mm <span class="text-sm font-bold text-[#1D1D1F]">装配精度</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 10：headlight生产线 (左图右文) -->
+        <div class="w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-white rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative order-2 lg:order-1">
+                    <picture><source srcset="solutions/headlightshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/headlightshengchanxian.png" alt="headlight生产线" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">99.8% <span class="text-sm font-bold text-[#1D1D1F]">良品率</span></p>
+                    </div>
+                </div>
+                <div class="lg:w-5/12 order-1 lg:order-2">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 10</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        headlight<br>自动化生产线
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        面向汽车headlight总成组装的全自动化产线解决方案，实现高精度、高可靠性的headlight生产。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">精密定位</h4>
+                                <p class="text-sm text-[#86868B]">高精度装配确保headlight光学性能。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">密封检测</h4>
+                                <p class="text-sm text-[#86868B]">严格的气密性检测保障产品可靠性。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="headlight-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方案 11：机器人单元设备 (左文右图) -->
+        <div class="w-full py-32">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">
+                <div class="lg:w-5/12">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">SOLUTION 11</div>
+                    <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tighter mb-6 leading-tight">
+                        机器人<br>单元设备
+                    </h2>
+                    <p class="text-[#86868B] text-lg leading-[1.8] mb-6">
+                        以机器人为核心的模块化单元设备，可根据工艺需求灵活配置和集成，适配各种自动化场景。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">模块化设计</h4>
+                                <p class="text-sm text-[#86868B]">可根据需求灵活配置。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>
+                            <div>
+                                <h4 class="font-bold text-[#1D1D1F] mb-1">快速集成</h4>
+                                <p class="text-sm text-[#86868B]">缩短项目交付周期。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="robot-solution.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold rounded-full hover:bg-[#E55F00] transition-all duration-300 mt-8">
+                        查看详情
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+                <div class="lg:w-7/12 w-full h-[400px] md:h-[600px] bg-gray-100 rounded-[32px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative">
+                    <picture><source srcset="solutions/robot-unit.webp" type="image/webp"><img loading="lazy" src="solutions/robot-unit.jpg" alt="机器人单元设备" class="img-zoom"></picture>
+                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg border border-gray-200">
+                        <p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">关键指标</p>
+                        <p class="text-[#FF6B00] font-black text-2xl mono-num">±0.05mm <span class="text-sm font-bold text-[#1D1D1F]">重复精度</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- 📍 Footer (from solutions.html) -->
+    <div data-footer-placeholder></div>
+
+    <!-- ⚙️ 交互脚本 (from solutions.html) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
+                else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+    <script src="header.js" defer></script>
+    <script src="footer.js" defer></script>
+</body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <link rel="preload" as="image" href="products/auto-lamination-001.webp" type="image/webp">
     <meta name="description" content="同兴高科产品中心-点胶装配、翻转检测、锁付组装、光学元件、搬运移载、后段包装等6大类产品">
     <meta property="og:title" content="产品中心 | 同兴高科 TXAM">
     <meta property="og:description" content="30+自动化设备产品，满足TV显示、消费电子、家电、汽车等行业需求">
@@ -9,180 +10,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>产品中心 | 同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
     
-    <style>
-        :root {
-            /* === Design System: VoltAgent awesome-design-md inspired === */
-            /* Spacing Scale (8px baseline) */
-            --space-1: 8px;
-            --space-2: 16px;
-            --space-3: 24px;
-            --space-4: 32px;
-            --space-5: 40px;
-            --space-6: 48px;
-            --space-8: 64px;
-            --space-10: 80px;
-            --space-12: 96px;
-            --space-16: 128px;
-            
-            /* Typography Scale */
-            --text-xs: 12px;
-            --text-sm: 14px;
-            --text-base: 16px;
-            --text-lg: 18px;
-            --text-xl: 20px;
-            --text-2xl: 24px;
-            --text-3xl: 30px;
-            --text-4xl: 36px;
-            --text-5xl: 48px;
-            
-            /* Line Heights */
-            --leading-tight: 1.1;
-            --leading-snug: 1.25;
-            --leading-normal: 1.5;
-            --leading-relaxed: 1.7;
-            
-            /* Colors */
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA;
-            --text-muted: #86868B;
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-            line-height: var(--leading-normal);
-        }
-
-        /* Typography System - Fluid Type Scale */
-        .text-display {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-        }
-        .text-h1 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-        }
-        .text-h2 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.15;
-        }
-        .text-h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            line-height: 1.3;
-        }
-        .text-body-lg {
-            font-size: 1.125rem;
-            line-height: 1.6;
-        }
-        .text-body {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        .text-sm {
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-        .text-caption {
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            line-height: 1.4;
-        }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-        
-        /* Legacy class mappings */
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
-        .section-heading { font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
-
-        /* Animation System */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        /* Card Component */
-        .product-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: 32px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            display: flex;
-            flex-direction: column;
-        }
-        .product-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        /* Button States */
-        .btn-primary {
-            background: var(--txam-dark);
-            color: white;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-primary:hover {
-            background: var(--txam-orange);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.2);
-        }
-        .btn-secondary {
-            background: white;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-secondary:hover {
-            background: #F5F5F7;
-            transform: translateY(-2px);
-        }
-
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; opacity: 0.9; mix-blend-mode: multiply; }
-        .product-card:hover .img-zoom { transform: scale(1.08); opacity: 1; }
-
-        /* Filter Button */
-        .filter-btn { transition: all 0.3s ease; }
-        .filter-btn.active { background-color: var(--txam-dark); color: #FFFFFF; border-color: var(--txam-dark); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        
-        /* Product Item */
-        .product-item { transition: opacity 0.5s ease, transform 0.5s ease; }
-        .product-item.hidden-item { display: none; opacity: 0; transform: scale(0.95); }
-
-        /* Scrollbar */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Mobile Menu */
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-    </style>
+    
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+    <div data-header-placeholder></div>
 
     <!-- 🌐 顶部导航 -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -262,7 +104,7 @@
             <!-- 高精度贴合机 -->
             <a href="product-1.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动贴合机-001.jpg" alt="贴合机" class="img-zoom">
+                    <picture><source srcset="products/auto-lamination-001.webp" type="image/webp"><img loading="lazy" src="products/auto-lamination-001.jpg" alt="贴合机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALM-01</div>
@@ -280,7 +122,7 @@
             <!-- OC 卡合机组 -->
             <a href="product-2.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/OC卡合机组.jpg" alt="OC卡合" class="img-zoom">
+                    <picture><source srcset="products/OCkahejizu.webp" type="image/webp"><img loading="lazy" src="products/OCkahejizu.jpg" alt="OC卡合" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A 系列</div>
@@ -298,11 +140,11 @@
             <!-- 高精度机器人点胶机 -->
             <a href="product-4.html" class="product-card product-item fade-up" data-category="dispensing">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动点胶机.jpg" alt="点胶机" class="img-zoom">
+                    <picture><source srcset="products/auto-dispensing.webp" type="image/webp"><img loading="lazy" src="products/auto-dispensing.jpg" alt="点胶机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AGD 系列</div>
-                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">自动点胶机</h3>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">auto-dispensing</h3>
                     <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
                         单轴机器人协同多胶枪矩阵，定位误差 <strong class="text-[#1D1D1F]">±0.2mm</strong>，单排点胶仅需 0.25 秒。无缝支持 CAD 导图一键换型。
                     </p>
@@ -316,7 +158,7 @@
             <!-- 六轴机器人智能码垛系统 -->
             <a href="product-11.html" class="product-card product-item fade-up" data-category="robot">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人码垛.jpg" alt="码垛系统" class="img-zoom">
+                    <picture><source srcset="products/robot-palletizing.webp" type="image/webp"><img loading="lazy" src="products/robot-palletizing.jpg" alt="码垛系统" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-PR 系列</div>
@@ -334,7 +176,7 @@
             <!-- 180度重载翻转单元 -->
             <a href="product-9.html" class="product-card product-item fade-up" data-category="flip">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/180度翻转机.jpg" alt="重载翻转" class="img-zoom">
+                    <picture><source srcset="products/turnover-180.webp" type="image/webp"><img loading="lazy" src="products/turnover-180.jpg" alt="重载翻转" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">HEAVY DUTY SERIES</div>
@@ -352,7 +194,7 @@
             <!-- 机器人自动打背板螺丝 -->
             <a href="product-8.html" class="product-card product-item fade-up" data-category="screw">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动打背板螺丝-001.jpg" alt="自动打螺丝" class="img-zoom">
+                    <picture><source srcset="products/zidongdabeibanluosi-001.webp" type="image/webp"><img loading="lazy" src="products/zidongdabeibanluosi-001.jpg" alt="自动打螺丝" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASBS-01</div>
@@ -367,14 +209,14 @@
                 </div>
             </a>
 
-            <!-- 后段包装与自动套箱机 -->
+            <!-- 后段包装与auto-boxing机 -->
             <a href="product-12.html" class="product-card product-item fade-up" data-category="robot">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动套箱.jpg" alt="自动套箱" class="img-zoom">
+                    <picture><source srcset="products/auto-boxing.webp" type="image/webp"><img loading="lazy" src="products/auto-boxing.jpg" alt="auto-boxing" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AET 系列</div>
-                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">后段包装与自动套箱系统</h3>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">后段包装与auto-boxing系统</h3>
                     <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
                         集成自动放托盘（卡板）、开箱、成型与整机套箱。机械刚性定位全兼容，20秒完成单块卡板归中。
                     </p>
@@ -388,7 +230,7 @@
             <!-- 旋转台 -->
             <a href="product-18.html" class="product-card product-item fade-up" data-category="transfer">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/旋转台.jpg" alt="旋转台" class="img-zoom">
+                    <picture><source srcset="products/xuanzhuantai.webp" type="image/webp"><img loading="lazy" src="products/xuanzhuantai.jpg" alt="旋转台" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RT 系列</div>
@@ -406,7 +248,7 @@
             <!-- 升降机组 -->
             <a href="product-19.html" class="product-card product-item fade-up" data-category="transfer">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/升降机组.jpg" alt="升降机组" class="img-zoom">
+                    <picture><source srcset="products/shengjiangjizu.webp" type="image/webp"><img loading="lazy" src="products/shengjiangjizu.jpg" alt="升降机组" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-LG 系列</div>
@@ -424,7 +266,7 @@
             <!-- 模组移载机 -->
             <a href="product-20.html" class="product-card product-item fade-up" data-category="transfer">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/模组移载机.jpg" alt="模组移载机" class="img-zoom">
+                    <picture><source srcset="products/mozuyizaiji.webp" type="image/webp"><img loading="lazy" src="products/mozuyizaiji.jpg" alt="模组移载机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MM 系列</div>
@@ -442,7 +284,7 @@
             <!-- 自动卡扳机 -->
             <a href="product-21.html" class="product-card product-item fade-up" data-category="screw">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动卡扳机.jpg" alt="自动卡扳机" class="img-zoom">
+                    <picture><source srcset="products/zidongkabanji.webp" type="image/webp"><img loading="lazy" src="products/zidongkabanji.jpg" alt="自动卡扳机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACT 系列</div>
@@ -460,7 +302,7 @@
             <!-- 辅助封袋机 -->
             <a href="product-22.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助封袋机.jpg" alt="辅助封袋机" class="img-zoom">
+                    <picture><source srcset="products/fuzhufengdaiji.webp" type="image/webp"><img loading="lazy" src="products/fuzhufengdaiji.jpg" alt="辅助封袋机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-SE 系列</div>
@@ -478,7 +320,7 @@
             <!-- 机器人下线套袋 -->
             <a href="product-23.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人下线套袋.jpg" alt="机器人下线套袋" class="img-zoom">
+                    <picture><source srcset="products/jiqirenxiaxiantaodai.webp" type="image/webp"><img loading="lazy" src="products/jiqirenxiaxiantaodai.jpg" alt="机器人下线套袋" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB 系列</div>
@@ -496,7 +338,7 @@
             <!-- 机器人自动投背板 -->
             <a href="product-24.html" class="product-card product-item fade-up" data-category="robot">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人自动投背板.jpg" alt="机器人自动投背板" class="img-zoom">
+                    <picture><source srcset="products/jiqirenzidongtoubeiban.webp" type="image/webp"><img loading="lazy" src="products/jiqirenzidongtoubeiban.jpg" alt="机器人自动投背板" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RBP 系列</div>
@@ -514,7 +356,7 @@
 
             <a href="product-5.html" class="product-card product-item fade-up" data-category="dispensing">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动喷胶机.jpg" alt="自动喷胶机" class="img-zoom">
+                    <picture><source srcset="products/zidongpenjiaoji.webp" type="image/webp"><img loading="lazy" src="products/zidongpenjiaoji.jpg" alt="自动喷胶机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASM 系列</div>
@@ -532,7 +374,7 @@
 
             <a href="product-6.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动放灯支撑.jpg" alt="自动放灯支架机" class="img-zoom">
+                    <picture><source srcset="products/zidongfangdengzhicheng.webp" type="image/webp"><img loading="lazy" src="products/zidongfangdengzhicheng.jpg" alt="自动放灯支架机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALPS 系列</div>
@@ -550,7 +392,7 @@
 
             <a href="product-7.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动放灯条.jpg" alt="自动放灯条机" class="img-zoom">
+                    <picture><source srcset="products/zidongfangdengtiao.webp" type="image/webp"><img loading="lazy" src="products/zidongfangdengtiao.jpg" alt="自动放灯条机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALSI-01/02</div>
@@ -568,7 +410,7 @@
 
             <a href="product-10.html" class="product-card product-item fade-up" data-category="optical">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动卡钢化玻璃架.jpg" alt="自动钢化玻璃边框安装机" class="img-zoom">
+                    <picture><source srcset="products/zidongkaganghuabolijia.webp" type="image/webp"><img loading="lazy" src="products/zidongkaganghuabolijia.jpg" alt="自动钢化玻璃边框安装机" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACTGR-01/02</div>
@@ -586,7 +428,7 @@
 
             <a href="product-15.html" class="product-card product-item fade-up" data-category="flip">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助画检单元.jpg" alt="辅助视觉检测单元" class="img-zoom">
+                    <picture><source srcset="products/fuzhuhuajiandanyuan.webp" type="image/webp"><img loading="lazy" src="products/fuzhuhuajiandanyuan.jpg" alt="辅助视觉检测单元" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A 系列</div>
@@ -604,7 +446,7 @@
 
             <a href="product-13.html" class="product-card product-item fade-up" data-category="robot">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人集成码垛.jpg" alt="机器人一体化码垛方案" class="img-zoom">
+                    <picture><source srcset="products/jiqirenjichengmaduo.webp" type="image/webp"><img loading="lazy" src="products/jiqirenjichengmaduo.jpg" alt="机器人一体化码垛方案" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RIP-001</div>
@@ -622,7 +464,7 @@
 
             <a href="product-14.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人立机单元.jpg" alt="机器人立式单元" class="img-zoom">
+                    <picture><source srcset="products/jiqirenlijidanyuan.webp" type="image/webp"><img loading="lazy" src="products/jiqirenlijidanyuan.jpg" alt="机器人立式单元" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS 系列</div>
@@ -640,7 +482,7 @@
 
             <a href="product-16.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/自动保压单元.jpg" alt="自动保压单元" class="img-zoom">
+                    <picture><source srcset="products/zidongbaoyadanyuan.webp" type="image/webp"><img loading="lazy" src="products/zidongbaoyadanyuan.jpg" alt="自动保压单元" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS 系列</div>
@@ -658,7 +500,7 @@
 
             <a href="product-27.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助上线翻转单元.jpg" alt="辅助上线翻转单元" class="img-zoom">
+                    <picture><source srcset="products/fuzhushangxianfanzhuandanyuan.webp" type="image/webp"><img loading="lazy" src="products/fuzhushangxianfanzhuandanyuan.jpg" alt="辅助上线翻转单元" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AUFE 系列</div>
@@ -676,7 +518,7 @@
 
             <a href="product-28.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/辅助下线翻转单元.jpg" alt="辅助下线翻转单元" class="img-zoom">
+                    <picture><source srcset="products/fuzhuxiaxianfanzhuandanyuan.webp" type="image/webp"><img loading="lazy" src="products/fuzhuxiaxianfanzhuandanyuan.jpg" alt="辅助下线翻转单元" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ADFE 系列</div>
@@ -694,7 +536,7 @@
 
             <a href="product-29.html" class="product-card product-item fade-up" data-category="packaging">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/人工辅助套袋.jpg" alt="人工辅助套袋" class="img-zoom">
+                    <picture><source srcset="products/rengongfuzhutaodai.webp" type="image/webp"><img loading="lazy" src="products/rengongfuzhutaodai.jpg" alt="人工辅助套袋" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB-M 系列</div>
@@ -712,7 +554,7 @@
 
             <a href="product-30.html" class="product-card product-item fade-up" data-category="robot">
                 <div class="img-container">
-                    <img loading="lazy" src="产品图片/机器人自动上悬挂链.jpg" alt="机器人自动上悬挂链" class="img-zoom">
+                    <picture><source srcset="products/jiqirenzidongshangxuangualian.webp" type="image/webp"><img loading="lazy" src="products/jiqirenzidongshangxuangualian.jpg" alt="机器人自动上悬挂链" class="img-zoom"></picture>
                 </div>
                 <div class="p-8 flex-grow flex flex-col">
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RAHC 系列</div>
@@ -808,6 +650,7 @@
             }
         });
     </script>
-    <script src="footer.js"></script>
+    <script src="header.js" defer></script>
+    <script src="footer.js" defer></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="en-US" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <link rel="preload" as="image" href="building-office.webp" type="image/webp">
     <meta name="description" content="TXAM Corporate News, Industry Information, Project Updates - Stay informed about automation industry developments">
 <meta property="og:title" content="News | TXAM">
 <meta property="og:description" content="Corporate news, industry trends, project cases">
@@ -9,82 +10,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News | TXAM - China's Leading Automation Equipment Supplier</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
     
-    <style>
-        :root {
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA; 
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        .news-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: 24px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-        .news-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .img-container { overflow: hidden; position: relative; background-color: #F5F5F7; }
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; }
-        .news-card:hover .img-zoom { transform: scale(1.05); }
-
-        .filter-btn { transition: all 0.3s ease; }
-        .filter-btn.active { background-color: #1D1D1F; color: #FFFFFF; border-color: #1D1D1F; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        
-        .news-item { transition: opacity 0.5s ease, transform 0.5s ease; }
-        .news-item.hidden-item { display: none; opacity: 0; transform: scale(0.95); }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-    </style>
+    
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+    <div data-header-placeholder></div>
 
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -155,7 +94,7 @@
             
             <a href="news-detail-en.html?id=4" class="news-card news-item fade-up md:col-span-2 lg:col-span-2" data-category="company">
                 <div class="img-container h-64 md:h-80">
-                    <img src="building-office.jpg" alt="Shenzhen-Huizhou Base" class="img-zoom">
+                    <picture><source srcset="building-office.webp" type="image/webp"><img loading="lazy" src="building-office.jpg" alt="Shenzhen-Huizhou Base" class="img-zoom"></picture>
                     <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Company News</div>
                 </div>
                 <div class="p-8 md:p-10 flex-grow flex flex-col justify-between bg-white group">
@@ -171,7 +110,7 @@
 
             <a href="news-detail-en.html?id=5" class="news-card news-item fade-up" data-category="project">
                 <div class="img-container h-64">
-                    <img src="shipping-container.jpg" alt="Mexico Export" class="img-zoom">
+                    <picture><source srcset="shipping-container.webp" type="image/webp"><img loading="lazy" src="shipping-container.jpg" alt="Mexico Export" class="img-zoom"></picture>
                     <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Project News</div>
                 </div>
                 <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
@@ -187,12 +126,12 @@
 
             <a href="news-detail-en.html?id=3" class="news-card news-item fade-up" data-category="company">
                 <div class="img-container h-64">
-                    <img src="news-tech.jpg" alt="CIBF Exhibition" class="img-zoom">
+                    <picture><source srcset="news-tech.webp" type="image/webp"><img loading="lazy" src="news-tech.jpg" alt="CIBF Exhibition" class="img-zoom"></picture>
                     <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Company News</div>
                 </div>
                 <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
                     <div>
-                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2025.05.16</span>
+                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2026.01.20</span>
                         <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">TXAM Stuns at CIBF International Battery Exhibition with "Circular Lifter"</h3>
                         <p class="text-[#86868B] text-sm leading-[1.6] line-clamp-3">
                             New energy intelligent equipment R&D team showcased core equipment, fully entering the lithium battery module and intelligent warehouse logistics (WMS/WCS) track.
@@ -203,12 +142,12 @@
 
             <a href="news-detail-en.html?id=2" class="news-card news-item fade-up" data-category="project">
                 <div class="img-container h-64">
-                    <img loading="lazy" src="产品图片/商用显示柔性装配产线.jpg" alt="Robot Arm" class="img-zoom">
+                    <img loading="lazy" src="products/shangyongxianshirouxingzhuangpeichanxian.jpg" alt="Robot Arm" class="img-zoom">
                     <div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#1D1D1F] shadow-sm border border-gray-100">Project News</div>
                 </div>
                 <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
                     <div>
-                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2025.11.20</span>
+                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2026.02.18</span>
                         <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">High-Precision Robot Assembly Line Successfully Deployed at Leading Domestic Appliance Manufacturer</h3>
                         <p class="text-[#86868B] text-sm leading-[1.6] line-clamp-3">
                             Through UVW vision alignment and multi-axis robot collaboration, successfully reduced single-line production cycle to 12 seconds, with defect rate below 0.1%.
@@ -219,12 +158,12 @@
 
             <a href="news-detail-en.html?id=6" class="news-card news-item fade-up" data-category="industry">
                 <div class="img-container h-64">
-                    <img src="factory-hero.jpg" alt="New Energy Tech" class="img-zoom">
+                    <img loading="lazy" src="factory-hero.jpg" alt="New Energy Tech" class="img-zoom">
                     <div class="absolute top-6 left-6 bg-[#1D1D1F] px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-sm border border-gray-800">Industry Insights</div>
                 </div>
                 <div class="p-8 flex-grow flex flex-col justify-between bg-white group">
                     <div>
-                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2025.08.05</span>
+                        <span class="text-[#86868B] text-sm font-mono mb-4 block">2026.02.12</span>
                         <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">Insight: The "Second Half" of New Energy Power Battery Assembly Technology</h3>
                         <p class="text-[#86868B] text-sm leading-[1.6] line-clamp-3">
                             Exploring efficient integration paths between底层 WCS control systems and automated robotic arms. The core of unmanned factories lies not in hardware stacking, but in data flow connectivity.
@@ -309,6 +248,7 @@
             });
         });
     </script>
-    <script src="footer-en.js"></script>
+    <script src="header.js" defer></script>
+    <script src="footer-en.js" defer></script>
 </body>
 </html>

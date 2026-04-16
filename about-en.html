@@ -2,6 +2,7 @@
 <html lang="en-US" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <link rel="preload" as="image" href="factory-photo.jpg">
     <meta name="description" content="TXAM founded in Shenzhen, 19 years专注非标自动化设备制造. One-stop smart equipment service for world-class enterprises">
 <meta property="og:title" content="About Us | TXAM">
 <meta property="og:description" content="Learn about TXAM's development history, core patents and global customer cases">
@@ -9,88 +10,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | TXAM - China's Leading Automation Equipment Supplier</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
     
-    <style>
-        :root {
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA; 
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        .apple-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 24px;
-            overflow: hidden;
-        }
-        .apple-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .group:hover .img-zoom { transform: scale(1.05); }
-
-        .client-logo { 
-            transition: all 0.4s ease; 
-        }
-        .client-card:hover .client-logo { 
-            transform: scale(1.1); 
-        }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            animation: marquee 30s linear infinite;
-        }
-    </style>
+    
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+    <div data-header-placeholder></div>
 
     <!-- 🌐 Top Navigation -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -150,7 +84,7 @@
             </p>
 
             <div class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group">
-                <img src="工厂图.jpg" alt="TXAM Dual Factory Base" class="w-full h-full object-cover img-zoom">
+                <img loading="lazy" src="factory-photo.jpg" alt="TXAM Dual Factory Base" class="w-full h-full object-cover img-zoom">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                 <div class="absolute bottom-8 left-10 text-left">
                     <p class="text-white/90 text-sm font-bold tracking-widest mb-1">TXAM HEADQUARTERS & FACTORY</p>
@@ -319,19 +253,19 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div class="apple-card p-3 pb-5 flex flex-col items-center">
                         <div class="w-full bg-white rounded-2xl overflow-hidden">
-                            <img loading="lazy" src="企业资质与核心专利/荣誉资质/官方资质-高新技术企业证书.jpg" alt="High-Tech Enterprise Certificate" class="w-full h-full object-contain">
+                            <picture><source srcset="certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp" type="image/webp"><img loading="lazy" src="certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.jpg" alt="High-Tech Enterprise Certificate" class="w-full h-full object-contain"></picture>
                         </div>
                         <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">High-Tech Enterprise Certificate</p>
                     </div>
                     <div class="apple-card p-3 pb-5 flex flex-col items-center">
                         <div class="w-full bg-white rounded-2xl overflow-hidden">
-                            <img loading="lazy" src="企业资质与核心专利/荣誉资质/官方资质-创新型中小企业.jpg" alt="Innovation SME Certificate" class="w-full h-full object-contain">
+                            <img loading="lazy" src="certifications/rongyuzizhi/guanfangzizhi-chuangxinxingzhongxiaoqiye.jpg" alt="Innovation SME Certificate" class="w-full h-full object-contain">
                         </div>
                         <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Innovation SME Certificate</p>
                     </div>
                     <div class="apple-card p-3 pb-5 flex flex-col items-center">
                         <div class="w-full bg-white rounded-2xl overflow-hidden">
-                            <img loading="lazy" src="企业资质与核心专利/荣誉资质/官方资质-专精特新中小企业.jpg" alt="Specialized & Distinctive SME Certificate" class="w-full h-full object-contain">
+                            <picture><source srcset="certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp" type="image/webp"><img loading="lazy" src="certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.jpg" alt="Specialized & Distinctive SME Certificate" class="w-full h-full object-contain"></picture>
                         </div>
                         <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Specialized & Distinctive SME Certificate</p>
                     </div>
@@ -345,43 +279,43 @@
                     <div class="patent-carousel flex gap-6 animate-marquee" style="animation: marquee 40s linear infinite;">
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
-                                <img loading="lazy" src="企业资质与核心专利/质量资质/微信图片_20260330114404_97_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
+                                <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114404_97_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
                             </div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
-                                <img loading="lazy" src="企业资质与核心专利/质量资质/微信图片_20260330114503_107_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
+                                <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114503_107_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
                             </div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
-                                <img loading="lazy" src="企业资质与核心专利/质量资质/微信图片_20260330114504_108_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
+                                <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114504_108_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
                             </div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
-                                <img loading="lazy" src="企业资质与核心专利/质量资质/微信图片_20260330114505_109_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
+                                <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114505_109_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
                             </div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
-                                <img loading="lazy" src="企业资质与核心专利/质量资质/微信图片_20260330114506_110_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
+                                <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114506_110_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
                             </div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
-                                <img loading="lazy" src="企业资质与核心专利/质量资质/微信图片_20260330114507_111_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
+                                <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114507_111_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
                             </div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
-                                <img loading="lazy" src="企业资质与核心专利/质量资质/微信图片_20260330114508_112_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
+                                <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114508_112_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
                             </div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Quality Certification</p>
                         </div>
@@ -395,43 +329,43 @@
                 <div class="relative overflow-hidden">
                     <div class="patent-carousel flex gap-6 animate-marquee" style="animation: marquee 60s linear infinite;">
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114509_113_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><picture><source srcset="certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp" type="image/webp"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></picture></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.113</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114511_115_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><picture><source srcset="certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp" type="image/webp"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></picture></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.115</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114513_117_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114513_117_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.117</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114515_119_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114515_119_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.119</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114516_121_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114516_121_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.121</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114517_122_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114517_122_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.122</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114518_123_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114518_123_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.123</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114519_124_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114519_124_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.124</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114519_125_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114519_125_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.125</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
-                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="企业资质与核心专利/专利资质/微信图片_20260330114520_126_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114520_126_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
                             <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">Invention Patent No.126</p>
                         </div>
                     </div>
@@ -483,23 +417,23 @@
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
 
             const clientLogos = [
-                { src: '合作客户logo/tcl.jpeg', alt: 'TCL' },
-                { src: '合作客户logo/创维.jpeg', alt: 'Skyworth' },
+                { src: 'client-logos/tcl.jpeg', alt: 'TCL' },
+                { src: 'client-logos/chuangwei.jpeg', alt: 'Skyworth' },
                 { src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Huawei_logo_icon_170010.svg', alt: 'Huawei' },
                 { src: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Midea_Group_logo.svg', alt: 'Midea' },
-                { src: '合作客户logo/富士康.jpg', alt: 'Foxconn' },
-                { src: '合作客户logo/京东方.jpeg', alt: 'BOE' },
-                { src: '合作客户logo/宁德时代.jpg', alt: 'CATL' },
-                { src: '合作客户logo/洲明.jpg', alt: 'Unilumin' },
-                { src: '合作客户logo/利通电子.jpg', alt: 'LTON' },
-                { src: '合作客户logo/群创光电.jpg', alt: 'Qunchuang' },
-                { src: '合作客户logo/日立.jpg', alt: 'Hitachi' },
-                { src: '合作客户logo/联想.jpg', alt: 'Lenovo' },
-                { src: '合作客户logo/华科.jpg', alt: 'HUAK' },
-                { src: '合作客户logo/惠科.jpg', alt: 'HKC' },
-                { src: '合作客户logo/希沃.jpg', alt: 'Seewo' },
-                { src: '合作客户logo/康佳.jpeg', alt: 'Kongjia' },
-                { src: '合作客户logo/长虹.gif', alt: 'Changhong' },
+                { src: 'client-logos/fushikang.jpg', alt: 'Foxconn' },
+                { src: 'client-logos/jingdongfang.jpeg', alt: 'BOE' },
+                { src: 'client-logos/ningdeshidai.jpg', alt: 'CATL' },
+                { src: 'client-logos/zhouming.jpg', alt: 'Unilumin' },
+                { src: 'client-logos/litongdianzi.jpg', alt: 'LTON' },
+                { src: 'client-logos/qunchuangguangdian.jpg', alt: 'Qunchuang' },
+                { src: 'client-logos/rili.jpg', alt: 'Hitachi' },
+                { src: 'client-logos/lianxiang.jpg', alt: 'Lenovo' },
+                { src: 'client-logos/huake.jpg', alt: 'HUAK' },
+                { src: 'client-logos/huike.jpg', alt: 'HKC' },
+                { src: 'client-logos/xiwo.jpg', alt: 'Seewo' },
+                { src: 'client-logos/kangjia.jpeg', alt: 'Kongjia' },
+                { src: 'client-logos/changhong.gif', alt: 'Changhong' },
             ];
 
             const grid = document.getElementById('client-logos-grid');
@@ -518,6 +452,7 @@
             }
         });
     </script>
-    <script src="footer-en.js"></script>
+    <script src="header.js" defer></script>
+    <script src="footer-en.js" defer></script>
 </body>
 </html>

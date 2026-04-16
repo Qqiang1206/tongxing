@@ -2,62 +2,27 @@
 <html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <link rel="preload" as="image" href="robot-arm.webp" type="image/webp">
     <meta name="description" content="同兴高科自动化设备产品详情，技术参数、规格型号、应用场景详解">
     <meta property="og:title" content="产品详情 | 同兴高科 TXAM">
     <meta property="og:type" content="product">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>产品详情 | 同兴高科</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
     
-    <style>
-        :root {
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA; 
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-
-        .spec-tag { background: #F5F5F7; border: 1px solid #E5E5EA; color: #1D1D1F; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; }
-    </style>
+    
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+    <div data-header-placeholder></div>
 
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="同兴高科" class="h-8 md:h-10">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="同兴高科" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -123,7 +88,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="w-full h-[400px] rounded-[24px] overflow-hidden bg-gray-100">
-                        <img id="product-image" src="robot-arm.jpg" alt="产品图片" class="w-full h-full object-cover">
+                        <picture><source srcset="robot-arm.webp" type="image/webp"><img loading="lazy" id="product-image" src="robot-arm.jpg" alt="产品图片" class="w-full h-full object-cover"></picture>
                     </div>
                 </div>
                 <div class="fade-up">
@@ -175,7 +140,7 @@
                 category: '光学元件组装',
                 model: 'TX-NS-ALM-01',
                 name: '全自动高精密贴胶机',
-                image: '产品图片/自动贴合机-001.jpg',
+                image: 'products/auto-lamination-001.jpg',
                 specs: ['±0.075mm 精度', '80s 节拍', '恒压控制', '多尺寸兼容'],
                 desc: '专为玻璃与显示模组设计。贴胶精度突破至±0.075mm，配备恒压控制功能，节拍时间快至80秒。',
                 detail: `
@@ -197,7 +162,7 @@
                 category: '光学元件组装',
                 model: 'TXM-A 系列',
                 name: 'OC智能贴合系统',
-                image: '产品图片/OC卡合机组.jpg',
+                image: 'products/OCkahejizu.jpg',
                 specs: ['UVW视觉对位', '±0.15mm 精度', '25s 节拍', '零碎屏'],
                 desc: '全自动Open Cell及背光模组精密组装。采用UVW视觉对位平台，彻底解决人工贴合造成的碎屏问题。',
                 detail: `
@@ -219,7 +184,7 @@
                 category: '整线交付',
                 model: '整线交付',
                 name: '电视/商业显示屏柔性组装线',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['自动点胶', '翻转检测', '套袋码垛', '65-110" 兼容'],
                 desc: '从点胶、支架放置、贴合、翻转检测到最终套袋码垛全自动化。一键兼容多种尺寸（含65~110"超大屏）。',
                 detail: `
@@ -240,8 +205,8 @@
             '4': {
                 category: '点胶装配',
                 model: 'TX-NS-AGD 系列',
-                name: '自动点胶机',
-                image: '产品图片/自动点胶机.jpg',
+                name: 'auto-dispensing',
+                image: 'products/auto-dispensing.jpg',
                 specs: ['±0.2mm 定位', '0.25s/行', 'CAD导入', 'TCP/IP通信'],
                 desc: '单轴机器人配合多胶枪矩阵，定位误差±0.2mm，单行点胶仅需0.25秒。CAD图纸无缝导入，一键换型。',
                 detail: `
@@ -263,7 +228,7 @@
                 category: '点胶装配',
                 model: 'TX-NS-ASM 系列',
                 name: '自动喷胶机',
-                image: '产品图片/自动喷胶机.jpg',
+                image: 'products/zidongpenjiaoji.jpg',
                 specs: ['0.6-0.8m/s 喷速', '75"-全兼容', '胶块熔炉', '多型号选择'],
                 desc: '将胶水均匀喷涂于目标物体，适用于更大尺寸面板。喷涂效率高，兼容性强，从75"到全尺寸兼容。',
                 detail: `
@@ -283,7 +248,7 @@
                 category: '光学元件组装',
                 model: 'TX-NS-ALPS 系列',
                 name: '自动放灯支架机',
-                image: '产品图片/自动放灯支撑.jpg',
+                image: 'products/zidongfangdengzhicheng.jpg',
                 specs: ['±0.2mm 定位', '1s/个', '振动盘供料', '10-20个/批'],
                 desc: '精准抓取并放置扩散支架，为显示设备光学组件提供稳定支撑。定位精准，抓取高速。',
                 detail: `
@@ -303,7 +268,7 @@
                 category: '光学元件组装',
                 model: 'TX-NS-ALSI-01/02',
                 name: '自动放灯条机',
-                image: '产品图片/自动放灯条.jpg',
+                image: 'products/zidongfangdengtiao.jpg',
                 specs: ['±0.2mm 精度', '7个/批', '带保压', '机器人+人工配合'],
                 desc: '精准快速将LED灯条放置于指定位置。可一次抓取多条灯条，带保压功能，确保组装精度。',
                 detail: `
@@ -323,7 +288,7 @@
                 category: '锁付组装',
                 model: 'TX-NS-ASBS-01',
                 name: '机器人自动背板螺丝机',
-                image: '产品图片/自动打背板螺丝-001.jpg',
+                image: 'products/zidongdabeibanluosi-001.jpg',
                 specs: ['12个/批', '1.8s/颗', '扭矩可调', '高效率'],
                 desc: '可抓取并一次自动锁紧多达12颗背板螺丝，单颗扭矩实时可调，效率高达1.8秒/颗。',
                 detail: `
@@ -343,7 +308,7 @@
                 category: '翻转检测',
                 model: 'TXM-B-105 系列 / 205A',
                 name: '180度重载翻转机',
-                image: '产品图片/180度翻转机.jpg',
+                image: 'products/turnover-180.jpg',
                 specs: ['15-55s 节拍', '一键操作', '强载重', '多型号'],
                 desc: '专为翻转大型或重型产品而设计，实现180度精准翻转。解决因工艺要求造成的、人工翻转困难等问题。',
                 detail: `
@@ -363,7 +328,7 @@
                 category: '光学元件组装',
                 model: 'TX-NS-ACTGR-01/02',
                 name: '自动钢化玻璃边框安装机',
-                image: '产品图片/自动卡钢化玻璃架.jpg',
+                image: 'products/zidongkaganghuabolijia.jpg',
                 specs: ['±0.15mm 精度', '视觉定位', '自动安装', '适用教育显示器'],
                 desc: '为教育显示器自动安装钢化玻璃边框。采用视觉定位，精度高达±0.15mm。',
                 detail: `
@@ -383,7 +348,7 @@
                 category: '机器人集成',
                 model: 'TX-NS-PR 系列',
                 name: '六轴机器人智能码垛系统',
-                image: '产品图片/机器人码垛.jpg',
+                image: 'products/robot-palletizing.jpg',
                 specs: ['±0.5mm 精度', '12s/件', '模拟机码垛', '子母托盘兼容'],
                 desc: '完美解决重型成品码垛难题。支持模拟机码垛及子母托盘，精度控制在±0.5mm以内，速度高达12秒/件。',
                 detail: `
@@ -405,7 +370,7 @@
                 category: '机器人集成',
                 model: 'TX-NS-AET 系列',
                 name: '产线末端正装包装自动装箱系统',
-                image: '产品图片/自动套箱.jpg',
+                image: 'products/auto-boxing.jpg',
                 specs: ['20s/件', '自动托盘堆叠', '机械定位', '全兼容'],
                 desc: '集成自动托盘码垛（skid）、拆箱、成型及整机装箱。机械刚性定位全兼容，20秒完成单skid定心。',
                 detail: `
@@ -425,7 +390,7 @@
                 category: '机器人集成',
                 model: 'TX-NS-RIP-001',
                 name: '机器人一体化码垛方案',
-                image: '产品图片/机器人集成码垛.jpg',
+                image: 'products/jiqirenjichengmaduo.jpg',
                 specs: ['功能集成', '子母托盘', '自动垫板', '扫描功能'],
                 desc: '更强大的集成码垛方案，包含子母托盘堆叠、自动垫板放置、扫描等特殊功能。',
                 detail: `
@@ -445,7 +410,7 @@
                 category: '后段包装',
                 model: 'TX-NS 系列',
                 name: '机器人立式单元',
-                image: '产品图片/机器人立机单元.jpg',
+                image: 'products/jiqirenlijidanyuan.jpg',
                 specs: ['CCD视觉引导', '平稳高效', '节省人力', '可定制'],
                 desc: '自动将产品从卧式转换为立式状态。采用CCD视觉确定产品位置，机器人自动抓取完成立式动作。',
                 detail: `
@@ -465,7 +430,7 @@
                 category: '翻转检测',
                 model: 'TXM-A 系列',
                 name: '辅助视觉检测单元',
-                image: '产品图片/辅助画检单元.jpg',
+                image: 'products/fuzhuhuajiandanyuan.jpg',
                 specs: ['自动翻转', '降低劳动强度', '提高检测效率', '减少误差'],
                 desc: '通过自动翻转及图像识别，辅助或替代人工进行产品外观质量检测。解决重型产品人工翻转困难问题。',
                 detail: `
@@ -485,7 +450,7 @@
                 category: '后段包装',
                 model: 'TX-NS 系列',
                 name: '自动保压单元',
-                image: '产品图片/自动保压单元.jpg',
+                image: 'products/zidongbaoyadanyuan.jpg',
                 specs: ['恒压控制', '保压时间长', '适应性强', '品质保障'],
                 desc: '对组装完成的零部件施加并保持恒定压力，确保粘接或组装工艺质量。压力控制精准，保压时间长。',
                 detail: `
@@ -505,7 +470,7 @@
                 category: '软件控制',
                 model: '软件系统',
                 name: '工业大脑控制软件研发',
-                image: 'control-system.jpg',
+                image: 'control-system.webp',
                 specs: ['WMS/WCS', 'MES', 'TCP/IP通信', '数据洞察'],
                 desc: '深度软硬件融合，自主研发WMS、WCS、MES及底层TCP/IP视觉通信组件。打破车间信息孤岛，实现数字化透明管理。',
                 detail: `
@@ -527,7 +492,7 @@
                 category: '搬运移载',
                 model: 'TX-NS-RT 系列',
                 name: '旋转台',
-                image: '产品图片/旋转台.jpg',
+                image: 'products/xuanzhuantai.jpg',
                 specs: ['精密定位', '多工位', '自动旋转', '适应性强'],
                 desc: '用于产品多工位加工或检测的精密旋转设备，可实现产品多角度自动化处理。',
                 detail: `
@@ -547,7 +512,7 @@
                 category: '搬运移载',
                 model: 'TX-NS-LG 系列',
                 name: '升降机组',
-                image: '产品图片/升降机组.jpg',
+                image: 'products/shengjiangjizu.jpg',
                 specs: ['平稳升降', '负载能力强', '自动化控制', '适应生产线'],
                 desc: '用于产品在不同高度工位之间转运的升降输送设备，实现生产线的高度无缝对接。',
                 detail: `
@@ -567,7 +532,7 @@
                 category: '搬运移载',
                 model: 'TX-NS-MM 系列',
                 name: '模组移载机',
-                image: '产品图片/模组移载机.jpg',
+                image: 'products/mozuyizaiji.jpg',
                 specs: ['精确移载', '多工位', '自动化', '柔性生产'],
                 desc: '用于电子模组在不同工位之间自动转运的精密设备，支持多种产品尺寸。',
                 detail: `
@@ -587,7 +552,7 @@
                 category: '锁付组装',
                 model: 'TX-NS-ACT 系列',
                 name: '自动卡扳机',
-                image: '产品图片/自动卡扳机.jpg',
+                image: 'products/zidongkabanji.jpg',
                 specs: ['自动卡合', '精密定位', '高效率', '适应多种尺寸'],
                 desc: '用于自动安装卡扣或扳手的自动化设备，精密定位，快速完成卡合组装。',
                 detail: `
@@ -607,7 +572,7 @@
                 category: '后段包装',
                 model: 'TX-NS-SE 系列',
                 name: '辅助封袋机',
-                image: '产品图片/辅助封袋机.jpg',
+                image: 'products/fuzhufengdaiji.jpg',
                 specs: ['自动封袋', '热封技术', '高效率', '品控稳定'],
                 desc: '用于产品包装袋的自动化封口设备，采用热封技术，封口美观牢固。',
                 detail: `
@@ -627,7 +592,7 @@
                 category: '后段包装',
                 model: 'TX-NS-MAB 系列',
                 name: '机器人下线套袋',
-                image: '产品图片/机器人下线套袋.jpg',
+                image: 'products/jiqirenxiaxiantaodai.jpg',
                 specs: ['自动套袋', '机器人协同', '高效包装', '适应性强'],
                 desc: '配合机器人自动完成产品下线后的套袋包装工序，实现后段包装全自动化。',
                 detail: `
@@ -647,7 +612,7 @@
                 category: '机器人集成',
                 model: 'TX-NS-RBP 系列',
                 name: '机器人自动投背板',
-                image: '产品图片/机器人自动投背板.jpg',
+                image: 'products/jiqirenzidongtoubeiban.jpg',
                 specs: ['自动投放', '精准定位', '高效率', '品控保障'],
                 desc: '用于将背板自动投放到产品组装工位的自动化设备，配合机器人完成精密组装。',
                 detail: `
@@ -667,7 +632,7 @@
                 category: '机器人集成',
                 model: 'TX-NS-PL 系列',
                 name: '包装与物流自动化设备',
-                image: '产品图片/包装与物流自动化设备.jpg',
+                image: 'products/包装与物流自动化设备.jpg',
                 specs: ['自动化包装', '物流输送', '高效分拣', '系统集成'],
                 desc: '涵盖产线后段包装、输送、分拣全流程的物流自动化系统集成解决方案。',
                 detail: `
@@ -687,7 +652,7 @@
                 category: '搬运移载',
                 model: 'TX-NS-RCU 系列',
                 name: '机器人单元设备',
-                image: '产品图片/机器人单元设备.jpg',
+                image: 'products/robot-unit.jpg',
                 specs: ['模块化设计', '灵活配置', '易于集成', '高效可靠'],
                 desc: '以机器人为核心的模块化单元设备，可根据工艺需求灵活配置和集成。',
                 detail: `
@@ -707,7 +672,7 @@
                 category: '后段包装',
                 model: 'TX-NS-AUFE 系列',
                 name: '辅助上线翻转单元',
-                image: '产品图片/辅助上线翻转单元.jpg',
+                image: 'products/fuzhushangxianfanzhuandanyuan.jpg',
                 specs: ['自动翻转', '上线辅助', '高效协同', '品质保障'],
                 desc: '用于产品上线工位的辅助翻转设备，配合主设备实现自动化上下料。',
                 detail: `
@@ -727,7 +692,7 @@
                 category: '后段包装',
                 model: 'TX-NS-ADFE 系列',
                 name: '辅助下线翻转单元',
-                image: '产品图片/辅助下线翻转单元.jpg',
+                image: 'products/fuzhuxiaxianfanzhuandanyuan.jpg',
                 specs: ['自动翻转', '下线辅助', '高效协同', '品质保障'],
                 desc: '用于产品下线工位的辅助翻转设备，配合主设备实现自动化下料。',
                 detail: `
@@ -747,7 +712,7 @@
                 category: '后段包装',
                 model: 'TX-NS-MAB-M 系列',
                 name: '人工辅助套袋',
-                image: '产品图片/人工辅助套袋.jpg',
+                image: 'products/rengongfuzhutaodai.jpg',
                 specs: ['人工配合', '辅助自动化', '套袋包装', '品质保障'],
                 desc: '人工辅助套袋设备，配合自动化机械完成产品套袋包装。',
                 detail: `
@@ -767,7 +732,7 @@
                 category: '机器人集成',
                 model: 'TX-NS-RAHC 系列',
                 name: '机器人自动上悬挂链',
-                image: '产品图片/机器人自动上悬挂链.jpg',
+                image: 'products/jiqirenzidongshangxuangualian.jpg',
                 specs: ['自动上链', '悬挂输送', '机器人协同', '高效自动化'],
                 desc: '配合机器人自动将产品挂载到悬挂输送链上的自动化设备。',
                 detail: `
@@ -787,7 +752,7 @@
                 category: '解决方案',
                 model: 'TXAM-SOL-TV',
                 name: 'TV/商业显示器生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['整线自动化', '柔性生产', '65-110寸兼容', '交钥匙工程'],
                 desc: '面向TV和商业显示器制造商的整线自动化解决方案，从组装到包装全流程覆盖。',
                 detail: `
@@ -809,12 +774,12 @@
             '32': {
                 category: '解决方案',
                 model: 'TXAM-SOL-FR',
-                name: '冰箱生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'refrigerator生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['整线自动化', '柔性生产', '多型号兼容', '交钥匙工程'],
-                desc: '面向冰箱制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。',
+                desc: '面向refrigerator制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。',
                 detail: `
-                    <p>冰箱生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
+                    <p>refrigerator生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖压缩机安装、面板组装、管路连接、电气接线和最终检测包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -832,12 +797,12 @@
             '33': {
                 category: '解决方案',
                 model: 'TXAM-SOL-AC',
-                name: '空调生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'ac生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['整线自动化', '柔性生产', '多型号兼容', '交钥匙工程'],
-                desc: '面向空调制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。',
+                desc: '面向ac制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。',
                 detail: `
-                    <p>空调生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
+                    <p>ac生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖换热器组装、压缩机安装、管道连接、抽真空、充注制冷剂、电气接线及最终检测包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -855,12 +820,12 @@
             '34': {
                 category: '解决方案',
                 model: 'TXAM-SOL-WA',
-                name: '洗衣机生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'washer生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['整线自动化', '柔性生产', '多型号兼容', '交钥匙工程'],
-                desc: '面向洗衣机制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。',
+                desc: '面向washer制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。',
                 detail: `
-                    <p>洗衣机生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
+                    <p>washer生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖内筒组装、外壳装配、减震系统安装、电气接线及最终检测包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -878,12 +843,12 @@
             '35': {
                 category: '解决方案',
                 model: 'TXAM-SOL-MW',
-                name: '微波炉生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'microwave生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['整线自动化', '柔性生产', '多型号兼容', '交钥匙工程'],
-                desc: '面向微波炉制造商的整线自动化解决方案，覆盖腔体组装、门体装配、电气接线及最终检测包装全流程。',
+                desc: '面向microwave制造商的整线自动化解决方案，覆盖腔体组装、门体装配、电气接线及最终检测包装全流程。',
                 detail: `
-                    <p>微波炉生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
+                    <p>microwave生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖腔体组装、门体装配、微波发生器安装、磁控管安装、电气接线和最终检测包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -901,12 +866,12 @@
             '36': {
                 category: '解决方案',
                 model: 'TXAM-SOL-TB',
-                name: '平板电脑生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'tablet电脑生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['精密装配', '视觉检测', '柔性生产', '交钥匙工程'],
-                desc: '面向平板电脑制造商的整线自动化解决方案，覆盖显示屏组装、电池安装、主板装配、外壳贴合及最终检测包装。',
+                desc: '面向tablet电脑制造商的整线自动化解决方案，覆盖显示屏组装、电池安装、主板装配、外壳贴合及最终检测包装。',
                 detail: `
-                    <p>平板电脑生产线解决方案是同兴高科为消费电子制造商提供的整线自动化解决方案。</p>
+                    <p>tablet电脑生产线解决方案是同兴高科为消费电子制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖触摸屏组装、电池安装、主板装配、摄像头安装、外壳贴合及最终检测包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -924,12 +889,12 @@
             '37': {
                 category: '解决方案',
                 model: 'TXAM-SOL-AL',
-                name: '车灯生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'headlight生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['精密装配', '密封检测', '柔性生产', '交钥匙工程'],
-                desc: '面向汽车灯具制造商的整线自动化解决方案，覆盖透镜组装、反光碗安装、LED模块装配、密封检测及最终包装。',
+                desc: '面向汽headlight具制造商的整线自动化解决方案，覆盖透镜组装、反光碗安装、LED模块装配、密封检测及最终包装。',
                 detail: `
-                    <p>车灯生产线解决方案是同兴高科为汽车零部件制造商提供的整线自动化解决方案。</p>
+                    <p>headlight生产线解决方案是同兴高科为汽车零部件制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖透镜组装、反光碗安装、LED模块装配、线路连接、密封检测及最终包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -947,12 +912,12 @@
             '38': {
                 category: '解决方案',
                 model: 'TXAM-SOL-CP',
-                name: '电容器生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'capacitor生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['高速卷绕', '注液密封', '自动化检测', '交钥匙工程'],
-                desc: '面向电容器制造商的整线自动化解决方案，覆盖卷绕、装配、注液、老化和最终检测包装全流程。',
+                desc: '面向capacitor制造商的整线自动化解决方案，覆盖卷绕、装配、注液、老化和最终检测包装全流程。',
                 detail: `
-                    <p>电容器生产线解决方案是同兴高科为电子元器件制造商提供的整线自动化解决方案。</p>
+                    <p>capacitor生产线解决方案是同兴高科为电子元器件制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖金属化薄膜卷绕、芯子组装、注液、焊接、老化测试和最终检测包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -970,12 +935,12 @@
             '39': {
                 category: '解决方案',
                 model: 'TXAM-SOL-CM',
-                name: '咖啡机生产线解决方案',
-                image: '产品图片/商用显示柔性装配产线.jpg',
+                name: 'coffee机生产线解决方案',
+                image: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 specs: ['精密装配', '功能检测', '柔性生产', '交钥匙工程'],
-                desc: '面向咖啡机制造商的整线自动化解决方案，覆盖加热元件组装、水泵安装、电路板装配、外壳装配及最终检测包装。',
+                desc: '面向coffee机制造商的整线自动化解决方案，覆盖加热元件组装、水泵安装、电路板装配、外壳装配及最终检测包装。',
                 detail: `
-                    <p>咖啡机生产线解决方案是同兴高科为小家电制造商提供的整线自动化解决方案。</p>
+                    <p>coffee机生产线解决方案是同兴高科为小家电制造商提供的整线自动化解决方案。</p>
                     <h3>方案组成</h3>
                     <p>整线覆盖加热元件组装、水泵安装、电路板装配、管路连接、外壳装配及最终检测包装等全流程。</p>
                     <h3>方案优势</h3>
@@ -1064,6 +1029,7 @@
             });
         });
     </script>
-    <script src="footer.js"></script>
+    <script src="header.js" defer></script>
+    <script src="footer.js" defer></script>
 </body>
 </html>

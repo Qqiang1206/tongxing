@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-US" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -8,79 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Capacitor Production Line Solutions | TXAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
     
-    <style>
-        :root {
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA; 
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
-        .label-en { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-        .section-title { font-weight: 900; letter-spacing: -0.02em; line-height: 1.2; }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-
-        .spec-tag { background: #F5F5F7; border: 1px solid #E5E5EA; color: #1D1D1F; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; }
-        
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; }
-        .group:hover .img-zoom { transform: scale(1.05); }
-
-        .apple-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 32px;
-            overflow: hidden;
-        }
-        .apple-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(-6px);
-            border-color: rgba(255, 107, 0, 0.3);
-        }
-
-        .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-        .specs-row { display: flex; flex-wrap: wrap; gap: 12px; }
-    </style>
+    
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+    <div data-header-placeholder></div>
 
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM" class="h-8 md:h-10" onclick="location.href='index-en.html'">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10" onclick="location.href='index-en.html'"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -150,7 +91,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="w-full h-[400px] md:h-[500px] rounded-[24px] overflow-hidden bg-gray-100 apple-card">
-                        <img loading="lazy" src="解决方案/电容器生产线.png" alt="Capacitor Production Line" class="img-zoom">
+                        <picture><source srcset="solutions/capacitorshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/capacitorshengchanxian.png" alt="Capacitor Production Line" class="img-zoom"></picture>
                     </div>
                 </div>
                 <div class="fade-up">
@@ -304,21 +245,21 @@
                 <div class="specs-grid">
                     <a href="tv-display-solution-en.html" class="apple-card block p-6 group">
                         <div class="w-full h-40 rounded-2xl overflow-hidden bg-gray-100 mb-4">
-                            <img src="解决方案/TV商业显示器柔性装配产线.jpg" alt="TV/Commercial Display Flexible Assembly Line" class="img-zoom">
+                            <img loading="lazy" src="solutions/tv-flex-line.jpg" alt="TV/Commercial Display Flexible Assembly Line" class="img-zoom">
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">TV/Commercial Display Flexible Assembly Line</h4>
                         <p class="text-sm text-[#86868B] line-clamp-2">Turnkey automation solutions for TV and commercial display manufacturers.</p>
                     </a>
                     <a href="refrigerator-solution-en.html" class="apple-card block p-6 group">
                         <div class="w-full h-40 rounded-2xl overflow-hidden bg-gray-100 mb-4">
-                            <img loading="lazy" src="解决方案/冰箱生产线.png" alt="Refrigerator Production Line" class="img-zoom">
+                            <picture><source srcset="solutions/refrigeratorshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/refrigeratorshengchanxian.png" alt="Refrigerator Production Line" class="img-zoom"></picture>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">Refrigerator Production Line</h4>
                         <p class="text-sm text-[#86868B] line-clamp-2">Turnkey automation solutions for refrigerator manufacturers.</p>
                     </a>
                     <a href="ac-solution-en.html" class="apple-card block p-6 group">
                         <div class="w-full h-40 rounded-2xl overflow-hidden bg-gray-100 mb-4">
-                            <img loading="lazy" src="解决方案/空调生产线.png" alt="Air Conditioner Production Line" class="img-zoom">
+                            <picture><source srcset="solutions/acshengchanxian.webp" type="image/webp"><img loading="lazy" src="solutions/acshengchanxian.png" alt="Air Conditioner Production Line" class="img-zoom"></picture>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">Air Conditioner Production Line</h4>
                         <p class="text-sm text-[#86868B] line-clamp-2">Complete automation solutions for air conditioner manufacturers.</p>
@@ -359,6 +300,7 @@
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
         });
     </script>
-    <script src="footer-en.js"></script>
+    <script src="header.js" defer></script>
+    <script src="footer-en.js" defer></script>
 </body>
 </html>

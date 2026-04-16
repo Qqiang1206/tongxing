@@ -8,56 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Детали новостей | TXAM - Ведущий поставщик автоматизации в Китае</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --txam-orange: #FF6B00; 
-            --txam-dark: #1D1D1F; 
-            --bg-color: #FBFBFD;  
-            --border-light: #E5E5EA; 
-        }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--txam-dark);
-            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
-        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
-        .menu-open { transform: translateY(0%); opacity: 1; }
-        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-
-        .prose-content h2 { font-size: 1.75rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1rem; }
-        .prose-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #86868B; }
-        .prose-content img { border-radius: 16px; margin: 2rem 0; }
-    </style>
+    
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+    <div data-header-placeholder></div>
 
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <img src="logo.png" alt="TXAM" class="h-8 md:h-10">
+            <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -116,14 +77,14 @@
                     Предоставляем превосходное интеллектуальное оборудование для ведущих мировых предприятий
                 </h1>
                 <div class="flex items-center text-[#86868B] text-sm">
-                    <span id="news-date" class="font-mono">2023.05.16</span>
+                    <span id="news-date" class="font-mono">2026.01.08</span>
                     <span class="mx-3">|</span>
                     <span>TXAM</span>
                 </div>
             </header>
 
             <div class="w-full h-[400px] md:h-[500px] rounded-[24px] overflow-hidden mb-12 fade-up">
-                <img id="news-cover" src="building-office.jpg" alt="Обложка новости" class="w-full h-full object-cover">
+                <picture><source srcset="building-office.webp" type="image/webp"><img loading="lazy" id="news-cover" src="building-office.jpg" alt="Обложка новости" class="w-full h-full object-cover"></picture>
             </div>
 
             <div id="news-content" class="prose-content fade-up">
@@ -145,22 +106,22 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <a href="news-detail-ru.html?id=2" class="group apple-card p-6 flex gap-4">
                         <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                            <img loading="lazy" src="产品图片/商用显示柔性装配产线.jpg" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                            <img loading="lazy" src="products/shangyongxianshirouxingzhuangpeichanxian.jpg" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                         </div>
                         <div>
                             <span class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Проект</span>
                             <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">Высокоточная роботизированная линия сборки успешно развернута у ведущего производителя</h4>
-                            <span class="text-xs text-[#86868B] mt-2 block">2023.02.28</span>
+                            <span class="text-xs text-[#86868B] mt-2 block">2026.01.15</span>
                         </div>
                     </a>
                     <a href="news-detail-ru.html?id=3" class="group apple-card p-6 flex gap-4">
                         <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                            <img src="news-tech.jpg" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                            <picture><source srcset="news-tech.webp" type="image/webp"><img loading="lazy" src="news-tech.jpg" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform"></picture>
                         </div>
                         <div>
                             <span class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Компания</span>
                             <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">TXAM поразила выставку CIBF International Battery Exhibition</h4>
-                            <span class="text-xs text-[#86868B] mt-2 block">2025.05.16</span>
+                            <span class="text-xs text-[#86868B] mt-2 block">2026.01.20</span>
                         </div>
                     </a>
                 </div>
@@ -175,7 +136,7 @@
             '1': {
                 category: 'Компания',
                 title: 'Предоставляем превосходное интеллектуальное оборудование для ведущих мировых предприятий',
-                date: '2023.05.16',
+                date: '2026.01.08',
                 cover: 'building-office.jpg',
                 content: `
                     <p>TXAM объявляет, что ее две крупные базы интеллектуального производства в Шэньчжэне и Хуэйчжоу полностью завершены и введены в эксплуатацию, что ознаменует официальный выход компании на новый этап масштабного развития.</p>
@@ -194,8 +155,8 @@
             '2': {
                 category: 'Проект',
                 title: 'Высокоточная роботизированная линия сборки успешно развернута у ведущего производителя',
-                date: '2023.02.28',
-                cover: '产品图片/商用显示柔性装配产线.jpg',
+                date: '2026.01.15',
+                cover: 'products/shangyongxianshirouxingzhuangpeichanxian.jpg',
                 content: `
                     <p>Высокоточная роботизированная линия сборки, разработанная TXAM для известного производителя бытовой техники, успешно прошла установку и ввод в эксплуатацию.</p>
                     
@@ -211,7 +172,7 @@
             '3': {
                 category: 'Компания',
                 title: 'TXAM поразила выставку CIBF International Battery Exhibition "Циркулярным подъемником"',
-                date: '2025.05.16',
+                date: '2026.01.20',
                 cover: 'news-tech.jpg',
                 content: `
                     <p>В мае 2025 года TXAM продемонстрировала свой самостоятельно разработанный "Циркулярный автоматический подъемник" и другое основное оборудование на выставке CIBF International Battery Technology Exhibition.</p>
@@ -258,7 +219,7 @@
             '6': {
                 category: 'Отрасль',
                 title: 'Анализ: "Второй тайм" технологии сборки аккумуляторов для новой энергии',
-                date: '2025.08.05',
+                date: '2026.02.12',
                 cover: 'factory-hero.jpg',
                 content: `
                     <p>С взрывным ростом рынка новых энергетических транспортных средств, технология сборки аккумуляторов встречает новые возможности развития. В этой статье рассматриваются тенденции "второго тайма" технологии сборки аккумуляторов для новой энергии.</p>
@@ -305,6 +266,7 @@
             });
         });
     </script>
-    <script src="footer-ru.js"></script>
+    <script src="header.js" defer></script>
+    <script src="footer-ru.js" defer></script>
 </body>
 </html>
