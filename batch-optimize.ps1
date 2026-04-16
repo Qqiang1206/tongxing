@@ -1,7 +1,8 @@
-# TXAM 网站批量优化脚本
+# TXAM 网站批量优化脚本 v2
 # 将 styles.css 和 header.js 集成到所有 HTML 文件
+# 使用前请先备份！
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 # 设置工作目录
 $baseDir = $PSScriptRoot
@@ -11,97 +12,129 @@ $cssFile = Join-Path $baseDir "styles.css"
 $headerFile = Join-Path $baseDir "header.js"
 
 if (-not (Test-Path $cssFile)) {
-    Write-Error "styles.css not found!"
+    Write-Error "styles.css not found! Please run from website root."
     exit 1
 }
 if (-not (Test-Path $headerFile)) {
-    Write-Error "header.js not found!"
+    Write-Error "header.js not found! Please run from website root."
     exit 1
 }
 
-$cssContent = Get-Content $cssFile -Raw
-$headerContent = Get-Content $headerFile -Raw
-
-Write-Host "=== TXAM 网站批量优化脚本 ===" -ForegroundColor Cyan
+Write-Host "=== TXAM 网站批量优化脚本 v2 ===" -ForegroundColor Cyan
 Write-Host "工作目录: $baseDir" -ForegroundColor Gray
 Write-Host ""
+Write-Host "即将处理的文件:" -ForegroundColor Yellow
+Write-Host "  - 主页: index-en.html, index-ru.html, index.html" -ForegroundColor Gray
+Write-Host "  - 关于页: about-en.html, about-ru.html, about.html" -ForegroundColor Gray
+Write-Host "  - 解决方案页 (7个): *_solution*.html (3种语言)" -ForegroundColor Gray
+Write-Host "  - 产品列表页: products-en.html, products-ru.html, products.html" -ForegroundColor Gray
+Write-Host "  - 新闻页: news-en.html, news-ru.html, news.html" -ForegroundColor Gray
+Write-Host "  - 联系页: contact-en.html, contact-ru.html, contact.html" -ForegroundColor Gray
+Write-Host "  - 产品详情页: product-detail*.html" -ForegroundColor Gray
+Write-Host ""
+Write-Host "跳过: product-*.html (90个产品页面)" -ForegroundColor DarkGray
+Write-Host ""
 
-# 获取所有 HTML 文件
-$htmlFiles = Get-ChildItem -Path $baseDir -Filter "*.html" -File | Where-Object { 
-    $_.Name -ne "index.html" -and  # 跳过已处理的文件
-    $_.Name -notmatch "product-\d+-en\.html$" -and  # 暂时只处理主文件
-    $_.Name -notmatch "product-\d+-ru\.html$"
+# 检查是否强制运行（跳过确认）
+if (-not $Force) {
+    $confirm = Read-Host "是否继续? (y/n)"
+    if ($confirm -ne "y" -and $confirm -ne "Y") {
+        Write-Host "已取消" -ForegroundColor Red
+        exit 0
+    }
 }
 
-Write-Host "找到 $(@($htmlFiles).Count) 个待处理文件" -ForegroundColor Yellow
-Write-Host ""
+# 要处理的文件模式
+$mainPages = @(
+    "index.html", "index-en.html", "index-ru.html",
+    "about.html", "about-en.html", "about-ru.html",
+    "products.html", "products-en.html", "products-ru.html",
+    "news.html", "news-en.html", "news-ru.html",
+    "news-detail.html", "news-detail-en.html", "news-detail-ru.html",
+    "contact.html", "contact-en.html", "contact-ru.html",
+    "solutions.html", "solutions-en.html", "solutions-ru.html",
+    "solutions-detail.html", "solutions-detail-en.html", "solutions-detail-ru.html",
+    "product-detail.html", "product-detail-en.html", "product-detail-ru.html"
+)
+
+# 解决方案页面
+$solutionPages = Get-ChildItem -Path $baseDir -Filter "*solution*.html" -File | Select-Object -ExpandProperty Name
+
+# 合并所有要处理的页面
+$allPages = $mainPages + $solutionPages | Select-Object -Unique
 
 $processed = 0
 $skipped = 0
+$errors = 0
 
-foreach ($file in $htmlFiles) {
+foreach ($pageName in $allPages) {
+    $filePath = Join-Path $baseDir $pageName
+    
+    if (-not (Test-Path $filePath)) {
+        Write-Host "[跳过] $pageName - 文件不存在" -ForegroundColor DarkGray
+        $skipped++
+        continue
+    }
+    
     try {
-        $content = Get-Content $file.FullName -Raw -Encoding UTF8
+        $content = Get-Content $filePath -Raw -Encoding UTF8
         
         # 检查是否已经被优化过
         if ($content -match 'href="styles\.css"') {
-            Write-Host "[跳过] $($file.Name) - 已优化" -ForegroundColor DarkGray
+            Write-Host "[跳过] $pageName - 已优化" -ForegroundColor DarkGray
             $skipped++
             continue
         }
         
-        # 检查是否是产品详情页（需要特殊处理）
-        if ($file.Name -match "^product-detail") {
-            Write-Host "[跳过] $($file.Name) - 产品详情页" -ForegroundColor DarkGray
+        # 检查是否有内联 style 标签
+        if ($content -notmatch '<style>') {
+            Write-Host "[跳过] $pageName - 无内联样式" -ForegroundColor DarkGray
             $skipped++
             continue
         }
         
-        # 提取原有内联 CSS (从 <style> 到 </style>)
-        $originalCSS = ""
-        if ($content -match '(?s)<style>.*?</style>') {
-            $originalCSS = $Matches[0]
-        }
+        $originalContent = $content
         
-        # 构建新的 head 部分
-        # 1. 添加 styles.css 链接（在 </head> 前）
-        # 2. 移除原有的内联 CSS
-        # 3. 添加 header.js (在 footer.js 前)
-        # 4. 添加 header placeholder
+        # 1. 移除内联 <style>...</style>
+        $content = $content -replace '(?s)<style>.*?</style>', ''
         
-        # 移除原有的 <style>...</style>
-        $newContent = $content -replace '(?s)<style>.*?</style>', ''
-        
-        # 在 </head> 前插入 styles.css 链接（如果有 tailwind 的话）
-        if ($newContent -match '<script src="https://cdn\.tailwindcss\.com"></script>') {
-            $newContent = $newContent -replace (
+        # 2. 在 tailwind script 后添加 styles.css 链接
+        if ($content -match '<script src="https://cdn\.tailwindcss\.com"></script>') {
+            $content = $content -replace (
                 '<script src="https://cdn\.tailwindcss\.com"></script>',
                 '<script src="https://cdn.tailwindcss.com"></script>`n    <link rel="stylesheet" href="styles.css">'
             )
         }
         
-        # 在 body 开始后添加 header placeholder（如果没有的话）
-        if ($newContent -notmatch '<div data-header-placeholder>' -and $newContent -notmatch '<nav id="navbar"') {
-            # 在 </body> 前的最后一个 </footer> 或类似位置添加
-            $newContent = $newContent -replace '(</body>)', "`n    <div data-header-placeholder></div>`n$1"
+        # 3. 添加 header placeholder (在 body 开始后，nav 前面)
+        if ($content -notmatch '<div data-header-placeholder>' -and $content -notmatch '<nav id="navbar"') {
+            $content = $content -replace '(<body[^>]*>)', "`$1`n    <div data-header-placeholder></div>"
         }
         
-        # 添加 header.js 引用（在 footer.js 前）
-        if ($newContent -match '<script src="footer(?:-en|-ru)?\.js" defer></script>') {
-            $newContent = $newContent -replace (
+        # 4. 添加 header.js 引用（在 footer.js 前）
+        if ($content -match '<script src="footer(?:-en|-ru)?\.js" defer></script>') {
+            $content = $content -replace (
                 '<script src="footer(?:-en|-ru)?\.js" defer></script>',
                 '<script src="header.js" defer></script>`n    <script src="footer$1.js" defer></script>'
             )
         }
         
-        # 保存文件
-        Set-Content -Path $file.FullName -Value $newContent -Encoding UTF8 -NoNewline
+        # 检查是否有变化
+        if ($content -eq $originalContent) {
+            Write-Host "[跳过] $pageName - 无需修改" -ForegroundColor DarkGray
+            $skipped++
+            continue
+        }
         
-        Write-Host "[处理] $($file.Name)" -ForegroundColor Green
+        # 保存文件
+        Set-Content -Path $filePath -Value $content -Encoding UTF8 -NoNewline
+        
+        Write-Host "[处理] $pageName" -ForegroundColor Green
         $processed++
         
     } catch {
-        Write-Warning "[错误] $($file.Name): $_"
+        Write-Warning "[错误] $pageName : $_"
+        $errors++
     }
 }
 
@@ -109,5 +142,8 @@ Write-Host ""
 Write-Host "=== 完成 ===" -ForegroundColor Cyan
 Write-Host "处理: $processed 个文件" -ForegroundColor Green
 Write-Host "跳过: $skipped 个文件" -ForegroundColor Yellow
+Write-Host "错误: $errors 个文件" -ForegroundColor Red
 Write-Host ""
-Write-Host "建议: 运行前先备份或提交 git" -ForegroundColor Red
+if ($processed -gt 0) {
+    Write-Host "建议: 刷新浏览器测试效果，然后提交 git" -ForegroundColor Cyan
+}

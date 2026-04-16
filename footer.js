@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <h2 class="text-2xl md:text-[2.5rem] font-black text-white tracking-tighter leading-tight text-center md:text-left">以卓越品质，<br>不负每一份信任。</h2>
                 <div>
-                    <img src="微信客服.png" alt="微信客服" class="max-h-[200px] w-auto rounded-lg object-cover">
+                    <img src="wechat-service.png" alt="微信客服" class="max-h-[200px] w-auto rounded-lg object-cover">
                 </div>
             </div>
         </div>
