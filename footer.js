@@ -25,25 +25,58 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ====== 动态面包屑：基于 sessionStorage + referrer 跟踪多层访问路径 ======
     (function() {
-        const KEY = 'txam-nav-history';
         const MAX_DEPTH = 6;
+
+        // ===== 多语言页面名映射（按当前页语言选择） =====
+        const pageNamesByLang = {
+            zh: {
+                'index.html': '首页',
+                'about.html': '关于我们',
+                'solutions.html': '解决方案',
+                'products.html': '产品中心',
+                'news.html': '新闻中心',
+                'contact.html': '联系我们',
+            },
+            en: {
+                'index-en.html': 'Home',
+                'about-en.html': 'About Us',
+                'solutions-en.html': 'Solutions',
+                'products-en.html': 'Products',
+                'news-en.html': 'News',
+                'contact-en.html': 'Contact Us',
+            },
+            ru: {
+                'index-ru.html': 'Главная',
+                'about-ru.html': 'О нас',
+                'solutions-ru.html': 'Решения',
+                'products-ru.html': 'Продукция',
+                'news-ru.html': 'Новости',
+                'contact-ru.html': 'Контакты',
+            },
+        };
+
+        // 首页文件名（按语言）
+        const indexPageByLang = {
+            zh: 'index.html',
+            en: 'index-en.html',
+            ru: 'index-ru.html',
+        };
+
+        // ===== 检测当前页语言 =====
+        const currentPage = location.pathname.split('/').pop();
+        let lang;
+        if (currentPage.endsWith('-en.html')) lang = 'en';
+        else if (currentPage.endsWith('-ru.html')) lang = 'ru';
+        else lang = 'zh';
+
+        const pageNames = pageNamesByLang[lang];
+        const indexPage = indexPageByLang[lang];
+        const KEY = 'txam-nav-history-' + lang;  // sessionStorage 按语言分桶
 
         const pathContainer = document.querySelector('[data-breadcrumb]');
         if (!pathContainer) return;  // 没有面包屑容器，跳过
 
-        const pageNames = {
-            'index.html': '首页',
-            'about.html': '关于我们',
-            'solutions.html': '解决方案',
-            'solutions-detail.html': '方案详情',
-            'products.html': '产品中心',
-            'products-detail.html': '产品详情',
-            'news.html': '新闻中心',
-            'contact.html': '联系我们',
-        };
-
-        // 当前页信息
-        const currentPage = location.pathname.split('/').pop();
+        // 当前页名：优先从页面 <h1> 取，fallback 到 body data 属性，最后到 pageNames
         const h1 = document.querySelector('h1');
         const currentName = (h1 && h1.textContent.trim()) || (document.body.dataset.breadcrumbName) || pageNames[currentPage] || currentPage;
 
@@ -61,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (url.origin === location.origin) {
                     const fromPage = url.pathname.split('/').pop();
                     const fromName = pageNames[fromPage];
-                    // 只有当 referrer 是索引页（map 里有名字）时才主动 push
+                    // 只有当 referrer 是索引页（map 里有名字）且是同语言版本时才主动 push
                     // 否则依赖 sessionStorage（详情页跳转时保留历史）
                     if (fromName && (history.length === 0 || history[history.length - 1].page !== fromPage)) {
                         history.push({ page: fromPage, name: fromName });
@@ -77,9 +110,9 @@ document.addEventListener("DOMContentLoaded", function() {
             history = history.slice(0, currentIdx + 1);
         }
 
-        // 确保首页是第一层
-        if (history.length === 0 || history[0].page !== 'index.html') {
-            history.unshift({ page: 'index.html', name: '首页' });
+        // 确保首页是第一层（同语言版本）
+        if (history.length === 0 || history[0].page !== indexPage) {
+            history.unshift({ page: indexPage, name: pageNames[indexPage] });
         }
 
         // 添加当前页（去重）
