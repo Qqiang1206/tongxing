@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // 当前页信息
         const currentPage = location.pathname.split('/').pop();
-        // 当前页名：优先从页面 <h1> 取，fallback 到 body data 属性，再 fallback 到 pageNames
         const h1 = document.querySelector('h1');
         const currentName = (h1 && h1.textContent.trim()) || (document.body.dataset.breadcrumbName) || pageNames[currentPage] || currentPage;
 
@@ -54,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
             history = JSON.parse(sessionStorage.getItem(KEY) || '[]');
         } catch (e) {}
 
-        // 处理 referrer：如果 referrer 是站内页，且不在 history 末尾，把它加入
+        // === 处理 referrer ===
         const referrer = document.referrer;
         if (referrer) {
             try {
@@ -62,14 +61,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (url.origin === location.origin) {
                     const fromPage = url.pathname.split('/').pop();
                     const fromName = pageNames[fromPage];
-                    if (fromName && fromPage !== currentPage) {
-                        // 如果 referrer 不在 history 末尾（说明是新跳转），加入
-                        if (history.length === 0 || history[history.length - 1].page !== fromPage) {
-                            history.push({ page: fromPage, name: fromName });
-                        }
+                    // 只有当 referrer 是索引页（map 里有名字）时才主动 push
+                    // 否则依赖 sessionStorage（详情页跳转时保留历史）
+                    if (fromName && (history.length === 0 || history[history.length - 1].page !== fromPage)) {
+                        history.push({ page: fromPage, name: fromName });
                     }
                 }
             } catch (e) {}
+        }
+
+        // === 检测浏览器后退：如果当前页在历史中间，截断到当前页 ===
+        const currentIdx = history.findIndex(p => p.page === currentPage);
+        if (currentIdx >= 0 && currentIdx < history.length - 1) {
+            // 用户从 history.back() 进来，截断历史到当前页
+            history = history.slice(0, currentIdx + 1);
         }
 
         // 确保首页是第一层
@@ -96,9 +101,26 @@ document.addEventListener("DOMContentLoaded", function() {
             if (isLast) {
                 html += `<span class="text-[#1D1D1F] font-medium">${p.name}</span>`;
             } else {
-                html += `<a href="${p.page}" class="hover:text-[#FF6B00] transition-colors">${p.name}</a><span class="mx-2 text-[#C7C7CC]">›</span>`;
+                // data-truncate-to 让 click handler 截断历史
+                html += `<a href="${p.page}" data-truncate-to="${p.page}" class="hover:text-[#FF6B00] transition-colors">${p.name}</a><span class="mx-2 text-[#C7C7CC]">›</span>`;
             }
         }
         pathContainer.innerHTML = html;
+
+        // === 点击面包屑中间层时，截断 sessionStorage 到目标层 ===
+        // 这样新页面加载时历史已经是截断后的
+        pathContainer.querySelectorAll('a[data-truncate-to]').forEach(a => {
+            a.addEventListener('click', () => {
+                const targetPage = a.getAttribute('data-truncate-to');
+                let h = [];
+                try { h = JSON.parse(sessionStorage.getItem(KEY) || '[]'); } catch (e) {}
+                const targetIdx = h.findIndex(p => p.page === targetPage);
+                if (targetIdx >= 0) {
+                    // 截断到 targetPage（包括 target），新页面加载时 filter(targetPage) 再去掉
+                    const truncated = h.slice(0, targetIdx + 1);
+                    sessionStorage.setItem(KEY, JSON.stringify(truncated));
+                }
+            });
+        });
     })();
 });
