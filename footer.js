@@ -17,9 +17,46 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     </footer>
     `;
-    
+
     const placeholders = document.querySelectorAll('[data-footer-placeholder]');
     placeholders.forEach(el => {
         el.outerHTML = footerHTML;
     });
+
+    // ====== 动态面包屑：基于 referrer 在 [data-breadcrumb-insert] 处插入中间项 ======
+    (function() {
+        const insertEl = document.querySelector('[data-breadcrumb-insert]');
+        if (!insertEl) return;  // 没有面包屑，跳过
+
+        const breadcrumbMap = {
+            'about.html': { name: '关于我们', url: 'about.html' },
+            'solutions.html': { name: '解决方案', url: 'solutions.html' },
+            'products.html': { name: '产品中心', url: 'products.html' },
+            'news.html': { name: '新闻中心', url: 'news.html' },
+            'contact.html': { name: '联系我们', url: 'contact.html' },
+        };
+
+        const referrer = document.referrer;
+        if (!referrer) return;  // 没有 referrer，保持静态 (首页 › 当前页)
+
+        try {
+            const url = new URL(referrer);
+            // 只处理同源 referrer
+            if (url.origin !== location.origin) return;
+
+            const fromPage = url.pathname.split('/').pop();
+            if (!fromPage || fromPage === 'index.html' || fromPage === '') return;
+
+            // 避免循环：当前页 == 来源页
+            const currentPage = location.pathname.split('/').pop();
+            if (fromPage === currentPage) return;
+
+            const crumb = breadcrumbMap[fromPage];
+            if (crumb) {
+                insertEl.innerHTML = `<a href="${crumb.url}" class="hover:text-[#FF6B00] transition-colors">${crumb.name}</a><span class="mx-2 text-[#C7C7CC]">›</span>`;
+            }
+        } catch (e) {
+            // referrer 解析失败，保持静态
+        }
+    })();
 });
