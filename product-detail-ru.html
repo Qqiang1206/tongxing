@@ -69,11 +69,6 @@
         <div class="max-w-[1200px] mx-auto">
             <nav class="breadcrumb text-sm text-[#86868B] mb-8 flex items-center flex-wrap" aria-label="Хлебные крошки" data-breadcrumb></nav>
 
-            <a id="back-link" href="javascript:history.back()" class="inline-flex items-center text-[#86868B] hover:text-[#FF6B00] transition-colors mb-8">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                <span id="back-text">Вернуться к продукции</span>
-            </a>
-
             <header class="mb-12 fade-up">
                 <div class="flex items-center gap-3 mb-4">
                     <span id="product-category" class="text-[#FF6B00] font-bold text-xs tracking-widest uppercase">Единичное оборудование</span>
@@ -833,11 +828,7 @@
             const id = params.get('id') || '1';
             const product = productData[id] || productData['1'];
 
-            // Dynamic back text based on category
-            const backText = document.getElementById('back-text');
             if (product.category === 'Решения') {
-                backText.textContent = 'Вернуться к решениям';
-                
                 // Highlight Solutions nav, not Products
                 document.getElementById('nav-solutions').classList.remove('text-[#86868B]');
                 document.getElementById('nav-solutions').classList.add('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
