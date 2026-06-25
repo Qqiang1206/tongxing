@@ -115,6 +115,16 @@ document.addEventListener("DOMContentLoaded", function() {
             history.unshift({ page: indexPage, name: pageNames[indexPage] });
         }
 
+        // Detail page auto-injects list page middle layer (e.g. news-detail-en.html → news-en.html).
+        // Generic rule: *detail*.html → strip -detail, find list page (only if in pageNames).
+        const detailMatch = currentPage.match(/^(.+?)-detail(-[a-z]{2})?\.html$/);
+        if (detailMatch) {
+            const listPage = detailMatch[1] + (detailMatch[2] || '') + '.html';
+            if (pageNames[listPage] && !history.find(h => h.page === listPage)) {
+                history.push({ page: listPage, name: pageNames[listPage] });
+            }
+        }
+
         // Append current page (dedupe)
         history = history.filter(p => p.page !== currentPage);
         history.push({ page: currentPage, name: currentName });

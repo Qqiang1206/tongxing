@@ -237,6 +237,41 @@ test('俄文版: 首页 → Новости → 新闻详情 (列表页 h1 hero �
     };
 });
 
+// 测试 10: 直接访问新闻详情页 (无 referrer, 无列表页历史) — 应自动补"新闻中心"中间层
+test('中文版: 直接打开新闻详情 (无 referrer), 自动补"新闻中心"中间层', () => {
+    const s = makeSessionStorage();
+    // 用户从外部链接/书签直接打开详情页
+    visit(s, makeDom(null), 'index.html', '');
+    visit(s, makeDom('为世界一流企业提供优质智能装备'), 'news-detail.html', '');  // 无 referrer
+
+    const history = readHistory(s, 'zh');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].name === '首页' &&
+              history[1].page === 'news.html' &&
+              history[1].name === '新闻中心' &&   // 关键: 自动补
+              history[2].page === 'news-detail.html' &&
+              history[2].name === '为世界一流企业提供优质智能装备'
+    };
+});
+
+// 测试 11: 从列表页跳详情页 (有 referrer) — 不应重复 push 列表页
+test('中文版: 列表页 → 详情页 (有 referrer), 不重复 push 列表页', () => {
+    const s = makeSessionStorage();
+    visit(s, makeDom(null, '新闻中心'), 'news.html', 'http://localhost/index.html');
+    visit(s, makeDom('文章标题'), 'news-detail.html', 'http://localhost/news.html');
+
+    const history = readHistory(s, 'zh');
+    const newsCount = history.filter(h => h.page === 'news.html').length;
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&   // 首页 / 新闻中心 / 详情 — 不重复
+              newsCount === 1 &&         // 列表页只出现 1 次
+              history[1].name === '新闻中心'
+    };
+});
+
 // ====== 运行 ======
 console.log('=== 三语面包屑测试 ===\n');
 let passCount = 0;

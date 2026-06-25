@@ -115,6 +115,16 @@ document.addEventListener("DOMContentLoaded", function() {
             history.unshift({ page: indexPage, name: pageNames[indexPage] });
         }
 
+        // 详情页自动补列表页中间层（如 news-detail.html → news.html, ac-solution.html 不匹配故跳过）
+        // 通用规则：*detail*.html → 去掉 -detail 找列表页（pageNames 里有才补）
+        const detailMatch = currentPage.match(/^(.+?)-detail(-[a-z]{2})?\.html$/);
+        if (detailMatch) {
+            const listPage = detailMatch[1] + (detailMatch[2] || '') + '.html';
+            if (pageNames[listPage] && !history.find(h => h.page === listPage)) {
+                history.push({ page: listPage, name: pageNames[listPage] });
+            }
+        }
+
         // 添加当前页（去重）
         history = history.filter(p => p.page !== currentPage);
         history.push({ page: currentPage, name: currentName });
