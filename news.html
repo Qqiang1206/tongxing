@@ -19,7 +19,7 @@
     
     
 </head>
-<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white" data-breadcrumb-name="新闻中心">
     <div data-header-placeholder></div>
 
     <!-- 🌐 顶部导航 -->
@@ -73,7 +73,13 @@
     </div>
 
     <!-- 📍 P1. 头部 -->
-    <header class="pt-40 pb-10 px-6 md:px-24 w-full text-center fade-up">
+    <section class="pt-40 px-6 md:px-24">
+        <div class="max-w-[1000px] mx-auto">
+            <nav class="breadcrumb text-sm text-[#86868B] mb-2 flex items-center flex-wrap" aria-label="面包屑" data-breadcrumb></nav>
+        </div>
+    </section>
+
+    <header class="pt-4 pb-10 px-6 md:px-24 w-full text-center fade-up">
         <div class="max-w-[1000px] mx-auto fade-up mt-6">
             <h1 class="hero-title text-5xl md:text-[5rem] text-[#1D1D1F] mb-8 text-gradient">
                 洞察前沿智造

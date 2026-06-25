@@ -23,9 +23,9 @@ function makeSessionStorage() {
     };
 }
 
-function makeDom(h1Text) {
+function makeDom(h1Text, breadcrumbName) {
     return {
-        body: { dataset: {} },
+        body: { dataset: breadcrumbName ? { breadcrumbName } : {} },
         referrer: '',
         querySelector: (sel) => {
             if (sel === 'h1') return h1Text ? { textContent: h1Text.trim() } : null;
@@ -177,6 +177,63 @@ test('英文版: 首页 → 解决方案 → tv-display (3 层英文名)', () =>
               history[0].name === 'Home' &&
               history[1].name === 'Solutions' &&
               history[2].name === 'TV/Commercial Display Flexible Assembly Line'
+    };
+});
+
+// 测试 7: 中文版首页 → 新闻中心 → 新闻详情 (列表页 hero h1 应被 data-breadcrumb-name 覆盖)
+test('中文版: 首页 → 新闻中心 → 新闻详情 (列表页 h1 hero 标题, 被 data-breadcrumb-name 覆盖)', () => {
+    const s = makeSessionStorage();
+    visit(s, makeDom(null), 'index.html', '');
+    // 列表页 h1 = "洞察前沿智造" (hero 标题, 不是页面语义名)
+    visit(s, makeDom('洞察前沿智造', '新闻中心'), 'news.html', 'http://localhost/index.html');
+    visit(s, makeDom('为世界一流企业提供优质智能装备'), 'news-detail.html', 'http://localhost/news.html');
+
+    const history = readHistory(s, 'zh');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].page === 'index.html' &&
+              history[0].name === '首页' &&
+              history[1].page === 'news.html' &&
+              history[1].name === '新闻中心' &&   // 关键: 覆盖了 hero h1 "洞察前沿智造"
+              history[2].page === 'news-detail.html' &&
+              history[2].name === '为世界一流企业提供优质智能装备'
+    };
+});
+
+// 测试 8: 英文版首页 → News → News Detail (列表页 hero h1 应被 data-breadcrumb-name 覆盖)
+test('英文版: 首页 → News → News Detail (列表页 h1 hero 标题, 被 data-breadcrumb-name 覆盖)', () => {
+    const s = makeSessionStorage();
+    visit(s, makeDom(null), 'index-en.html', '');
+    // 列表页 h1 = "Insights from the Frontlines of Automation" (hero 标题)
+    visit(s, makeDom('Insights from the Frontlines of Automation', 'News'), 'news-en.html', 'http://localhost/index-en.html');
+    visit(s, makeDom('Providing Exceptional Intelligent Equipment to World-Class Enterprises'), 'news-detail-en.html', 'http://localhost/news-en.html');
+
+    const history = readHistory(s, 'en');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].name === 'Home' &&
+              history[1].name === 'News' &&   // 关键: 覆盖了 hero h1
+              history[2].name === 'Providing Exceptional Intelligent Equipment to World-Class Enterprises'
+    };
+});
+
+// 测试 9: 俄文版首页 → Новости → 新闻详情 (列表页 hero h1 应被 data-breadcrumb-name 覆盖)
+test('俄文版: 首页 → Новости → 新闻详情 (列表页 h1 hero 标题, 被 data-breadcrumb-name 覆盖)', () => {
+    const s = makeSessionStorage();
+    visit(s, makeDom(null), 'index-ru.html', '');
+    // 列表页 h1 = "Аналитика переднего края автоматизации" (hero 标题)
+    visit(s, makeDom('Аналитика переднего края автоматизации', 'Новости'), 'news-ru.html', 'http://localhost/index-ru.html');
+    visit(s, makeDom('Предоставляем превосходное интеллектуальное оборудование для ведущих мировых предприятий'), 'news-detail-ru.html', 'http://localhost/news-ru.html');
+
+    const history = readHistory(s, 'ru');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].name === 'Главная' &&
+              history[1].name === 'Новости' &&   // 关键: 覆盖了 hero h1
+              history[2].name.startsWith('Предоставляем')
     };
 });
 

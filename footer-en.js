@@ -76,9 +76,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const pathContainer = document.querySelector('[data-breadcrumb]');
         if (!pathContainer) return;  // No breadcrumb container, skip
 
-        // Current page name: prefer page <h1>, fallback to body data attribute, then pageNames map
+        // Current page name: prefer body data-breadcrumb-name (overrides hero h1), then <h1>, then pageNames map
         const h1 = document.querySelector('h1');
-        const currentName = (h1 && h1.textContent.trim()) || (document.body.dataset.breadcrumbName) || pageNames[currentPage] || currentPage;
+        const currentName = (document.body.dataset.breadcrumbName) || (h1 && h1.textContent.trim()) || pageNames[currentPage] || currentPage;
 
         // Read history
         let history = [];

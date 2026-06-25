@@ -76,9 +76,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const pathContainer = document.querySelector('[data-breadcrumb]');
         if (!pathContainer) return;  // 没有面包屑容器，跳过
 
-        // 当前页名：优先从页面 <h1> 取，fallback 到 body data 属性，最后到 pageNames
+        // 当前页名：优先 body data-breadcrumb-name（覆盖 hero h1），其次 <h1>，最后到 pageNames
         const h1 = document.querySelector('h1');
-        const currentName = (h1 && h1.textContent.trim()) || (document.body.dataset.breadcrumbName) || pageNames[currentPage] || currentPage;
+        const currentName = (document.body.dataset.breadcrumbName) || (h1 && h1.textContent.trim()) || pageNames[currentPage] || currentPage;
 
         // 读取历史
         let history = [];
