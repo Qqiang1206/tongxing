@@ -101,6 +101,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
             } catch (e) {}
+        } else {
+            // 外部直访（无 referrer）：重置历史，避免跨栏目历史污染
+            // 防止"在新闻栏目逛过 → 直访方案详情页"显示错的中间层
+            history = [];
         }
 
         // === 检测浏览器后退：如果当前页在历史中间，截断到当前页 ===
@@ -115,14 +119,38 @@ document.addEventListener("DOMContentLoaded", function() {
             history.unshift({ page: indexPage, name: pageNames[indexPage] });
         }
 
-        // 详情页自动补列表页中间层（如 news-detail.html → news.html, ac-solution.html 不匹配故跳过）
-        // 通用规则：*detail*.html → 去掉 -detail 找列表页（pageNames 里有才补）
-        const detailMatch = currentPage.match(/^(.+?)-detail(-[a-z]{2})?\.html$/);
-        if (detailMatch) {
-            const listPage = detailMatch[1] + (detailMatch[2] || '') + '.html';
-            if (pageNames[listPage] && !history.find(h => h.page === listPage)) {
-                history.push({ page: listPage, name: pageNames[listPage] });
+        // 详情页自动补列表页中间层（按规则匹配父栏目）
+        // 优先级：data-breadcrumb-parent 声明 > product-detail 特殊 > *-detail.html 通用 > *-solution.html → solutions.html
+        function findParentPage() {
+            const declared = document.body.dataset.breadcrumbParent;
+            if (declared && pageNames[declared]) return declared;
+
+            // product-detail.html → products.html (复数特殊处理, 在通用 -detail 规则之前)
+            let m = currentPage.match(/^product-detail(-[a-z]{2})?\.html$/);
+            if (m) {
+                const listPage = 'products' + (m[1] || '') + '.html';
+                if (pageNames[listPage]) return listPage;
             }
+
+            // *-detail.html → 去掉 -detail 找（如 news-detail.html → news.html, solutions-detail.html → solutions.html）
+            m = currentPage.match(/^(.+?)-detail(-[a-z]{2})?\.html$/);
+            if (m) {
+                const listPage = m[1] + (m[2] || '') + '.html';
+                if (pageNames[listPage]) return listPage;
+            }
+
+            // *-solution.html → solutions.html（同语言版本）
+            m = currentPage.match(/^.+?-solution(-[a-z]{2})?\.html$/);
+            if (m) {
+                const listPage = 'solutions' + (m[1] || '') + '.html';
+                if (pageNames[listPage]) return listPage;
+            }
+
+            return null;
+        }
+        const parentPage = findParentPage();
+        if (parentPage && !history.find(h => h.page === parentPage)) {
+            history.push({ page: parentPage, name: pageNames[parentPage] });
         }
 
         // 添加当前页（去重）

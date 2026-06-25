@@ -101,6 +101,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
             } catch (e) {}
+        } else {
+            // External direct visit (no referrer): reset history to avoid cross-section pollution
+            // Prevents "browsed news section → direct-visit solution detail" showing wrong middle layer
+            history = [];
         }
 
         // === Detect browser back: if current page is in middle of history, truncate ===
@@ -115,14 +119,38 @@ document.addEventListener("DOMContentLoaded", function() {
             history.unshift({ page: indexPage, name: pageNames[indexPage] });
         }
 
-        // Detail page auto-injects list page middle layer (e.g. news-detail-en.html → news-en.html).
-        // Generic rule: *detail*.html → strip -detail, find list page (only if in pageNames).
-        const detailMatch = currentPage.match(/^(.+?)-detail(-[a-z]{2})?\.html$/);
-        if (detailMatch) {
-            const listPage = detailMatch[1] + (detailMatch[2] || '') + '.html';
-            if (pageNames[listPage] && !history.find(h => h.page === listPage)) {
-                history.push({ page: listPage, name: pageNames[listPage] });
+        // Detail page auto-injects list page middle layer (rule-based parent lookup)
+        // Priority: data-breadcrumb-parent > product-detail special > *-detail.html strip -detail > *-solution.html → solutions.html
+        function findParentPage() {
+            const declared = document.body.dataset.breadcrumbParent;
+            if (declared && pageNames[declared]) return declared;
+
+            // product-detail-en.html → products-en.html (plural special-case, before generic -detail rule)
+            let m = currentPage.match(/^product-detail(-[a-z]{2})?\.html$/);
+            if (m) {
+                const listPage = 'products' + (m[1] || '') + '.html';
+                if (pageNames[listPage]) return listPage;
             }
+
+            // *-detail.html → strip -detail (e.g. news-detail-en.html → news-en.html)
+            m = currentPage.match(/^(.+?)-detail(-[a-z]{2})?\.html$/);
+            if (m) {
+                const listPage = m[1] + (m[2] || '') + '.html';
+                if (pageNames[listPage]) return listPage;
+            }
+
+            // *-solution.html → solutions.html (same language)
+            m = currentPage.match(/^.+?-solution(-[a-z]{2})?\.html$/);
+            if (m) {
+                const listPage = 'solutions' + (m[1] || '') + '.html';
+                if (pageNames[listPage]) return listPage;
+            }
+
+            return null;
+        }
+        const parentPage = findParentPage();
+        if (parentPage && !history.find(h => h.page === parentPage)) {
+            history.push({ page: parentPage, name: pageNames[parentPage] });
         }
 
         // Append current page (dedupe)

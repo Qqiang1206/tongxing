@@ -68,8 +68,8 @@ function test(name, fn) {
     tests.push({ name, fn });
 }
 
-// 测试 1: 中文版首页 → tv-display 详情
-test('中文版: 首页 → tv-display 详情', () => {
+// 测试 1: 中文版首页 → tv-display 详情 (新逻辑自动补"解决方案"中间层)
+test('中文版: 首页 → tv-display 详情 (自动补"解决方案"中间层)', () => {
     const s = makeSessionStorage();
 
     // 访问首页（首页没有 h1）
@@ -80,16 +80,18 @@ test('中文版: 首页 → tv-display 详情', () => {
     const history = readHistory(s, 'zh');
     return {
         history,
-        pass: history.length === 2 &&
+        pass: history.length === 3 &&
               history[0].page === 'index.html' &&
               history[0].name === '首页' &&
-              history[1].page === 'tv-display-solution.html' &&
-              history[1].name === 'TV/商业显示器柔性装配产线'
+              history[1].page === 'solutions.html' &&
+              history[1].name === '解决方案' &&
+              history[2].page === 'tv-display-solution.html' &&
+              history[2].name === 'TV/商业显示器柔性装配产线'
     };
 });
 
-// 测试 2: 英文版首页 → tv-display (用户报错的场景)
-test('英文版: 首页 → tv-display 详情 (用户报错场景)', () => {
+// 测试 2: 英文版首页 → tv-display (新逻辑自动补"Solutions"中间层)
+test('英文版: 首页 → tv-display 详情 (自动补"Solutions"中间层)', () => {
     const s = makeSessionStorage();
     visit(s, makeDom(null), 'index-en.html', '');
     visit(s, makeDom('TV/Commercial Display Flexible Assembly Line'), 'tv-display-solution-en.html', 'http://localhost/index-en.html');
@@ -97,16 +99,18 @@ test('英文版: 首页 → tv-display 详情 (用户报错场景)', () => {
     const history = readHistory(s, 'en');
     return {
         history,
-        pass: history.length === 2 &&
+        pass: history.length === 3 &&
               history[0].page === 'index-en.html' &&
               history[0].name === 'Home' &&
-              history[1].page === 'tv-display-solution-en.html' &&
-              history[1].name === 'TV/Commercial Display Flexible Assembly Line'
+              history[1].page === 'solutions-en.html' &&
+              history[1].name === 'Solutions' &&
+              history[2].page === 'tv-display-solution-en.html' &&
+              history[2].name === 'TV/Commercial Display Flexible Assembly Line'
     };
 });
 
-// 测试 3: 俄文版首页 → tv-display
-test('俄文版: 首页 → tv-display 详情', () => {
+// 测试 3: 俄文版首页 → tv-display (新逻辑自动补"Решения"中间层)
+test('俄文版: 首页 → tv-display 详情 (自动补"Решения"中间层)', () => {
     const s = makeSessionStorage();
     visit(s, makeDom(null), 'index-ru.html', '');
     visit(s, makeDom('Гибкая сборочная линия для ТВ/коммерческих дисплеев'), 'tv-display-solution-ru.html', 'http://localhost/index-ru.html');
@@ -114,11 +118,13 @@ test('俄文版: 首页 → tv-display 详情', () => {
     const history = readHistory(s, 'ru');
     return {
         history,
-        pass: history.length === 2 &&
+        pass: history.length === 3 &&
               history[0].page === 'index-ru.html' &&
               history[0].name === 'Главная' &&
-              history[1].page === 'tv-display-solution-ru.html' &&
-              history[1].name === 'Гибкая сборочная линия для ТВ/коммерческих дисплеев'
+              history[1].page === 'solutions-ru.html' &&
+              history[1].name === 'Решения' &&
+              history[2].page === 'tv-display-solution-ru.html' &&
+              history[2].name === 'Гибкая сборочная линия для ТВ/коммерческих дисплеев'
     };
 });
 
@@ -269,6 +275,82 @@ test('中文版: 列表页 → 详情页 (有 referrer), 不重复 push 列表�
         pass: history.length === 3 &&   // 首页 / 新闻中心 / 详情 — 不重复
               newsCount === 1 &&         // 列表页只出现 1 次
               history[1].name === '新闻中心'
+    };
+});
+
+// 测试 12: 外部直访方案详情页 — 应自动补"解决方案"中间层, 不带跨栏目历史污染
+test('中文版: 外部直访 tv-display-solution, 应补"解决方案"中间层 + 清掉残留历史', () => {
+    const s = makeSessionStorage();
+    // 模拟用户之前在新闻栏目逛过, sessionStorage 有 [首页, 新闻中心]
+    visit(s, makeDom(null, '新闻中心'), 'news.html', 'http://localhost/index.html');
+    visit(s, makeDom('文章A'), 'news-detail.html?id=1', 'http://localhost/news.html');
+    // 验证污染: 此时 history 确实有 [首页, 新闻中心, 文章A]
+    const beforeHistory = readHistory(s, 'zh');
+    const hasNewsPollution = beforeHistory.some(h => h.page === 'news.html');
+
+    // 外部直访方案详情页 (无 referrer) — 应该清空污染历史, 然后补"解决方案"中间层
+    visit(s, makeDom('TV/商业显示器柔性生产线'), 'tv-display-solution.html', '');
+
+    const history = readHistory(s, 'zh');
+    return {
+        beforeHistoryHadNews: hasNewsPollution,
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].name === '首页' &&
+              history[1].page === 'solutions.html' &&
+              history[1].name === '解决方案' &&    // 关键: 不是"新闻中心"
+              history[2].page === 'tv-display-solution.html' &&
+              history[2].name === 'TV/商业显示器柔性生产线'
+    };
+});
+
+// 测试 13: 外部直访 product-detail.html — 应补"产品中心"中间层
+test('中文版: 外部直访 product-detail, 应补"产品中心"中间层', () => {
+    const s = makeSessionStorage();
+    visit(s, makeDom('某产品标题'), 'product-detail.html', '');
+
+    const history = readHistory(s, 'zh');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].name === '首页' &&
+              history[1].page === 'products.html' &&
+              history[1].name === '产品中心' &&
+              history[2].page === 'product-detail.html'
+    };
+});
+
+// 测试 14: 英文版外部直访 ac-solution — 应补"Solutions"中间层
+test('英文版: 外部直访 ac-solution-en, 应补 Solutions 中间层', () => {
+    const s = makeSessionStorage();
+    visit(s, makeDom('Air Conditioner Production Line Solutions'), 'ac-solution-en.html', '');
+
+    const history = readHistory(s, 'en');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].name === 'Home' &&
+              history[1].page === 'solutions-en.html' &&
+              history[1].name === 'Solutions' &&
+              history[2].page === 'ac-solution-en.html'
+    };
+});
+
+// 测试 15: data-breadcrumb-parent 显式声明优先于规则匹配
+test('中文版: data-breadcrumb-parent 显式声明, 优先于 -detail/-solution 规则', () => {
+    const s = makeSessionStorage();
+    // 即使文件名是 xxx-solution.html, data-breadcrumb-parent 显式指定别的栏目
+    // 我们模拟: 直接打开一个特殊详情页, body.dataset.breadcrumbParent = "about.html"
+    const dom = makeDom('特殊内容');
+    dom.body.dataset.breadcrumbParent = 'about.html';
+    visit(s, dom, 'special-detail.html', '');
+
+    const history = readHistory(s, 'zh');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[1].page === 'about.html' &&
+              history[1].name === '关于我们'    // 显式声明覆盖
     };
 });
 
