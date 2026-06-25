@@ -354,6 +354,26 @@ test('中文版: data-breadcrumb-parent 显式声明, 优先于 -detail/-solutio
     };
 });
 
+// 测试 16: 方案型产品直访, JS 根据 category 动态设 data-breadcrumb-parent
+test('中文版: 方案型产品直访(?id=31), JS 动态设 data-breadcrumb-parent=solutions.html, 应补解决方案中间层', () => {
+    const s = makeSessionStorage();
+    // 模拟 product-detail.html?id=31 的 inline JS:
+    // 当 product.category === '解决方案' 时, document.body.dataset.breadcrumbParent = 'solutions.html'
+    const dom = makeDom('TV/商业显示器生产线解决方案');
+    dom.body.dataset.breadcrumbParent = 'solutions.html';
+    visit(s, dom, 'product-detail.html', '');
+
+    const history = readHistory(s, 'zh');
+    return {
+        history: history.map(h => `${h.page}(${h.name})`),
+        pass: history.length === 3 &&
+              history[0].name === '首页' &&
+              history[1].page === 'solutions.html' &&
+              history[1].name === '解决方案' &&
+              history[2].page === 'product-detail.html'
+    };
+});
+
 // ====== 运行 ======
 console.log('=== 三语面包屑测试 ===\n');
 let passCount = 0;

@@ -873,7 +873,9 @@
             const backText = document.getElementById('back-text');
             if (product.category === 'Solutions') {
                 backText.textContent = 'Back to Solutions';
-                
+                // breadcrumb parent 显式指向 solutions-en.html（footer-en.js 优先级最高）
+                document.body.dataset.breadcrumbParent = 'solutions-en.html';
+
                 // Highlight Solutions nav, not Products
                 document.getElementById('nav-solutions').classList.remove('text-[#86868B]');
                 document.getElementById('nav-solutions').classList.add('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
