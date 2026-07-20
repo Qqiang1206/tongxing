@@ -242,19 +242,6 @@ body {
     text-align: center;
     height: 100%;
 }
-@media (min-width: 768px) {
-    .service-flow__step:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        top: calc(var(--space-6) / 2);
-        left: calc(50% + var(--space-6) / 2);
-        width: calc(50% + var(--grid-gap) - var(--space-6) / 2);
-        height: 2px;
-        background: var(--border-light);
-        transform: translateY(-50%);
-        z-index: 0;
-    }
-}
 .service-flow__badge {
     flex-shrink: 0;
     width: var(--space-6);
