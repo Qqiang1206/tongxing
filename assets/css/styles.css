@@ -82,7 +82,17 @@ body {
     line-height: var(--leading-normal);
 }
 
-/* Typography System - Fluid Type Scale */
+/* Typography System - Fluid Type Scale
+ *
+ * Hierarchy (keep channel H1 largest; everything else one step quieter):
+ *   .text-display  — channel landing H1 only (首页/关于/产品/方案/新闻/联系)
+ *   .text-h1       — detail page H1, major in-page sections
+ *   .text-h2       — secondary sections, solution matrix titles
+ *   .text-h3       — card titles, in-page subheads
+ *   .text-body-lg / .detail-lead — page leads (~18px)
+ *   .text-body / .detail-prose   — body copy (~16px)
+ *   .text-sm / .text-caption     — meta, tags, card blurbs
+ */
 .text-display {
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 900;
@@ -102,18 +112,18 @@ body {
     line-height: 1.15;
 }
 .text-h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 700;
     letter-spacing: -0.01em;
     line-height: 1.3;
 }
 .text-body-lg {
     font-size: 1.125rem;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 .text-body {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 .text-sm {
     font-size: 0.875rem;
@@ -496,11 +506,13 @@ body {
 .detail-title {
     margin-bottom: 0;
 }
+/* Detail H1 uses .text-h1 (not .text-display) so channel landings stay larger */
 
 .detail-lead {
     color: var(--text-muted);
     font-size: 1.125rem;
     line-height: 1.8;
+    font-weight: 500;
 }
 
 .detail-hero-grid {
@@ -554,6 +566,7 @@ body {
     letter-spacing: -0.02em;
     color: var(--txam-dark);
     margin-bottom: 2rem;
+    line-height: 1.15;
 }
 
 .detail-prose,
