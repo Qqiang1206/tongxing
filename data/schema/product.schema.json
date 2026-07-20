@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tongxing.local/schemas/product.schema.json",
+  "title": "ProductCatalog",
+  "description": "Map of product id → product record",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": [
+      "id",
+      "category",
+      "model",
+      "name",
+      "image",
+      "specs",
+      "summary",
+      "contentHtml",
+      "published"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Product id (string, matching catalog key)"
+      },
+      "category": {
+        "type": "string"
+      },
+      "model": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "image": {
+        "type": "string",
+        "pattern": "^/assets/images/",
+        "description": "Absolute site path under /assets/images/"
+      },
+      "specs": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "summary": {
+        "type": "string"
+      },
+      "contentHtml": {
+        "type": "string",
+        "description": "HTML fragment for the detail body"
+      },
+      "published": {
+        "type": "boolean"
+      }
+    }
+  }
+}

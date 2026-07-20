@@ -1,0 +1,13 @@
+{
+  "name": "txam-website",
+  "version": "2.0.0",
+  "private": true,
+  "description": "TXAM corporate site — static front + JSON data layer",
+    "scripts": {
+      "extract-data": "node scripts/extract-content-data.js",
+      "restructure": "node scripts/restructure-site.js",
+      "generate-data-js": "node scripts/generate-data-js.js",
+      "validate": "node scripts/validate-data.js",
+      "build": "node scripts/generate-data-js.js && node scripts/build.js"
+    }
+}

@@ -1,0 +1,563 @@
+/* auto-generated from en.json — do not edit */
+window.__TXAM_PRODUCTS_EN={
+  "1": {
+    "id": "1",
+    "category": "Single Machines",
+    "model": "TX-NS-ALM-01",
+    "name": "Full-Auto High-Precision Laminating Machine",
+    "image": "assets/images/products/auto-lamination-001.webp",
+    "specs": [
+      "±0.075mm Precision",
+      "80s Cycle",
+      "Constant Pressure",
+      "Multi-Size Support"
+    ],
+    "summary": "Designed for glass and display modules. Lamination precision breakthrough to ±0.075mm, with constant pressure control, cycle time as fast as 80 seconds.",
+    "contentHtml": "<p>Full-auto high-precision laminating machine is a high-end intelligent equipment independently developed by TXAM, specifically designed for high-precision lamination of glass and display modules.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses precision mechanical structure with advanced motion control system to achieve automatic loading, precise positioning, high-precision lamination and pressure holding. Full-process automatic control ensures lamination precision and quality consistency.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Lamination precision up to ±0.075mm, far exceeding industry standards</li>\n                        <li>Constant pressure function ensures firm lamination without bubbles</li>\n                        <li>80-second ultra-fast cycle, greatly improving production efficiency</li>\n                        <li>Supports multiple product sizes, high flexibility</li>\n                    </ul>\n                    <h3>Applications</h3>\n                    <p>Widely used in glass lamination processes for TV, educational displays, commercial display panels and other electronic products.</p>",
+    "published": true
+  },
+  "2": {
+    "id": "2",
+    "category": "Single Machines",
+    "model": "TXM-A Series",
+    "name": "OC Smart Lamination System",
+    "image": "assets/images/products/oc-lamination-unit.webp",
+    "specs": [
+      "UVW Vision Alignment",
+      "±0.15mm Precision",
+      "25s Cycle",
+      "Zero Glass Breakage"
+    ],
+    "summary": "Fully automatic Open Cell and backlight module precise assembly. Using UVW Vision Alignment Platform, completely solving glass breakage caused by manual lamination.",
+    "contentHtml": "<p>OC Intelligent Lamination System is an automated equipment independently developed by TXAM for the core process in display panel production.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses UVW vision alignment platform to automatically identify product position, guiding robot to complete precise OC and backlight module assembly. Full automatic process includes automatic loading, foam collection, empty box collection, etc.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Lamination precision up to ±0.15mm to ±0.4mm</li>\n                        <li>Fixed cycle time 25 seconds, ensuring production rhythm</li>\n                        <li>Completely solves glass breakage problem from manual lamination</li>\n                        <li>One-key product changeover, reducing line change time</li>\n                    </ul>\n                    <h3>Model Description</h3>\n                    <p>TXM-A series includes models 151B, 201B, 401B, etc., mainly differing in compatible product sizes and lamination precision.</p>",
+    "published": true
+  },
+  "3": {
+    "id": "3",
+    "category": "Production Lines",
+    "model": "COMPLETE LINE",
+    "name": "TV/Commercial Display Flexible Assembly Line",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Dispensing Assembly",
+      "Flip Inspection",
+      "Bagging Palletizing",
+      "65-110\" Compatible"
+    ],
+    "summary": "Full automation from dispensing, bracket placement, lamination, flipping inspection to final bagging and palletizing. One-key compatibility for multiple sizes (including 65~110\" super large screens).",
+    "contentHtml": "<p>TV/Commercial Display Flexible Assembly Line is a turnkey engineering solution provided by TXAM for display equipment manufacturers.</p>\n                    <h3>Line Composition</h3>\n                    <p>The complete line covers full process from core assembly (dispensing, bracket placement, lamination), through intermediate processes (flipping, visual inspection), to final packaging (bagging, standing, palletizing).</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>One-key compatibility for 65~110\" multi-size products</li>\n                        <li>Full line uses robot automated operations</li>\n                        <li>CAD import for one-key product changeover, short debugging time</li>\n                        <li>High line yield rate, good product consistency</li>\n                    </ul>\n                    <h3>Service Mode</h3>\n                    <p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service, truly achieving turnkey engineering.</p>",
+    "published": true
+  },
+  "4": {
+    "id": "4",
+    "category": "Single Machines",
+    "model": "TX-NS-AGD Series",
+    "name": "High-Precision Robot Dispensing Machine",
+    "image": "assets/images/products/auto-dispensing.webp",
+    "specs": [
+      "±0.2mm Positioning",
+      "0.25s/Row",
+      "CAD Import",
+      "TCP/IP Communication"
+    ],
+    "summary": "Single-axis robot with multi-glue gun matrix, positioning error ±0.2mm, single row dispensing only 0.25 seconds. Seamless CAD import for one-key product changeover.",
+    "contentHtml": "<p>High-precision robot dispensing machine is a core equipment developed by TXAM for precision coating processes.</p>\n                    <h3>Working Principle</h3>\n                    <p>Uses single-axis robot with multi-glue gun matrix, achieving fast and uniform dispensing through precision motion control system. Supports direct CAD drawing import, automatically generating dispensing trajectory.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Positioning error only ±0.2mm, industry-leading precision</li>\n                        <li>Dispensing speed 0.25 seconds/row, extremely efficient</li>\n                        <li>Supports CAD drawing one-key import, easy product changeover</li>\n                        <li>TCP/IP communication protocol, easy integration into smart factory systems</li>\n                    </ul>\n                    <h3>Model Description</h3>\n                    <p>TX-NS-AGD-01 uses fixture pad form, TX-NS-AGD-02 uses direct backplane feeding, mainly differing in line compatibility methods.</p>",
+    "published": true
+  },
+  "5": {
+    "id": "5",
+    "category": "Single Machines",
+    "model": "TX-NS-ASM Series",
+    "name": "Auto Glue Spraying Machine",
+    "image": "assets/images/products/auto-dispenser.webp",
+    "specs": [
+      "0.6-0.8m/s Spray Speed",
+      "75\"-Full Compatible",
+      "Glue Block Furnace",
+      "Multiple Models"
+    ],
+    "summary": "Uniformly sprays glue on target objects, suitable for larger size panels. High spray efficiency, strong compatibility, from 75\" to full size compatible.",
+    "contentHtml": "<p>Auto glue spraying machine is automated equipment developed by TXAM for large panel glue spraying needs.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses glue block furnace feeding method, heating solid glue blocks to melt and uniformly coating product surface through spray head. Fast spray speed, uniform coating.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Spray speed 0.6-0.8m/s, industry-leading efficiency</li>\n                        <li>Compatible sizes from 75\" to full size, wide application range</li>\n                        <li>Multiple models TX-NS-ASM-01/02/03 available</li>\n                        <li>Can cooperate with vision or mechanical positioning</li>\n                    </ul>",
+    "published": true
+  },
+  "6": {
+    "id": "6",
+    "category": "Single Machines",
+    "model": "TX-NS-ALPS Series",
+    "name": "Auto Light Bracket Placement",
+    "image": "assets/images/products/auto-light-bracket.webp",
+    "specs": [
+      "±0.2mm Positioning",
+      "1s/Gripper",
+      "Vibratory Bowl Feeding",
+      "10-20pcs/Batch"
+    ],
+    "summary": "Precisely grips and places diffuser support columns, providing stable support for display device optical components. Precise positioning, high-speed gripping.",
+    "contentHtml": "<p>Auto light bracket placement equipment is used for precise placement of diffuser support columns during display product assembly.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment automatically feeds through vibratory bowl, robot precisely grips support columns and places them at specified positions. Positioning precision up to ±0.2mm, gripping speed 1 second/gripper.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Positioning precision ±0.2mm, ensuring assembly accuracy</li>\n                        <li>High-speed gripping, only 1 second per gripper</li>\n                        <li>Vibratory bowl automatic feeding, reducing manual intervention</li>\n                        <li>Multiple models TX-NS-ALPS-01/02/03, adapting to different sizes and production requirements</li>\n                    </ul>",
+    "published": true
+  },
+  "7": {
+    "id": "7",
+    "category": "Single Machines",
+    "model": "TX-NS-ALSI-01/02",
+    "name": "Auto Light Bar Placement",
+    "image": "assets/images/products/auto-light-strip.webp",
+    "specs": [
+      "±0.2mm Precision",
+      "7pcs/Batch",
+      "With Pressure Hold",
+      "Robot+Manual Cooperation"
+    ],
+    "summary": "Precisely and quickly places LED light bars at specified positions. Can grip multiple bars at once, with pressure hold function, ensuring assembly precision.",
+    "contentHtml": "<p>Auto light bar placement equipment achieves automated light bar placement through robot cells.</p>\n                    <h3>Working Principle</h3>\n                    <p>Uses robot with vision system, can precisely grip 7 light bars at once and place them at target positions. Equipment has pressure hold function, ensuring firm light bar fixation.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Assembly precision ±0.2mm</li>\n                        <li>Can grip 7 light bars at once, high efficiency</li>\n                        <li>With pressure hold function, ensuring assembly quality</li>\n                        <li>Supports CAD import for quick product changeover</li>\n                    </ul>",
+    "published": true
+  },
+  "8": {
+    "id": "8",
+    "category": "Single Machines",
+    "model": "TX-NS-ASBS-01",
+    "name": "Robot Auto Backplane Screw Machine",
+    "image": "assets/images/products/zidongdabeibanluosi-001.webp",
+    "specs": [
+      "12pcs/Batch",
+      "1.8s/pc",
+      "Adjustable Torque",
+      "High Efficiency"
+    ],
+    "summary": "Can grab and automatically tighten up to 12 backplane screws at once, single screw torque real-time adjustable, efficiency up to 1.8 seconds/screw.",
+    "contentHtml": "<p>Robot auto backplane screw machine is automated equipment developed by TXAM for precision fastening processes.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses robot with intelligent tightening system, can grab 12 screws at once and automatically tighten them to products. Torque real-time adjustable, ensuring consistent tightening force for each screw.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Can grab 12 screws at once, reducing feeding frequency</li>\n                        <li>Screw driving speed 1.8 seconds/piece, extremely efficient</li>\n                        <li>Torque real-time adjustable, ensuring fastening quality</li>\n                        <li>Suitable for backplane fastening of TV, educational displays, etc.</li>\n                    </ul>",
+    "published": true
+  },
+  "9": {
+    "id": "9",
+    "category": "Single Machines",
+    "model": "TXM-B-105 Series / 205A",
+    "name": "180-Degree Heavy Load Flip Unit",
+    "image": "assets/images/products/turnover-180.webp",
+    "specs": [
+      "15-55s Cycle",
+      "One-Key Operation",
+      "Strong Load Capacity",
+      "Multiple Models"
+    ],
+    "summary": "Specially designed for flipping large or heavy products, achieving 180-degree precise flipping. Solves manual flipping difficulties due to process requirements.",
+    "contentHtml": "<p>180-degree heavy load flip unit is a core equipment developed by TXAM for large-size heavy product flipping needs.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses precision mechanical structure and servo drive system to achieve one-key 180-degree flipping. Flipping process smooth, positioning precise, effectively solving difficulties and safety hazards of manual flipping.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Flipping cycle 15-55 seconds, high efficiency</li>\n                        <li>One-key operation, simple and convenient</li>\n                        <li>Strong load capacity, suitable for TV, educational displays and other large-size products</li>\n                        <li>Multiple models TXM-B-105 series (A/B/C) and 205A available</li>\n                    </ul>",
+    "published": true
+  },
+  "10": {
+    "id": "10",
+    "category": "Single Machines",
+    "model": "TX-NS-ACTGR-01/02",
+    "name": "Auto Tempered Glass Frame Installation",
+    "image": "assets/images/products/auto-glass-holder.webp",
+    "specs": [
+      "±0.15mm Precision",
+      "Vision Positioning",
+      "Auto Installation",
+      "For Educational Displays"
+    ],
+    "summary": "Automatically installs tempered glass frames for educational displays. Uses vision positioning, precision up to ±0.15mm.",
+    "contentHtml": "<p>Auto tempered glass frame installation equipment is an automated assembly cell developed by TXAM for educational display products.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses CCD vision system to automatically identify product position, guiding robot to complete precise tempered glass frame installation. Positioning precision up to ±0.15mm.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Positioning precision ±0.15mm, industry-leading</li>\n                        <li>Uses vision positioning, stronger adaptability</li>\n                        <li>TX-NS-ACTGR-02 model has faster cycle</li>\n                        <li>Specially designed for educational display products</li>\n                    </ul>",
+    "published": true
+  },
+  "11": {
+    "id": "11",
+    "category": "Logistics & Warehousing",
+    "model": "TX-NS-PR Series",
+    "name": "Six-Axis Robot Intelligent Palletizing System",
+    "image": "assets/images/products/robot-palletizing.webp",
+    "specs": [
+      "±0.5mm Precision",
+      "12s/pc",
+      "Mock Machine Palletizing",
+      "Sub-Parent Pallet Compatible"
+    ],
+    "summary": "Perfectly solving heavy finished product stacking problems. Supports mock machine palletizing and sub-parent pallet boards, precision controlled at ±0.5mm, speed up to 12 seconds/piece.",
+    "contentHtml": "<p>Six-axis robot intelligent palletizing system is a core equipment developed by TXAM for post-line logistics automation.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses six-axis industrial robot (optional ABB, Yaskawa, etc.), with intelligent control system to achieve automatic product palletizing. Supports mock machine palletizing and sub-parent pallet boards, extremely strong compatibility.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Palletizing precision ±0.5mm, neat and stable stacking</li>\n                        <li>Efficiency up to 12 seconds/piece</li>\n                        <li>Supports mock machine palletizing and sub-parent pallets</li>\n                        <li>Can be compatible with different sizes and shapes of products</li>\n                    </ul>\n                    <h3>Model Description</h3>\n                    <p>TX-NS-PR series (01/02/03) and integrated palletizing TX-NS-RIP-001, the latter has more powerful functions, including sub-parent pallet stacking, automatic rubber sheet placement, scanning, etc.</p>",
+    "published": true
+  },
+  "12": {
+    "id": "12",
+    "category": "Logistics & Warehousing",
+    "model": "TX-NS-AET Series",
+    "name": "End-of-Line Packaging & Auto Boxing System",
+    "image": "assets/images/products/auto-boxing.webp",
+    "specs": [
+      "20s/pc",
+      "Auto Pallet Stacking",
+      "Mechanical Positioning",
+      "Full Compatibility"
+    ],
+    "summary": "Integrated automatic pallet loading (skid), unpacking, forming and complete machine boxing. Mechanical rigid positioning fully compatible, 20 seconds to complete single skid centering.",
+    "contentHtml": "<p>End-of-line packaging and auto boxing system is automated equipment developed by TXAM for post-process packaging.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment integrates auto palletizer, unboxing machine, forming machine and carton boxer, achieving full-process automation of post-line packaging. One-key operation, automatically completing pallet stacking and centering.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Pallet centering cycle only 20 seconds/piece</li>\n                        <li>Mechanical rigid positioning, stronger compatibility</li>\n                        <li>Allows certain pallet offset range</li>\n                        <li>Multiple models TX-NS-AET-01/02/03 available</li>\n                    </ul>",
+    "published": true
+  },
+  "13": {
+    "id": "13",
+    "category": "Logistics & Warehousing",
+    "model": "TX-NS-RIP-001",
+    "name": "Robot Integrated Palletizing Solution",
+    "image": "assets/images/products/robot-palletizing-integrated.webp",
+    "specs": [
+      "Integrated Functions",
+      "Sub-Parent Pallet",
+      "Auto Rubber Sheet",
+      "Scanning Function"
+    ],
+    "summary": "More powerful integrated palletizing solution, including sub-parent pallet stacking, auto rubber sheet placement, scanning and other special functions.",
+    "contentHtml": "<p>Robot integrated palletizing solution is a full-featured palletizing system developed by TXAM for high-end customers.</p>\n                    <h3>Working Principle</h3>\n                    <p>Based on standard palletizing functions, integrates sub-parent pallet stacking, auto rubber sheet placement, scanning and other functions, achieving full-process automation of post-line logistics.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Complete functions, covering full process of post-line logistics</li>\n                        <li>Sub-parent pallet stacking function, applicable to more scenarios</li>\n                        <li>Auto rubber sheet placement, reducing manual intervention</li>\n                        <li>Scanning function, achieving logistics information traceability</li>\n                    </ul>",
+    "published": true
+  },
+  "14": {
+    "id": "14",
+    "category": "Single Machines",
+    "model": "TX-NS Series",
+    "name": "Robot Standing Unit",
+    "image": "assets/images/products/robot-clamp-unit.webp",
+    "specs": [
+      "CCD Vision Guidance",
+      "Smooth & Efficient",
+      "Labor Saving",
+      "Customizable"
+    ],
+    "summary": "Automatically converts products from horizontal to vertical state. Uses CCD vision to determine product position, robot automatically grips and completes standing.",
+    "contentHtml": "<p>Robot standing unit is automated equipment developed by TXAM for product posture conversion.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses CCD vision system to automatically determine product position, guiding six-axis robot to grip product and complete posture conversion from horizontal to vertical. Standing process smooth, effectively protecting product safety.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>CCD vision guidance, accurate positioning</li>\n                        <li>Smooth standing process, avoiding product damage</li>\n                        <li>Greatly saves labor, improves efficiency</li>\n                        <li>Can be customized according to different product characteristics</li>\n                    </ul>",
+    "published": true
+  },
+  "15": {
+    "id": "15",
+    "category": "Single Machines",
+    "model": "TXM-A Series",
+    "name": "Auxiliary Visual Inspection Unit",
+    "image": "assets/images/products/auxiliary-clamp-unit.webp",
+    "specs": [
+      "Auto Flip",
+      "Reduce Labor Intensity",
+      "Improve Inspection Efficiency",
+      "Reduce Errors"
+    ],
+    "summary": "Through auto flipping and image recognition, assists or replaces manual product visual quality inspection. Solves heavy product manual flipping difficulties.",
+    "contentHtml": "<p>Auxiliary visual inspection unit is automated auxiliary equipment developed by TXAM for product quality inspection.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment automatically flips products, cooperating with image recognition system to assist completing product visual quality inspection. Effectively solves difficulties of manually flipping heavy products.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Auto flip function, solving heavy product flipping difficulties</li>\n                        <li>Cooperating with vision system, improving inspection accuracy</li>\n                        <li>Greatly improves visual inspection efficiency</li>\n                        <li>Reduces employee labor intensity</li>\n                    </ul>",
+    "published": true
+  },
+  "16": {
+    "id": "16",
+    "category": "Single Machines",
+    "model": "TX-NS Series",
+    "name": "Auto Pressure Holding Unit",
+    "image": "assets/images/products/auto-press-unit.webp",
+    "specs": [
+      "Constant Pressure Control",
+      "Long Pressure Holding Time",
+      "Strong Adaptability",
+      "Quality Assurance"
+    ],
+    "summary": "Applies and maintains constant pressure on assembled components, ensuring bonding or assembly process quality. Precise pressure control, long pressure holding time.",
+    "contentHtml": "<p>Auto pressure holding unit is automated equipment developed by TXAM for bonding processes.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment applies constant pressure on products completed dispensing, lamination and other processes, ensuring adhesive fully cures and assembly quality stable and consistent.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Precise pressure control, ensuring bonding quality</li>\n                        <li>Long pressure holding time, adapting to different process requirements</li>\n                        <li>Strong adaptability, can be used with various products</li>\n                        <li>Automated operation, reducing manual intervention</li>\n                    </ul>",
+    "published": true
+  },
+  "17": {
+    "id": "17",
+    "category": "Software & Control",
+    "model": "SOFTWARE SYSTEM",
+    "name": "Industrial Brain Control Software Development",
+    "image": "assets/images/hero/control-system.webp",
+    "specs": [
+      "WMS/WCS",
+      "MES",
+      "TCP/IP Communication",
+      "Data Insight"
+    ],
+    "summary": "Deep hardware-software integration, self-developed WMS, WCS, MES and low-level TCP/IP vision communication components. Breaking workshop information silos, achieving digital transparent management.",
+    "contentHtml": "<p>Industrial brain control software is a software system independently developed by TXAM for smart factory implementation.</p>\n                    <h3>System Composition</h3>\n                    <p>System includes WMS warehouse management system, WCS warehouse control system, MES manufacturing execution system, and low-level TCP/IP vision communication components.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Breaking workshop information silos, achieving data interoperability</li>\n                        <li>Real-time monitoring of equipment status and production data</li>\n                        <li>Digital transparent management, improving management efficiency</li>\n                        <li>Supports TCP/IP communication, seamlessly connecting various equipment</li>\n                    </ul>\n                    <h3>Application Scenarios</h3>\n                    <p>Applicable to intelligent transformation and upgrading of various automated production lines, achieving true smart manufacturing.</p>",
+    "published": true
+  },
+  "18": {
+    "id": "18",
+    "category": "Single Machines",
+    "model": "TX-NS-RT Series",
+    "name": "Rotary Table",
+    "image": "assets/images/products/turntable.webp",
+    "specs": [
+      "Precision Positioning",
+      "Multi-Station",
+      "Auto Rotation",
+      "Strong Adaptability"
+    ],
+    "summary": "Precision rotary equipment for multi-station processing or inspection, enabling multi-angle automated processing of products.",
+    "contentHtml": "<p>Rotary table is automated unit equipment developed by TXAM for multi-station processing needs.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses precision servo drive system to achieve multi-angle rotation and positioning of products. With automated loading/unloading system, can complete multi-station processing, inspection, assembly and other processes.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Precision positioning, high repeatability</li>\n                        <li>Multi-station design, improving production efficiency</li>\n                        <li>High automation, reducing manual intervention</li>\n                        <li>Strong adaptability, can be used with various products</li>\n                    </ul>",
+    "published": true
+  },
+  "19": {
+    "id": "19",
+    "category": "Single Machines",
+    "model": "TX-NS-LG Series",
+    "name": "Lift Module",
+    "image": "assets/images/products/lift-unit.webp",
+    "specs": [
+      "Smooth Lifting",
+      "Strong Load Capacity",
+      "Auto Control",
+      "Production Line Compatible"
+    ],
+    "summary": "Lifting and conveying equipment for product transfer between different height stations, achieving seamless height connection of production lines.",
+    "contentHtml": "<p>Lift module is automated conveying equipment developed by TXAM for production line height connection.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses servo drive system with precision guide rails to achieve smooth product lifting. Suitable for product transfer between different height stations, achieving seamless connection of production lines.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Smooth lifting, strong load capacity</li>\n                        <li>Auto control, perfect integration with production lines</li>\n                        <li>Stable structure, long service life</li>\n                        <li>Customizable stroke and load</li>\n                    </ul>",
+    "published": true
+  },
+  "20": {
+    "id": "20",
+    "category": "Single Machines",
+    "model": "TX-NS-MM Series",
+    "name": "Module Transfer Machine",
+    "image": "assets/images/products/module-assembler.webp",
+    "specs": [
+      "Precise Transfer",
+      "Multi-Station",
+      "Automation",
+      "Flexible Production"
+    ],
+    "summary": "Precision equipment for automatic transfer of electronic modules between different stations, supporting multiple product sizes.",
+    "contentHtml": "<p>Module transfer machine is automated equipment developed by TXAM for electronic module transfer.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses precision motion control system to achieve precise module transfer between multiple stations. With vision positioning system, can adapt to precise transfer of different size products.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>High transfer precision, accurate product positioning</li>\n                        <li>Supports multi-station configuration, high flexibility</li>\n                        <li>High automation, reducing manual intervention</li>\n                        <li>Easy product changeover, adapting to multi-variety production</li>\n                    </ul>",
+    "published": true
+  },
+  "21": {
+    "id": "21",
+    "category": "Single Machines",
+    "model": "TX-NS-ACT Series",
+    "name": "Auto Clip & Wrench Machine",
+    "image": "assets/images/products/auto-palletizer.webp",
+    "specs": [
+      "Auto Clipping",
+      "Precision Positioning",
+      "High Efficiency",
+      "Multi-Size Compatible"
+    ],
+    "summary": "Automated equipment for automatic installation of clips or wrenches, precision positioning, quickly completing clipping assembly.",
+    "contentHtml": "<p>Auto clip & wrench machine is automated equipment developed by TXAM for clip assembly.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses precision mechanical structure with servo drive to achieve automatic gripping, positioning and installation of clips or wrenches. Equipped with vision inspection system to ensure clipping quality.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Auto complete clipping assembly, high efficiency</li>\n                        <li>Precision positioning, high assembly accuracy</li>\n                        <li>Equipped with vision inspection, quality guaranteed</li>\n                        <li>Adapts to multiple product sizes</li>\n                    </ul>",
+    "published": true
+  },
+  "22": {
+    "id": "22",
+    "category": "Single Machines",
+    "model": "TX-NS-SE Series",
+    "name": "Auxiliary Bag Sealing Machine",
+    "image": "assets/images/products/retainer-sealer.webp",
+    "specs": [
+      "Auto Bag Sealing",
+      "Heat Sealing",
+      "High Efficiency",
+      "Stable Quality"
+    ],
+    "summary": "Automated sealing equipment for product packaging bags, using heat sealing technology, beautiful and firm sealing.",
+    "contentHtml": "<p>Auxiliary bag sealing machine is automated equipment developed by TXAM for packaging sealing process.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses heat sealing technology to automatically seal product packaging bags. With auto feeding system, achieves full-process automated sealing.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Heat sealing technology, beautiful and firm sealing</li>\n                        <li>High automation, high efficiency</li>\n                        <li>Stable quality, consistent sealing quality</li>\n                        <li>Easy operation, low maintenance cost</li>\n                    </ul>",
+    "published": true
+  },
+  "23": {
+    "id": "23",
+    "category": "Single Machines",
+    "model": "TX-NS-MAB Series",
+    "name": "Robot Offline Bagging",
+    "image": "assets/images/products/robot-box-bagging.webp",
+    "specs": [
+      "Auto Bagging",
+      "Robot Cooperation",
+      "Efficient Packaging",
+      "Strong Adaptability"
+    ],
+    "summary": "Cooperating with robot to automatically complete bagging packaging process after product goes offline, achieving full automation of post-process packaging.",
+    "contentHtml": "<p>Robot offline bagging machine is automated equipment developed by TXAM for post-process packaging.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment cooperates with six-axis robot to automatically grip packaging bags and sleeve them onto products, achieving automated bagging packaging of offline products.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Robot automated operation, high efficiency</li>\n                        <li>Precise bagging position, good product protection</li>\n                        <li>High automation, reducing labor</li>\n                        <li>Adapts to multiple product sizes</li>\n                    </ul>",
+    "published": true
+  },
+  "24": {
+    "id": "24",
+    "category": "Single Machines",
+    "model": "TX-NS-RBP Series",
+    "name": "Robot Auto Backplane Loading",
+    "image": "assets/images/products/robot-auto-backplane.webp",
+    "specs": [
+      "Auto Loading",
+      "Precision Positioning",
+      "High Efficiency",
+      "Quality Assurance"
+    ],
+    "summary": "Automated equipment for automatically loading backplanes into product assembly stations, cooperating with robot to complete precise assembly.",
+    "contentHtml": "<p>Robot auto backplane loading machine is automated equipment developed by TXAM for backplane loading process.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses robot with precision positioning system to automatically grip and load backplanes into product assembly stations. Cooperating with assembly robot to achieve fully automated backplane installation.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Robot automated loading, high efficiency</li>\n                        <li>Precision positioning, assembly accuracy guaranteed</li>\n                        <li>High automation, reducing manual intervention</li>\n                        <li>Stable quality, good product consistency</li>\n                    </ul>",
+    "published": true
+  },
+  "25": {
+    "id": "25",
+    "category": "Logistics & Warehousing",
+    "model": "TX-NS-PL Series",
+    "name": "Packaging & Logistics Automation Equipment",
+    "image": "assets/images/hero/pkg-logistics-line.webp",
+    "specs": [
+      "Auto Packaging",
+      "Logistics Conveying",
+      "Efficient Sorting",
+      "System Integration"
+    ],
+    "summary": "Logistics automation system integration solutions covering post-line packaging, conveying, and sorting processes.",
+    "contentHtml": "<p>Packaging & logistics automation equipment is system integration solution developed by TXAM for post-line logistics.</p>\n                    <h3>System Composition</h3>\n                    <p>System covers auto packaging equipment, conveying lines, sorting equipment and warehouse management system, achieving full-process automation of post-line logistics.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>System integration, full-process logistics automation</li>\n                        <li>Efficient sorting, improving logistics efficiency</li>\n                        <li>Intelligent management, digital transparency</li>\n                        <li>Customizable according to customer needs</li>\n                    </ul>",
+    "published": true
+  },
+  "26": {
+    "id": "26",
+    "category": "Single Machines",
+    "model": "TX-NS-RCU Series",
+    "name": "Robot Cell Equipment",
+    "image": "assets/images/solutions/robot-unit.webp",
+    "specs": [
+      "Modular Design",
+      "Flexible Configuration",
+      "Easy Integration",
+      "Efficient & Reliable"
+    ],
+    "summary": "Modular cell equipment with robot as core, can be flexibly configured and integrated according to process requirements.",
+    "contentHtml": "<p>Robot cell equipment is modular automated equipment developed by TXAM for flexible production.</p>\n                    <h3>Working Principle</h3>\n                    <p>Equipment uses six-axis robot as core, with various end-effectors and auxiliary equipment to form modular cells. Can be flexibly configured according to different process requirements, achieving multi-function use with one machine.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Modular design, flexible configuration</li>\n                        <li>Multi-function use, improving equipment utilization</li>\n                        <li>Easy integration into existing production lines</li>\n                        <li>Efficient and reliable, easy maintenance</li>\n                    </ul>",
+    "published": true
+  },
+  "31": {
+    "id": "31",
+    "category": "Solutions",
+    "model": "TXAM-SOL-TV",
+    "name": "TV/Commercial Display Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Full Line Automation",
+      "Flexible Production",
+      "65-110\" Compatible",
+      "Turnkey Engineering"
+    ],
+    "summary": "Complete line automation solutions for TV and commercial display manufacturers, covering full process from assembly to packaging.",
+    "contentHtml": "<p>TV/Commercial Display Production Line Solutions are turnkey engineering solutions provided by TXAM for display manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers dispensing, bracket placement, lamination, flipping inspection, final packaging and more - full automation from raw materials to finished products.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>One-key compatibility for 65~110\" multi-size products</li>\n            <li>Full process robot automated operations</li>\n            <li>CAD import one-key changeover, short debugging time</li>\n            <li>High line yield rate, good product consistency</li>\n            <li>True turnkey engineering</li>\n        </ul>\n        <h3>Service Content</h3>\n        <p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+    "published": true
+  },
+  "32": {
+    "id": "32",
+    "category": "Solutions",
+    "model": "TXAM-SOL-FR",
+    "name": "Refrigerator Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Full Line Automation",
+      "Flexible Production",
+      "Multi-Model Compatible",
+      "Turnkey Engineering"
+    ],
+    "summary": "Complete line automation solutions for refrigerator manufacturers, covering full process from assembly to packaging.",
+    "contentHtml": "<p>Refrigerator Production Line Solutions are turnkey automation solutions provided by TXAM for appliance manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers compressor installation, panel assembly, piping, electrical wiring and final inspection packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>High degree of full line automation</li>\n            <li>Multi-model flexible production</li>\n            <li>Automated inspection ensures quality</li>\n            <li>Efficient packaging system</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  },
+  "33": {
+    "id": "33",
+    "category": "Solutions",
+    "model": "TXAM-SOL-AC",
+    "name": "Air Conditioner Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Full Line Automation",
+      "Flexible Production",
+      "Multi-Model Compatible",
+      "Turnkey Engineering"
+    ],
+    "summary": "Complete line automation solutions for air conditioner manufacturers, covering full process from assembly to packaging.",
+    "contentHtml": "<p>Air Conditioner Production Line Solutions are turnkey automation solutions provided by TXAM for appliance manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers heat exchanger assembly, compressor installation, piping, vacuum pumping, refrigerant charging, electrical wiring and final inspection packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>High degree of full line automation</li>\n            <li>Multi-model flexible switching</li>\n            <li>Automated helium leak detection ensures sealing</li>\n            <li>Efficient packaging system</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  },
+  "34": {
+    "id": "34",
+    "category": "Solutions",
+    "model": "TXAM-SOL-WA",
+    "name": "Washing Machine Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Full Line Automation",
+      "Flexible Production",
+      "Multi-Model Compatible",
+      "Turnkey Engineering"
+    ],
+    "summary": "Complete line automation solutions for washing machine manufacturers, covering full process from assembly to packaging.",
+    "contentHtml": "<p>Washing Machine Production Line Solutions are turnkey automation solutions provided by TXAM for appliance manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers inner tub assembly, cabinet assembly, shock absorption system installation, electrical wiring and final inspection packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>High degree of full line automation</li>\n            <li>Multi-model flexible production</li>\n            <li>Automated inspection ensures quality</li>\n            <li>Efficient packaging system</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  },
+  "35": {
+    "id": "35",
+    "category": "Solutions",
+    "model": "TXAM-SOL-MW",
+    "name": "Microwave Oven Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Full Line Automation",
+      "Flexible Production",
+      "Multi-Model",
+      "Turnkey"
+    ],
+    "summary": "Turnkey automation solutions for microwave oven manufacturers, covering cavity assembly, door installation, electrical wiring and final inspection packaging.",
+    "contentHtml": "<p>Microwave Oven Production Line Solutions are turnkey automation solutions provided by TXAM for appliance manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers cavity assembly, door installation, magnetron installation, electrical wiring and final inspection packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>High degree of full line automation</li>\n            <li>Flexible production for multiple models</li>\n            <li>Automated inspection ensures product safety</li>\n            <li>Efficient packaging system</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  },
+  "36": {
+    "id": "36",
+    "category": "Solutions",
+    "model": "TXAM-SOL-TB",
+    "name": "Tablet Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Precision Assembly",
+      "Vision Inspection",
+      "Flexible Production",
+      "Turnkey"
+    ],
+    "summary": "Turnkey automation solutions for tablet manufacturers, covering display assembly, battery installation, mainboard assembly and final inspection packaging.",
+    "contentHtml": "<p>Tablet Production Line Solutions are turnkey automation solutions provided by TXAM for consumer electronics manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers touchscreen assembly, battery installation, mainboard assembly, camera installation and final inspection packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>Precision assembly ensures product quality</li>\n            <li>Automated vision inspection improves accuracy</li>\n            <li>Flexible model switching</li>\n            <li>Efficient packaging system</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  },
+  "37": {
+    "id": "37",
+    "category": "Solutions",
+    "model": "TXAM-SOL-AL",
+    "name": "Automotive Lamp Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Precision Assembly",
+      "Sealing Test",
+      "Flexible Production",
+      "Turnkey"
+    ],
+    "summary": "Turnkey automation solutions for automotive lamp manufacturers, covering lens assembly, reflector installation, LED module assembly and final packaging.",
+    "contentHtml": "<p>Automotive Lamp Production Line Solutions are turnkey automation solutions provided by TXAM for automotive parts manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers lens assembly, reflector installation, LED module assembly, wiring, sealing test and final packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>Precision assembly ensures optical performance</li>\n            <li>Automated helium leak testing ensures sealing</li>\n            <li>Flexible production for multiple models</li>\n            <li>Compliant with automotive industry standards</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  },
+  "38": {
+    "id": "38",
+    "category": "Solutions",
+    "model": "TXAM-SOL-CP",
+    "name": "Capacitor Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "High-Speed Winding",
+      "Sealing",
+      "Auto Testing",
+      "Turnkey"
+    ],
+    "summary": "Turnkey automation solutions for capacitor manufacturers, covering winding, assembly, sealing, aging and final inspection packaging.",
+    "contentHtml": "<p>Capacitor Production Line Solutions are turnkey automation solutions provided by TXAM for electronic component manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers metallized film winding, core assembly, sealing, welding, aging testing and final inspection packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>High-speed winding improves capacity</li>\n            <li>Automated sealing ensures reliability</li>\n            <li>Aging testing ensures product durability</li>\n            <li>Full process automation</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  },
+  "39": {
+    "id": "39",
+    "category": "Solutions",
+    "model": "TXAM-SOL-CM",
+    "name": "Coffee Machine Production Line Solutions",
+    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "specs": [
+      "Precision Assembly",
+      "Function Testing",
+      "Flexible Production",
+      "Turnkey"
+    ],
+    "summary": "Turnkey automation solutions for coffee machine manufacturers, covering heating element assembly, water pump installation and final inspection packaging.",
+    "contentHtml": "<p>Coffee Machine Production Line Solutions are turnkey automation solutions provided by TXAM for home appliance manufacturers.</p>\n        <h3>Solution Composition</h3>\n        <p>Full line covers heating element assembly, water pump installation, circuit board assembly, piping, housing assembly and final inspection packaging.</p>\n        <h3>Solution Advantages</h3>\n        <ul>\n            <li>Precision assembly ensures product quality</li>\n            <li>Automated function testing ensures safety</li>\n            <li>Flexible production for multiple models</li>\n            <li>Efficient packaging system</li>\n            <li>Turnkey engineering services</li>\n        </ul>",
+    "published": true
+  }
+};

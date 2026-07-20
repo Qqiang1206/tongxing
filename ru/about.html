@@ -1,0 +1,440 @@
+﻿<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <script src="../assets/js/lang-detect.js"></script>
+    <meta charset="UTF-8">
+    <link rel="preload" as="image" href="../assets/images/hero/szgc1.png">
+    <meta name="description" content="TXAM основана в Шэньчжэне, 19 лет в нестандартной автоматизации. Услуги умного оборудования для предприятий мирового класса">
+    <meta property="og:title" content="О нас | TXAM">
+    <meta property="og:description" content="Узнайте о истории развития TXAM, патентах и глобальных клиентах">
+    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас | TXAM - Ведущий поставщик автоматизации в Китае</title>
+    <link rel="stylesheet" href="../assets/css/tailwind.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" src="../assets/images/brand/logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Главная</a>
+            <a href="about.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">О нас</a>
+            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Решения</a>
+            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Продукция</a>
+            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Новости</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="../about.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="../en/about.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="about.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#86868B]">Главная</a>
+            <a href="about.html" class="text-[#FF6B00]">О нас</a>
+            <a href="solutions.html" class="text-[#86868B]">Решения</a>
+            <a href="products.html" class="text-[#86868B]">Продукция</a>
+            <a href="news.html" class="text-[#86868B]">Новости</a>
+            <a href="contact.html" class="text-[#86868B]">Контакты</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="../about.html" class="px-4 py-2 text-[#86868B]">ZH</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="../en/about.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="about.html" class="px-4 py-2 text-[#FF6B00] font-bold">RU</a>
+        </div>
+    </div>
+
+    <header class="pt-40 pb-10 px-6 md:px-24 w-full relative">
+        <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
+            <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
+                19 лет интеллектуальное производство
+            </h1>
+            <p class="text-lg md:text-xl text-[#86868B] font-medium mb-0 max-w-4xl leading-[1.8] tracking-wide">
+                Guangdong TXAM Интеллектуальное Оборудование Co., Ltd. (TXAM), технологии с 1998 года, официально основана в 2007 году в Шэньчжэне — национальном центре науки и технологий. Мы неизменно придерживаемся корпоративной философии «Преданность делу, Стабильное развитие, Репутация превыше всего, Качество превыше всего», стремясь предоставить мировым лидерам комплексные услуги по поставке интеллектуального оборудования.
+            </p>
+        </div>
+    </header>
+
+    <section class="factory-carousel-section" aria-label="Производственные базы в Шэньчжэне и Хуэйчжоу">
+        <div class="factory-carousel-section__inner">
+            <div id="factory-carousel" class="factory-carousel">
+                <div class="factory-carousel__slide is-active" aria-hidden="false">
+                    <img src="../assets/images/hero/szgc1.png" alt="Завод штаб-квартиры TXAM в Шэньчжэне" fetchpriority="high">
+                    <div class="factory-carousel__gradient"></div>
+                    <div class="factory-carousel__caption">
+                        <p class="factory-carousel__tag">Shenzhen HQ</p>
+                        <h2 class="factory-carousel__title">Завод штаб-квартиры, Шэньчжэнь</h2>
+                        <p class="factory-carousel__desc">НИОКР · Производство · Штаб-квартира · 19 лет опыта</p>
+                    </div>
+                </div>
+                <div class="factory-carousel__slide" aria-hidden="true">
+                    <img src="../assets/images/hero/hzgc2.jpg" alt="База умного производства TXAM в Хуэйчжоу" loading="lazy">
+                    <div class="factory-carousel__gradient"></div>
+                    <div class="factory-carousel__caption">
+                        <p class="factory-carousel__tag">Huizhou Base</p>
+                        <h2 class="factory-carousel__title">База умного производства, Хуэйчжоу</h2>
+                        <p class="factory-carousel__desc">60 000 м² расширение мощностей · Масштабные международные поставки</p>
+                    </div>
+                </div>
+                <div class="factory-carousel__controls">
+                    <button type="button" class="factory-carousel__arrow" data-factory-prev aria-label="Предыдущая база">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <div class="factory-carousel__dots" role="tablist">
+                        <button type="button" class="factory-carousel__dot is-active" data-factory-dot role="tab" aria-selected="true" aria-label="Шэньчжэнь">
+                            <span class="factory-carousel__dot-label">Шэньчжэнь</span>
+                            <span class="factory-carousel__dot-mark"></span>
+                        </button>
+                        <button type="button" class="factory-carousel__dot" data-factory-dot role="tab" aria-selected="false" aria-label="Хуэйчжоу">
+                            <span class="factory-carousel__dot-label">Хуэйчжоу</span>
+                            <span class="factory-carousel__dot-mark"></span>
+                        </button>
+                    </div>
+                    <button type="button" class="factory-carousel__arrow" data-factory-next aria-label="Следующая база">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-[#E5E5EA] pt-16">
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">19</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Лет опыта в автоматизации</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">98</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Ключевых патентов</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">7</div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Ключевых отраслей</p>
+                </div>
+                <div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">15<span class="text-3xl ml-1 text-gray-300">стр.</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Глобальный экспорт</p>
+                </div>
+                <div class="pl-6 border-l-4 border-[#FF6B00]">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1">万㎡</span></div>
+                    <p class="text-xs font-bold text-[#1D1D1F] tracking-widest uppercase">Двойная заводская мощность</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-[#1D1D1F] text-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto text-center fade-up relative z-10">
+            <h2 class="text-4xl md:text-[5rem] font-black tracking-tighter mb-20 leading-tight">
+                Предоставляем превосходное<br>интеллектуальное оборудование для ведущих мировых предприятий.
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-white/10 pt-20 text-left">
+                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                    <h3 class="text-[#FF6B00] font-black text-2xl mb-6 tracking-widest uppercase">【 Видение 】</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed font-light">Создать автоматизацию,<br>конкурентоспособную на международном уровне.</p>
+                </div>
+                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                    <h3 class="text-[#FF6B00] font-black text-2xl mb-6 tracking-widest uppercase">【 Миссия 】</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed font-light">Вести эру интеллектуального производства в Китае,<br>переопределить глобальные стандарты поставок.</p>
+                </div>
+                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                    <h3 class="text-[#FF6B00] font-black text-2xl mb-6 tracking-widest uppercase">【 Ценности 】</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed font-light">Клиент в центре, партнёрство, беспроигрышный рост.<br>Безопасность прежде всего, эффективность превыше всего.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-[#F5F5F7] px-6 md:px-24 relative border-y border-[#E5E5EA]">
+        <div class="max-w-[1200px] mx-auto fade-up">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">История развития</h2>
+                <p class="text-[#86868B] text-xl">Последовательное развитие истории интеллектуального производства.</p>
+            </div>
+            
+            <div class="hidden md:block relative max-w-4xl mx-auto py-10">
+                <div class="absolute inset-0 flex justify-center">
+                    <div class="w-1 bg-[#E5E5EA] h-full"></div>
+                </div>
+                
+                <div class="flex items-center justify-between w-full mb-16 fade-up">
+                    <div class="w-5/12 text-right pr-10">
+                        <h3 class="text-4xl font-black text-[#1D1D1F] mb-3 mono-num">1998/2007</h3>
+                        <p class="text-[#86868B] text-sm leading-relaxed">Техническая команда создана, в 2007 году официально зарегистрирована компания "Шэньчжэнь TXAM Промышленная Автоматизация", открыта дорога в нестандартную автоматизацию.</p>
+                    </div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md shadow-orange-500/30"></div>
+                    </div>
+                    <div class="w-5/12"></div>
+                </div>
+                
+                <div class="flex items-center justify-between w-full mb-16 fade-up">
+                    <div class="w-5/12"></div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    </div>
+                    <div class="w-5/12 pl-10">
+                        <h3 class="text-4xl font-black text-[#1D1D1F] mb-3 mono-num">2015</h3>
+                        <p class="text-[#86868B] text-sm leading-relaxed">Масштабное расширение бизнеса, благодаря превосходному качеству, стали ключевым поставщиком для TCL, Skyworth, Konka, Midea — лидеров бытовой техники и коммерческих дисплеев.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between w-full mb-16 fade-up">
+                    <div class="w-5/12 text-right pr-10">
+                        <h3 class="text-4xl font-black text-[#1D1D1F] mb-3 mono-num">2023</h3>
+                        <p class="text-[#86868B] text-sm leading-relaxed">Создана команда разработки нового энергетического оборудования, с ядром "циркуляционный подъёмник" представлена на CIBF International Battery Exhibition, полный выход на рынок новой энергии и логистики.</p>
+                    </div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    </div>
+                    <div class="w-5/12"></div>
+                </div>
+
+                <div class="flex items-center justify-between w-full fade-up">
+                    <div class="w-5/12"></div>
+                    <div class="w-2/12 flex justify-center relative z-10">
+                        <div class="w-5 h-5 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md shadow-orange-500/30"></div>
+                    </div>
+                    <div class="w-5/12 pl-10">
+                        <h3 class="text-4xl font-black text-[#FF6B00] mb-3 mono-num">СЕЙЧАС</h3>
+                        <p class="text-[#1D1D1F] font-bold text-sm leading-relaxed mb-2">10万㎡ формат двойной базы полностью сформирован.</p>
+                        <p class="text-[#86868B] text-sm leading-relaxed">Собственные технологии UVW калибровки, сверхбольших экранов — почти 100 патенров, оборудование экспортируется в 15 стран.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:hidden relative border-l-2 border-[#E5E5EA] ml-4 mt-10">
+                <div class="mb-10 ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">1998/2007</h3>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Основана компания, открыта дорога в нестандартную автоматизацию.</p>
+                </div>
+                <div class="mb-10 ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">2015</h3>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Становление ключевым поставщиком для крупных предприятий.</p>
+                </div>
+                <div class="mb-10 ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">2023</h3>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Выход на рынок новой энергии, участие в CIBF.</p>
+                </div>
+                <div class="ml-8 relative fade-up">
+                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
+                    <h3 class="text-3xl font-black text-[#FF6B00] mb-2 mono-num">СЕЙЧАС</h3>
+                    <p class="text-[#1D1D1F] text-sm leading-relaxed">10万㎡ двойная база, 98 патентов, экспорт в 15 стран.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Квалификация и патенты</h2>
+                <p class="text-[#86868B] text-xl">Реальные сертификаты и 98 патентов подтверждают наши возможности.</p>
+            </div>
+            
+            <div class="mb-24">
+                <h3 class="text-2xl font-bold text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Почётные квалификации</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="apple-card p-3 flex flex-col items-center">
+                        <div class="w-full bg-white radius-sm overflow-hidden">
+                            <picture><source srcset="../assets/images/certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp" alt="Сертификат высокотехнологичного предприятия" class="w-full h-full object-contain"></picture>
+                        </div>
+                    </div>
+                    <div class="apple-card p-3 flex flex-col items-center">
+                        <div class="w-full bg-white radius-sm overflow-hidden">
+                            <img loading="lazy" src="../assets/images/certifications/rongyuzizhi/guanfangzizhi-chuangxinxingzhongxiaoqiye.jpg" alt="Инновационное малое предприятие" class="w-full h-full object-contain">
+                        </div>
+                    </div>
+                    <div class="apple-card p-3 flex flex-col items-center">
+                        <div class="w-full bg-white radius-sm overflow-hidden">
+                            <picture><source srcset="../assets/images/certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp" alt="Специализированное предприятие" class="w-full h-full object-contain"></picture>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-24">
+                <h3 class="text-2xl font-bold text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Квалификации качества</h3>
+                <div class="relative overflow-hidden">
+                    <div class="patent-carousel flex gap-6 animate-marquee" style="animation: marquee 40s linear infinite;">
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114404_97_27.jpg" alt="Сертификация качества" class="w-full h-full object-contain">
+                            </div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114503_107_27.jpg" alt="Сертификация качества" class="w-full h-full object-contain">
+                            </div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114504_108_27.jpg" alt="Сертификация качества" class="w-full h-full object-contain">
+                            </div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114505_109_27.jpg" alt="Сертификация качества" class="w-full h-full object-contain">
+                            </div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114506_110_27.jpg" alt="Сертификация качества" class="w-full h-full object-contain">
+                            </div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114507_111_27.jpg" alt="Сертификация качества" class="w-full h-full object-contain">
+                            </div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden">
+                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114508_112_27.jpg" alt="Сертификация качества" class="w-full h-full object-contain">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-bold text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Патентные квалификации</h3>
+                <div class="relative overflow-hidden">
+                    <div class="patent-carousel flex gap-6 animate-marquee" style="animation: marquee 60s linear infinite;">
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><picture><source srcset="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp" alt="Патент" class="w-full h-full object-contain"></picture></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><picture><source srcset="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp" alt="Патент" class="w-full h-full object-contain"></picture></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114513_117_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114515_119_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114516_121_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114517_122_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114518_123_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_124_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_125_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                        <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
+                            <div class="w-full bg-white rounded-xl overflow-hidden"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114520_126_27.jpg" alt="Патент" class="w-full h-full object-contain"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-[#F5F5F7] px-6 md:px-24 border-t border-[#E5E5EA]">
+        <div class="max-w-[1400px] mx-auto fade-up text-center">
+            <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Клиенты</h2>
+            <p class="text-[#86868B] text-xl mb-16">Выбор ведущих мировых производственных предприятий.</p>
+            
+            <div id="client-logos-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6"></div>
+        </div>
+    </section>
+
+    <div data-footer-placeholder></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
+                else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+                        const clientLogos = [
+                { src: '../assets/images/clients/tcl.webp', alt: 'TCL' },
+                { src: '../assets/images/clients/chuangwei.webp', alt: 'Skyworth' },
+                { src: '../assets/images/clients/meide.webp', alt: 'Midea' },
+                { src: '../assets/images/clients/fushikang.webp', alt: 'Foxconn' },
+                { src: '../assets/images/clients/jingdongfang.webp', alt: 'BOE' },
+                { src: '../assets/images/clients/ningdeshidai.webp', alt: 'CATL' },
+                { src: '../assets/images/clients/zhouming.webp', alt: 'Unilumin' },
+                { src: '../assets/images/clients/qunchuangguangdian.webp', alt: 'Qunchuang' },
+                { src: '../assets/images/clients/lianxiang.webp', alt: 'Lenovo' },
+                { src: '../assets/images/clients/huake.webp', alt: 'HUAK' },
+                { src: '../assets/images/clients/huike.webp', alt: 'HKC' },
+                { src: '../assets/images/clients/xiwo.webp', alt: 'Seewo' },
+                { src: '../assets/images/clients/kangjia.webp', alt: 'Kongjia' },
+                { src: '../assets/images/clients/changhong.gif', alt: 'Changhong' },
+            ];
+            const logoGrid = document.getElementById('client-logos-grid');
+            if (logoGrid) {
+                clientLogos.forEach(logo => {
+                    const card = document.createElement('div');
+                    card.className = 'client-card h-28 bg-white border border-[#E5E5EA] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300';
+                    const img = document.createElement('img');
+                    img.src = logo.src;
+                    img.alt = logo.alt;
+                    img.className = 'max-h-full max-w-full client-logo';
+                    img.onerror = function() { this.parentElement.style.display = 'none'; };
+                    card.appendChild(img);
+                    logoGrid.appendChild(card);
+                });
+            }
+        });
+    </script>
+    <script src="../assets/js/factory-carousel.js" defer></script>
+    <script src="../assets/js/footer-ru.js" defer></script>
+</body>
+</html>

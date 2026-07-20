@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html lang="en-US" class="scroll-smooth">
+<head>
+    <script src="../assets/js/lang-detect.js"></script>
+    <meta charset="UTF-8">
+    <link rel="preload" as="image" href="../assets/images/hero/robot-arm.webp" type="image/webp">
+    <meta name="description" content="TXAM automation equipment product details - technical parameters, specifications, application scenarios">
+<meta property="og:title" content="Product Details | TXAM">
+<meta property="og:type" content="product">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | TXAM</title>
+    <link rel="stylesheet" href="../assets/css/tailwind.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
+            <link rel="icon" type="image/webp" href="../assets/images/brand/favicon.webp">
+            <link rel="icon" type="image/png" href="../assets/images/brand/favicon.png">
+            <link rel="apple-touch-icon" href="../assets/images/brand/favicon.png">
+    
+    
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" src="../assets/images/brand/logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Home</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">About Us</a>
+            <a href="solutions.html" id="nav-solutions" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Solutions</a>
+            <a href="products.html" id="nav-products" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Products</a>
+            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">News</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Contact Us</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="../product-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="product-detail.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="../ru/product-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#86868B]">Home</a>
+            <a href="about.html" class="text-[#86868B]">About Us</a>
+            <a href="solutions.html" id="mobile-nav-solutions" class="text-[#86868B]">Solutions</a>
+            <a href="products.html" id="mobile-nav-products" class="text-[#FF6B00]">Products</a>
+            <a href="news.html" class="text-[#86868B]">News</a>
+            <a href="contact.html" class="text-[#86868B]">Contact Us</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="../product-detail.html" class="px-4 py-2 text-[#86868B]">ZH</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="product-detail.html" class="px-4 py-2 text-[#FF6B00] font-bold">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="../ru/product-detail.html" class="px-4 py-2 text-[#86868B]">RU</a>
+        </div>
+    </div>
+
+    <article class="detail-page pt-40 pb-32 px-6 md:px-24">
+        <div class="detail-page__inner max-w-[1200px] mx-auto">
+            <nav class="breadcrumb text-sm text-[#86868B] mb-8 flex items-center flex-wrap" aria-label="Breadcrumb" data-breadcrumb></nav>
+
+            <a id="back-link" href="javascript:history.back()" class="inline-flex items-center text-[#86868B] hover:text-[#FF6B00] transition-colors mb-8">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                <span id="back-text">Back to Products</span>
+            </a>
+
+            <header class="mb-12 fade-up">
+                <div class="flex items-center gap-3 mb-4">
+                    <span id="product-category" class="detail-eyebrow text-[#FF6B00] font-bold text-xs tracking-widest uppercase">Single Machines</span>
+                    <span id="product-model" class="detail-meta-mono"></span>
+                </div>
+                <h1 id="product-name" class="detail-title hero-title text-display text-[#1D1D1F] text-gradient">
+                    Full-Auto High-Precision Laminating Machine
+                </h1>
+            </header>
+
+            <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                <div class="fade-up">
+                    <div class="media-h-detail w-full media-hero bg-gray-100">
+                        <picture><source srcset="../assets/images/hero/robot-arm.webp" type="image/webp"><img loading="lazy" id="product-image" src="../assets/images/hero/robot-arm.webp" alt="Product Image" class="w-full h-full object-cover"></picture>
+                    </div>
+                </div>
+                <div class="fade-up">
+                    <h3 class="detail-sidebar__label">Core Specifications</h3>
+                    <div id="product-specs" class="detail-specs mb-8">
+                        <span class="spec-tag">±0.075mm Lamination Precision</span>
+                        <span class="spec-tag">80s Cycle Time</span>
+                        <span class="spec-tag">Constant Pressure</span>
+                    </div>
+                    <h3 class="detail-sidebar__label mb-4">Product Features</h3>
+                    <p id="product-desc" class="detail-lead">
+                        Designed for glass and display modules. Lamination precision breakthrough to ±0.075mm, with constant pressure control, cycle time as fast as 80 seconds.
+                    </p>
+                </div>
+            </div>
+
+            <section class="fade-up">
+                <h2 class="detail-section__title">Detailed Description</h2>
+                <div id="product-detail" class="detail-prose">
+                    <p>Full-auto high-precision laminating machine is a high-end intelligent equipment independently developed by TXAM, specifically designed for high-precision lamination of glass and display modules.</p>
+                    <h3>Working Principle</h3>
+                    <p>The equipment uses precision mechanical structure with advanced motion control system to achieve automatic loading, precise positioning, high-precision lamination and pressure holding. Full-process automatic control ensures lamination precision and quality consistency.</p>
+                    <h3>Technical Advantages</h3>
+                    <ul>
+                        <li>Lamination precision up to ±0.075mm, far exceeding industry standards</li>
+                        <li>Constant pressure function ensures firm lamination without bubbles</li>
+                        <li>80-second ultra-fast cycle, greatly improving production efficiency</li>
+                        <li>Supports multiple product sizes, high flexibility</li>
+                        <li>Equipped with intelligent fault detection system, easy maintenance</li>
+                    </ul>
+                    <h3>Applications</h3>
+                    <p>Widely used in glass lamination processes for TV, educational displays, commercial display panels and other electronic products.</p>
+                </div>
+            </section>
+
+            <section class="detail-related fade-up">
+                <h2 class="detail-section__title">Related Products</h2>
+                <div id="related-products" class="detail-related__grid"></div>
+            </section>
+        </div>
+    </article>
+
+    <div data-footer-placeholder></div>
+
+    <script src="../assets/js/data-loader.js"></script>
+    <script src="../data/products/en.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            var productData = {};
+            try {
+                productData = await TXAM.loadData('products', 'en');
+            } catch (err) {
+                console.error(err);
+                TXAM.revealFadeUps();
+                TXAM.bindMobileMenu();
+                return;
+            }
+
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id') || '1';
+            var product = productData[id] || productData['1'];
+            if (!product) {
+                console.error('Product not found', id);
+                TXAM.revealFadeUps();
+                TXAM.bindMobileMenu();
+                return;
+            }
+
+            if (product.category === 'Solutions') {
+                document.body.dataset.breadcrumbParent = 'solutions.html';
+                var backText = document.getElementById('back-text');
+                if (backText) backText.textContent = 'Back to Solutions';
+                var ns = document.getElementById('nav-solutions');
+                var np = document.getElementById('nav-products');
+                if (ns && np) {
+                    ns.classList.remove('text-[#86868B]');
+                    ns.classList.add('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
+                    np.classList.remove('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
+                    np.classList.add('text-[#86868B]');
+                }
+                var mns = document.getElementById('mobile-nav-solutions');
+                var mnp = document.getElementById('mobile-nav-products');
+                if (mns && mnp) {
+                    mns.classList.remove('text-[#86868B]');
+                    mns.classList.add('text-[#FF6B00]');
+                    mnp.classList.remove('text-[#FF6B00]');
+                    mnp.classList.add('text-[#86868B]');
+                }
+            }
+
+            document.getElementById('product-category').textContent = product.category;
+            document.getElementById('product-model').textContent = product.model;
+            document.getElementById('product-name').textContent = product.name;
+            TXAM.setMedia('product-image', product.image, product.name);
+            document.getElementById('product-desc').textContent = product.summary || product.desc || '';
+            document.getElementById('product-detail').innerHTML = product.contentHtml || product.detail || '';
+            document.title = product.name + ' | TXAM';
+
+            var specs = product.specs || [];
+            document.getElementById('product-specs').innerHTML = specs.map(function (spec) {
+                return '<span class="spec-tag">' + spec + '</span>';
+            }).join('');
+
+            var relatedHtml = Object.keys(productData)
+                .filter(function (pid) { return pid !== id; })
+                .filter(function (pid) { return productData[pid].category === product.category; })
+                .slice(0, 3)
+                .map(function (pid) {
+                    var p = productData[pid];
+                    return (
+                        '<a href="product-detail.html?id=' + pid + '" class="detail-related-card apple-card block p-6 group">' +
+                        '<div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
+                        '<img loading="lazy" src="' + TXAM.assetUrl(p.image) + '" alt="' + p.name + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">' +
+                        '</div>' +
+                        '<span class="detail-related-card__eyebrow">' + p.model + '</span>' +
+                        '<h4 class="detail-related-card__title mt-1">' + p.name + '</h4>' +
+                        '</a>'
+                    );
+                }).join('');
+            document.getElementById('related-products').innerHTML = relatedHtml;
+
+            TXAM.revealFadeUps();
+            TXAM.bindMobileMenu();
+        });
+    </script>
+    <script src="../assets/js/footer-en.js" defer></script>
+</body>
+</html>

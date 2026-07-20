@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <script src="../assets/js/lang-detect.js"></script>
+    <meta charset="UTF-8">
+    <link rel="preload" as="image" href="../assets/images/solutions/tv-flex-line.webp">
+    <meta name="description" content="TXAM - 19 лет производитель нестандартного автоматического оборудования. Умные производственные линии для TCL, Hisense, Konka. 98 патентов, экспорт в 15 стран.">
+    <meta property="og:title" content="TXAM - Ведущий поставщик автоматизации в Китае">
+    <meta property="og:description" content="Профессиональное проектирование и производство нестандартных автоматических производственных линий. Решения для TV-дисплеев, холодильников, кондиционеров">
+    <meta property="og:image" content="https://www.sztxgk.com/factory-hero.jpg">
+    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXAM - Ведущий поставщик автоматизации в Китае</title>
+    <link rel="stylesheet" href="../assets/css/tailwind.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --txam-orange: #FF6B00; 
+            --txam-dark: #1D1D1F; 
+            --bg-color: #FBFBFD;  
+            --border-light: #E5E5EA; 
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--txam-dark);
+            font-family: 'Geist', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-title { font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
+        .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .apple-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .apple-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .img-zoom {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .apple-card:hover .img-zoom {
+            transform: scale(1.05);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.4s ease; }
+        .menu-open { transform: translateY(0%); opacity: 1; }
+        .menu-closed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+
+    <!-- 🌐 Навигация -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" src="../assets/images/brand/logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Главная</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">О нас</a>
+            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Решения</a>
+            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Продукция</a>
+            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Новости</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="../index.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="../en/index.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="index.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 Мобильное меню -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#FF6B00]">Главная</a>
+            <a href="about.html" class="text-[#86868B]">О нас</a>
+            <a href="solutions.html" class="text-[#86868B]">Решения</a>
+            <a href="products.html" class="text-[#86868B]">Продукция</a>
+            <a href="news.html" class="text-[#86868B]">Новости</a>
+            <a href="contact.html" class="text-[#86868B]">Контакты</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="../index.html" class="px-4 py-2 text-[#86868B]">ZH</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="../en/index.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="index.html" class="px-4 py-2 text-[#FF6B00] font-bold">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 P1. Главный экран -->
+    <header class="pt-40 pb-24 px-6 md:px-24 w-full relative">
+        <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
+            
+            <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
+                Точное производство,<br>TXAM выполняет
+            </h1>
+            
+            <p class="text-body-lg text-[#86868B] font-medium mb-16 max-w-3xl leading-relaxed tracking-wide">
+                Предоставляем комплексные услуги интеллектуального оборудования для ведущих мировых предприятий. Мы успешно вошли в число поставщиков высококачественной продукции для нестандартной автоматизации, интеллектуального производства и интеграции промышленных роботов.
+            </p>
+            
+            <div class="flex space-x-6 mb-20">
+                <a href="products.html" class="bg-[#1D1D1F] text-white px-10 py-4 radius-sm text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">
+                    Исследовать продукцию
+                </a>
+                <a href="about.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 radius-sm text-base font-bold hover:bg-gray-50 transition-colors">
+                    Узнать о наших возможностях
+                </a>
+            </div>
+
+            <a href="tv-display-solution.html" class="w-full media-h-index w-full bg-gray-100 media-hero relative group block">
+                <picture><source srcset="../assets/images/solutions/tv-flex-line.webp" type="image/webp"><img alt="Гибкая производственная линия для TV/коммерческих дисплеев" class="w-full h-full object-cover img-zoom" src="../assets/images/solutions/tv-flex-line.webp"></picture>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 right-10 text-left">
+                    <p class="text-[#FF6B00] text-sm font-bold tracking-widest mb-3 uppercase">Ключевое решение</p>
+                    <p class="text-white text-h2 font-black mb-2">Гибкая производственная линия для TV/коммерческих дисплеев</p>
+                    <p class="text-white/80 text-base md:text-lg">Совместимость 65~110 дюймов | Полная автоматизация | Решения под ключ</p>
+                    <div class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 radius-sm text-sm font-bold">
+                        Подробнее о продукте →
+                    </div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- 📍 P2. О TXAM -->
+    <section id="about" class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-24">
+                <div class="lg:w-2/3">
+                    <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] mb-8 tracking-tighter">Привод для мирового интеллектуального производства</h2>
+                    <div class="w-12 h-1.5 bg-[#FF6B00] mb-8"></div>
+<p class="text-lg md:text-xl text-[#86868B] leading-[1.8] font-light max-w-4xl">
+                        Guangdong TXAM Intelligent Equipment Co., Ltd. была основана в Шэньчжэне — национальном центре науки и технологий. За почти двадцать лет мы неизменно придерживаемся корпоративной философии «Преданность делу, Стабильное развитие, Репутация превыше всего, Качество превыше всего», сосредоточиваясь на проектировании и производстве нестандартных автоматизированных производственных линий.<br><br>
+                        Являясь долгосрочными партнерами <strong class="text-[#1D1D1F] font-bold">TCL, Changhong, Konka, Midea, Skyworth</strong> и других крупных и средних предприятий, мы реализовали интегрированное управление технологическими исследованиями и разработками, производством, продажами и обслуживанием.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-[#E5E5EA] pt-16">
+                <div class="text-center md:text-left">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">19<span class="text-3xl ml-1 text-gray-400">лет</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Лет опыта в производстве автоматизации</p>
+                </div>
+                <div class="text-center md:text-left">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">98<span class="text-3xl ml-1 text-gray-400">ед.</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Ключевых изобретений и патентов</p>
+                </div>
+                <div class="text-center md:text-left">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">7<span class="text-3xl ml-1 text-gray-400">отр.</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Основных отраслей</p>
+                </div>
+                <div class="text-center md:text-left border-l-0 md:border-l-2 md:border-[#E5E5EA] md:pl-8">
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1 text-gray-400">万㎡</span></div>
+                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Два завода: Шэньчжэнь + Хуэйчжоу</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P3. Центр продукции -->
+    <section id="products" class="py-32 md:py-40 bg-[#F5F5F7] px-6 md:px-24 relative">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="mb-20 text-center">
+                <h2 class="text-4xl md:text-[3.5rem] font-black text-[#1D1D1F] tracking-tighter mb-4">Три основные категории продукции</h2>
+                <p class="text-[#86868B] text-xl">От гибкого одиночного оборудования до полной автоматизации завода — полный спектр интеллектуального производства.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                
+                <!-- Основная линия 1: Автоматизированные производственные линии -->
+                <a href="tv-display-solution.html" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Automated Lines</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">Решения для производства TV/коммерческих дисплеев</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">Покрывает полный технологический процесс: от основной сборки (нанесение клея, установка кронштейнов, соединение OC), через промежуточные операции (переворот, визуальный контроль), до конечной упаковки (упаковка в пакеты, установка, палетирование). Специально разработано для TV, образовательных панелей и электронной продукции, обеспечивает высокое качество и стандартизацию производства.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">Нанесение клея</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">Переворот и контроль</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">Упаковка и палетирование</span>
+                    </div>
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
+                        <picture><source srcset="../assets/images/hero/display-automation-line.webp" type="image/webp"><img loading="lazy" src="../assets/images/hero/display-automation-line.webp" alt="Автоматизированная производственная линия" class="w-full h-full object-cover img-zoom"></picture>
+                    </div>
+                </a>
+
+                <!-- Основная линия 2: Упаковка и логистика -->
+                <a href="packaging-solution.html" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Packaging & Logistics</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">Оборудование для упаковки и логистики</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">Включает автоматические палетирующие машины, роботизированные решения для штабелирования и интегрированные системы упаковки. Стабильное и аккуратное штабелирование, совместимость с палетными схемами, точность до ±0,5 мм, значительное повышение эффективности логистики и складирования.</p>
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
+                        <picture><source srcset="../assets/images/hero/pkg-logistics-line.webp" type="image/webp"><img loading="lazy" alt="Упаковка и логистика" class="w-full h-full object-cover img-zoom" src="../assets/images/hero/pkg-logistics-line.webp"></picture>
+                    </div>
+                </a>
+
+                <!-- Основная линия 3: Одиночное оборудование -->
+                <a href="products.html" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Single Machines</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">Роботизированные модули</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">Высокогибкие системы для решения конкретных технологических задач: роботы для нанесения клея высокой точности (±0,2 мм), модули переворота на 180°, установки соединения OC с платформой UVW. Поддержка прямого импорта из CAD для быстрой смены продукта.</p>
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
+                        <picture><source srcset="../assets/images/hero/robot-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/hero/robot-unit.webp" alt="Роботизированное оборудование" class="w-full h-full object-cover img-zoom"></picture>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P4. Система сервиса -->
+    <section id="service" class="py-32 bg-white px-6 md:px-24">
+        <div class="max-w-[1400px] mx-auto fade-up">
+            <div class="text-center mb-24">
+                <h2 class="text-3xl md:text-[3rem] font-black text-[#1D1D1F] tracking-tight mb-4">Стандартизированный сервисный процесс</h2>
+                <p class="text-[#86868B] text-xl">Строгий и прозрачный процесс для обеспечения своевременного высококачественного завершения проекта.</p>
+            </div>
+            
+            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left" style="--grid-gap: 3rem;">
+
+                <!-- Шаг 1 -->
+                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-[#1D1D1F] rounded-full flex items-center justify-center text-white font-black text-lg mb-6 group-hover:scale-110 transition-transform mx-auto md:mx-0 shadow-lg shadow-black/20">01</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Решения</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">Исследование · Планирование<br>Подтверждение · Сотрудничество</p>
+                </div>
+                
+                <!-- Шаг 2 -->
+                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-lg mb-6 group-hover:border-[#1D1D1F] group-hover:bg-[#1D1D1F] group-hover:text-white transition-all mx-auto md:mx-0 shadow-md">02</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Проектирование</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">Механика · Электрика<br>ПО · Обзор дизайна</p>
+                </div>
+
+                <!-- Шаг 3 -->
+                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
+                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-lg mb-6 group-hover:border-[#1D1D1F] group-hover:bg-[#1D1D1F] group-hover:text-white transition-all mx-auto md:mx-0 shadow-md">03</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Производство</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">Чертежи · Производство<br>Контроль качества · Доставка</p>
+                </div>
+
+                <!-- Шаг 4 -->
+                <div class="relative z-10 flex flex-col items-center md:items-start group px-2">
+                    <div class="w-14 h-14 bg-[#FF6B00] rounded-full flex items-center justify-center text-white font-black text-lg mb-6 group-hover:scale-110 transition-transform mx-auto md:mx-0 shadow-lg shadow-orange-500/30">04</div>
+                    <h3 class="text-xl font-bold text-[#1D1D1F] mb-3">Послепродажный сервис</h3>
+                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">365*7*24 · На месте<br>Обучение · Пожизненная гарантия</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 P5. Новости и корпоративная культура -->
+    <section id="news" class="py-32 bg-[#FBFBFD] px-6 md:px-24 border-t border-[#E5E5EA]">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between fade-up">
+            <div class="md:w-1/3 mb-12 md:mb-0 pr-10">
+                <h2 class="text-4xl md:text-[3rem] font-black text-[#1D1D1F] mb-6 tracking-tighter">Корпоративные новости</h2>
+                <div class="mb-10">
+                    <p class="text-[#1D1D1F] font-bold text-lg mb-2">Миссия компании</p>
+                    <p class="text-[#86868B] text-sm leading-relaxed">Работаем вместе с клиентами и партнерами. Стремимся к абсолютному удовлетворению клиентов.</p>
+                </div>
+                <a href="news.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 radius-sm text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
+                    Перейти в раздел новостей
+                </a>
+            </div>
+            
+            <div class="md:w-2/3 flex flex-col border-t-2 border-[#1D1D1F]">
+                <a href="news-detail.html?id=1" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-[#FF6B00] mb-3 tracking-widest uppercase">Корпоративные новости</span>
+                        <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">Предоставляем превосходное интеллектуальное оборудование для ведущих мировых предприятий</h3>
+                        <p class="text-sm text-[#86868B]">Создаем цифровую, визуализированную, прозрачную и стандартизированную систему управления.</p>
+                    </div>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">2026.03.15</span>
+                </a>
+                <a href="news-detail.html?id=2" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-[#86868B] mb-3 tracking-widest uppercase">Проекты</span>
+                        <h3 class="text-xl font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">Высокоточна производственная линия успешно внедрена у известного производителя</h3>
+                        <p class="text-sm text-[#86868B]">Придерживаемся принципа качества, завершили установку и интеграцию нескольких единиц оборудования.</p>
+                    </div>
+                    <span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">2026.02.28</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📍 Footer -->
+    <div data-footer-placeholder></div>
+
+    <!-- ⚙️ Скрипты -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+    <script src="../assets/js/footer-ru.js" defer></script>
+</body>
+</html>

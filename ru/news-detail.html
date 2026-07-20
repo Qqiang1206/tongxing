@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <script src="../assets/js/lang-detect.js"></script>
+    <meta charset="UTF-8">
+    <meta name="description" content="Подробности новостей TXAM">
+    <meta property="og:title" content="Детали новостей | TXAM">
+    <meta property="og:type" content="article">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали новостей | TXAM - Ведущий поставщик автоматизации в Китае</title>
+    <link rel="stylesheet" href="../assets/css/tailwind.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" src="../assets/images/brand/logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Главная</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">О нас</a>
+            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Решения</a>
+            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Продукция</a>
+            <a href="news.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Новости</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="../news-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="../en/news-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="news-detail.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#86868B]">Главная</a>
+            <a href="about.html" class="text-[#86868B]">О нас</a>
+            <a href="solutions.html" class="text-[#86868B]">Решения</a>
+            <a href="products.html" class="text-[#86868B]">Продукция</a>
+            <a href="news.html" class="text-[#FF6B00]">Новости</a>
+            <a href="contact.html" class="text-[#86868B]">Контакты</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="../news-detail.html" class="px-4 py-2 text-[#86868B]">ZH</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="../en/news-detail.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="news-detail.html" class="px-4 py-2 text-[#FF6B00] font-bold">RU</a>
+        </div>
+    </div>
+
+    <article class="detail-page pt-40 pb-32 px-6 md:px-24">
+        <div class="detail-page__inner max-w-[1200px] mx-auto">
+            <nav class="breadcrumb text-sm text-[#86868B] mb-8 flex items-center flex-wrap" aria-label="Хлебные крошки" data-breadcrumb></nav>
+
+            <header class="mb-12 fade-up">
+                <span id="news-category" class="detail-eyebrow text-[#FF6B00] font-bold text-xs tracking-widest uppercase mb-4 block">Компания</span>
+                <h1 id="news-title" class="detail-title hero-title text-display text-[#1D1D1F] text-gradient">
+                    Предоставляем превосходное интеллектуальное оборудование для ведущих мировых предприятий
+                </h1>
+                <div class="detail-meta flex items-center text-sm">
+                    <span id="news-date" class="font-mono">2026.01.08</span>
+                    <span class="mx-3">|</span>
+                    <span>TXAM</span>
+                </div>
+            </header>
+
+            <div class="detail-cover w-full media-h-detail media-hero mb-12 fade-up">
+                <picture><source srcset="../assets/images/hero/building-office.webp" type="image/webp"><img loading="lazy" id="news-cover" src="../assets/images/hero/building-office.webp" alt="Обложка новости" class="w-full h-full object-cover"></picture>
+            </div>
+
+            <div id="news-content" class="detail-prose detail-prose--article fade-up">
+                <p>TXAM объявляет, что ее две крупные базы интеллектуального производства в Шэньчжэне и Хуэйчжоу полностью завершены и введены в эксплуатацию, что ознаменует официальный выход компании на новый этап масштабного развития.</p>
+                
+                <h2>Формирование двух баз</h2>
+                <p>После успешного завершения строительства базы интеллектуального производства TXAM площадью 60 000 м² в Хуэйчжоу, TXAM сформировал "двуядерную" структуру с штаб-квартирой в Шэньчжэне и расширением производственных мощностей в Хуэйчжоу. Эта структура обеспечит компании надежные производственные и логистические гарантии для выполнения заказов ведущих мировых предприятий.</p>
+                
+                <p>База в Хуэйчжоу использует передовое проектирование интеллектуальных производственных линий, оснащена полными системами сборки, тестирования и упаковки, обеспечивая полный контроль от обработки деталей до доставки готовой продукции.</p>
+                
+                <h2>Модернизация цифрового управления</h2>
+                <p>Наращивая производственные мощности, TXAM продолжает продвигать цифровую трансформацию. Развертывая продвинутые системы MES и WMS, TXAM достиг сбора данных производства в реальном времени, мониторинга и анализа, значительно улучшая эффективность производства и стабильность качества продукции.</p>
+                
+                <p>Компания заявила, что продолжит увеличивать инвестиции в R&D, углублять нестандартную автоматизацию и вносить больший вклад в интеллектуальное производство Китая.</p>
+            </div>
+
+            <section class="detail-related fade-up">
+                <h2 class="detail-section__title">Связанные статьи</h2>
+                <div id="related-news" class="detail-related__grid"></div>
+            </section>
+        </div>
+    </article>
+
+    <div data-footer-placeholder></div>
+
+    <script src="../assets/js/data-loader.js"></script>
+    <script src="../data/news/ru.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            var newsData = {};
+            try {
+                newsData = await TXAM.loadData('news', 'ru');
+            } catch (err) {
+                console.error(err);
+                TXAM.revealFadeUps();
+                TXAM.bindMobileMenu();
+                return;
+            }
+
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id') || '1';
+            var news = newsData[id] || newsData['1'];
+            if (!news) {
+                console.error('News not found', id);
+                TXAM.revealFadeUps();
+                TXAM.bindMobileMenu();
+                return;
+            }
+
+            document.getElementById('news-category').textContent = news.category;
+            document.getElementById('news-title').textContent = news.title;
+            document.getElementById('news-date').textContent = news.date;
+            TXAM.setMedia('news-cover', news.cover, news.title);
+            document.getElementById('news-content').innerHTML = news.contentHtml || news.content || '';
+            document.title = news.title + ' | Тунсин Гаотек';
+
+            var relatedContainer = document.getElementById('related-news');
+            if (relatedContainer) {
+                relatedContainer.innerHTML = Object.keys(newsData)
+                    .filter(function (nid) { return nid !== id; })
+                    .slice(0, 3)
+                    .map(function (nid) {
+                        var item = newsData[nid];
+                        return (
+                            '<a href="news-detail.html?id=' + nid + '" class="detail-related-card apple-card block p-6 group">' +
+                            '<div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
+                            '<img loading="lazy" src="' + TXAM.assetUrl(item.cover) + '" alt="' + item.title + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">' +
+                            '</div>' +
+                            '<span class="detail-related-card__eyebrow">' + item.category + '</span>' +
+                            '<h4 class="detail-related-card__title mt-1 mb-2">' + item.title + '</h4>' +
+                            '<span class="detail-meta-mono text-xs">' + item.date + '</span>' +
+                            '</a>'
+                        );
+                    }).join('');
+            }
+
+            TXAM.revealFadeUps();
+            TXAM.bindMobileMenu();
+        });
+    </script>
+    <script src="../assets/js/footer-ru.js" defer></script>
+</body>
+</html>

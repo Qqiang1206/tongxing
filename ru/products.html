@@ -1,0 +1,642 @@
+﻿<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <script src="../assets/js/lang-detect.js"></script>
+    <meta charset="UTF-8">
+    <link rel="preload" as="image" href="../assets/images/products/auto-lamination-001.webp" type="image/webp">
+    <meta name="description" content="Центр продуктов TXAM - Дозирование, переворот, закручивание, оптические компоненты, транспортировка, упаковка. 30+ продуктов">
+    <meta property="og:title" content="Продукты | TXAM">
+    <meta property="og:description" content="30+ единиц автоматического оборудования для TV-дисплеев, бытовой электроники, автомобилей">
+    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продукция | TXAM - Ведущий поставщик автоматизации в Китае</title>
+    <link rel="stylesheet" href="../assets/css/tailwind.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    
+</head>
+<body class="antialiased selection:bg-[#FF6B00] selection:text-white">
+<!-- 🌐 Навигация -->
+    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+        <div class="flex items-center cursor-pointer relative z-50">
+            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" src="../assets/images/brand/logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
+            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Главная</a>
+            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">О нас</a>
+            <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Решения</a>
+            <a href="products.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Продукция</a>
+            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Новости</a>
+            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
+            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
+                <a href="../products.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="../en/products.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
+                <span class="text-[#E5E5EA]">|</span>
+                <a href="products.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">RU</a>
+            </div>
+        </div>
+
+        <div class="md:hidden flex items-center relative z-50">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 📱 Мобильное меню -->
+    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
+        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
+            <a href="index.html" class="text-[#86868B]">Главная</a>
+            <a href="about.html" class="text-[#86868B]">О нас</a>
+            <a href="solutions.html" class="text-[#86868B]">Решения</a>
+            <a href="products.html" class="text-[#FF6B00]">Продукция</a>
+            <a href="news.html" class="text-[#86868B]">Новости</a>
+            <a href="contact.html" class="text-[#86868B]">Контакты</a>
+        </div>
+        <div class="flex items-center space-x-4 text-lg pb-12">
+            <a href="../products.html" class="px-4 py-2 text-[#86868B]">ZH</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="../en/products.html" class="px-4 py-2 text-[#86868B]">EN</a>
+            <span class="text-[#E5E5EA]">|</span>
+            <a href="products.html" class="px-4 py-2 text-[#FF6B00] font-bold">RU</a>
+        </div>
+    </div>
+
+    <!-- 📍 P1. Заголовок продукции -->
+    <header class="pt-40 pb-10 px-6 md:px-24 w-full text-center fade-up">
+        <div class="max-w-[1000px] mx-auto fade-up mt-6">
+            <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
+                Матрица интеллектуального производства
+            </h1>
+            <p class="text-xl md:text-2xl text-[#86868B] font-medium mb-16 max-w-3xl mx-auto leading-[1.6] tracking-wide">
+                От высокоточных гибких модулей до полностью автоматизированных заводских линий.<br class="hidden md:block">Полный спектр оборудования для электронного производства.
+            </p>
+        </div>
+    </header>
+
+    <!-- 📍 P2. Фильтр продукции -->
+    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
+        <div class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center space-x-2 pb-4 gap-2">
+            <button id="filter-all" class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">Все</button>
+            <button id="filter-dispensing" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="dispensing">Дозирование</button>
+            <button id="filter-flip" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="flip">Проверка</button>
+            <button id="filter-optical" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="optical">Оптика</button>
+            <button id="filter-single" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="single">Оборудование</button>
+            <button id="filter-logistics" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="logistics">Логистика</button>
+            <button id="filter-packaging" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="packaging">Упаковка</button>
+            <button id="filter-robot" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="robot">Роботы</button>
+        </div>
+    </section>
+
+    <!-- 📍 P3. Сетка продукции -->
+    <section class="pb-32 px-6 md:px-24 min-h-[600px]">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+            
+            <!-- Высокоточный ламинатор -->
+            <a href="product-detail.html?id=1" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-lamination-001.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-lamination-001.webp" alt="Ламинатор" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALM-01</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Высокоточный ламинатор</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Разработан для стекла и дисплейных модулей. Точность ламинации <strong class="text-[#1D1D1F]">±0.075mm</strong>, с функцией постоянного давления, цикл до 80 секунд.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0.075mm</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Контроль давления</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- OC Ламинация -->
+            <a href="product-detail.html?id=2" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/oc-lamination-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/oc-lamination-unit.webp" alt="OC Ламинация" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A Серия</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">OC Интеллектуальная система ламинации</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Полностью автоматическая сборка Open Cell и модуля подсветки. С использованием <strong class="text-[#1D1D1F]">UVW платформы визионного выравнивания</strong>, полностью решает проблему боя стекла при ручной ламинации.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">UVW Выравнивание</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Нулевой бой</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Робот-дозатор -->
+            <a href="product-detail.html?id=4" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-dispensing.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-dispensing.webp" alt="Робот-дозатор" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AGD Серия</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Высокоточный робот-дозатор</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Одноосный робот с матрицей нескольких клеевых пистолетов, погрешность позиционирования <strong class="text-[#1D1D1F]">±0.2mm</strong>, однорядное дозирование всего 0.25 секунды. Поддержка CAD импорта для быстрой смены продукта.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0.2mm</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">CAD прямой</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Робот-паллетайзер -->
+            <a href="product-detail.html?id=11" class="product-card product-item fade-up" data-category="logistics">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/robot-palletizing.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/robot-palletizing.webp" alt="Робот паллетайзер" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-PR Серия</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Интеллектуальная система паллетирования</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Идеальное решение для штабелирования тяжелой готовой продукции. Поддержка фиктивной паллетирования и поддонов, точность <strong class="text-[#1D1D1F]">±0.5mm</strong>, скорость до 12 секунд/шт.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Высокочастотный</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Совместимость</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 180 переворот -->
+            <a href="product-detail.html?id=9" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/turnover-180.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/turnover-180.webp" alt="Тяжелый переворот" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">HEAVY DUTY SERIES</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">180-градусный переворотный узел</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Специально разработан для сверхбольших образовательных панелей и ЖК-панелей. Полностью устраняет повреждение продукции и угрозы безопасности при ручном перевороте.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Устойчивый</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Нулевое повреждение</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Авто-шуруповерт -->
+            <a href="product-detail.html?id=8" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/zidongdabeibanluosi-001.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/zidongdabeibanluosi-001.webp" alt="Авто-шуруповерт" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASBS-01</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Робот для автоматической завинтовки</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Может захватывать и автоматически затягивать до 12 винтов задней панели одновременно, крутящий момент регулируется в реальном времени, эффективность до 1.8 секунд/винт.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Контроль момента</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">1.8с/шт</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Авто паллетайзер и боксер -->
+            <a href="product-detail.html?id=12" class="product-card product-item fade-up" data-category="logistics">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-boxing.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-boxing.webp" alt="Авто паллетайзер" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AET Серия</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Упаковка и автоматическая окоробка</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Интегрированная автоматическая загрузка поддонов, распаковка, формовка и полная окоробка. Механическая жесткая позиция, 20 секунд для центрирования одного поддона.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Полный EOL</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Совместимость</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Поворотный стол -->
+            <a href="product-detail.html?id=18" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/turntable.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/turntable.webp" alt="Поворотный стол" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RT Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Поворотный стол</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Прецизионное ротационное оборудование для многостанционной обработки или контроля, обеспечивающее многоугловую автоматическую обработку изделий.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Точное позиционирование</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Многостанционный</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Подъемный модуль -->
+            <a href="product-detail.html?id=19" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/lift-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/lift-unit.webp" alt="Подъемный модуль" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-LG Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Подъемный модуль</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Подъемно-транспортное оборудование для перемещения изделий между станциями разной высоты, обеспечивающее бесшовное соединение по высоте.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Плавный подъем</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Большая грузоподъемность</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Транспортер модулей -->
+            <a href="product-detail.html?id=20" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/module-assembler.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/module-assembler.webp" alt="Транспортер модулей" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MM Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Транспортер модулей</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Прецизионное оборудование для автоматической передачи электронных модулей между различными станциями.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Точная передача</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Гибкое производство</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Автомат защелок и ключей -->
+            <a href="product-detail.html?id=21" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-palletizer.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-palletizer.webp" alt="Автомат защелок и ключей" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACT Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Автомат защелок и ключей</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Автоматизированное оборудование для автоматической установки защелок или ключей, точного позиционирования и быстрой сборки.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автозащелкивание</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Высокая эффективность</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Вспомогательный запайщик пакетов -->
+            <a href="product-detail.html?id=22" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/retainer-sealer.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/retainer-sealer.webp" alt="Вспомогательный запайщик пакетов" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-SE Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Вспомогательный запайщик пакетов</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Автоматизированное оборудование для запайки упаковочных пакетов с использованием технологии термо запайки.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автозапайка</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Стабильное качество</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Робот упаковки в пакеты -->
+            <a href="product-detail.html?id=23" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/robot-box-bagging.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/robot-box-bagging.webp" alt="Робот упаковки в пакеты" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Робот упаковки в пакеты</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Совместно с роботом автоматически выполняет упаковку в пакеты после схода изделия с линии.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автоупаковка</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Робот-сотрудничество</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Робот загрузки задних панелей -->
+            <a href="product-detail.html?id=24" class="product-card product-item fade-up" data-category="single">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/robot-auto-backplane.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/robot-auto-backplane.webp" alt="Робот загрузки задних панелей" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RBP Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Робот загрузки задних панелей</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Автоматизированное оборудование для автоматической загрузки задних панелей в сборочные станции совместно с роботом.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автозагрузка</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Гарантия качества</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=5" class="product-card product-item fade-up" data-category="dispensing">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-dispenser.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-dispenser.webp" alt="Автоматический станок для распыления клея" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ASM Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Автоматический станок для распыления клея</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Равномерное распыление клея на целевые объекты, подходит для панелей большего размера. Высокая эффективность распыления и сильная совместимость.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">0,6-0,8 м/с</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">75"-Полная совместимость</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=6" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-light-bracket.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-light-bracket.webp" alt="Автоматический станок для установки световых кронштейнов" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALPS Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Автоматический станок для установки световых кронштейнов</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Точный захват и установка диффузионных кронштейнов, обеспечивающих стабильную поддержку оптических компонентов дисплея.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0,2 мм</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Вибропитание</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=7" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-light-strip.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-light-strip.webp" alt="Автоматический станок для установки светодиодных линеек" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ALSI-01/02</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Автоматический станок для установки светодиодных линеек</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Точная и быстрая установка светодиодных линеек в указанное положение, возможность захвата нескольких линеек одновременно.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0,2 мм</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">7 шт./партия</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=10" class="product-card product-item fade-up" data-category="optical">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-glass-holder.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-glass-holder.webp" alt="Автоматический станок для установки закалённого стекла" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ACTGR-01/02</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Автоматический станок для установки закалённого стекла</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Автоматическая установка закалённого стекла для образовательных дисплеев с использованием визуального позиционирования.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">±0,15 мм</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Визуальное позиционирование</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=15" class="product-card product-item fade-up" data-category="flip">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auxiliary-clamp-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auxiliary-clamp-unit.webp" alt="Вспомогательный модуль визуального контроля" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TXM-A Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Вспомогательный модуль визуального контроля</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Автоматическое переворачивание и распознавание изображений для помощи или замены ручной проверки качества продукции.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автопереворот</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Визуальный контроль</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=13" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/robot-palletizing-integrated.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/robot-palletizing-integrated.webp" alt="Роботизированная интегрированная паллетизация" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RIP-001</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Роботизированная интегрированная паллетизация</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Более мощное интегрированное решение для паллетизации, включая штабелирование поддонов, автоматическую укладку прокладок, сканирование и другие специальные функции.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Интеграция функций</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Функция сканирования</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=14" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/robot-clamp-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/robot-clamp-unit.webp" alt="Роботизированный вертикальный модуль" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Роботизированный вертикальный модуль</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Автоматическое преобразование продукта из горизонтального в вертикальное положение с использованием CCD-зрения для определения положения продукта.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">CCD-зрение</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Плавная и эффективная работа</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=16" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/auto-press-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/auto-press-unit.webp" alt="Автоматический модуль поддержания давления" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Автоматический модуль поддержания давления</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Применение и поддержание постоянного давления на собранные детали для обеспечения качества склейки или сборки.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Постоянное давление</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Гарантия качества</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=27" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/upper-flip-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/upper-flip-unit.webp" alt="Вспомогательный модуль переворота на входе" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-AUFE Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Вспомогательный модуль переворота на входе</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Вспомогательное оборудование для переворота на позиции входа продукта, работает с основным оборудованием для автоматической загрузки/выгрузки.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автопереворот</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Помощь на входе</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=28" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/lower-flip-unit.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/lower-flip-unit.webp" alt="Вспомогательный модуль переворота на выходе" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-ADFE Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Вспомогательный модуль переворота на выходе</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Вспомогательное оборудование для переворота на позиции выхода продукта, работает с основным оборудованием для автоматической выгрузки.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автопереворот</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Помощь на выходе</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=29" class="product-card product-item fade-up" data-category="packaging">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/manual-bagging.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/manual-bagging.webp" alt="Ручная вспомогательная упаковка в пакеты" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-MAB-M Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Ручная вспомогательная упаковка в пакеты</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Оборудование для ручной вспомогательной упаковки в пакеты, работает с автоматизированными механизмами для завершения упаковки продукции.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Ручное сотрудничество</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автоматизация помощи</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="product-detail.html?id=30" class="product-card product-item fade-up" data-category="robot">
+                <div class="img-container">
+                    <picture><source srcset="../assets/images/products/robot-auto-hanging.webp" type="image/webp"><img loading="lazy" src="../assets/images/products/robot-auto-hanging.webp" alt="Робот для автоматической загрузки на подвесную цепь" class="img-zoom"></picture>
+                </div>
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">TX-NS-RAHC Series</div>
+                    <h3 class="text-2xl font-bold text-[#1D1D1F] mb-3 tracking-tight">Робот для автоматической загрузки на подвесную цепь</h3>
+                    <p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">
+                        Автоматическое оборудование, работающее с роботами для автоматической загрузки продукции на подвесной конвейер.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Автозагрузка на цепь</span>
+                        <span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">Подвесной конвейер</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- 📍 Footer -->
+    <div data-footer-placeholder></div>
+
+    <!-- ⚙️ Скрипт -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) { navbar.classList.add('shadow-sm'); } 
+                else { navbar.classList.remove('shadow-sm'); }
+            });
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            let isMenuOpen = false;
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) { 
+                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
+                } else { 
+                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const productItems = document.querySelectorAll('.product-item');
+
+            function applyFilter(filterValue) {
+                const targetBtn = document.querySelector(`[data-filter="${filterValue}"]`);
+                if (!targetBtn) return;
+                
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+                        b.classList.add('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+                });
+                targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+                targetBtn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+
+                productItems.forEach(item => {
+                    const match = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
+                    if (match) {
+                        item.classList.remove('hidden-item');
+                        item.style.display = '';
+                        item.style.opacity = '1';
+                        item.style.transform = '';
+                    } else {
+                        item.classList.add('hidden-item');
+                        item.style.display = 'none';
+                        item.style.opacity = '';
+                        item.style.transform = '';
+                    }
+                });
+            }
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    applyFilter(btn.getAttribute('data-filter'));
+                    setTimeout(() => {
+                        const productGrid = document.getElementById('product-grid');
+                        if (productGrid) {
+                            const top = productGrid.getBoundingClientRect().top + window.pageYOffset - 220;
+                            window.scrollTo({ top: top, behavior: 'smooth' });
+                        }
+                    }, 100);
+                });
+            });
+
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                applyFilter(hash);
+            }
+        });
+    </script>
+    <script src="../assets/js/footer-ru.js" defer></script>
+</body>
+</html>
