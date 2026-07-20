@@ -1,8 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
-    <link rel="preload" as="image" href="factory-photo.jpg">
+    <link rel="preload" as="image" href="szgc1.png">
     <meta name="description" content="同兴高科创立于深圳，19年专注非标自动化设备制造，为世界一流企业提供智能装备一站式服务">
     <meta property="og:title" content="关于我们 | 同兴高科 TXAM">
     <meta property="og:description" content="了解同兴高科的发展历程、核心专利技术和全球客户案例">
@@ -10,10 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于我们 | 同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
     <!-- 引入 Tailwind CSS 框架 -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
             <link rel="icon" type="image/webp" href="favicon.webp">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
@@ -21,9 +22,7 @@
     
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <div data-header-placeholder></div>
-
-    <!-- 🌐 顶部导航 -->
+<!-- 🌐 顶部导航 -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10"></picture>
@@ -37,7 +36,7 @@
             <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
             <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="about.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <a href="about.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="about-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -65,7 +64,7 @@
             <a href="contact.html" class="text-[#86868B]">联系我们</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="about.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <a href="about.html" class="px-4 py-2 text-[#FF6B00] font-bold">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="about-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -73,29 +72,61 @@
         </div>
     </div>
 
-    <!-- 📍 P1. 品牌介绍与工厂大图 -->
-    <header class="pt-40 pb-20 px-6 md:px-24 w-full relative">
+    <!-- 📍 P1. 品牌介绍 -->
+    <header class="pt-40 pb-10 px-6 md:px-24 w-full relative">
         <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
-            
             <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
                 19年只做智造
             </h1>
-            
-            <p class="text-body-lg text-[#86868B] font-medium mb-16 max-w-4xl leading-relaxed tracking-wide">
+            <p class="text-body-lg text-[#86868B] font-medium mb-0 max-w-4xl leading-relaxed tracking-wide">
                 广东同兴高科智能装备有限公司（简称"同兴高科"），1998年技术发源，2007年正式创立于国家科技中心城市深圳。我们始终坚守<strong class="text-[#1D1D1F] font-bold">"敬业、稳步发展、信誉第一、品质至上"</strong>的企业理念，致力于为世界一流企业提供智能装备的一站式交付服务。
             </p>
+        </div>
+    </header>
 
-            <div class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group">
-                <!-- 工厂图 -->
-                <img loading="lazy" src="factory-photo.jpg" alt="同兴高科双工厂基地" class="w-full h-full object-cover img-zoom">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                <div class="absolute bottom-8 left-10 text-left">
-                    <p class="text-white/90 text-sm font-bold tracking-widest mb-1">TXAM HEADQUARTERS & FACTORY</p>
-                    <p class="text-white text-h2 font-bold">10万㎡ 深圳总部与惠州智造双基地</p>
+    <!-- 📍 P1.5 深惠双核 — 轮播 -->
+    <section class="factory-carousel-section" aria-label="深惠双核智造基地">
+        <div class="factory-carousel-section__inner">
+            <div id="factory-carousel" class="factory-carousel">
+                <div class="factory-carousel__slide is-active" aria-hidden="false">
+                    <img src="szgc1.png" alt="同兴高科深圳总部工厂" fetchpriority="high">
+                    <div class="factory-carousel__gradient"></div>
+                    <div class="factory-carousel__caption">
+                        <p class="factory-carousel__tag">Shenzhen HQ</p>
+                        <h2 class="factory-carousel__title">深圳总部工厂</h2>
+                        <p class="factory-carousel__desc">研发 · 制造 · 总部职能 · 19年智造根基</p>
+                    </div>
+                </div>
+                <div class="factory-carousel__slide" aria-hidden="true">
+                    <img src="hzgc2.jpg" alt="同兴高科惠州智能制造基地" loading="lazy">
+                    <div class="factory-carousel__gradient"></div>
+                    <div class="factory-carousel__caption">
+                        <p class="factory-carousel__tag">Huizhou Base</p>
+                        <h2 class="factory-carousel__title">惠州智能制造基地</h2>
+                        <p class="factory-carousel__desc">6万㎡ 产能扩展 · 支撑全球规模化交付</p>
+                    </div>
+                </div>
+                <div class="factory-carousel__controls">
+                    <button type="button" class="factory-carousel__arrow" data-factory-prev aria-label="上一基地">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <div class="factory-carousel__dots" role="tablist">
+                        <button type="button" class="factory-carousel__dot is-active" data-factory-dot role="tab" aria-selected="true" aria-label="深圳总部工厂">
+                            <span class="factory-carousel__dot-label">深圳</span>
+                            <span class="factory-carousel__dot-mark"></span>
+                        </button>
+                        <button type="button" class="factory-carousel__dot" data-factory-dot role="tab" aria-selected="false" aria-label="惠州智能制造基地">
+                            <span class="factory-carousel__dot-label">惠州</span>
+                            <span class="factory-carousel__dot-mark"></span>
+                        </button>
+                    </div>
+                    <button type="button" class="factory-carousel__arrow" data-factory-next aria-label="下一基地">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
     <!-- 📍 P2. 核心数据展示 -->
     <section class="py-20 bg-white px-6 md:px-24">
@@ -134,17 +165,17 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-white/10 pt-20 text-left">
                 <!-- 愿景 -->
-                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
                     <h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">【 企业愿景 】</h3>
                     <p class="text-gray-300 text-lg leading-relaxed font-light">打造极具国际竞争力的<br>自动化标杆企业。</p>
                 </div>
                 <!-- 使命 -->
-                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
                     <h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">【 企业使命 】</h3>
                     <p class="text-gray-300 text-lg leading-relaxed font-light">引领中国智造时代，<br>重塑全球产业交付标准。</p>
                 </div>
                 <!-- 核心价值观 -->
-                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
+                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
                     <h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">【 核心价值观 】</h3>
                     <p class="text-gray-300 text-lg leading-relaxed font-light">以客户为中心，协同伙伴，共赢同兴。<br>确保安全第一，追求效率第一。</p>
                 </div>
@@ -255,23 +286,20 @@
             <div class="mb-24">
                 <h3 class="text-2xl font-bold text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">荣誉资质</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="apple-card p-3 pb-5 flex flex-col items-center">
-                        <div class="w-full bg-white rounded-2xl overflow-hidden">
+                    <div class="apple-card p-3 flex flex-col items-center">
+                        <div class="w-full bg-white radius-sm overflow-hidden">
                             <picture><source srcset="certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp" type="image/webp"><img loading="lazy" src="certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.jpg" alt="高新技术企业证书" class="w-full h-full object-contain"></picture>
                         </div>
-                        <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">高新技术企业证书</p>
                     </div>
-                    <div class="apple-card p-3 pb-5 flex flex-col items-center">
-                        <div class="w-full bg-white rounded-2xl overflow-hidden">
+                    <div class="apple-card p-3 flex flex-col items-center">
+                        <div class="w-full bg-white radius-sm overflow-hidden">
                             <img loading="lazy" src="certifications/rongyuzizhi/guanfangzizhi-chuangxinxingzhongxiaoqiye.jpg" alt="创新型中小企业" class="w-full h-full object-contain">
                         </div>
-                        <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">创新型中小企业</p>
                     </div>
-                    <div class="apple-card p-3 pb-5 flex flex-col items-center">
-                        <div class="w-full bg-white rounded-2xl overflow-hidden">
+                    <div class="apple-card p-3 flex flex-col items-center">
+                        <div class="w-full bg-white radius-sm overflow-hidden">
                             <picture><source srcset="certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp" type="image/webp"><img loading="lazy" src="certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.jpg" alt="专精特新中小企业" class="w-full h-full object-contain"></picture>
                         </div>
-                        <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">专精特新中小企业</p>
                     </div>
                 </div>
             </div>
@@ -285,43 +313,36 @@
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114404_97_27.jpg" alt="zhiliangzizhi" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">质量资质认证</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114503_107_27.jpg" alt="zhiliangzizhi" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">质量资质认证</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114504_108_27.jpg" alt="zhiliangzizhi" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">质量资质认证</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114505_109_27.jpg" alt="zhiliangzizhi" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">质量资质认证</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114506_110_27.jpg" alt="zhiliangzizhi" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">质量资质认证</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114507_111_27.jpg" alt="zhiliangzizhi" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">质量资质认证</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhiliangzizhi/weixintupian_20260330114508_112_27.jpg" alt="zhiliangzizhi" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">质量资质认证</p>
                         </div>
                     </div>
                 </div>
@@ -336,61 +357,51 @@
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <picture><source srcset="certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp" type="image/webp"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.jpg" alt="专利证书" class="w-full h-full object-contain"></picture>
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第113项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <picture><source srcset="certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp" type="image/webp"><img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.jpg" alt="专利证书" class="w-full h-full object-contain"></picture>
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第115项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114513_117_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第117项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114515_119_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第119项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114516_121_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第121项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114517_122_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第122项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114518_123_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第123项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114519_124_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第124项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114519_125_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第125项</p>
                         </div>
                         <div class="patent-card flex-shrink-0 w-64 apple-card p-4 flex flex-col items-center">
                             <div class="w-full bg-white rounded-xl overflow-hidden">
                                 <img loading="lazy" src="certifications/zhuanlizizhi/weixintupian_20260330114520_126_27.jpg" alt="专利证书" class="w-full h-full object-contain">
                             </div>
-                            <p class="font-bold text-[#1D1D1F] text-center text-sm mt-3">发明专利 第126项</p>
                         </div>
                     </div>
                 </div>
@@ -440,22 +451,20 @@
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
 
-            const clientLogos = [
-                { src: 'client-logos/tcl.jpeg', alt: 'TCL' },
-                { src: 'client-logos/chuangwei.jpeg', alt: '创维' },
-                { src: 'client-logos/meide.jpeg', alt: '美的' },
-                { src: 'client-logos/fushikang.jpg', alt: '富士康' },
-                { src: 'client-logos/jingdongfang.jpeg', alt: '京东方' },
-                { src: 'client-logos/ningdeshidai.jpg', alt: '宁德时代' },
-                { src: 'client-logos/zhouming.jpg', alt: '洲明' },
-                { src: 'client-logos/litongdianzi.jpg', alt: '利通电子' },
-                { src: 'client-logos/qunchuangguangdian.jpg', alt: '群创光电' },
-                { src: 'client-logos/rili.jpg', alt: '日立' },
-                { src: 'client-logos/lianxiang.jpg', alt: '联想' },
-                { src: 'client-logos/huake.jpg', alt: '华科' },
-                { src: 'client-logos/huike.jpg', alt: '惠科' },
-                { src: 'client-logos/xiwo.jpg', alt: '希沃' },
-                { src: 'client-logos/kangjia.jpeg', alt: '康佳' },
+                        const clientLogos = [
+                { src: 'client-logos/tcl.webp', alt: 'TCL' },
+                { src: 'client-logos/chuangwei.webp', alt: '创维' },
+                { src: 'client-logos/meide.webp', alt: '美的' },
+                { src: 'client-logos/fushikang.webp', alt: '富士康' },
+                { src: 'client-logos/jingdongfang.webp', alt: '京东方' },
+                { src: 'client-logos/ningdeshidai.webp', alt: '宁德时代' },
+                { src: 'client-logos/zhouming.webp', alt: '洲明' },
+                { src: 'client-logos/qunchuangguangdian.webp', alt: '群创光电' },
+                { src: 'client-logos/lianxiang.webp', alt: '联想' },
+                { src: 'client-logos/huake.webp', alt: '华科' },
+                { src: 'client-logos/huike.webp', alt: '惠科' },
+                { src: 'client-logos/xiwo.webp', alt: '希沃' },
+                { src: 'client-logos/kangjia.webp', alt: '康佳' },
                 { src: 'client-logos/changhong.gif', alt: '长虹' },
             ];
 
@@ -463,7 +472,7 @@
             if (grid) {
                 clientLogos.forEach(logo => {
                     const card = document.createElement('div');
-                    card.className = 'client-card h-28 bg-white border border-[#E5E5EA] rounded-2xl flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300';
+                    card.className = 'client-card h-28 bg-white border border-[#E5E5EA] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300';
                     const img = document.createElement('img');
                     img.src = logo.src;
                     img.alt = logo.alt;
@@ -475,7 +484,7 @@
             }
         });
     </script>
-    <script src="header.js" defer></script>
+    <script src="factory-carousel.js" defer></script>
     <script src="footer.js" defer></script>
 </body>
 </html>

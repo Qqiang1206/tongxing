@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en-US" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <link rel="preload" as="image" href="solutions/tv-flex-line.webp">
     <meta name="description" content="TXAM - 19 years of non-standard automation equipment manufacturer. Smart production line solutions for TCL, Hisense, Konka. 98 patents, exported to 15 countries.">
@@ -10,9 +11,9 @@
 <meta property="og:type" content="website">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TXAM - China's Leading Automation Equipment Supplier</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tailwind.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/webp" href="favicon.webp">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
@@ -47,7 +48,7 @@
             border: 1px solid var(--border-light);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 32px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
         }
         .apple-card:hover {
@@ -93,7 +94,7 @@
             <a href="news-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">News</a>
             <a href="contact-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Contact Us</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="index.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <a href="index.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="index-en.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -121,7 +122,7 @@
             <a href="contact-en.html" class="text-[#86868B]">Contact Us</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="index.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <a href="index.html" class="px-4 py-2 text-[#86868B]">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="index-en.html" class="px-4 py-2 text-[#FF6B00] font-bold">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -130,34 +131,34 @@
     </div>
 
     <!-- 📍 P1. Hero Section -->
-    <header class="pt-40 pb-20 px-6 md:px-24 w-full relative">
+    <header class="pt-40 pb-24 px-6 md:px-24 w-full relative">
         <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
             
-            <h1 class="hero-title text-5xl md:text-[5rem] text-[#1D1D1F] mb-8 text-gradient">
+            <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
                 Precision Manufacturing, TXAM Delivers
             </h1>
             
-            <p class="text-xl md:text-2xl text-[#86868B] font-medium mb-16 max-w-3xl leading-[1.6] tracking-wide">
+            <p class="text-body-lg text-[#86868B] font-medium mb-16 max-w-3xl leading-relaxed tracking-wide">
                 One-stop service for intelligent equipment to world-class enterprises. Now proudly positioned as a high-end supplier of non-standard automation, intelligent manufacturing, and industrial robot integration.
             </p>
             
             <div class="flex space-x-6 mb-20">
-                <a href="products-en.html" class="bg-[#1D1D1F] text-white px-10 py-4 rounded-full text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">
+                <a href="products-en.html" class="bg-[#1D1D1F] text-white px-10 py-4 radius-sm text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">
                     Explore Core Products
                 </a>
-                <a href="about-en.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 rounded-full text-base font-bold hover:bg-gray-50 transition-colors">
+                <a href="about-en.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 radius-sm text-base font-bold hover:bg-gray-50 transition-colors">
                     Learn About Our Strengths
                 </a>
             </div>
 
-            <a href="tv-display-solution-en.html" class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group block">
-                <picture><source srcset="solutions/tv-flex-line.webp" type="image/webp"><img loading="lazy" alt="TV/Commercial Display Flexible Assembly Line" class="w-full h-full object-cover img-zoom" src="solutions/tv-flex-line.jpg"></picture>
+            <a href="tv-display-solution-en.html" class="w-full media-h-index w-full bg-gray-100 media-hero relative group block">
+                <picture><source srcset="solutions/tv-flex-line.webp" type="image/webp"><img alt="TV/Commercial Display Flexible Assembly Line" class="w-full h-full object-cover img-zoom" src="solutions/tv-flex-line.jpg"></picture>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                 <div class="absolute bottom-10 left-10 right-10 text-left">
                     <p class="text-[#FF6B00] text-sm font-bold tracking-widest mb-3 uppercase">Benchmark Solution</p>
-                    <p class="text-white text-3xl md:text-4xl font-black mb-2">TV/Commercial Display Flexible Assembly Line</p>
+                    <p class="text-white text-h2 font-black mb-2">TV/Commercial Display Flexible Assembly Line</p>
                     <p class="text-white/80 text-base md:text-lg">One-key Compatibility 65~110" | Fully Automated Assembly | Turnkey Solutions</p>
-                    <div class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 rounded-full text-sm font-bold">
+                    <div class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 radius-sm text-sm font-bold">
                         View Product Details →
                     </div>
                 </div>
@@ -193,7 +194,7 @@
                     <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Major Industries Covered</p>
                 </div>
                 <div class="text-center md:text-left border-l-0 md:border-l-2 md:border-[#E5E5EA] md:pl-8">
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1 text-gray-400">万㎡</span></div>
+                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1 text-gray-400">0k m²</span></div>
                     <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Shenzhen + Huizhou Dual Factories</p>
                 </div>
             </div>
@@ -216,12 +217,12 @@
                     <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">TV/Commercial Display Production Line Solutions</h3>
                     <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">Covering core assembly (dispensing, bracket placement, OC lamination), intermediate processes (flipping, visual inspection), to final packaging (bagging, standing, palletizing). Specially designed for TV, educational displays and electronic products, achieving standardized high-yield production.</p>
                     <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">Dispensing Assembly</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">Flipping Inspection</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">Bagging Palletizing</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">Dispensing Assembly</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">Flipping Inspection</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">Bagging Palletizing</span>
                     </div>
-                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
-                        <img loading="lazy" src="display-automation-line.jpg" alt="Automated Production Line" class="w-full h-full object-cover img-zoom">
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
+                        <picture><source srcset="display-automation-line.webp" type="image/webp"><img loading="lazy" src="display-automation-line.jpg" alt="Automated Production Line" class="w-full h-full object-cover img-zoom"></picture>
                     </div>
                 </a>
 
@@ -230,7 +231,7 @@
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Packaging & Logistics</div>
                     <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">Packaging & Logistics Automation Equipment</h3>
                     <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">Including automatic palletizers, robot full-stack/single-unit palletizing solutions, and integrated automatic boxing systems. Neat and stable stacking, compatible with mock machine palletizing, precision up to ±0.5mm, greatly improving warehouse logistics efficiency.</p>
-                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
                         <picture><source srcset="pkg-logistics-line.webp" type="image/webp"><img loading="lazy" alt="Packaging & Logistics" class="w-full h-full object-cover img-zoom" src="pkg-logistics-line.jpg"></picture>
                     </div>
                 </a>
@@ -240,7 +241,7 @@
                     <div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">Single Machines</div>
                     <h3 class="text-2xl font-bold text-[#1D1D1F] mb-4">Robot Single Machine Units</h3>
                     <p class="text-[#86868B] text-sm leading-[1.8] mb-6 flex-grow">High-flexibility systems solving specific process bottlenecks. Such as: high-precision robot dispensing machine (±0.2mm), 180-degree flipping unit, and OC lamination units using UVW platform. Supports CAD import for one-key product changeover.</p>
-                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
                         <picture><source srcset="robot-unit.webp" type="image/webp"><img loading="lazy" src="robot-unit.jpg" alt="Robot Single Machine Equipment" class="w-full h-full object-cover img-zoom"></picture>
                     </div>
                 </a>
@@ -299,7 +300,7 @@
                     <p class="text-[#1D1D1F] font-bold text-lg mb-2">Our Original Aspiration</p>
                     <p class="text-[#86868B] text-sm leading-relaxed">Aligned with customers, thriving with partners. Focused on goals, going all out to achieve extreme customer satisfaction.</p>
                 </div>
-                <a href="news-en.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 rounded-full text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
+                <a href="news-en.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 radius-sm text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
                     Visit News Center
                 </a>
             </div>

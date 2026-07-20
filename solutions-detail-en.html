@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en-US" class="scroll-smooth">
-<head>
+<head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <link rel="preload" as="image" href="solutions/tv-flex-line.webp">
     <meta name="description" content="TXAM industry automation production line solutions - turnkey engineering service">
@@ -8,10 +9,9 @@
 <meta property="og:type" content="website">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solutions Details | TXAM</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/webp" href="favicon.webp">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
@@ -19,9 +19,7 @@
     
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <div data-header-placeholder></div>
-
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
         </div>
@@ -34,7 +32,7 @@
             <a href="news-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">News</a>
             <a href="contact-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Contact Us</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="solutions-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <a href="solutions-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="solutions-detail-en.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -61,7 +59,7 @@
             <a href="contact-en.html" class="text-[#86868B]">Contact Us</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="solutions-detail.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <a href="solutions-detail.html" class="px-4 py-2 text-[#86868B]">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="solutions-detail-en.html" class="px-4 py-2 text-[#FF6B00] font-bold">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -90,7 +88,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
-                    <div class="w-full h-[400px] rounded-[24px] overflow-hidden bg-gray-100">
+                    <div class="media-h-detail w-full media-hero bg-gray-100">
                         <img loading="lazy" id="product-image" src="" alt="Solution Image" class="w-full h-full object-cover">
                     </div>
                 </div>
@@ -409,8 +407,7 @@
                 }
             });
         });
-    </script>
-    <script src="header.js" defer></script>
+    </script>
     <script src="footer-en.js" defer></script>
 </body>
 </html>

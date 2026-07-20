@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
             <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="index.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <a href="index.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="index-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="contact.html" class="text-[#86868B]">联系我们</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="index.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <a href="index.html" class="px-4 py-2 text-[#FF6B00] font-bold">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="index-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
             <span class="text-[#E5E5EA]">|</span>

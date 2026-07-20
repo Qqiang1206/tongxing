@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <link rel="preload" as="image" href="products/auto-lamination-001.webp" type="image/webp">
     <meta name="description" content="Центр продуктов TXAM - Дозирование, переворот, закручивание, оптические компоненты, транспортировка, упаковка. 30+ продуктов">
@@ -9,16 +10,14 @@
     <meta property="og:type" content="website">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Продукция | TXAM - Ведущий поставщик автоматизации в Китае</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <div data-header-placeholder></div>
-
-    <!-- 🌐 Навигация -->
+<!-- 🌐 Навигация -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
@@ -32,7 +31,7 @@
             <a href="news-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Новости</a>
             <a href="contact-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="products.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <a href="products.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="products-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -60,7 +59,7 @@
             <a href="contact-ru.html" class="text-[#86868B]">Контакты</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="products.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <a href="products.html" class="px-4 py-2 text-[#86868B]">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="products-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -71,7 +70,7 @@
     <!-- 📍 P1. Заголовок продукции -->
     <header class="pt-40 pb-10 px-6 md:px-24 w-full text-center fade-up">
         <div class="max-w-[1000px] mx-auto fade-up mt-6">
-            <h1 class="hero-title text-5xl md:text-[5rem] text-[#1D1D1F] mb-8 text-gradient">
+            <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
                 Матрица интеллектуального производства
             </h1>
             <p class="text-xl md:text-2xl text-[#86868B] font-medium mb-16 max-w-3xl mx-auto leading-[1.6] tracking-wide">
@@ -83,14 +82,14 @@
     <!-- 📍 P2. Фильтр продукции -->
     <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
         <div class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center space-x-2 pb-4 gap-2">
-            <button id="filter-all" class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">Все</button>
-            <button id="filter-dispensing" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="dispensing">Дозирование</button>
-            <button id="filter-flip" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="flip">Проверка</button>
-            <button id="filter-optical" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="optical">Оптика</button>
-            <button id="filter-single" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="single">Оборудование</button>
-            <button id="filter-logistics" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="logistics">Логистика</button>
-            <button id="filter-packaging" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="packaging">Упаковка</button>
-            <button id="filter-robot" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="robot">Роботы</button>
+            <button id="filter-all" class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">Все</button>
+            <button id="filter-dispensing" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="dispensing">Дозирование</button>
+            <button id="filter-flip" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="flip">Проверка</button>
+            <button id="filter-optical" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="optical">Оптика</button>
+            <button id="filter-single" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="single">Оборудование</button>
+            <button id="filter-logistics" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="logistics">Логистика</button>
+            <button id="filter-packaging" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="packaging">Упаковка</button>
+            <button id="filter-robot" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="robot">Роботы</button>
         </div>
     </section>
 
@@ -598,19 +597,23 @@
                 
                 filterBtns.forEach(b => {
                     b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-                    b.classList.add('text-[#86868B]', 'border-[#E5E5EA]');
+                        b.classList.add('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
                 });
                 targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-                targetBtn.classList.remove('text-[#86868B]', 'border-[#E5E5EA]');
+                targetBtn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
 
                 productItems.forEach(item => {
-                    item.classList.remove('hidden-item');
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                        setTimeout(() => { item.style.display = 'flex'; }, 50);
-                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 100);
+                    const match = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
+                    if (match) {
+                        item.classList.remove('hidden-item');
+                        item.style.display = '';
+                        item.style.opacity = '1';
+                        item.style.transform = '';
                     } else {
-                        item.style.opacity = '0'; item.style.transform = 'scale(0.95)';
-                        setTimeout(() => { item.style.display = 'none'; }, 400);
+                        item.classList.add('hidden-item');
+                        item.style.display = 'none';
+                        item.style.opacity = '';
+                        item.style.transform = '';
                     }
                 });
             }
@@ -634,7 +637,6 @@
             }
         });
     </script>
-    <script src="header.js" defer></script>
     <script src="footer-ru.js" defer></script>
 </body>
 </html>

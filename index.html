@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <meta name="description" content="同兴高科(TXAM)-19年非标自动化设备制造商，为TCL、长虹、康佳等提供智能生产线解决方案。拥有98项专利，产品出口15国。">
     <meta property="og:title" content="同兴高科 TXAM - 中国领先的自动化品牌供应商">
@@ -17,8 +18,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     
     <!-- Favicon -->
     <link rel="icon" type="image/webp" href="favicon.webp">
@@ -26,7 +27,7 @@
     <link rel="apple-touch-icon" href="favicon.png">
     
     <!-- Styles -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
@@ -46,22 +47,22 @@
             </p>
             
             <div class="flex space-x-6 mb-20">
-                <a href="products.html" class="bg-[#1D1D1F] text-white px-10 py-4 rounded-full text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">
+                <a href="products.html" class="bg-[#1D1D1F] text-white px-10 py-4 radius-sm text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">
                     探索核心产品
                 </a>
-                <a href="about.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 rounded-full text-base font-bold hover:bg-gray-50 transition-colors">
+                <a href="about.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 radius-sm text-base font-bold hover:bg-gray-50 transition-colors">
                     了解企业实力
                 </a>
             </div>
 
-            <a href="tv-display-solution.html" class="w-full h-[300px] md:h-[600px] bg-gray-100 rounded-[32px] md:rounded-[48px] overflow-hidden border border-[#E5E5EA] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative group block">
-                <picture><source srcset="solutions/tv-flex-line.webp" type="image/webp"><img loading="lazy" alt="TV/商业显示器柔性生产线 - 全自动装配设备" class="w-full h-full object-cover img-zoom" src="solutions/tv-flex-line.jpg"></picture>
+            <a href="tv-display-solution.html" class="w-full media-h-index w-full bg-gray-100 media-hero relative group block">
+                <picture><source srcset="solutions/tv-flex-line.webp" type="image/webp"><img alt="TV/商业显示器柔性生产线 - 全自动装配设备" class="w-full h-full object-cover img-zoom" src="solutions/tv-flex-line.jpg"></picture>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                 <div class="absolute bottom-10 left-10 right-10 text-left">
                     <p class="text-[#FF6B00] text-sm font-bold tracking-widest mb-3 uppercase">标杆方案</p>
                     <p class="text-white text-h2 font-black mb-2">TV/商业显示器生产线解决方案</p>
                     <p class="text-white/80 text-base md:text-lg">一机兼容 65~110寸 | 全自动装配</p>
-                    <div class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 rounded-full text-sm font-bold">
+                    <div class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 radius-sm text-sm font-bold">
                         查看产品详情 →
                     </div>
                 </div>
@@ -120,12 +121,12 @@
                     <h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">TV/商业显示器生产线解决方案</h3>
                     <p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">覆盖从核心装配（点胶，放支架、OC卡合），到中间工序（翻转、画检），再到后段包装（套袋、立机、码垛）的全套工艺流程。专为 TV电视、教育机及平板电脑定制，全面实现标准化高良率生产。</p>
                     <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">点胶装配</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">翻转画检</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">套袋码垛</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">点胶装配</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">翻转画检</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">套袋码垛</span>
                     </div>
-                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
-                        <img loading="lazy" src="display-automation-line.jpg" alt="TV显示器自动化生产线设备" class="w-full h-full object-cover img-zoom">
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
+                        <picture><source srcset="display-automation-line.webp" type="image/webp"><img loading="lazy" src="display-automation-line.jpg" alt="TV显示器自动化生产线设备" class="w-full h-full object-cover img-zoom"></picture>
                     </div>
                 </a>
 
@@ -135,11 +136,11 @@
                     <h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">包装与物流自动化产线</h3>
                     <p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">包含自动卡板机、机器人整垛/单台码垛方案及集成auto-boxing系统。堆垛整齐稳定，兼容假机码垛，精度高达 ±0.5mm，大幅提升仓储物流效率。</p>
                     <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">自动码垛</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">智能分拣</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">auto-boxing</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">自动码垛</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">智能分拣</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">auto-boxing</span>
                     </div>
-                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
                         <picture><source srcset="pkg-logistics-line.webp" type="image/webp"><img loading="lazy" alt="包装与物流仓储自动化系统" class="w-full h-full object-cover img-zoom" src="pkg-logistics-line.jpg"></picture>
                     </div>
                 </a>
@@ -150,11 +151,11 @@
                     <h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">单元设备</h3>
                     <p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">解决特定工艺瓶颈的高柔性系统。如：高精度机器人点胶机（±0.2mm）、180度翻转单元、以及采用 UVW 平台的 OC 卡合机组。支持 CAD 导图一键换型。</p>
                     <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">高精度点胶</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">180度翻转</span>
-                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 rounded-full border border-gray-200">UVW对位</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">高精度点胶</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">180度翻转</span>
+                        <span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">UVW对位</span>
                     </div>
-                    <div class="w-full h-48 rounded-2xl overflow-hidden border border-[#E5E5EA]">
+                    <div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">
                         <picture>
                             <source srcset="robot-unit.webp" type="image/webp">
                             <img loading="lazy" src="robot-unit.jpg" alt="工业机器人单机设备" class="w-full h-full object-cover img-zoom">
@@ -216,7 +217,7 @@
                     <p class="text-[#1D1D1F] font-bold text-lg mb-2">企业初心</p>
                     <p class="text-[#86868B] text-sm leading-relaxed">与客户同心、与伙伴同兴。共同以目标为核心，为达到客户的极度满意全力以赴。</p>
                 </div>
-                <a href="news.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 rounded-full text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
+                <a href="news.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 radius-sm text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
                     访问新闻中心
                 </a>
             </div>

@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <link rel="preload" as="image" href="products/auto-lamination-001.webp" type="image/webp">
     <meta name="description" content="同兴高科产品中心-点胶装配、翻转检测、锁付组装、光学元件、搬运移载、后段包装等6大类产品">
@@ -9,10 +10,10 @@
     <meta property="og:type" content="website">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>产品中心 | 同兴高科 TXAM - 中国领先的自动化品牌供应商</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
             <link rel="icon" type="image/webp" href="favicon.webp">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
@@ -20,9 +21,7 @@
     
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <div data-header-placeholder></div>
-
-    <!-- 🌐 顶部导航 -->
+<!-- 🌐 顶部导航 -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10"></picture>
@@ -36,7 +35,7 @@
             <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
             <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="products.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <a href="products.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="products-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -64,7 +63,7 @@
             <a href="contact.html" class="text-[#86868B]">联系我们</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="products.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <a href="products.html" class="px-4 py-2 text-[#FF6B00] font-bold">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="products-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -87,14 +86,14 @@
     <!-- 📍 P2. 产品筛选器 -->
     <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
         <div class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center space-x-2 pb-4 gap-2">
-            <button id="filter-all" class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">全部产品</button>
-            <button id="filter-dispensing" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="dispensing">点胶装配</button>
-            <button id="filter-flip" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="flip">翻转检测</button>
-            <button id="filter-screw" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="screw">锁付组装</button>
-            <button id="filter-optical" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="optical">光学元件组装</button>
-            <button id="filter-transfer" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="transfer">搬运移载</button>
-            <button id="filter-packaging" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="packaging">后段包装</button>
-            <button id="filter-robot" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 rounded-full border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="robot">机器人集成</button>
+            <button id="filter-all" class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">全部产品</button>
+            <button id="filter-dispensing" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="dispensing">点胶装配</button>
+            <button id="filter-flip" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="flip">翻转检测</button>
+            <button id="filter-screw" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="screw">锁付组装</button>
+            <button id="filter-optical" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="optical">光学元件组装</button>
+            <button id="filter-transfer" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="transfer">搬运移载</button>
+            <button id="filter-packaging" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="packaging">后段包装</button>
+            <button id="filter-robot" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="robot">机器人集成</button>
         </div>
     </section>
 
@@ -614,19 +613,23 @@
                 
                 filterBtns.forEach(b => {
                     b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-                    b.classList.add('text-[#86868B]', 'border-[#E5E5EA]');
+                        b.classList.add('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
                 });
                 targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-                targetBtn.classList.remove('text-[#86868B]', 'border-[#E5E5EA]');
+                targetBtn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
 
                 productItems.forEach(item => {
-                    item.classList.remove('hidden-item');
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                        setTimeout(() => { item.style.display = 'flex'; }, 50);
-                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 100);
+                    const match = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
+                    if (match) {
+                        item.classList.remove('hidden-item');
+                        item.style.display = '';
+                        item.style.opacity = '1';
+                        item.style.transform = '';
                     } else {
-                        item.style.opacity = '0'; item.style.transform = 'scale(0.95)';
-                        setTimeout(() => { item.style.display = 'none'; }, 400);
+                        item.classList.add('hidden-item');
+                        item.style.display = 'none';
+                        item.style.opacity = '';
+                        item.style.transform = '';
                     }
                 });
             }
@@ -651,7 +654,6 @@
             }
         });
     </script>
-    <script src="header.js" defer></script>
     <script src="footer.js" defer></script>
 </body>
 </html>

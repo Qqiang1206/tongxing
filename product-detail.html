@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <link rel="preload" as="image" href="robot-arm.webp" type="image/webp">
     <meta name="description" content="同兴高科自动化设备产品详情，技术参数、规格型号、应用场景详解">
@@ -8,10 +9,10 @@
     <meta property="og:type" content="product">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>产品详情 | 同兴高科</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
             <link rel="icon" type="image/webp" href="favicon.webp">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
@@ -19,9 +20,7 @@
     
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <div data-header-placeholder></div>
-
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="同兴高科" class="h-8 md:h-10"></picture>
         </div>
@@ -34,7 +33,7 @@
             <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
             <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="product-detail.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">中</a>
+                <a href="product-detail.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="product-detail-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -61,7 +60,7 @@
             <a href="contact.html" class="text-[#86868B]">联系我们</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="product-detail.html" class="px-4 py-2 text-[#FF6B00] font-bold">中</a>
+            <a href="product-detail.html" class="px-4 py-2 text-[#FF6B00] font-bold">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="product-detail-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -85,7 +84,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
-                    <div class="w-full h-[400px] rounded-[24px] overflow-hidden bg-gray-100">
+                    <div class="media-h-detail w-full media-hero bg-gray-100">
                         <picture><source srcset="robot-arm.webp" type="image/webp"><img loading="lazy" id="product-image" src="robot-arm.jpg" alt="产品图片" class="w-full h-full object-cover"></picture>
                     </div>
                 </div>
@@ -1025,7 +1024,6 @@
             });
         });
     </script>
-    <script src="header.js" defer></script>
     <script src="footer.js" defer></script>
 </body>
 </html>

@@ -1,22 +1,21 @@
 ﻿<!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <meta name="description" content="Производственная линия кофемашин - Комплексные решения для производителей кофемашин. TXAM">
     <meta property="og:title" content="Производственная линия кофемашин | TXAM">
     <meta property="og:type" content="website">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Производственная линия кофемашин | TXAM</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <div data-header-placeholder></div>
-
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10" onclick="location.href='index-ru.html'"></picture>
         </div>
@@ -29,7 +28,7 @@
             <a href="news-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Новости</a>
             <a href="contact-ru.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="coffee-solution.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <a href="coffee-solution.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="coffee-solution-en.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -56,7 +55,7 @@
             <a href="contact-ru.html" class="text-[#86868B]">Контакты</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="coffee-solution.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <a href="coffee-solution.html" class="px-4 py-2 text-[#86868B]">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="coffee-solution-en.html" class="px-4 py-2 text-[#86868B]">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -84,7 +83,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
-                    <div class="w-full h-[400px] md:h-[500px] rounded-[24px] overflow-hidden bg-gray-100 apple-card">
+                    <div class="w-full media-h-detail w-full media-hero bg-gray-100">
                         <picture><source srcset="solutions/coffee-production-line.webp" type="image/webp"><img loading="lazy" src="solutions/coffee-production-line.png" alt="Производственная линия кофемашин" class="img-zoom"></picture>
                     </div>
                 </div>
@@ -107,42 +106,42 @@
                 <h2 class="section-title text-3xl md:text-4xl text-[#1D1D1F] mb-8">Проблемы отрасли</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="apple-card p-8">
-                        <div class="w-12 h-12 bg-[#FF6B00]/10 rounded-2xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">
                             <svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2">Прецизионные нагревательные элементы</h4>
                         <p class="text-sm text-[#86868B]">Высокие требования к точности сборки</p>
                     </div>
                     <div class="apple-card p-8">
-                        <div class="w-12 h-12 bg-[#FF6B00]/10 rounded-2xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">
                             <svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2">Сложность установки водяного насоса</h4>
                         <p class="text-sm text-[#86868B]">Установка в ограниченном пространстве</p>
                     </div>
                     <div class="apple-card p-8">
-                        <div class="w-12 h-12 bg-[#FF6B00]/10 rounded-2xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">
                             <svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2">Строгие требования к герметизации</h4>
                         <p class="text-sm text-[#86868B]">Утечка воды вызывает неисправности</p>
                     </div>
                     <div class="apple-card p-8">
-                        <div class="w-12 h-12 bg-[#FF6B00]/10 rounded-2xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">
                             <svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2">Высокие требования к точности температуры</h4>
                         <p class="text-sm text-[#86868B]">Влияет на качество кофе</p>
                     </div>
                     <div class="apple-card p-8">
-                        <div class="w-12 h-12 bg-[#FF6B00]/10 rounded-2xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">
                             <svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2">Сложное функциональное тестирование</h4>
                         <p class="text-sm text-[#86868B]">Много пунктов тестирования</p>
                     </div>
                     <div class="apple-card p-8">
-                        <div class="w-12 h-12 bg-[#FF6B00]/10 rounded-2xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">
                             <svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2">Высокие требования к внешнему виду</h4>
@@ -237,21 +236,21 @@
                 <h2 class="section-title text-3xl md:text-4xl text-[#1D1D1F] mb-8">Связанные решения</h2>
                 <div class="specs-grid">
                     <a href="headlight-solution-ru.html" class="apple-card block p-6 group">
-                        <div class="w-full h-40 rounded-2xl overflow-hidden bg-gray-100 mb-4">
+                        <div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">
                             <picture><source srcset="solutions/headlight-production-line.webp" type="image/webp"><img loading="lazy" src="solutions/headlight-production-line.png" alt="Автомобильная фара" class="img-zoom"></picture>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">Производственная линия автомобильных фар</h4>
                         <p class="text-sm text-[#86868B] line-clamp-2">Гибкие производственные линии для телевизоров и коммерческих дисплеев.</p>
                     </a>
                     <a href="microwave-solution-ru.html" class="apple-card block p-6 group">
-                        <div class="w-full h-40 rounded-2xl overflow-hidden bg-gray-100 mb-4">
+                        <div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">
                             <picture><source srcset="solutions/microwave-production-line.webp" type="image/webp"><img loading="lazy" src="solutions/microwave-production-line.png" alt="Производственная линия микроволновых печей" class="img-zoom"></picture>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">Производственная линия микроволновых печей</h4>
                         <p class="text-sm text-[#86868B] line-clamp-2">Комплексная автоматизация для производителей микроволновых печей.</p>
                     </a>
                     <a href="tablet-solution-ru.html" class="apple-card block p-6 group">
-                        <div class="w-full h-40 rounded-2xl overflow-hidden bg-gray-100 mb-4">
+                        <div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">
                             <picture><source srcset="solutions/tablet-production-line.webp" type="image/webp"><img loading="lazy" src="solutions/tablet-production-line.png" alt="Производственная линия планшетов" class="img-zoom"></picture>
                         </div>
                         <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">Производственная линия планшетов</h4>
@@ -293,7 +292,6 @@
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
         });
     </script>
-    <script src="header.js" defer></script>
     <script src="footer-ru.js" defer></script>
 </body>
 </html>

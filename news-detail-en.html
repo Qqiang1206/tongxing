@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE html>
 <html lang="en-US" class="scroll-smooth">
 <head>
+    <script src="lang-detect.js"></script>
     <meta charset="UTF-8">
     <meta name="description" content="TXAM News Details">
 <meta property="og:title" content="News Detail | TXAM">
 <meta property="og:type" content="article">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Details | TXAM - China's Leading Automation Equipment Supplier</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/webp" href="favicon.webp">
             <link rel="icon" type="image/png" href="favicon.png">
             <link rel="apple-touch-icon" href="favicon.png">
@@ -18,9 +18,7 @@
     
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <div data-header-placeholder></div>
-
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
+<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
             <picture><source srcset="logo.webp" type="image/webp"><img loading="lazy" src="logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
         </div>
@@ -33,7 +31,7 @@
             <a href="news-en.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">News</a>
             <a href="contact-en.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Contact Us</a>
             <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="news-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">中</a>
+                <a href="news-detail.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
                 <span class="text-[#E5E5EA]">|</span>
                 <a href="news-detail-en.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">EN</a>
                 <span class="text-[#E5E5EA]">|</span>
@@ -60,7 +58,7 @@
             <a href="contact-en.html" class="text-[#86868B]">Contact Us</a>
         </div>
         <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="news-detail.html" class="px-4 py-2 text-[#86868B]">中</a>
+            <a href="news-detail.html" class="px-4 py-2 text-[#86868B]">ZH</a>
             <span class="text-[#E5E5EA]">|</span>
             <a href="news-detail-en.html" class="px-4 py-2 text-[#FF6B00] font-bold">EN</a>
             <span class="text-[#E5E5EA]">|</span>
@@ -84,7 +82,7 @@
                 </div>
             </header>
 
-            <div class="w-full h-[400px] md:h-[500px] rounded-[24px] overflow-hidden mb-12 fade-up">
+            <div class="w-full media-h-detail w-full media-hero mb-12 fade-up">
                 <picture><source srcset="building-office.webp" type="image/webp"><img loading="lazy" id="news-cover" src="building-office.jpg" alt="News Cover" class="w-full h-full object-cover"></picture>
             </div>
 
@@ -179,7 +177,7 @@
                     <p>In May 2025, TXAM showcased its self-developed "Circular Auto Lifter" and other core equipment at the CIBF International Battery Technology Exhibition, fully entering the new energy and intelligent warehouse logistics track.</p>
                     
                     <h2>New Energy Track Layout</h2>
-                    <p>Under the guidance of "dual carbon" goals, the new energy industry is developing rapidly, and the demand for automation equipment is growing sharply. TXAM has顺势而为, establishing a new energy intelligent equipment R&D team, focusing on equipment R&D and manufacturing in lithium battery module PACK lines, intelligent warehouse logistics systems and other fields.</p>
+                    <p>Under the guidance of "dual carbon" goals, the new energy industry is developing rapidly, and the demand for automation equipment is growing sharply. TXAM has seized the opportunity, establishing a new energy intelligent equipment R&D team, focusing on equipment R&D and manufacturing in lithium battery module PACK lines, intelligent warehouse logistics systems and other fields.</p>
                     
                     <h2>Core Product Showcase</h2>
                     <p>The exhibited "Circular Auto Lifter" adopts advanced servo drive system and precision guide rail structure, with features of smooth operation, precise positioning, and high efficiency. It can be widely used in new energy battery warehouse logistics scenarios.</p>
@@ -225,7 +223,7 @@
                 category: 'Industry Insights',
                 title: 'Insight: The "Second Half" of New Energy Power Battery Assembly Technology',
                 date: '2026.02.12',
-                cover: 'factory-hero.jpg',
+                cover: 'factory-hero.webp',
                 content: `
                     <p>With the explosive growth of the new energy vehicle market, power battery assembly technology is ushering in new development opportunities. This article will explore the "second half" trends of new energy power battery assembly technology.</p>
                     
@@ -273,7 +271,6 @@
             });
         });
     </script>
-    <script src="header.js" defer></script>
     <script src="footer-en.js" defer></script>
 </body>
 </html>
