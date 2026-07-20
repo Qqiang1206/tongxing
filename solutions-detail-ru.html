@@ -64,16 +64,16 @@
         </div>
     </div>
 
-    <article class="pt-40 pb-32 px-6 md:px-24">
-        <div class="max-w-[1200px] mx-auto">
+    <article class="detail-page pt-40 pb-32 px-6 md:px-24">
+        <div class="detail-page__inner max-w-[1200px] mx-auto">
             <nav class="breadcrumb text-sm text-[#86868B] mb-8 flex items-center flex-wrap" aria-label="Хлебные крошки" data-breadcrumb></nav>
 
             
             <header class="mb-12 fade-up">
                 <div class="flex items-center gap-3 mb-4">
-                    <span id="solution-category" class="text-[#FF6B00] font-bold text-xs tracking-widest uppercase label-en">Решение</span>
+                    <span id="solution-category" class="detail-eyebrow text-[#FF6B00] font-bold text-xs tracking-widest uppercase label-en">Решение</span>
                 </div>
-                <h1 id="solution-name" class="hero-title text-5xl md:text-[5rem] text-[#1D1D1F] mb-8 text-gradient">
+                <h1 id="solution-name" class="detail-title hero-title text-display text-[#1D1D1F] text-gradient">
                     Гибкая производственная линия для TV/коммерческих дисплеев
                 </h1>
                 <div id="solution-desc-container" class="max-w-3xl">
@@ -83,29 +83,29 @@
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="w-full media-h-detail w-full media-hero bg-gray-100">
                         <picture><source srcset="solutions/tv-flex-line.webp" type="image/webp"><img loading="lazy" id="solution-image" alt="Изображение решения" class="img-zoom" src="solutions/tv-flex-line.jpg"></picture>
                     </div>
                 </div>
                 <div class="fade-up">
-                    <h3 class="text-lg font-bold text-[#1D1D1F] mb-6">Основные параметры</h3>
-                    <div id="solution-specs" class="specs-row mb-8">
+                    <h3 class="detail-sidebar__label">Основные параметры</h3>
+                    <div id="solution-specs" class="detail-specs mb-8">
                         <span class="spec-tag">Полная автоматизация линии</span>
                         <span class="spec-tag">Гибкое производство</span>
                         <span class="spec-tag">Совместимость 65-110"</span>
                         <span class="spec-tag">Под ключ</span>
                     </div>
-                    <h3 class="text-lg font-bold text-[#1D1D1F] mb-4">Особенности решения</h3>
-                    <p id="solution-features" class="text-[#86868B] leading-[1.8]">
+                    <h3 class="detail-sidebar__label mb-4">Особенности решения</h3>
+                    <p id="solution-features" class="detail-lead">
                         Комплексные решения для производителей TV, коммерческих дисплеев, образовательных панелей и цифровых вывесок. Охватывает весь процесс от дозирования до палетирования.
                     </p>
                 </div>
             </div>
 
             <section class="fade-up mb-16">
-                <h2 class="section-title text-3xl md:text-4xl text-[#1D1D1F] mb-8">Проблемы отрасли</h2>
+                <h2 class="detail-section__title">Проблемы отрасли</h2>
                 <div id="pain-points" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="apple-card p-8">
                         <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">
@@ -153,7 +153,7 @@
             </section>
 
             <section class="fade-up mb-16">
-                <h2 class="section-title text-3xl md:text-4xl text-[#1D1D1F] mb-8">Основные технологические процессы</h2>
+                <h2 class="detail-section__title">Основные технологические процессы</h2>
                 <div id="process-steps" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="apple-card p-6 text-center">
                         <div class="w-16 h-16 bg-[#FF6B00] rounded-full flex items-center justify-center mx-auto mb-4">
@@ -215,7 +215,7 @@
             </section>
 
             <section class="fade-up mb-16">
-                <h2 class="section-title text-3xl md:text-4xl text-[#1D1D1F] mb-8">Подробное описание</h2>
+                <h2 class="detail-section__title">Подробное описание</h2>
                 <div id="solution-detail" class="prose max-w-none text-[#86868B] leading-[1.8]">
                     <p class="mb-6">Гибкая производственная линия для TV/коммерческих дисплеев — это комплексное решение для производителей телевизоров, коммерческих дисплеев, образовательных панелей и цифровых вывесок.</p>
                     <h3 class="text-xl font-bold text-[#1D1D1F] mb-4">Состав решения</h3>
@@ -234,9 +234,9 @@
                 </div>
             </section>
 
-            <section class="fade-up">
-                <h2 class="section-title text-3xl md:text-4xl text-[#1D1D1F] mb-8">Сопутствующие решения</h2>
-                <div id="related-solutions" class="specs-grid">
+            <section class="detail-related fade-up">
+                <h2 class="detail-section__title">Сопутствующие решения</h2>
+                <div id="related-solutions" class="detail-related__grid">
                 </div>
             </section>
         </div>
@@ -588,9 +588,9 @@
                 const item = solutionData[id];
                 const card = document.createElement('a');
                 card.href = `solutions-detail-ru.html?id=${id}`;
-                card.className = 'apple-card block p-6 group';
+                card.className = 'detail-related-card apple-card block p-6 group';
                 card.innerHTML = `
-                    <div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">
+                    <div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">
                         <img loading="lazy" src="${item.image}" alt="${item.name}" class="img-zoom">
                     </div>
                     <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">${item.name}</h4>

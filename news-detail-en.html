@@ -66,27 +66,27 @@
         </div>
     </div>
 
-    <article class="pt-40 pb-32 px-6 md:px-24">
-        <div class="max-w-[900px] mx-auto">
+    <article class="detail-page pt-40 pb-32 px-6 md:px-24">
+        <div class="detail-page__inner max-w-[1200px] mx-auto">
             <nav class="breadcrumb text-sm text-[#86868B] mb-8 flex items-center flex-wrap" aria-label="Breadcrumb" data-breadcrumb></nav>
 
             <header class="mb-12 fade-up">
-                <span id="news-category" class="text-[#FF6B00] font-bold text-xs tracking-widest uppercase mb-4 block">Company News</span>
-                <h1 id="news-title" class="hero-title text-5xl md:text-[5rem] text-[#1D1D1F] mb-8 text-gradient">
+                <span id="news-category" class="detail-eyebrow text-[#FF6B00] font-bold text-xs tracking-widest uppercase mb-4 block">Company News</span>
+                <h1 id="news-title" class="detail-title hero-title text-display text-[#1D1D1F] text-gradient">
                     Providing Exceptional Intelligent Equipment to World-Class Enterprises
                 </h1>
-                <div class="flex items-center text-[#86868B] text-sm">
+                <div class="detail-meta flex items-center text-sm">
                     <span id="news-date" class="font-mono">2026.01.08</span>
                     <span class="mx-3">|</span>
                     <span>TXAM</span>
                 </div>
             </header>
 
-            <div class="w-full media-h-detail w-full media-hero mb-12 fade-up">
+            <div class="detail-cover w-full media-h-detail media-hero mb-12 fade-up">
                 <picture><source srcset="building-office.webp" type="image/webp"><img loading="lazy" id="news-cover" src="building-office.jpg" alt="News Cover" class="w-full h-full object-cover"></picture>
             </div>
 
-            <div id="news-content" class="prose-content fade-up">
+            <div id="news-content" class="detail-prose detail-prose--article fade-up">
                 <p>TXAM announces that its two major intelligent manufacturing bases in Shenzhen and Huizhou have been fully completed and put into operation, marking the company's official entry into a new stage of scaled development.</p>
                 
                 <h2>Dual Base Pattern Formed</h2>
@@ -100,31 +100,10 @@
                 <p>The company stated that it will continue to increase R&D investment, deepen the non-standard automation field, and contribute more to China's intelligent manufacturing.</p>
             </div>
 
-            <div class="mt-16 pt-12 border-t border-[#E5E5EA] fade-up">
-                <h3 class="text-lg font-bold text-[#1D1D1F] mb-6">Related Articles</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <a href="news-detail-en.html?id=2" class="group apple-card p-6 flex gap-4">
-                        <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                            <img loading="lazy" src="products/commercial-display-assembly.jpg" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                        </div>
-                        <div>
-                            <span class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Project Story</span>
-                            <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">High-Precision Assembly Line Successfully Deployed at Leading Appliance Manufacturer</h4>
-                            <span class="text-xs text-[#86868B] mt-2 block">2026.01.15</span>
-                        </div>
-                    </a>
-                    <a href="news-detail-en.html?id=3" class="group apple-card p-6 flex gap-4">
-                        <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                            <picture><source srcset="news-tech.webp" type="image/webp"><img loading="lazy" src="news-tech.jpg" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform"></picture>
-                        </div>
-                        <div>
-                            <span class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Company News</span>
-                            <h4 class="text-base font-bold text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mt-1">TXAM Stuns at CIBF International Battery Exhibition</h4>
-                            <span class="text-xs text-[#86868B] mt-2 block">2026.01.20</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            <section class="detail-related fade-up">
+                <h2 class="detail-section__title">Related Articles</h2>
+                <div id="related-news" class="detail-related__grid"></div>
+            </section>
         </div>
     </article>
 
@@ -249,6 +228,27 @@
             document.getElementById('news-cover').src = news.cover;
             document.getElementById('news-content').innerHTML = news.content;
             document.title = news.title + ' | TXAM';
+
+            const relatedContainer = document.getElementById('related-news');
+            if (relatedContainer) {
+                const relatedHtml = Object.keys(newsData)
+                    .filter(nid => nid !== id)
+                    .slice(0, 3)
+                    .map(nid => {
+                        const item = newsData[nid];
+                        return `
+                            <a href="news-detail-en.html?id=${nid}" class="detail-related-card apple-card block p-6 group">
+                                <div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">
+                                    <img loading="lazy" src="${item.cover}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <span class="detail-related-card__eyebrow">${item.category}</span>
+                                <h4 class="detail-related-card__title mt-1 mb-2">${item.title}</h4>
+                                <span class="detail-meta-mono text-xs">${item.date}</span>
+                            </a>
+                        `;
+                    }).join('');
+                relatedContainer.innerHTML = relatedHtml;
+            }
 
             var observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });

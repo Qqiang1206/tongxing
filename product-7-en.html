@@ -8,6 +8,7 @@
     <meta property="og:type" content="product">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="tailwind.min.css">
+    <link rel="stylesheet" href="styles.css">
     <title>Auto Light Bar Placement | TXAM</title>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700;900&display=swap" rel="stylesheet">
             <link rel="icon" type="image/webp" href="favicon.webp">
@@ -104,8 +105,8 @@
         </div>
     </div>
 
-    <article class="pt-40 pb-32 px-6 md:px-24">
-        <div class="max-w-[1200px] mx-auto">
+    <article class="detail-page pt-40 pb-32 px-6 md:px-24">
+        <div class="detail-page__inner max-w-[1200px] mx-auto">
             <nav class="breadcrumb text-sm text-[#86868B] mb-8 flex items-center flex-wrap" aria-label="Breadcrumb" data-breadcrumb></nav>
 
             <header class="mb-12 fade-up">
@@ -113,26 +114,26 @@
                     <span class="text-[#FF6B00] font-bold text-xs tracking-widest uppercase">Single Machines</span>
                     <span class="text-[#86868B] font-mono text-sm">TX-NS-ALSI-01/02</span>
                 </div>
-                <h1 class="hero-title text-5xl md:text-[5rem] text-[#1D1D1F] mb-8 text-gradient">
+                <h1 class="detail-title hero-title text-display text-[#1D1D1F] text-gradient">
                     Auto Light Bar Placement
                 </h1>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="media-h-detail w-full media-hero bg-gray-100">
                         <picture><source srcset="products/auto-light-strip.webp" type="image/webp"><img loading="lazy" src="products/auto-light-strip.jpg" alt="Auto Light Bar Placement" class="w-full h-full object-cover"></picture>
                     </div>
                 </div>
                 <div class="fade-up">
-                    <h3 class="text-lg font-bold text-[#1D1D1F] mb-6">Core Specifications</h3>
+                    <h3 class="detail-sidebar__label">Core Specifications</h3>
                     <div class="flex flex-wrap gap-3 mb-8">
                         <span class="spec-tag">±0.2mm Precision</span>
                         <span class="spec-tag">7pcs/Batch</span>
                         <span class="spec-tag">With Pressure Hold</span>
                         <span class="spec-tag">Robot+Manual Cooperation</span>
                     </div>
-                    <h3 class="text-lg font-bold text-[#1D1D1F] mb-4">Product Features</h3>
+                    <h3 class="detail-sidebar__label mb-4">Product Features</h3>
                     <p class="text-[#86868B] leading-[1.8]">
                         Precisely and quickly places LED light bars at specified positions. Can grip multiple bars at once, with pressure hold function, ensuring assembly precision.
                     </p>
@@ -140,8 +141,8 @@
             </div>
 
             <section class="fade-up">
-                <h2 class="text-2xl md:text-3xl font-bold text-[#1D1D1F] mb-8">Detailed Description</h2>
-                <div class="prose max-w-none">
+                <h2 class="detail-section__title">Detailed Description</h2>
+                <div class="detail-prose">
                     <p>Auto light bar placement equipment achieves automated light bar placement through robot cells.</p>
                     <h3>Working Principle</h3>
                     <p>Uses robot with vision system, can precisely grip 7 light bars at once and place them at target positions. Equipment has pressure hold function, ensuring firm light bar fixation.</p>

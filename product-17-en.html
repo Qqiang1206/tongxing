@@ -1,6 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+    <link rel="stylesheet" href="tailwind.min.css">
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="description" content="Industrial Brain Control Software Development - TXAM WMS/WCS MES system with TCP/IP communication and data insight capabilities">
     <meta property="og:title" content="Industrial Brain Control Software Development | TXAM">
@@ -104,8 +106,8 @@
         </div>
     </div>
 
-    <article class="pt-40 pb-32 px-6 md:px-24">
-        <div class="max-w-[1200px] mx-auto">
+    <article class="detail-page pt-40 pb-32 px-6 md:px-24">
+        <div class="detail-page__inner max-w-[1200px] mx-auto">
             <a href="products-en.html" class="inline-flex items-center text-[#86868B] hover:text-[#FF6B00] transition-colors mb-8">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 Back to Products
@@ -116,26 +118,26 @@
                     <span class="text-[#FF6B00] font-bold text-xs tracking-widest uppercase">Software & Control</span>
                     <span class="text-[#86868B] font-mono text-sm">TX-NS-IBC</span>
                 </div>
-                <h1 class="hero-title text-5xl md:text-[5rem] text-[#1D1D1F] mb-8 text-gradient">
+                <h1 class="detail-title hero-title text-display text-[#1D1D1F] text-gradient">
                     Industrial Brain Control Software Development
                 </h1>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="media-h-detail w-full media-hero bg-gray-100">
                         <img loading="lazy" src="products/control-system.webp" alt="Industrial Brain Control Software Development" class="w-full h-full object-cover">
                     </div>
                 </div>
                 <div class="fade-up">
-                    <h3 class="text-lg font-bold text-[#1D1D1F] mb-6">Core Parameters</h3>
+                    <h3 class="detail-sidebar__label">Core Parameters</h3>
                     <div class="flex flex-wrap gap-3 mb-8">
                         <span class="spec-tag">WMS/WCS</span>
                         <span class="spec-tag">MES Integration</span>
                         <span class="spec-tag">TCP/IP Communication</span>
                         <span class="spec-tag">Data Insight</span>
                     </div>
-                    <h3 class="text-lg font-bold text-[#1D1D1F] mb-4">Product Features</h3>
+                    <h3 class="detail-sidebar__label mb-4">Product Features</h3>
                     <p class="text-[#86868B] leading-[1.8]">
                         Advanced industrial control software system integrating WMS/WCS and MES capabilities with TCP/IP communication protocol for comprehensive factory data insight and analysis.
                     </p>
@@ -143,8 +145,8 @@
             </div>
 
             <section class="fade-up">
-                <h2 class="text-2xl md:text-3xl font-bold text-[#1D1D1F] mb-8">Details</h2>
-                <div class="prose max-w-none">
+                <h2 class="detail-section__title">Details</h2>
+                <div class="detail-prose">
                     <p>The Industrial Brain Control Software is TXAM's flagship intelligent manufacturing system designed for modern factories requiring comprehensive production management and control capabilities.</p>
                     <h3>Working Principle</h3>
                     <p>The system integrates Warehouse Management System (WMS), Warehouse Control System (WCS), and Manufacturing Execution System (MES) into a unified platform. TCP/IP communication enables seamless connectivity between equipment and the central control system, providing real-time data insight for informed decision-making.</p>
