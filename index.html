@@ -170,39 +170,43 @@
     <!-- 📍 P4. 服务体系闭环 -->
     <section id="service" class="py-32 bg-white px-6 md:px-24">
         <div class="max-w-[1400px] mx-auto fade-up">
-            <div class="text-center mb-24">
-                <h2 class="text-h2 text-[#1D1D1F] tracking-tight mb-4">标准化定制服务流程</h2>
-                <p class="text-[#86868B] text-body-lg">严谨透明的流程式推进，保障项目如期高品质落地。</p>
+            <div class="mb-20 text-center">
+                <h2 class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">标准化定制服务流程</h2>
+                <p class="text-[#86868B] text-body-lg max-w-2xl mx-auto">严谨透明的流程式推进，保障项目如期高品质落地。</p>
             </div>
-            
-            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left" style="--grid-gap: 3rem;">
 
-                <!-- 步骤 1 -->
-                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
-                    <div class="w-14 h-14 bg-[#1D1D1F] rounded-full flex items-center justify-center text-white font-black text-lg mb-6 group-hover:scale-110 transition-transform mx-auto md:mx-0 shadow-lg shadow-black/20">01</div>
-                    <h3 class="text-h3 font-bold text-[#1D1D1F] mb-3">解决方案</h3>
-                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">调研交流 · 方案规划<br>方案确认 · 商务合作</p>
+            <div class="service-flow">
+                <div class="service-flow__step">
+                    <div class="service-flow__badge service-flow__badge--start mono-num">01</div>
+                    <h3 class="text-h3 text-[#1D1D1F] mb-4">解决方案</h3>
+                    <ul class="service-flow__detail">
+                        <li>调研交流 · 方案规划</li>
+                        <li>方案确认 · 商务合作</li>
+                    </ul>
                 </div>
-                
-                <!-- 步骤 2 -->
-                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
-                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-lg mb-6 group-hover:border-[#1D1D1F] group-hover:bg-[#1D1D1F] group-hover:text-white transition-all mx-auto md:mx-0 shadow-md">02</div>
-                    <h3 class="text-h3 font-bold text-[#1D1D1F] mb-3">设计</h3>
-                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">机械设计 · 电气设计<br>软件开发 · 设计评审</p>
+                <div class="service-flow__step">
+                    <div class="service-flow__badge service-flow__badge--mid mono-num">02</div>
+                    <h3 class="text-h3 text-[#1D1D1F] mb-4">设计</h3>
+                    <ul class="service-flow__detail">
+                        <li>机械设计 · 电气设计</li>
+                        <li>软件开发 · 设计评审</li>
+                    </ul>
                 </div>
-
-                <!-- 步骤 3 -->
-                <div class="process-step relative z-10 flex flex-col items-center md:items-start group px-2 mb-10 md:mb-0">
-                    <div class="w-14 h-14 bg-white border-2 border-[#E5E5EA] rounded-full flex items-center justify-center text-[#1D1D1F] font-black text-lg mb-6 group-hover:border-[#1D1D1F] group-hover:bg-[#1D1D1F] group-hover:text-white transition-all mx-auto md:mx-0 shadow-md">03</div>
-                    <h3 class="text-h3 font-bold text-[#1D1D1F] mb-3">制造</h3>
-                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">图纸下发 · 生产制造<br>品质检验 · 设备交付</p>
+                <div class="service-flow__step">
+                    <div class="service-flow__badge service-flow__badge--mid mono-num">03</div>
+                    <h3 class="text-h3 text-[#1D1D1F] mb-4">制造</h3>
+                    <ul class="service-flow__detail">
+                        <li>图纸下发 · 生产制造</li>
+                        <li>品质检验 · 设备交付</li>
+                    </ul>
                 </div>
-
-                <!-- 步骤 4 -->
-                <div class="relative z-10 flex flex-col items-center md:items-start group px-2">
-                    <div class="w-14 h-14 bg-[#FF6B00] rounded-full flex items-center justify-center text-white font-black text-lg mb-6 group-hover:scale-110 transition-transform mx-auto md:mx-0 shadow-lg shadow-orange-500/30">04</div>
-                    <h3 class="text-h3 font-bold text-[#1D1D1F] mb-3">售后服务</h3>
-                    <p class="text-sm text-[#86868B] font-medium leading-relaxed bg-gray-50 py-2 px-4 rounded-lg inline-block md:block w-full">365*7*24 · 驻场服务<br>培训交接 · 永久售后</p>
+                <div class="service-flow__step">
+                    <div class="service-flow__badge service-flow__badge--accent mono-num">04</div>
+                    <h3 class="text-h3 text-[#1D1D1F] mb-4">售后服务</h3>
+                    <ul class="service-flow__detail">
+                        <li>365*7*24 · 驻场服务</li>
+                        <li>培训交接 · 永久售后</li>
+                    </ul>
                 </div>
             </div>
         </div>
