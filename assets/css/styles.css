@@ -690,3 +690,50 @@ body {
         margin-left: 0.75rem;
     }
 }
+
+/* === Patent / quality cert marquee (about page) ===
+ * Auto right→left infinite scroll. No scrollbar — overflow is clipped. */
+.patent-marquee {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+.patent-marquee__track {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    width: max-content;
+    animation-name: patent-marquee-rtl;
+    animation-duration: var(--marquee-duration, 40s);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+}
+.patent-marquee:hover .patent-marquee__track {
+    animation-play-state: paused;
+}
+.patent-marquee .patent-card {
+    flex: 0 0 auto;
+    width: 16rem;
+}
+.patent-marquee .patent-card .patent-card__media {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: #fff;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+.patent-marquee .patent-card .patent-card__media img,
+.patent-marquee .patent-card .patent-card__media picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.patent-marquee .patent-card .patent-card__media img {
+    object-fit: contain;
+}
+/* Move track left (content appears to travel right → left) */
+@keyframes patent-marquee-rtl {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+}

@@ -17,8 +17,13 @@
 │   ├── i18n/
 │   └── schema/
 ├── scripts/                      # Dev tooling (not required at runtime)
-└── server/                       # Backend API plan + SQL draft
+├── server/                       # Backend API plan + SQL draft
+└── DESIGN.md                     # Visual / typography design system
 ```
+
+## Design system
+
+See [DESIGN.md](DESIGN.md) for colors, type scale, spacing, components, and page conventions.
 
 ## Content edits
 
