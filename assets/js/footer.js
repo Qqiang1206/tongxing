@@ -62,12 +62,12 @@ document.addEventListener("DOMContentLoaded", function() {
             ru: 'index.html',
         };
 
-        // ===== 检测当前页语言 =====
-        const currentPage = location.pathname.split('/').pop();
-        let lang;
-        if (currentPage.endsWith('-en.html')) lang = 'en';
-        else if (currentPage.endsWith('-ru.html')) lang = 'ru';
-        else lang = 'zh';
+        // ===== 检测当前页语言（按 /en/ /ru/ 目录；兼容旧 *-en.html / *-ru.html） =====
+        const pathNorm = (location.pathname || '').replace(/\\/g, '/');
+        const currentPage = pathNorm.split('/').pop() || 'index.html';
+        let lang = 'zh';
+        if (/\/en(\/|$)/i.test(pathNorm) || currentPage.endsWith('-en.html')) lang = 'en';
+        else if (/\/ru(\/|$)/i.test(pathNorm) || currentPage.endsWith('-ru.html')) lang = 'ru';
 
         const pageNames = pageNamesByLang[lang];
         const indexPage = indexPageByLang[lang];

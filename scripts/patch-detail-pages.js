@@ -39,8 +39,6 @@ function patchFile(rel, opts) {
 
 function productTail({ lang, footerSrc, dataSrc, loaderSrc, titleSuffix }) {
   const solCat = lang === 'zh' ? '解决方案' : lang === 'en' ? 'Solutions' : 'Решения';
-  const backSol = lang === 'en' ? 'Back to Solutions' : lang === 'ru' ? 'К решениям' : '';
-  const hasBackText = lang !== 'zh';
   return `    <script src="${loaderSrc}"></script>
     <script src="${dataSrc}"></script>
     <script>
@@ -67,8 +65,6 @@ function productTail({ lang, footerSrc, dataSrc, loaderSrc, titleSuffix }) {
 
             if (product.category === '${solCat}') {
                 document.body.dataset.breadcrumbParent = 'solutions.html';
-                ${hasBackText ? `var backText = document.getElementById('back-text');
-                if (backText) backText.textContent = '${backSol}';` : ''}
                 var ns = document.getElementById('nav-solutions');
                 var np = document.getElementById('nav-products');
                 if (ns && np) {

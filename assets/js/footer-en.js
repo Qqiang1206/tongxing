@@ -62,12 +62,12 @@ document.addEventListener("DOMContentLoaded", function() {
             ru: 'index.html',
         };
 
-        // Detect current page language
-        const currentPage = location.pathname.split('/').pop();
-        let lang;
-        if (currentPage.endsWith('-en.html')) lang = 'en';
-        else if (currentPage.endsWith('-ru.html')) lang = 'ru';
-        else lang = 'zh';
+        // Detect current page language (/en/ /ru/ dirs; legacy *-en.html / *-ru.html still work)
+        const pathNorm = (location.pathname || '').replace(/\\/g, '/');
+        const currentPage = pathNorm.split('/').pop() || 'index.html';
+        let lang = 'zh';
+        if (/\/en(\/|$)/i.test(pathNorm) || currentPage.endsWith('-en.html')) lang = 'en';
+        else if (/\/ru(\/|$)/i.test(pathNorm) || currentPage.endsWith('-ru.html')) lang = 'ru';
 
         const pageNames = pageNamesByLang[lang];
         const indexPage = indexPageByLang[lang];
