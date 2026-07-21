@@ -6,5 +6,12 @@ _deploy-package-*/
 server/.env
 server/data/*.db
 server/data/*.db-journal
+server/data/*.db-wal
+server/data/*.db-shm
+server/data/_tmp_curl/
 .DS_Store
 Thumbs.db
+
+# CMS uploads: keep folder, ignore generated/test files
+assets/images/uploads/*
+!assets/images/uploads/.gitkeep

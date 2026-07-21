@@ -4,6 +4,7 @@
 (function () {
   var API = '/api/v1';
   var token = sessionStorage.getItem('txam_admin_token') || '';
+  var actorName = sessionStorage.getItem('txam_admin_actor') || '';
   var state = {
     view: 'dashboard',
     products: [],
@@ -19,6 +20,7 @@
     newsCategories: [],
     pageCache: {},
     siteCache: null,
+    auditActors: [],
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -41,6 +43,7 @@
     options = options || {};
     var headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
     if (token) headers.Authorization = 'Bearer ' + token;
+    if (actorName) headers['X-Admin-Actor'] = actorName;
     var res = await fetch(API + path, Object.assign({}, options, { headers: headers }));
     var data = await res.json().catch(function () { return {}; });
     if (!res.ok) {
@@ -50,6 +53,102 @@
       throw err;
     }
     return data;
+  }
+
+  function setActor(name) {
+    actorName = String(name || '').trim().slice(0, 40);
+    if (actorName) sessionStorage.setItem('txam_admin_actor', actorName);
+    else sessionStorage.removeItem('txam_admin_actor');
+    updateUserChip();
+  }
+
+  function updateUserChip() {
+    var name = actorName || '管理员';
+    if ($('user-name')) $('user-name').textContent = name;
+    if ($('user-avatar')) $('user-avatar').textContent = name.charAt(0) || '管';
+  }
+
+  var AUDIT_ACTION_LABELS = {
+    'login.ok': '登录成功',
+    'login.fail': '登录失败',
+    'products.create': '新建产品',
+    'products.update': '更新产品',
+    'products.delete': '删除产品',
+    'solutions.create': '新建方案',
+    'solutions.update': '更新方案',
+    'solutions.delete': '删除方案',
+    'news.create': '新建新闻',
+    'news.update': '更新新闻',
+    'news.delete': '删除新闻',
+    'pages.update': '更新页面',
+    'site.update': '更新站点文案',
+    'media.upload': '上传媒体',
+    'media.delete': '删除媒体',
+    'media.update_alt': '更新媒体说明',
+    'categories.product.create': '新建产品分类',
+    'categories.product.update': '更新产品分类',
+    'categories.product.delete': '删除产品分类',
+    'categories.news.create': '新建新闻分类',
+    'categories.news.update': '更新新闻分类',
+    'categories.news.delete': '删除新闻分类',
+    'translation.mark_current': '标记翻译已同步',
+    'translation.run': '运行翻译任务',
+    'translation.apply': '应用翻译结果',
+    'translation.enqueue_stale': '入队待翻译项',
+    'translation.create_job': '创建翻译任务',
+  };
+
+  var AUDIT_RESOURCE_LABELS = {
+    auth: '登录',
+    products: '产品',
+    solutions: '方案',
+    news: '新闻',
+    pages: '页面',
+    site: '导航/页脚',
+    media: '媒体',
+    translation: '翻译',
+    categories: '分类',
+  };
+
+  function auditActionLabel(action) {
+    if (!action) return '—';
+    if (AUDIT_ACTION_LABELS[action]) return AUDIT_ACTION_LABELS[action];
+    if (String(action).indexOf('pages.') === 0) return '更新页面';
+    var prefix = String(action).split('.')[0];
+    if (AUDIT_RESOURCE_LABELS[prefix]) {
+      var verb = String(action).split('.').slice(1).join('.');
+      var verbMap = {
+        create: '新建', update: '更新', delete: '删除', ok: '成功', fail: '失败',
+        upload: '上传', run: '运行', apply: '应用',
+      };
+      return AUDIT_RESOURCE_LABELS[prefix] + (verbMap[verb] ? ' · ' + verbMap[verb] : (verb ? ' · ' + verb : ''));
+    }
+    return action;
+  }
+
+  function auditResourceLabel(resource) {
+    if (!resource) return '—';
+    if (AUDIT_RESOURCE_LABELS[resource]) return AUDIT_RESOURCE_LABELS[resource];
+    if (String(resource).indexOf('pages:') === 0) {
+      var key = String(resource).slice(6);
+      var pageNames = {
+        home: '首页', about: '关于我们', contact: '联系我们',
+        products: '产品列表页', news: '新闻列表页', solutions: '方案列表页',
+      };
+      return '页面 · ' + (pageNames[key] || key);
+    }
+    return resource;
+  }
+
+  function formatAuditTime(iso) {
+    if (!iso) return '—';
+    var s = String(iso).replace(' ', 'T');
+    if (!/[zZ]|[+-]\d{2}:?\d{2}$/.test(s)) s += 'Z';
+    var d = new Date(s);
+    if (isNaN(d.getTime())) return String(iso);
+    var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+      ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
   }
 
   /** Show pick dialog. Resolves id or null if cancelled.
@@ -2460,44 +2559,117 @@
   }
 
   async function loadAudit() {
-    var action = ($('audit-action') && $('audit-action').value.trim()) || '';
+    var action = ($('audit-action') && $('audit-action').value) || '';
     var resource = ($('audit-resource') && $('audit-resource').value) || '';
-    var qs = '?limit=100&offset=0';
+    var actor = ($('audit-actor') && $('audit-actor').value) || '';
+    var q = ($('audit-q') && $('audit-q').value.trim().toLowerCase()) || '';
+    var qs = '?limit=150&offset=0';
     if (action) qs += '&action=' + encodeURIComponent(action);
     if (resource) qs += '&resource=' + encodeURIComponent(resource);
+    if (actor) qs += '&actor=' + encodeURIComponent(actor);
     var data = await api('/admin/audit-logs' + qs);
     var items = data.items || [];
+    state.auditActors = data.actors || [];
+    fillAuditActorSelect(actor);
+
+    if (q) {
+      items = items.filter(function (row) {
+        var blob = [
+          row.summary, row.ip, row.resourceId, row.actor, row.action, row.resource,
+          row.detail ? JSON.stringify(row.detail) : '',
+        ].join(' ').toLowerCase();
+        return blob.indexOf(q) !== -1;
+      });
+    }
+
     var tbody = $('audit-table') && $('audit-table').querySelector('tbody');
     if (!tbody) return;
     if (!items.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="empty">暂无日志</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">暂无匹配的日志</td></tr>';
     } else {
       tbody.innerHTML = items.map(function (row) {
         var badge = row.ok
           ? '<span class="badge badge-ok">成功</span>'
           : '<span class="badge badge-fail">失败</span>';
-        var title = row.detail ? escapeAttr(JSON.stringify(row.detail)) : '';
-        return '<tr title="' + title + '">' +
-          '<td style="white-space:nowrap;font-size:12px;color:var(--muted)">' + escapeHtml(row.createdAt || '') + '</td>' +
-          '<td><code style="font-size:12px">' + escapeHtml(row.action || '') + '</code></td>' +
-          '<td>' + escapeHtml(row.resource || '—') +
+        var resLabel = auditResourceLabel(row.resource);
+        var detailBits = [];
+        if (row.detail && typeof row.detail === 'object') {
+          if (row.detail.userAgent) detailBits.push('浏览器：' + row.detail.userAgent);
+          if (row.detail.error) detailBits.push('错误：' + row.detail.error);
+        }
+        var title = detailBits.length ? escapeAttr(detailBits.join('\n')) : (row.detail ? escapeAttr(JSON.stringify(row.detail)) : '');
+        var actorHtml = '<div class="audit-actor">' +
+          '<span class="audit-actor-avatar">' + escapeHtml((row.actor || '?').charAt(0)) + '</span>' +
+          '<span>' + escapeHtml(row.actor || '—') + '</span></div>';
+        var sourceHtml = '<div class="cell-sub">' + escapeHtml(row.ip || '—') + '</div>';
+        if (row.detail && row.detail.userAgent) {
+          sourceHtml += '<div class="cell-sub audit-ua" title="' + escapeAttr(row.detail.userAgent) + '">' +
+            escapeHtml(shortUa(row.detail.userAgent)) + '</div>';
+        }
+        return '<tr' + (title ? ' title="' + title + '"' : '') + '>' +
+          '<td class="audit-time">' + escapeHtml(formatAuditTime(row.createdAt)) + '</td>' +
+          '<td>' + actorHtml + '</td>' +
+          '<td><div class="cell-title">' + escapeHtml(auditActionLabel(row.action)) + '</div>' +
+          '<div class="cell-sub"><code>' + escapeHtml(row.action || '') + '</code></div></td>' +
+          '<td><div class="cell-title">' + escapeHtml(resLabel) + '</div>' +
           (row.resourceId ? '<div class="cell-sub">#' + escapeHtml(row.resourceId) + '</div>' : '') + '</td>' +
-          '<td>' + escapeHtml(row.summary || '—') + '</td>' +
+          '<td class="audit-summary">' + escapeHtml(row.summary || '—') + '</td>' +
           '<td>' + badge + '</td>' +
-          '<td style="font-size:12px;color:var(--muted)">' + escapeHtml(row.ip || '—') + '</td></tr>';
+          '<td>' + sourceHtml + '</td></tr>';
       }).join('');
     }
     if ($('audit-table-foot')) {
-      $('audit-table-foot').textContent = '共 ' + (data.total || 0) + ' 条 · 显示最近 ' + items.length + ' 条';
+      $('audit-table-foot').textContent =
+        '共 ' + (data.total || 0) + ' 条' +
+        (q ? ' · 当前筛选显示 ' + items.length + ' 条' : ' · 显示最近 ' + items.length + ' 条') +
+        ' · 悬停行可看浏览器等信息';
     }
+  }
+
+  function fillAuditActorSelect(selected) {
+    var sel = $('audit-actor');
+    if (!sel) return;
+    var keep = selected || '';
+    var opts = ['<option value="">全部操作人</option>'];
+    (state.auditActors || []).forEach(function (name) {
+      opts.push(
+        '<option value="' + escapeAttr(name) + '"' +
+        (name === keep ? ' selected' : '') + '>' + escapeHtml(name) + '</option>'
+      );
+    });
+    sel.innerHTML = opts.join('');
+  }
+
+  function shortUa(ua) {
+    var s = String(ua || '');
+    if (/Edg\//.test(s)) return 'Edge';
+    if (/Chrome\//.test(s) && !/Edg\//.test(s)) return 'Chrome';
+    if (/Firefox\//.test(s)) return 'Firefox';
+    if (/Safari\//.test(s) && !/Chrome\//.test(s)) return 'Safari';
+    return s.length > 28 ? s.slice(0, 28) + '…' : s;
   }
 
   /* Bind */
   $('login-btn').addEventListener('click', async function () {
     try {
-      var data = await api('/admin/login', { method: 'POST', body: JSON.stringify({ password: $('password').value }) });
+      var name = ($('actor') && $('actor').value.trim()) || '';
+      if (!name) {
+        $('login-msg').textContent = '请填写操作人姓名或工号';
+        if ($('actor')) $('actor').focus();
+        return;
+      }
+      var password = $('password').value;
+      if (!password) {
+        $('login-msg').textContent = '请输入密码';
+        return;
+      }
+      var data = await api('/admin/login', {
+        method: 'POST',
+        body: JSON.stringify({ password: password, actor: name }),
+      });
       token = data.token;
       sessionStorage.setItem('txam_admin_token', token);
+      setActor(data.actor || name);
       $('login-msg').textContent = '';
       showLogin(false);
       setView('dashboard');
@@ -2508,10 +2680,21 @@
         : (err.message || '登录失败');
     }
   });
+  if ($('actor')) {
+    $('actor').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if ($('password')) $('password').focus();
+      }
+    });
+  }
   $('password').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('login-btn').click(); });
   $('logout-btn').addEventListener('click', function () {
     token = '';
     sessionStorage.removeItem('txam_admin_token');
+    sessionStorage.removeItem('txam_admin_actor');
+    actorName = '';
+    updateUserChip();
     showLogin(true);
   });
 
@@ -2574,6 +2757,27 @@
   }
   if ($('audit-filter-btn')) {
     $('audit-filter-btn').addEventListener('click', function () { loadAudit().catch(function (e) { toast(e.message, true); }); });
+  }
+  if ($('audit-filter-reset')) {
+    $('audit-filter-reset').addEventListener('click', function () {
+      if ($('audit-action')) $('audit-action').value = '';
+      if ($('audit-resource')) $('audit-resource').value = '';
+      if ($('audit-actor')) $('audit-actor').value = '';
+      if ($('audit-q')) $('audit-q').value = '';
+      loadAudit().catch(function (e) { toast(e.message, true); });
+    });
+  }
+  ['audit-action', 'audit-resource', 'audit-actor'].forEach(function (id) {
+    if ($(id)) {
+      $(id).addEventListener('change', function () {
+        loadAudit().catch(function (e) { toast(e.message, true); });
+      });
+    }
+  });
+  if ($('audit-q')) {
+    $('audit-q').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') loadAudit().catch(function (err) { toast(err.message, true); });
+    });
   }
   if ($('audit-action')) {
     $('audit-action').addEventListener('keydown', function (e) {
@@ -2643,6 +2847,7 @@
   });
 
   if (token) {
+    updateUserChip();
     showLogin(false);
     setView('dashboard');
   } else {

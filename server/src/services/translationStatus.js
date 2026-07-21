@@ -10,6 +10,9 @@ const DEFAULT_RESOURCES = [
   'pages:contact',
   'pages:home',
   'pages:about',
+  'pages:products',
+  'pages:news',
+  'pages:solutions',
 ];
 
 export function readTranslationStatus() {

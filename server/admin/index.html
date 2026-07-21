@@ -17,6 +17,8 @@
           <p>内容管理后台 · 编辑中文源内容</p>
         </div>
       </div>
+      <label for="actor">操作人</label>
+      <input id="actor" type="text" autocomplete="username" placeholder="请输入姓名或工号" maxlength="40">
       <label for="password">管理员密码</label>
       <input id="password" type="password" autocomplete="current-password" placeholder="请输入密码">
       <button id="login-btn" class="btn btn-primary btn-block" type="button">进入后台</button>
@@ -92,9 +94,9 @@
         </div>
         <div class="topbar-right">
           <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">打开官网</a>
-          <div class="user-chip">
-            <span class="user-avatar">管</span>
-            <span class="user-name">管理员</span>
+          <div class="user-chip" title="当前操作人">
+            <span class="user-avatar" id="user-avatar">管</span>
+            <span class="user-name" id="user-name">管理员</span>
           </div>
           <button type="button" class="btn btn-ghost btn-sm" id="logout-btn">退出</button>
         </div>
@@ -332,35 +334,54 @@
           <div class="page-head">
             <div>
               <h2>操作日志</h2>
-              <p class="page-sub">仅记录写操作与登录（只读，默认保留 90 天）</p>
+              <p class="page-sub">记录谁在何时改了什么（写操作与登录；默认保留 90 天）</p>
             </div>
             <button type="button" class="btn btn-ghost btn-sm" id="refresh-audit">刷新</button>
           </div>
           <div class="filter-bar">
-            <input class="search" id="audit-action" type="search" placeholder="按动作前缀筛选，如 login / products">
-            <select id="audit-resource">
+            <select id="audit-resource" class="select" title="资源类型">
               <option value="">全部资源</option>
               <option value="auth">登录</option>
               <option value="products">产品</option>
-              <option value="news">新闻</option>
               <option value="solutions">方案</option>
-              <option value="site">站点</option>
+              <option value="news">新闻</option>
+              <option value="pages">页面</option>
+              <option value="site">导航/页脚</option>
+              <option value="categories">分类</option>
               <option value="media">媒体</option>
               <option value="translation">翻译</option>
             </select>
+            <select id="audit-action" class="select" title="动作类型">
+              <option value="">全部动作</option>
+              <option value="login">登录</option>
+              <option value="products">产品相关</option>
+              <option value="solutions">方案相关</option>
+              <option value="news">新闻相关</option>
+              <option value="pages">页面相关</option>
+              <option value="site">站点相关</option>
+              <option value="categories">分类相关</option>
+              <option value="media">媒体相关</option>
+              <option value="translation">翻译相关</option>
+            </select>
+            <select id="audit-actor" class="select" title="操作人">
+              <option value="">全部操作人</option>
+            </select>
+            <input class="search" id="audit-q" type="search" placeholder="搜索摘要 / IP / 对象 ID">
             <button type="button" class="btn btn-primary btn-sm" id="audit-filter-btn">筛选</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="audit-filter-reset">重置</button>
           </div>
           <div class="card table-card">
             <div class="table-wrap">
-              <table class="data" id="audit-table">
+              <table class="data audit-table" id="audit-table">
                 <thead>
                   <tr>
                     <th>时间</th>
+                    <th>操作人</th>
                     <th>动作</th>
                     <th>资源</th>
                     <th>摘要</th>
                     <th>结果</th>
-                    <th>IP</th>
+                    <th>来源</th>
                   </tr>
                 </thead>
                 <tbody></tbody>

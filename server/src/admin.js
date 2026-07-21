@@ -307,24 +307,33 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   if (pathname === '/api/v1/admin/login' && req.method === 'POST') {
     try {
       const body = await readBody(req);
+      const actor = body.actor || body.operator || body.name || '';
       if (body.password !== ADMIN_PASSWORD) {
         writeAudit({
           req,
+          actor,
           action: 'login.fail',
           resource: 'auth',
-          summary: '登录失败',
+          summary: actor ? `登录失败（${String(actor).slice(0, 40)}）` : '登录失败',
           ok: false,
         });
         sendJson(res, 401, { error: 'unauthorized' }, origin);
         return true;
       }
+      const safeActor = String(actor || '').trim().slice(0, 40) || undefined;
       writeAudit({
         req,
+        actor: safeActor,
         action: 'login.ok',
         resource: 'auth',
-        summary: '登录成功',
+        summary: safeActor ? `${safeActor} 登录成功` : '登录成功',
       });
-      sendJson(res, 200, { token: ADMIN_PASSWORD, sourceLang: 'zh' }, origin);
+      sendJson(
+        res,
+        200,
+        { token: ADMIN_PASSWORD, sourceLang: 'zh', actor: safeActor || '管理员' },
+        origin
+      );
     } catch (err) {
       writeAudit({
         req,
@@ -350,6 +359,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       offset: url.searchParams.get('offset'),
       action: url.searchParams.get('action') || undefined,
       resource: url.searchParams.get('resource') || undefined,
+      actor: url.searchParams.get('actor') || undefined,
     });
     sendJson(res, 200, result, origin);
     return true;

@@ -1,13 +1,18 @@
 /**
  * Regression checklist runner against local TXAM server.
- * Usage: node scripts/regression-check.js [baseUrl]
- * Default: http://127.0.0.1:3020
+ * Usage:
+ *   ADMIN_PASSWORD=*** node scripts/regression-check.js [baseUrl]
+ * Default base: http://127.0.0.1:3000 (override with argv or REGRESSION_BASE)
  */
 const http = require('http');
 const https = require('https');
 const { URL } = require('url');
 
-const base = (process.argv[2] || 'http://127.0.0.1:3020').replace(/\/$/, '');
+const base = (process.argv[2] || process.env.REGRESSION_BASE || 'http://127.0.0.1:3000').replace(
+  /\/$/,
+  ''
+);
+const adminPassword = process.env.ADMIN_PASSWORD || '';
 const results = [];
 
 function fetch(path, opts = {}) {
@@ -220,20 +225,37 @@ async function main() {
       pass('API solutions/by-slug/tv-display', 'id=' + bySlug.json.id);
     } else fail('API by-slug');
 
-    // product list allowlist sanity: id 3 should exist in API but be excluded from LISTED_IDS
     if (products.json && products.json['3']) {
-      pass('API 含整线条目 id=3（产品页白名单另滤）', products.json['3'].name);
+      pass('API 含产品 id=3', products.json['3'].name);
     } else {
       skip('API id=3', 'not present');
     }
+
+    // Homepage required slots (published only)
+    const sols = Object.values(solutions.json || {});
+    const newsItems = Object.values(news.json || {});
+    const hero = sols.filter((s) => s.homeSlot === 'hero');
+    const category = sols.filter((s) => s.homeSlot === 'category');
+    const featuredNews = newsItems.filter((n) => n.homeFeatured);
+    if (hero.length === 1) pass('homeSlot hero = 1', 'id=' + hero[0].id);
+    else fail('homeSlot hero', 'count=' + hero.length);
+    if (category.length === 2) {
+      pass('homeSlot category = 2', category.map((s) => s.id).join(','));
+    } else fail('homeSlot category', 'count=' + category.length);
+    if (featuredNews.length === 2) {
+      pass('homeFeatured news = 2', featuredNews.map((n) => n.id).join(','));
+    } else fail('homeFeatured news', 'count=' + featuredNews.length);
   }
 
   // 11. Admin login + product roundtrip
   {
+    if (!adminPassword) {
+      skip('Admin 登录', '未设置 ADMIN_PASSWORD，跳过后台写测');
+    } else {
     const login = await fetch('/api/v1/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: 'txam' }),
+      body: JSON.stringify({ password: adminPassword }),
     });
     if (login.status !== 200 || !login.json || !login.json.token) {
       fail('Admin 登录', 'status=' + login.status + ' ' + login.text.slice(0, 100));
@@ -296,7 +318,37 @@ async function main() {
       if (media.status === 200) pass('Admin GET media', Array.isArray(media.json) ? media.json.length + ' files' : 'ok');
       else fail('Admin GET media');
 
-      // tiny png upload (1x1)
+      const slots = await fetch('/api/v1/admin/home-slots', { headers: auth });
+      if (
+        slots.status === 200 &&
+        slots.json &&
+        slots.json.hero &&
+        slots.json.hero.items &&
+        slots.json.hero.items.length === 1 &&
+        slots.json.category &&
+        slots.json.category.items &&
+        slots.json.category.items.length === 2 &&
+        slots.json.news &&
+        slots.json.news.items &&
+        slots.json.news.items.length === 2
+      ) {
+        pass('Admin home-slots 占用', '1+2+2');
+      } else if (slots.status === 200) {
+        fail(
+          'Admin home-slots 占用',
+          JSON.stringify({
+            hero: (slots.json.hero && slots.json.hero.items && slots.json.hero.items.length) || 0,
+            category:
+              (slots.json.category && slots.json.category.items && slots.json.category.items.length) ||
+              0,
+            news: (slots.json.news && slots.json.news.items && slots.json.news.items.length) || 0,
+          })
+        );
+      } else {
+        fail('Admin home-slots', String(slots.status));
+      }
+
+      // tiny png upload (1x1) then delete to avoid leaving junk
       const tinyPng =
         'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
       const up = await fetch('/api/v1/admin/media', {
@@ -310,12 +362,26 @@ async function main() {
       });
       if ((up.status === 200 || up.status === 201) && up.json && (up.json.path || up.json.url || up.json.file)) {
         pass('Admin 媒体上传', JSON.stringify(up.json).slice(0, 160));
+        const uploadedName =
+          up.json.filename ||
+          String(up.json.path || '')
+            .split('/')
+            .pop();
+        if (uploadedName) {
+          const del = await fetch('/api/v1/admin/media/' + encodeURIComponent(uploadedName), {
+            method: 'DELETE',
+            headers: auth,
+          });
+          if (del.status === 200) pass('Admin 媒体上传后清理');
+          else fail('Admin 媒体清理', del.status + ' ' + (del.text || '').slice(0, 80));
+        }
       } else if (up.status === 200 || up.status === 201) {
         pass('Admin 媒体上传', up.text.slice(0, 160));
       } else {
         fail('Admin 媒体上传', up.status + ' ' + up.text.slice(0, 160));
       }
     }
+    } // end adminPassword
   }
 
   // 12. Admin UI static

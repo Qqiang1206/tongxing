@@ -17,6 +17,7 @@
     "ensure-data-js": "node scripts/ensure-data-js-scripts.js",
     "build": "node scripts/generate-data-js.js && node scripts/generate-sitemap.js && node scripts/build.js",
     "server:import": "npm run import --prefix server",
-    "server:dev": "npm run dev --prefix server"
+    "server:dev": "npm run dev --prefix server",
+    "regression": "node scripts/regression-check.js"
   }
 }

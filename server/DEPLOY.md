@@ -118,9 +118,9 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 
 ## 7. 上线回归清单
 
-自动化脚本：`node scripts/regression-check.js http://127.0.0.1:PORT`（需先 `ADMIN_PASSWORD=… npm run dev`）。
+自动化脚本：`ADMIN_PASSWORD=你的密码 npm run regression -- http://127.0.0.1:PORT`（需先 `npm run server:dev`）。未设 `ADMIN_PASSWORD` 时跳过后台写测，仍检查公网 API 与首页坑位。
 
-最近一次本地跑通（2026-07-21，PORT=3030）：**34 PASS / 0 FAIL**。
+最近一次本地跑通（2026-07-21，PORT=3030）：**34 PASS / 0 FAIL**（随后已增补 home-slots 断言与上传后清理；请用当前脚本重跑）。
 
 - [x] `/` 首页区块正常（hero、标杆方案、三大核心类目、产品、服务、新闻）— 标杆/精选来自 `homeSlot` / `homeFeatured`，单元设备卡来自 `pages/home`
 - [x] `/about.html` 轮播、统计、文化、时间轴、资质、客户 Logo — 容器 + API timeline 4 条；视觉再确认
