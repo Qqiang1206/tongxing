@@ -22,6 +22,7 @@
     siteCache: null,
     auditActors: [],
     hubTabs: { products: 'items', news: 'items', solutions: 'items' },
+    sectionTabs: {},
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -365,6 +366,50 @@
     return '<div class="card"><h3 class="card-title">' + escapeHtml(title) + '</h3><div class="form-grid">' + inner + '</div></div>';
   }
 
+  /** Section tabs for long page forms. sections: [{ key, label, html }] */
+  function buildSectionTabs(formRootId, sections, defaultKey) {
+    defaultKey = defaultKey || (sections[0] && sections[0].key) || '';
+    var remembered = (state.sectionTabs && state.sectionTabs[formRootId]) || defaultKey;
+    if (!sections.some(function (s) { return s.key === remembered; })) remembered = defaultKey;
+    if (!state.sectionTabs) state.sectionTabs = {};
+    state.sectionTabs[formRootId] = remembered;
+    var tabsHtml =
+      '<div class="hub-tabs section-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
+      sections.map(function (s) {
+        return '<button type="button" class="hub-tab' + (s.key === remembered ? ' is-active' : '') +
+          '" data-section-tab="' + escapeAttr(s.key) + '" role="tab">' + escapeHtml(s.label) + '</button>';
+      }).join('') +
+      '</div>';
+    var panelsHtml = sections.map(function (s) {
+      return '<div class="section-panel' + (s.key === remembered ? '' : ' hidden') +
+        '" data-section-panel="' + escapeAttr(s.key) + '">' + s.html + '</div>';
+    }).join('');
+    return tabsHtml + panelsHtml;
+  }
+
+  function bindSectionTabs(formRootId) {
+    var root = $(formRootId);
+    if (!root) return;
+    var tabBar = root.querySelector('.section-tabs');
+    if (!tabBar || tabBar._bound) return;
+    tabBar._bound = true;
+    tabBar.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-section-tab]');
+      if (!btn || !tabBar.contains(btn)) return;
+      var key = btn.getAttribute('data-section-tab');
+      if (!state.sectionTabs) state.sectionTabs = {};
+      state.sectionTabs[formRootId] = key;
+      tabBar.querySelectorAll('.hub-tab').forEach(function (t) {
+        t.classList.toggle('is-active', t.getAttribute('data-section-tab') === key);
+      });
+      root.querySelectorAll(':scope > .section-panel').forEach(function (p) {
+        var show = p.getAttribute('data-section-panel') === key;
+        p.classList.toggle('hidden', !show);
+        if (show) flushRichEditorsInPanel(p);
+      });
+    });
+  }
+
   function publishedCheck(id, checked) {
     return '<div class="field check-row"><input type="checkbox" id="' + id + '"' + (checked ? ' checked' : '') + '>' +
       '<label for="' + id + '" style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--txam-dark)">已发布</label></div>';
@@ -568,6 +613,7 @@
   var mediaPickerTarget = null;
   var mediaPickerCallback = null;
   var richEditorIds = [];
+  var richEditorQueued = [];
 
   function richTextField(name, label, value, hint) {
     var id = 'f-' + name;
@@ -586,6 +632,7 @@
   function destroyRichEditors() {
     if (!window.tinymce) {
       richEditorIds = [];
+      richEditorQueued = [];
       return;
     }
     richEditorIds.forEach(function (id) {
@@ -593,6 +640,55 @@
       if (ed) ed.remove();
     });
     richEditorIds = [];
+    richEditorQueued = [];
+  }
+
+  function mountRichEditor(id) {
+    if (!window.tinymce || !$(id) || tinymce.get(id)) return;
+    tinymce.init({
+      selector: '#' + id,
+      license_key: 'gpl',
+      language: 'zh_CN',
+      language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n@25.1.1/langs7/zh_CN.js',
+      menubar: false,
+      branding: false,
+      promotion: false,
+      height: 340,
+      plugins: 'lists link image table code autoresize',
+      toolbar:
+        'undo redo | blocks | bold italic underline | ' +
+        'alignleft aligncenter alignright | bullist numlist | ' +
+        'link image | removeformat | code',
+      block_formats: '段落=p; 标题=h3; 小标题=h2',
+      convert_urls: false,
+      relative_urls: false,
+      remove_script_host: false,
+      content_style:
+        'body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; line-height: 1.6; color: #1f2933; }' +
+        'img { max-width: 100%; height: auto; }',
+      file_picker_types: 'image',
+      file_picker_callback: function (cb) {
+        openMediaPicker(null, function (path) {
+          cb(assetUrl(path), { alt: '', title: '' });
+        });
+      },
+      setup: function (editor) {
+        editor.on('change keyup', function () {
+          editor.save();
+        });
+      },
+    });
+  }
+
+  function flushRichEditorsInPanel(panel) {
+    if (!panel || !richEditorQueued.length) return;
+    var still = [];
+    richEditorQueued.forEach(function (id) {
+      var el = $(id);
+      if (el && panel.contains(el)) mountRichEditor(id);
+      else still.push(id);
+    });
+    richEditorQueued = still;
   }
 
   function initRichEditors(ids) {
@@ -603,40 +699,16 @@
     }
     ids = ids || [];
     richEditorIds = ids.slice();
+    richEditorQueued = [];
     ids.forEach(function (id) {
-      tinymce.init({
-        selector: '#' + id,
-        license_key: 'gpl',
-        language: 'zh_CN',
-        language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n@25.1.1/langs7/zh_CN.js',
-        menubar: false,
-        branding: false,
-        promotion: false,
-        height: 340,
-        plugins: 'lists link image table code autoresize',
-        toolbar:
-          'undo redo | blocks | bold italic underline | ' +
-          'alignleft aligncenter alignright | bullist numlist | ' +
-          'link image | removeformat | code',
-        block_formats: '段落=p; 标题=h3; 小标题=h2',
-        convert_urls: false,
-        relative_urls: false,
-        remove_script_host: false,
-        content_style:
-          'body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; line-height: 1.6; color: #1f2933; }' +
-          'img { max-width: 100%; height: auto; }',
-        file_picker_types: 'image',
-        file_picker_callback: function (cb) {
-          openMediaPicker(null, function (path) {
-            cb(assetUrl(path), { alt: '', title: '' });
-          });
-        },
-        setup: function (editor) {
-          editor.on('change keyup', function () {
-            editor.save();
-          });
-        },
-      });
+      var el = $(id);
+      if (!el) return;
+      var panel = el.closest('.section-panel');
+      if (panel && panel.classList.contains('hidden')) {
+        richEditorQueued.push(id);
+        return;
+      }
+      mountRichEditor(id);
     });
   }
 
@@ -2021,45 +2093,66 @@
     var slotsHtml = '<div class="card" id="home-slots-status"><h3 class="card-title">首页精选坑位</h3>' +
       '<p class="field-help">标杆 / 精选在「解决方案」「新闻中心」的条目详情里设置；下架占用项时须指定替代。</p>' +
       '<p class="help">加载中…</p></div>';
-    $('page-home-form').innerHTML =
-      seoBlock(page) +
-      cardBlock('Hero',
-        field('hero-title', '主标题', hero.title) + field('hero-lead', '副文案', hero.lead, 'full', 'textarea') +
-        field('hero-cta1-label', '主按钮文案', (hero.primaryCta || {}).label) + field('hero-cta1-href', '主按钮链接', (hero.primaryCta || {}).href) +
-        field('hero-cta2-label', '次按钮文案', (hero.secondaryCta || {}).label) + field('hero-cta2-href', '次按钮链接', (hero.secondaryCta || {}).href)) +
-      cardBlock('标杆方案区文案',
-        field('feat-eyebrow', '眉题', feat.eyebrow || '标杆方案') +
-        field('feat-subtitle', '副标题覆盖（可选，空则用方案亮点）', feat.subtitle || '', 'full') +
-        field('feat-cta', '按钮文案', feat.cta || '查看方案详情 →', 'full')) +
-      slotsHtml +
-      '<div class="card"><h3 class="card-title">关于区块</h3><div class="form-grid">' +
-      field('about-title', '标题', about.title, 'full') +
-      richTextField('about-body', '正文', about.bodyHtml || '', '支持加粗、换行等基础排版') +
-      '</div><h4 class="sub-title">统计数字</h4>' + statsRowsHtml(about.stats || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">产品类目区块</h3><div class="form-grid">' +
-      field('prod-sec-title', '标题', products.title, 'full') +
-      field('prod-sec-subtitle', '副标题', products.subtitle, 'full', 'textarea') +
-      '<p class="form-section-title">固定卡片 · 单元设备</p>' +
-      field('unit-eyebrow', '眉题', unit.eyebrow) +
-      field('unit-href', '链接', unit.href || 'products.html') +
-      field('unit-title', '标题', unit.title, 'full') +
-      field('unit-summary', '简介', unit.summary, 'full', 'textarea') +
-      field('unit-tags', '标签（每行一条）', (unit.tags || []).join('\n'), 'full', 'textarea') +
-      imageField('unit-image', '图片', unit.image || '') +
-      field('unit-alt', '图片说明', unit.imageAlt || '', 'full') +
-      '</div></div>' +
-      '<div class="card"><h3 class="card-title">服务流程区块</h3><div class="form-grid">' +
-      field('svc-sec-title', '标题', service.title, 'full') +
-      field('svc-sec-subtitle', '副标题', service.subtitle, 'full', 'textarea') +
-      '</div><h4 class="sub-title">步骤</h4>' + homeServiceStepsHtml(service.steps || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">新闻区块文案</h3><div class="form-grid">' +
-      field('news-sec-title', '标题', news.title, 'full') +
-      field('news-sec-mission-title', '初心标题', news.missionTitle) +
-      field('news-sec-mission-body', '初心正文', news.missionBody, 'full', 'textarea') +
-      field('news-sec-cta-label', 'CTA 文案', (news.cta || {}).label) +
-      field('news-sec-cta-href', 'CTA 链接', (news.cta || {}).href) +
-      '<div class="field full"><p class="field-help">精选新闻条目请在「新闻中心 → 新闻条目」详情勾选首页精选（最多 2 条）。</p></div>' +
-      '</div></div>';
+    var sections = [
+      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      {
+        key: 'hero', label: 'Hero',
+        html: cardBlock('Hero',
+          field('hero-title', '主标题', hero.title) + field('hero-lead', '副文案', hero.lead, 'full', 'textarea') +
+          field('hero-cta1-label', '主按钮文案', (hero.primaryCta || {}).label) + field('hero-cta1-href', '主按钮链接', (hero.primaryCta || {}).href) +
+          field('hero-cta2-label', '次按钮文案', (hero.secondaryCta || {}).label) + field('hero-cta2-href', '次按钮链接', (hero.secondaryCta || {}).href)),
+      },
+      {
+        key: 'featured', label: '标杆文案',
+        html: cardBlock('标杆方案区文案',
+          field('feat-eyebrow', '眉题', feat.eyebrow || '标杆方案') +
+          field('feat-subtitle', '副标题覆盖（可选，空则用方案亮点）', feat.subtitle || '', 'full') +
+          field('feat-cta', '按钮文案', feat.cta || '查看方案详情 →', 'full')),
+      },
+      { key: 'slots', label: '首页坑位', html: slotsHtml },
+      {
+        key: 'about', label: '关于区',
+        html: '<div class="card"><h3 class="card-title">关于区块</h3><div class="form-grid">' +
+          field('about-title', '标题', about.title, 'full') +
+          richTextField('about-body', '正文', about.bodyHtml || '', '支持加粗、换行等基础排版') +
+          '</div><h4 class="sub-title">统计数字</h4>' + statsRowsHtml(about.stats || []) + '</div>',
+      },
+      {
+        key: 'products', label: '三大类目',
+        html: '<div class="card"><h3 class="card-title">产品类目区块</h3><div class="form-grid">' +
+          field('prod-sec-title', '标题', products.title, 'full') +
+          field('prod-sec-subtitle', '副标题', products.subtitle, 'full', 'textarea') +
+          '<p class="form-section-title">固定卡片 · 单元设备</p>' +
+          field('unit-eyebrow', '眉题', unit.eyebrow) +
+          field('unit-href', '链接', unit.href || 'products.html') +
+          field('unit-title', '标题', unit.title, 'full') +
+          field('unit-summary', '简介', unit.summary, 'full', 'textarea') +
+          field('unit-tags', '标签（每行一条）', (unit.tags || []).join('\n'), 'full', 'textarea') +
+          imageField('unit-image', '图片', unit.image || '') +
+          field('unit-alt', '图片说明', unit.imageAlt || '', 'full') +
+          '</div></div>',
+      },
+      {
+        key: 'service', label: '服务流程',
+        html: '<div class="card"><h3 class="card-title">服务流程区块</h3><div class="form-grid">' +
+          field('svc-sec-title', '标题', service.title, 'full') +
+          field('svc-sec-subtitle', '副标题', service.subtitle, 'full', 'textarea') +
+          '</div><h4 class="sub-title">步骤</h4>' + homeServiceStepsHtml(service.steps || []) + '</div>',
+      },
+      {
+        key: 'news', label: '新闻区',
+        html: '<div class="card"><h3 class="card-title">新闻区块文案</h3><div class="form-grid">' +
+          field('news-sec-title', '标题', news.title, 'full') +
+          field('news-sec-mission-title', '初心标题', news.missionTitle) +
+          field('news-sec-mission-body', '初心正文', news.missionBody, 'full', 'textarea') +
+          field('news-sec-cta-label', 'CTA 文案', (news.cta || {}).label) +
+          field('news-sec-cta-href', 'CTA 链接', (news.cta || {}).href) +
+          '<div class="field full"><p class="field-help">精选新闻条目请在「新闻中心 → 新闻条目」详情勾选首页精选（最多 2 条）。</p></div>' +
+          '</div></div>',
+      },
+    ];
+    $('page-home-form').innerHTML = buildSectionTabs('page-home-form', sections, 'hero');
+    bindSectionTabs('page-home-form');
     bindImageFields($('page-home-form'));
     bindStatsRepeater();
     bindGenericRepeater('rep-home-steps', HOME_STEP_BLANK);
@@ -2166,34 +2259,58 @@
     var carousel = page.carousel || {};
     var stats = page.stats || {};
     var timeline = page.timeline || {};
-    $('page-about-form').innerHTML =
-      seoBlock(page) +
-      cardBlock('Hero',
-        field('hero-title', '标题', hero.title, 'full') +
-        richTextField('hero-lead', '导语', hero.leadHtml || '', '支持加粗等基础排版')) +
-      '<div class="card"><h3 class="card-title">企业文化</h3><div class="form-grid">' +
-      richTextField('culture-headline', '标语', culture.headlineHtml || '') +
-      '</div><h4 class="sub-title">支柱</h4>' + culturePillarsHtml(culture.pillars || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">工厂轮播</h3><div class="form-grid">' +
-      field('carousel-aria', '区块无障碍标签', carousel.sectionAriaLabel || '', 'full') +
-      field('carousel-prev', '上一张文案', carousel.prevLabel || '') +
-      field('carousel-next', '下一张文案', carousel.nextLabel || '') +
-      '</div><h4 class="sub-title">幻灯片</h4>' + carouselSlidesHtml(carousel.slides || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">统计数字</h3><div class="form-grid">' +
-      field('stats-columns', '列数', stats.columns != null ? stats.columns : 5) +
-      '</div><h4 class="sub-title">条目</h4>' + statsRowsHtml(stats.items || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">发展历程</h3><div class="form-grid">' +
-      field('timeline-title', '标题', timeline.title || '', 'full') +
-      field('timeline-subtitle', '副标题', timeline.subtitle || '', 'full', 'textarea') +
-      '</div><h4 class="sub-title">事件</h4>' + timelineEventsHtml(timeline.events || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">资质画廊</h3><div class="form-grid">' +
-      field('cred-title', '标题', credentials.title || '', 'full') +
-      field('cred-subtitle', '副标题', credentials.subtitle || '', 'full', 'textarea') +
-      '</div><h4 class="sub-title">分组</h4>' + credentialsGroupsHtml(credentials.groups || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">合作客户</h3><div class="form-grid">' +
-      field('clients-title', '标题', clients.title || '', 'full') +
-      field('clients-subtitle', '副标题', clients.subtitle || '', 'full', 'textarea') +
-      '</div><h4 class="sub-title">Logo 列表</h4>' + clientsItemsHtml(clients.items || []) + '</div>';
+    var sections = [
+      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      {
+        key: 'hero', label: 'Hero',
+        html: cardBlock('Hero',
+          field('hero-title', '标题', hero.title, 'full') +
+          richTextField('hero-lead', '导语', hero.leadHtml || '', '支持加粗等基础排版')),
+      },
+      {
+        key: 'carousel', label: '工厂轮播',
+        html: '<div class="card"><h3 class="card-title">工厂轮播</h3><div class="form-grid">' +
+          field('carousel-aria', '区块无障碍标签', carousel.sectionAriaLabel || '', 'full') +
+          field('carousel-prev', '上一张文案', carousel.prevLabel || '') +
+          field('carousel-next', '下一张文案', carousel.nextLabel || '') +
+          '</div><h4 class="sub-title">幻灯片</h4>' + carouselSlidesHtml(carousel.slides || []) + '</div>',
+      },
+      {
+        key: 'stats', label: '统计数字',
+        html: '<div class="card"><h3 class="card-title">统计数字</h3><div class="form-grid">' +
+          field('stats-columns', '列数', stats.columns != null ? stats.columns : 5) +
+          '</div><h4 class="sub-title">条目</h4>' + statsRowsHtml(stats.items || []) + '</div>',
+      },
+      {
+        key: 'culture', label: '企业文化',
+        html: '<div class="card"><h3 class="card-title">企业文化</h3><div class="form-grid">' +
+          richTextField('culture-headline', '标语', culture.headlineHtml || '') +
+          '</div><h4 class="sub-title">支柱</h4>' + culturePillarsHtml(culture.pillars || []) + '</div>',
+      },
+      {
+        key: 'timeline', label: '发展历程',
+        html: '<div class="card"><h3 class="card-title">发展历程</h3><div class="form-grid">' +
+          field('timeline-title', '标题', timeline.title || '', 'full') +
+          field('timeline-subtitle', '副标题', timeline.subtitle || '', 'full', 'textarea') +
+          '</div><h4 class="sub-title">事件</h4>' + timelineEventsHtml(timeline.events || []) + '</div>',
+      },
+      {
+        key: 'credentials', label: '资质画廊',
+        html: '<div class="card"><h3 class="card-title">资质画廊</h3><div class="form-grid">' +
+          field('cred-title', '标题', credentials.title || '', 'full') +
+          field('cred-subtitle', '副标题', credentials.subtitle || '', 'full', 'textarea') +
+          '</div><h4 class="sub-title">分组</h4>' + credentialsGroupsHtml(credentials.groups || []) + '</div>',
+      },
+      {
+        key: 'clients', label: '合作客户',
+        html: '<div class="card"><h3 class="card-title">合作客户</h3><div class="form-grid">' +
+          field('clients-title', '标题', clients.title || '', 'full') +
+          field('clients-subtitle', '副标题', clients.subtitle || '', 'full', 'textarea') +
+          '</div><h4 class="sub-title">Logo 列表</h4>' + clientsItemsHtml(clients.items || []) + '</div>',
+      },
+    ];
+    $('page-about-form').innerHTML = buildSectionTabs('page-about-form', sections, 'hero');
+    bindSectionTabs('page-about-form');
     bindImageFields($('page-about-form'));
     bindStatsRepeater();
     bindGenericRepeater('rep-culture-pillars', CULTURE_PILLAR_BLANK);
@@ -2309,15 +2426,30 @@
     var hero = page.hero || {};
     var map = page.map || {};
     var center = (map.center || []).join(', ');
-    $('page-contact-form').innerHTML =
-      seoBlock(page) +
-      cardBlock('Hero', field('hero-title', '标题', hero.title, 'full') + field('hero-lead', '导语', hero.lead, 'full', 'textarea')) +
-      cardBlock('地图',
-        field('map-title', '标题', map.title || '', 'full') +
-        field('map-center', '中心坐标 lng,lat', center, 'full') +
-        field('map-zoom', '缩放级别', map.zoom != null ? map.zoom : 14)) +
-      '<div class="card"><h3 class="card-title">工厂地址</h3>' + locationRowsHtml(page.locations || []) + '</div>' +
-      '<div class="card"><h3 class="card-title">联系渠道</h3>' + channelRowsHtml(page.channels || []) + '</div>';
+    var sections = [
+      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      {
+        key: 'hero', label: 'Hero',
+        html: cardBlock('Hero', field('hero-title', '标题', hero.title, 'full') + field('hero-lead', '导语', hero.lead, 'full', 'textarea')),
+      },
+      {
+        key: 'channels', label: '联系渠道',
+        html: '<div class="card"><h3 class="card-title">联系渠道</h3>' + channelRowsHtml(page.channels || []) + '</div>',
+      },
+      {
+        key: 'map', label: '地图',
+        html: cardBlock('地图',
+          field('map-title', '标题', map.title || '', 'full') +
+          field('map-center', '中心坐标 lng,lat', center, 'full') +
+          field('map-zoom', '缩放级别', map.zoom != null ? map.zoom : 14)),
+      },
+      {
+        key: 'locations', label: '工厂地址',
+        html: '<div class="card"><h3 class="card-title">工厂地址</h3>' + locationRowsHtml(page.locations || []) + '</div>',
+      },
+    ];
+    $('page-contact-form').innerHTML = buildSectionTabs('page-contact-form', sections, 'hero');
+    bindSectionTabs('page-contact-form');
     bindLocationRepeater();
     bindGenericRepeater('rep-channels', CHANNEL_BLANK);
     bindLeafRepeaterRemove('rep-channels');
@@ -2347,21 +2479,34 @@
   function renderListPageForm(key, page) {
     var formId = 'page-' + key + '-form';
     var filters = page.filters || {};
-    var extra = '';
+    var extraSection;
     if (key === 'solutions') {
-      extra = '<div class="card"><h3 class="card-title">价值支柱</h3>' + pillarsRowsHtml(page.pillars || []) + '</div>';
+      extraSection = {
+        key: 'pillars',
+        label: '价值支柱',
+        html: '<div class="card"><h3 class="card-title">价值支柱</h3>' + pillarsRowsHtml(page.pillars || []) + '</div>',
+      };
     } else {
-      extra =
-        cardBlock('筛选文案',
+      extraSection = {
+        key: 'filters',
+        label: '筛选文案',
+        html: cardBlock('筛选文案',
           field('filters-all', '「全部」按钮文案', filters.all || (key === 'news' ? '全部资讯' : '全部产品'), 'full') +
-          '<div class="field full"><p class="field-help">分类按钮文案由「全站 → 分类」维护，保存分类后会自动同步到本页 filters。</p></div>');
+          '<div class="field full"><p class="field-help">分类按钮文案由「全站 → 分类」维护，保存分类后会自动同步到本页 filters。</p></div>'),
+      };
     }
-    $(formId).innerHTML =
-      seoBlock(page) +
-      cardBlock('Hero',
-        field('hero-title', '标题', (page.hero || {}).title, 'full') +
-        field('hero-lead', '导语', (page.hero || {}).lead || '', 'full', 'textarea')) +
-      extra;
+    var sections = [
+      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      {
+        key: 'hero', label: 'Hero',
+        html: cardBlock('Hero',
+          field('hero-title', '标题', (page.hero || {}).title, 'full') +
+          field('hero-lead', '导语', (page.hero || {}).lead || '', 'full', 'textarea')),
+      },
+      extraSection,
+    ];
+    $(formId).innerHTML = buildSectionTabs(formId, sections, 'hero');
+    bindSectionTabs(formId);
     bindImageFields($(formId));
     if (key === 'solutions') {
       bindGenericRepeater('rep-pillars', PILLAR_BLANK);
@@ -2434,18 +2579,24 @@
   async function loadSiteForm() {
     var site = await api('/admin/site');
     state.siteCache = site;
-    $('site-form').innerHTML =
-      cardBlock('导航文案', siteKvFields('nav', site.nav, SITE_NAV_LABELS)) +
-      cardBlock('语言切换标签', siteKvFields('lang', site.lang, SITE_LANG_LABELS)) +
-      cardBlock('通用文案', siteKvFields('common', site.common, SITE_COMMON_LABELS)) +
-      cardBlock('页脚', siteKvFields('footer', site.footer, SITE_FOOTER_LABELS)) +
-      advancedBlock(
-        field('nav-json', 'nav JSON', JSON.stringify(site.nav || {}, null, 2), 'full', 'textarea-code') +
-        field('lang-json', 'lang JSON', JSON.stringify(site.lang || {}, null, 2), 'full', 'textarea-code') +
-        field('common-json', 'common JSON', JSON.stringify(site.common || {}, null, 2), 'full', 'textarea-code') +
-        field('footer-json', 'footer JSON', JSON.stringify(site.footer || {}, null, 2), 'full', 'textarea-code') +
-        '<div class="field full"><p class="field-help">若修改了上方表单，请直接点保存；高级 JSON 仅在需要增减字段时使用（保存时以表单为准，除非勾选下方覆盖）。</p>' +
-        '<label class="check-row" style="text-transform:none"><input type="checkbox" id="site-use-json"> 保存时使用高级 JSON 覆盖表单</label></div>');
+    var sections = [
+      { key: 'nav', label: '导航', html: cardBlock('导航文案', siteKvFields('nav', site.nav, SITE_NAV_LABELS)) },
+      { key: 'lang', label: '语言切换', html: cardBlock('语言切换标签', siteKvFields('lang', site.lang, SITE_LANG_LABELS)) },
+      { key: 'common', label: '通用文案', html: cardBlock('通用文案', siteKvFields('common', site.common, SITE_COMMON_LABELS)) },
+      { key: 'footer', label: '页脚', html: cardBlock('页脚', siteKvFields('footer', site.footer, SITE_FOOTER_LABELS)) },
+      {
+        key: 'advanced', label: '高级 JSON',
+        html: advancedBlock(
+          field('nav-json', 'nav JSON', JSON.stringify(site.nav || {}, null, 2), 'full', 'textarea-code') +
+          field('lang-json', 'lang JSON', JSON.stringify(site.lang || {}, null, 2), 'full', 'textarea-code') +
+          field('common-json', 'common JSON', JSON.stringify(site.common || {}, null, 2), 'full', 'textarea-code') +
+          field('footer-json', 'footer JSON', JSON.stringify(site.footer || {}, null, 2), 'full', 'textarea-code') +
+          '<div class="field full"><p class="field-help">若修改了上方表单，请直接点保存；高级 JSON 仅在需要增减字段时使用（保存时以表单为准，除非勾选下方覆盖）。</p>' +
+          '<label class="check-row" style="text-transform:none"><input type="checkbox" id="site-use-json"> 保存时使用高级 JSON 覆盖表单</label></div>'),
+      },
+    ];
+    $('site-form').innerHTML = buildSectionTabs('site-form', sections, 'nav');
+    bindSectionTabs('site-form');
   }
 
   async function saveSite() {

@@ -231,6 +231,13 @@ a { color: inherit; text-decoration: none; }
 .hub-tab-count:empty { display: none; }
 .hub-panel { margin-top: 0; }
 
+/* Long page forms: same pill tabs, wrap when many sections */
+.section-tabs {
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+}
+
 .workspace { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .topbar {
   height: var(--topbar-h);
