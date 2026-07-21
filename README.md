@@ -17,7 +17,7 @@
 │   ├── i18n/
 │   └── schema/
 ├── scripts/                      # Dev tooling (not required at runtime)
-├── server/                       # Backend API plan + SQL draft
+├── server/                       # CMS + public API（见 server/README.md、DEPLOY.md）
 └── DESIGN.md                     # Visual / typography design system
 ```
 
@@ -27,16 +27,23 @@ See [DESIGN.md](DESIGN.md) for colors, type scale, spacing, components, and page
 
 ## Content edits
 
-- Products / solutions / news: edit `data/**/*.json`
-- Layout / copy in static shells: edit the corresponding HTML under `/`, `/en/`, `/ru/`
-- Styles: `assets/css/styles.css`
+日常运营以后台为准（见 [server/README.md](server/README.md)）：
+
+- **产品 / 方案 / 新闻**：`/admin/` 中文编辑 → 发布 / 下架；首页标杆与精选在方案/新闻详情里设置（必填坑位，下架须指定替代）
+- **首页 / 关于 / 联系文案**：后台「页面」；首页卡片内容来自目录坑位，页面里只改区段文案与固定「单元设备」卡
+- `data/**/*.json` + 配套 `.js`：由 CMS 写入同步，供静态 / `file://` 回退；勿与后台并行手改同一条
+- 布局壳：`/`、`/en/`、`/ru/` 下 HTML；样式：`assets/css/styles.css`
 
 ## Deploy
 
-Upload the whole repo **except** `.git/` and optionally `scripts/` + `server/` (or include `server/` docs only).
+生产推荐：静态站 + Node CMS（同域反代 `/api/`、`/admin/`）。细节见 [server/DEPLOY.md](server/DEPLOY.md)。
 
-Ensure the server serves `data/*.json` as `application/json` (already configured in `web.config`).
+纯静态托管时上传仓库（可排除 `.git/`、`scripts/`）；需能提供 `data/*.json`（`web.config` 已配 MIME）。
 
 ## Backend path
 
-See `server/README.md`. Front-end detail pages already `fetch` JSON — point them at `/api/v1` when ready.
+见 [server/README.md](server/README.md)。同源 http(s) 下前台会自动探测 `/api/v1`；失败则回退 `data/*.js` / JSON。
+
+```bash
+cd server && npm run import && npm run dev
+```

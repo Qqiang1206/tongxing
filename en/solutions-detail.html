@@ -114,6 +114,8 @@
     <div data-footer-placeholder></div>
 
     <script src="../assets/js/data-loader.js"></script>
+  <script src="../assets/js/site-common.js"></script>
+  <script src="../assets/js/site-nav.js"></script>
     <script src="../data/solutions/en.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
@@ -143,7 +145,16 @@
             TXAM.setMedia('product-image', solution.image, solution.name);
             document.getElementById('product-desc').textContent = solution.summary || solution.desc || '';
             document.getElementById('product-detail').innerHTML = solution.contentHtml || solution.detail || '';
-            document.title = solution.name + ' | TXAM';
+            if (TXAM.applySeo) {
+                TXAM.applySeo({
+                    title: solution.name + ' | TXAM',
+                    description: solution.summary || solution.desc || '',
+                    image: solution.image,
+                    type: 'article'
+                });
+            } else {
+                document.title = solution.name + ' | TXAM';
+            }
 
             var specs = solution.specs || [];
             document.getElementById('product-specs').innerHTML = specs.map(function (spec) {
@@ -170,6 +181,7 @@
             TXAM.bindMobileMenu();
         });
     </script>
-    <script src="../assets/js/footer-en.js" defer></script>
+    <script src="../data/i18n/en.js"></script>
+    <script src="../assets/js/site-footer.js" defer></script>
 </body>
 </html>

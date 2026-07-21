@@ -1,0 +1,77 @@
+/* auto-generated from zh.json — do not edit */
+window.__TXAM_PAGE_CONTACT_ZH={
+  "pageKey": "contact",
+  "lang": "zh",
+  "hero": {
+    "title": "随时准备为您效劳。",
+    "lead": "无论是单机设备咨询，还是整厂非标产线规划。\n同兴高科的技术专家团队将在 24 小时内为您响应。"
+  },
+  "channels": [
+    {
+      "type": "phone",
+      "icon": "📞",
+      "href": "tel:+8613632643748",
+      "target": "_self",
+      "eyebrow": "Phone / WeChat",
+      "title": "国内业务专线",
+      "value": "+86 136 3264 3748",
+      "hint": "刘经理 (微信同号)",
+      "colSpan": 1,
+      "hover": "dark"
+    },
+    {
+      "type": "whatsapp",
+      "icon": "💬",
+      "href": "https://wa.me/8619537958418",
+      "target": "_blank",
+      "eyebrow": "Global Inquiry",
+      "title": "WhatsApp",
+      "value": "+86 195 3795 8418",
+      "hint": "Overseas Business",
+      "colSpan": 1,
+      "hover": "whatsapp"
+    },
+    {
+      "type": "email",
+      "icon": "📧",
+      "href": "mailto:txgk@sztxgk.com",
+      "target": "_self",
+      "eyebrow": "Email",
+      "title": "官方电子邮箱",
+      "value": "txgk@sztxgk.com",
+      "hint": "发送包含 CAD/图纸 的需求文档",
+      "cta": "点击发送邮件 →",
+      "colSpan": 2,
+      "hover": "dark"
+    }
+  ],
+  "map": {
+    "title": "全球定位，深惠双核。",
+    "center": [
+      114.316297,
+      22.726056
+    ],
+    "zoom": 14
+  },
+  "locations": [
+    {
+      "name": "深圳总部工厂",
+      "address": "深圳市龙岗区宝龙街道同德社区吓坑村一区2号（A栋-C栋）",
+      "navLabel": "高德地图导航",
+      "navUrl": "https://uri.amap.com/navigation?to=114.316297,22.726056,TXAM&callnative=1",
+      "dotColor": "#1D1D1F"
+    },
+    {
+      "name": "惠州智能制造基地",
+      "address": "惠州市（6万㎡智能制造基地，已于 2026 年全面投产）。",
+      "navLabel": "查看基地规划图",
+      "navUrl": "https://uri.amap.com/navigation?to=114.0,22.8,Huizhou Base&callnative=1",
+      "badge": "已投产",
+      "dotColor": "#FF6B00"
+    }
+  ],
+  "seo": {
+    "title": "联系我们 | 同兴高科 TXAM - 中国领先的自动化品牌供应商",
+    "description": "联系同兴高科 - 深圳+惠州双基地，专业自动化设备供应商，诚接全球订单"
+  }
+};

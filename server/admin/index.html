@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TXAM 内容管理 · 同兴高科</title>
+  <link rel="stylesheet" href="./admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+  <div id="login-view" class="login-page">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="login-mark">TX</div>
+        <div>
+          <h1>同兴高科</h1>
+          <p>内容管理后台 · 编辑中文源内容</p>
+        </div>
+      </div>
+      <label for="password">管理员密码</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="请输入密码">
+      <button id="login-btn" class="btn btn-primary btn-block" type="button">进入后台</button>
+      <div id="login-msg" class="msg"></div>
+    </div>
+  </div>
+
+  <div id="app-view" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="login-mark">TX</div>
+        <div>
+          <strong>TXAM 同兴高科</strong>
+          <span>内容管理</span>
+        </div>
+      </div>
+      <nav class="nav" id="nav">
+        <button type="button" class="nav-item is-active" data-view="dashboard" title="工作台">
+          <span class="nav-ico" aria-hidden="true">⌂</span><span class="nav-text">工作台</span>
+        </button>
+        <button type="button" class="nav-item" data-view="products" title="产品管理">
+          <span class="nav-ico" aria-hidden="true">▣</span><span class="nav-text">产品管理</span>
+        </button>
+        <button type="button" class="nav-item" data-view="solutions" title="解决方案">
+          <span class="nav-ico" aria-hidden="true">◈</span><span class="nav-text">解决方案</span>
+        </button>
+        <button type="button" class="nav-item" data-view="news" title="新闻管理">
+          <span class="nav-ico" aria-hidden="true">☰</span><span class="nav-text">新闻管理</span>
+        </button>
+        <div class="nav-label">网站内容</div>
+        <button type="button" class="nav-item" data-view="page-home" title="首页内容">
+          <span class="nav-ico" aria-hidden="true">◆</span><span class="nav-text">首页内容</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-about" title="关于我们">
+          <span class="nav-ico" aria-hidden="true">◇</span><span class="nav-text">关于我们</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-contact" title="联系我们">
+          <span class="nav-ico" aria-hidden="true">✉</span><span class="nav-text">联系我们</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-products" title="产品列表页">
+          <span class="nav-ico" aria-hidden="true">▣</span><span class="nav-text">产品列表页</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-news" title="新闻列表页">
+          <span class="nav-ico" aria-hidden="true">☰</span><span class="nav-text">新闻列表页</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-solutions" title="方案列表页">
+          <span class="nav-ico" aria-hidden="true">◈</span><span class="nav-text">方案列表页</span>
+        </button>
+        <button type="button" class="nav-item" data-view="site" title="导航 / 页脚">
+          <span class="nav-ico" aria-hidden="true">▤</span><span class="nav-text">导航 / 页脚</span>
+        </button>
+        <button type="button" class="nav-item" data-view="categories" title="分类管理">
+          <span class="nav-ico" aria-hidden="true">⊞</span><span class="nav-text">分类管理</span>
+        </button>
+        <div class="nav-label">系统</div>
+        <button type="button" class="nav-item" data-view="media" title="媒体库">
+          <span class="nav-ico" aria-hidden="true">⧉</span><span class="nav-text">媒体库</span>
+        </button>
+        <button type="button" class="nav-item" data-view="translation" title="翻译同步">
+          <span class="nav-ico" aria-hidden="true">文</span><span class="nav-text">翻译同步</span>
+        </button>
+        <button type="button" class="nav-item" data-view="audit" title="操作日志">
+          <span class="nav-ico" aria-hidden="true">≡</span><span class="nav-text">操作日志</span>
+        </button>
+      </nav>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button type="button" class="icon-btn" id="sidebar-toggle" title="折叠菜单" aria-label="折叠菜单">☰</button>
+        <div class="topbar-search">
+          <input id="global-search" type="search" placeholder="搜索产品、新闻、方案…" autocomplete="off">
+        </div>
+        <div class="topbar-right">
+          <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">打开官网</a>
+          <div class="user-chip">
+            <span class="user-avatar">管</span>
+            <span class="user-name">管理员</span>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" id="logout-btn">退出</button>
+        </div>
+      </header>
+
+      <main class="main">
+        <section id="view-dashboard" class="view">
+          <div class="page-head">
+            <div>
+              <h2>欢迎回来</h2>
+              <p id="dash-date" class="page-sub">今天也是更新官网内容的好日子</p>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm" id="refresh-dash">刷新数据</button>
+          </div>
+          <div class="stat-grid" id="dash-stats"></div>
+          <div class="dash-grid">
+            <div class="card">
+              <div class="card-head">
+                <h3 class="card-title">内容概况</h3>
+              </div>
+              <div id="dash-content-status"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <h3 class="card-title">快捷操作</h3>
+              </div>
+              <div class="quick-actions">
+                <button type="button" class="quick-btn" data-jump="products"><span>+</span>新建 / 编辑产品</button>
+                <button type="button" class="quick-btn" data-jump="news"><span>+</span>发布新闻</button>
+                <button type="button" class="quick-btn" data-jump="solutions"><span>+</span>编辑方案</button>
+                <button type="button" class="quick-btn" data-jump="media"><span>↑</span>上传图片</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <h3 class="card-title">使用提示</h3>
+              </div>
+              <ul class="tip-list" id="dash-tips">
+                <li>只改<strong>中文</strong>；正文可用工具栏排版，不用写代码。</li>
+                <li>改完点<strong>保存</strong>，再用顶栏「打开官网」预览。</li>
+                <li>图片先上传到「媒体库」，再点「从媒体库选图」。</li>
+                <li>英文 / 俄文：到「翻译同步」点一键同步即可。</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-products" class="view hidden">
+          <div class="page-head">
+            <div>
+              <h2>产品管理</h2>
+              <p class="page-sub">维护产品中心展示的设备与参数</p>
+            </div>
+            <button type="button" class="btn btn-accent" id="create-product">+ 新建产品</button>
+          </div>
+          <div class="filter-bar">
+            <select id="product-filter-status" class="select">
+              <option value="all">全部状态</option>
+              <option value="published">已发布</option>
+              <option value="draft">未发布</option>
+            </select>
+            <input class="search" id="product-search" type="search" placeholder="搜索名称 / 型号 / 分类">
+            <button type="button" class="btn btn-primary btn-sm" id="product-search-btn">搜索</button>
+          </div>
+          <div class="card list-card">
+            <div class="item-list" id="product-list" role="list"></div>
+            <div class="table-foot" id="product-table-foot"></div>
+          </div>
+        </section>
+
+        <section id="view-news" class="view hidden">
+          <div class="page-head">
+            <div>
+              <h2>新闻管理</h2>
+              <p class="page-sub">发布公司与行业动态</p>
+            </div>
+            <button type="button" class="btn btn-accent" id="create-news">+ 新建新闻</button>
+          </div>
+          <div class="filter-bar">
+            <input class="search" id="news-search" type="search" placeholder="搜索标题 / 分类">
+            <button type="button" class="btn btn-primary btn-sm" id="news-search-btn">搜索</button>
+          </div>
+          <div class="card list-card">
+            <div class="item-list" id="news-list" role="list"></div>
+            <div class="table-foot" id="news-table-foot"></div>
+          </div>
+        </section>
+
+        <section id="view-solutions" class="view hidden">
+          <div class="page-head">
+            <div>
+              <h2>解决方案</h2>
+              <p class="page-sub">行业整线方案与落地页内容</p>
+            </div>
+            <button type="button" class="btn btn-accent" id="create-solution">+ 新建方案</button>
+          </div>
+          <div class="filter-bar">
+            <input class="search" id="solution-search" type="search" placeholder="搜索名称 / ID">
+            <button type="button" class="btn btn-primary btn-sm" id="solution-search-btn">搜索</button>
+          </div>
+          <div class="card list-card">
+            <div class="item-list" id="solution-list" role="list"></div>
+            <div class="table-foot" id="solution-table-foot"></div>
+          </div>
+        </section>
+
+        <section id="view-page-home" class="view hidden">
+          <div class="page-head">
+            <div><h2>首页内容</h2><p class="page-sub">Hero、精选方案、关于区块等</p></div>
+            <button type="button" class="btn btn-accent" id="save-page-home">保存首页</button>
+          </div>
+          <div id="page-home-form"></div>
+        </section>
+
+        <section id="view-page-about" class="view hidden">
+          <div class="page-head">
+            <div><h2>关于我们</h2><p class="page-sub">品牌介绍、企业文化与发展历程</p></div>
+            <button type="button" class="btn btn-accent" id="save-page-about">保存关于页</button>
+          </div>
+          <div id="page-about-form"></div>
+        </section>
+
+        <section id="view-page-contact" class="view hidden">
+          <div class="page-head">
+            <div><h2>联系我们</h2><p class="page-sub">联系渠道与地图位置（无在线留言）</p></div>
+            <button type="button" class="btn btn-accent" id="save-page-contact">保存联系页</button>
+          </div>
+          <div id="page-contact-form"></div>
+        </section>
+
+        <section id="view-page-products" class="view hidden">
+          <div class="page-head">
+            <div><h2>产品列表页</h2><p class="page-sub">产品中心 Hero / SEO / 筛选文案</p></div>
+            <button type="button" class="btn btn-accent" id="save-page-products">保存</button>
+          </div>
+          <div id="page-products-form"></div>
+        </section>
+
+        <section id="view-page-news" class="view hidden">
+          <div class="page-head">
+            <div><h2>新闻列表页</h2><p class="page-sub">新闻中心 Hero / SEO / 筛选文案</p></div>
+            <button type="button" class="btn btn-accent" id="save-page-news">保存</button>
+          </div>
+          <div id="page-news-form"></div>
+        </section>
+
+        <section id="view-page-solutions" class="view hidden">
+          <div class="page-head">
+            <div><h2>方案列表页</h2><p class="page-sub">解决方案 Hero / SEO / 价值支柱</p></div>
+            <button type="button" class="btn btn-accent" id="save-page-solutions">保存</button>
+          </div>
+          <div id="page-solutions-form"></div>
+        </section>
+
+        <section id="view-site" class="view hidden">
+          <div class="page-head">
+            <div><h2>导航 / 页脚</h2><p class="page-sub">站点导航与页脚中文文案</p></div>
+            <button type="button" class="btn btn-accent" id="save-site">保存站点文案</button>
+          </div>
+          <div id="site-form"></div>
+        </section>
+
+        <section id="view-categories" class="view hidden">
+          <div class="page-head">
+            <div>
+              <h2>分类管理</h2>
+              <p class="page-sub">统一管理产品与新闻分类；新建内容时从这里选择，避免手打写乱</p>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm" id="refresh-categories">刷新</button>
+          </div>
+          <p class="page-hint">放在「网站内容」里：改分类名称后，会同步到产品中心 / 新闻中心的筛选按钮文案。</p>
+          <div class="dash-grid" style="grid-template-columns:1fr 1fr">
+            <div class="card">
+              <div class="card-head">
+                <h3 class="card-title">产品分类</h3>
+                <button type="button" class="btn btn-accent btn-sm" id="add-product-cat">+ 新增</button>
+              </div>
+              <div id="product-cat-list" class="item-list"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <h3 class="card-title">新闻分类</h3>
+                <button type="button" class="btn btn-accent btn-sm" id="add-news-cat">+ 新增</button>
+              </div>
+              <div id="news-cat-list" class="item-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-media" class="view hidden">
+          <div class="page-head">
+            <div>
+              <h2>媒体库</h2>
+              <p class="page-sub">上传图片后，可在编辑表单中一键选用</p>
+            </div>
+            <div class="toolbar">
+              <label class="btn btn-accent" style="cursor:pointer">
+                + 上传图片
+                <input id="media-file" type="file" accept="image/*" hidden>
+              </label>
+              <button type="button" class="btn btn-ghost btn-sm" id="refresh-media">刷新</button>
+            </div>
+          </div>
+          <div class="card">
+            <div id="media-grid" class="media-grid"></div>
+          </div>
+        </section>
+
+        <section id="view-translation" class="view hidden">
+          <div class="page-head">
+            <div>
+              <h2>翻译同步</h2>
+              <p class="page-sub">中文更新后，将英文 / 俄文标记为待同步</p>
+            </div>
+            <div class="toolbar">
+              <button type="button" class="btn btn-ghost btn-sm" id="refresh-translation">刷新</button>
+              <button type="button" class="btn btn-accent btn-sm" id="sync-all-stale">一键同步待翻译</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="enqueue-stale-jobs">仅为待同步建任务</button>
+            </div>
+          </div>
+          <p class="page-hint" id="translation-hint">改完中文后点「一键同步待翻译」，系统会自动建任务并调用翻译引擎写入英文 / 俄文。一般无需手写代码。</p>
+          <div class="card" id="translation-config" style="margin-bottom:16px;font-size:13px;color:var(--muted)"></div>
+          <div class="card"><div class="table-wrap" id="translation-table"></div></div>
+          <div class="page-head" style="margin-top:28px">
+            <div>
+              <h2>翻译任务</h2>
+              <p class="page-sub">运行后写入英文 / 俄文；未配置 API Key 时为联调模式</p>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm" id="refresh-jobs">刷新任务</button>
+          </div>
+          <div class="card"><div class="table-wrap" id="translation-jobs-table"></div></div>
+        </section>
+
+        <section id="view-audit" class="view hidden">
+          <div class="page-head">
+            <div>
+              <h2>操作日志</h2>
+              <p class="page-sub">仅记录写操作与登录（只读，默认保留 90 天）</p>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm" id="refresh-audit">刷新</button>
+          </div>
+          <div class="filter-bar">
+            <input class="search" id="audit-action" type="search" placeholder="按动作前缀筛选，如 login / products">
+            <select id="audit-resource">
+              <option value="">全部资源</option>
+              <option value="auth">登录</option>
+              <option value="products">产品</option>
+              <option value="news">新闻</option>
+              <option value="solutions">方案</option>
+              <option value="site">站点</option>
+              <option value="media">媒体</option>
+              <option value="translation">翻译</option>
+            </select>
+            <button type="button" class="btn btn-primary btn-sm" id="audit-filter-btn">筛选</button>
+          </div>
+          <div class="card table-card">
+            <div class="table-wrap">
+              <table class="data" id="audit-table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>动作</th>
+                    <th>资源</th>
+                    <th>摘要</th>
+                    <th>结果</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="table-foot" id="audit-table-foot"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- 编辑抽屉 -->
+  <div id="editor-drawer" class="drawer hidden" aria-hidden="true">
+    <div class="drawer-backdrop" id="drawer-backdrop"></div>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h3 id="drawer-title">编辑</h3>
+        <button type="button" class="icon-btn" id="drawer-close" aria-label="关闭">×</button>
+      </div>
+      <div class="drawer-body">
+        <div id="product-editor" class="drawer-slot hidden"><p class="empty">选择产品</p></div>
+        <div id="news-editor" class="drawer-slot hidden"><p class="empty">选择新闻</p></div>
+        <div id="solution-editor" class="drawer-slot hidden"><p class="empty">选择方案</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="media-picker" class="media-picker hidden" role="dialog" aria-modal="true">
+    <div class="media-picker-panel">
+      <div class="media-picker-head">
+        <h3>选择媒体</h3>
+        <button type="button" class="btn btn-ghost btn-sm" id="media-picker-close">关闭</button>
+      </div>
+      <div id="media-picker-grid" class="media-picker-grid"></div>
+    </div>
+  </div>
+
+  <div id="slot-replace-modal" class="media-picker hidden" role="dialog" aria-modal="true">
+    <div class="media-picker-panel" style="max-width:480px">
+      <div class="media-picker-head">
+        <h3 id="slot-replace-title">精选已满</h3>
+        <button type="button" class="btn btn-ghost btn-sm" id="slot-replace-close">取消</button>
+      </div>
+      <p id="slot-replace-msg" class="field-help" style="margin:0 0 12px"></p>
+      <div id="slot-replace-list" class="slot-replace-list"></div>
+      <div class="toolbar" style="margin-top:16px">
+        <button type="button" class="btn btn-accent" id="slot-replace-confirm" disabled>下架选中并精选当前</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./admin.js"></script>
+</body>
+</html>

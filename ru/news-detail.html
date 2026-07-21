@@ -107,6 +107,8 @@
     <div data-footer-placeholder></div>
 
     <script src="../assets/js/data-loader.js"></script>
+  <script src="../assets/js/site-common.js"></script>
+  <script src="../assets/js/site-nav.js"></script>
     <script src="../data/news/ru.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
@@ -135,7 +137,16 @@
             document.getElementById('news-date').textContent = news.date;
             TXAM.setMedia('news-cover', news.cover, news.title);
             document.getElementById('news-content').innerHTML = news.contentHtml || news.content || '';
-            document.title = news.title + ' | Тунсин Гаотек';
+            if (TXAM.applySeo) {
+                TXAM.applySeo({
+                    title: news.title + ' | Тунсин Гаотек',
+                    description: (news.contentHtml || news.content || '').replace(/<[^>]+>/g, '').slice(0, 160),
+                    image: news.cover,
+                    type: 'article'
+                });
+            } else {
+                document.title = news.title + ' | Тунсин Гаотек';
+            }
 
             var relatedContainer = document.getElementById('related-news');
             if (relatedContainer) {
@@ -161,6 +172,7 @@
             TXAM.bindMobileMenu();
         });
     </script>
-    <script src="../assets/js/footer-ru.js" defer></script>
+    <script src="../data/i18n/ru.js"></script>
+    <script src="../assets/js/site-footer.js" defer></script>
 </body>
 </html>

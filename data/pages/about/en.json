@@ -1,0 +1,293 @@
+{
+  "pageKey": "about",
+  "lang": "en",
+  "hero": {
+    "title": "19 Years Focused on<br>Intelligent Manufacturing",
+    "leadHtml": "Guangdong TXAM Intelligent Equipment Co., Ltd. (abbreviated as \"TXAM\"), originated in 1998, officially established in 2007 in Shenzhen, a national technology hub. We have always adhered to our corporate philosophy of <strong class=\"text-[#1D1D1F] font-bold\">Dedication, Steady Development, Reputation First, Quality Supreme</strong>, committed to providing world-class enterprises with one-stop delivery services for intelligent equipment."
+  },
+  "carousel": {
+    "sectionAriaLabel": "Shenzhen and Huizhou manufacturing bases",
+    "prevLabel": "Previous base",
+    "nextLabel": "Next base",
+    "slides": [
+      {
+        "image": "assets/images/hero/szgc1.png",
+        "imageAlt": "TXAM Shenzhen HQ Factory",
+        "fetchpriority": "high",
+        "tag": "Shenzhen HQ",
+        "title": "Shenzhen Headquarters Factory",
+        "desc": "R&D · Manufacturing · HQ — 19 years of intelligent manufacturing",
+        "dotLabel": "Shenzhen",
+        "dotAria": "Shenzhen HQ"
+      },
+      {
+        "image": "assets/images/hero/hzgc2.jpg",
+        "imageAlt": "TXAM Huizhou Smart Manufacturing Base",
+        "tag": "Huizhou Base",
+        "title": "Huizhou Smart Manufacturing Base",
+        "desc": "60,000㎡ capacity expansion · Built for large-scale global delivery",
+        "dotLabel": "Huizhou",
+        "dotAria": "Huizhou Base"
+      }
+    ]
+  },
+  "stats": {
+    "columns": 5,
+    "items": [
+      {
+        "value": "19",
+        "unit": "",
+        "label": "Years of Automation Manufacturing"
+      },
+      {
+        "value": "98",
+        "unit": "",
+        "label": "Core Inventions & Patents"
+      },
+      {
+        "value": "11",
+        "unit": "",
+        "label": "Key Industries Covered"
+      },
+      {
+        "value": "15",
+        "unit": "Countries",
+        "label": "Global Equipment Export Coverage"
+      },
+      {
+        "value": "10",
+        "unit": "0k m²",
+        "label": "Shenzhen-Huizhou Dual Core Factory Capacity",
+        "emphasis": "accent"
+      }
+    ]
+  },
+  "culture": {
+    "headlineHtml": "Providing Exceptional Intelligent Equipment<br>to World-Class Enterprises.",
+    "pillars": [
+      {
+        "title": "【 Corporate Vision 】",
+        "bodyHtml": "Build a highly internationally competitive<br>automation benchmark enterprise."
+      },
+      {
+        "title": "【 Corporate Mission 】",
+        "bodyHtml": "Lead China's intelligent manufacturing era,<br>reshaping global industry delivery standards."
+      },
+      {
+        "title": "【 Core Values 】",
+        "bodyHtml": "Customer-centric, collaborating with partners, achieving mutual success.<br>Ensuring safety first, pursuing efficiency first."
+      }
+    ]
+  },
+  "timeline": {
+    "title": "Development History",
+    "subtitle": "A steady evolution history of intelligent manufacturing.",
+    "events": [
+      {
+        "year": "1998/2007",
+        "side": "left",
+        "accent": true,
+        "bodyHtml": "Technical team prototype born, officially registered \"Guangdong TXAM Intelligent Equipment Co., Ltd.\" in Shenzhen in 2007, embarking on the journey of non-standard automated production line exploration and intelligent manufacturing.",
+        "mobileBody": "Registered Guangdong TXAM, embarking on intelligent manufacturing of non-standard automation lines."
+      },
+      {
+        "year": "2015",
+        "side": "right",
+        "accent": false,
+        "bodyHtml": "Business footprint fully expanded. With exceptional quality, officially became a core intelligent manufacturing supplier for major home appliance and commercial display leading enterprises including TCL, Skyworth, Midea, Konka, and Changhong, establishing an industry leadership position.",
+        "mobileBody": "Became core supplier for TCL, Skyworth, Midea, Konka, Changhong and other major enterprises."
+      },
+      {
+        "year": "2023",
+        "side": "left",
+        "accent": false,
+        "bodyHtml": "New energy intelligent equipment R&D team established. With self-developed \"Circular Automatic Lifting Machine\" and other core equipment, debuted at CIBF International Battery Exhibition, fully entering the new energy and automated warehouse logistics track.",
+        "mobileBody": "New energy R&D team established, core equipment debuted at CIBF Battery Exhibition."
+      },
+      {
+        "year": "NOW",
+        "side": "right",
+        "accent": true,
+        "yearAccent": true,
+        "leadHtml": "100,000㎡ Shenzhen-Huizhou dual base pattern fully formed.",
+        "bodyHtml": "Self-developed core technologies including UVW platform calibration and ultra-large screen lifting have won nearly 100 patents. Equipment exported to 15 countries and regions including North America, Europe, and Southeast Asia.",
+        "mobileBody": "100,000㎡ dual-base pattern formed, nearly 100 patents, equipment exported to 15 countries."
+      }
+    ]
+  },
+  "credentials": {
+    "title": "Corporate Qualifications & Core Patents",
+    "subtitle": "Proven strength through genuine honors and 98 patent certificates.",
+    "groups": [
+      {
+        "id": "honors",
+        "title": "Honors & Qualifications",
+        "layout": "grid",
+        "items": [
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp",
+            "imageAlt": "High-Tech Enterprise Certificate"
+          },
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-chuangxinxingzhongxiaoqiye.jpg",
+            "imageAlt": "Innovation SME Certificate"
+          },
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp",
+            "imageAlt": "Specialized & Distinctive SME Certificate"
+          }
+        ]
+      },
+      {
+        "id": "quality",
+        "title": "Quality Certifications",
+        "layout": "marquee",
+        "marqueeDuration": "40s",
+        "items": [
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114404_97_27.jpg",
+            "imageAlt": "Quality certification"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114503_107_27.jpg",
+            "imageAlt": "Quality certification"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114504_108_27.jpg",
+            "imageAlt": "Quality certification"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114505_109_27.jpg",
+            "imageAlt": "Quality certification"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114506_110_27.jpg",
+            "imageAlt": "Quality certification"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114507_111_27.jpg",
+            "imageAlt": "Quality certification"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114508_112_27.jpg",
+            "imageAlt": "Quality certification"
+          }
+        ]
+      },
+      {
+        "id": "patents",
+        "title": "Patent Certificates",
+        "layout": "marquee",
+        "marqueeDuration": "60s",
+        "items": [
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114513_117_27.jpg",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114515_119_27.jpg",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114516_121_27.jpg",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114517_122_27.jpg",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114518_123_27.jpg",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_124_27.jpg",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_125_27.jpg",
+            "imageAlt": "Patent Certificate"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114520_126_27.jpg",
+            "imageAlt": "Patent Certificate"
+          }
+        ]
+      }
+    ]
+  },
+  "clients": {
+    "title": "Our Clients",
+    "subtitle": "The Choice of World-Class Manufacturing Enterprises.",
+    "items": [
+      {
+        "image": "assets/images/clients/tcl.webp",
+        "imageAlt": "TCL"
+      },
+      {
+        "image": "assets/images/clients/chuangwei.webp",
+        "imageAlt": "Skyworth"
+      },
+      {
+        "image": "assets/images/clients/meide.webp",
+        "imageAlt": "Midea"
+      },
+      {
+        "image": "assets/images/clients/fushikang.webp",
+        "imageAlt": "Foxconn"
+      },
+      {
+        "image": "assets/images/clients/jingdongfang.webp",
+        "imageAlt": "BOE"
+      },
+      {
+        "image": "assets/images/clients/ningdeshidai.webp",
+        "imageAlt": "CATL"
+      },
+      {
+        "image": "assets/images/clients/zhouming.webp",
+        "imageAlt": "Unilumin"
+      },
+      {
+        "image": "assets/images/clients/qunchuangguangdian.webp",
+        "imageAlt": "Innolux"
+      },
+      {
+        "image": "assets/images/clients/lianxiang.webp",
+        "imageAlt": "Lenovo"
+      },
+      {
+        "image": "assets/images/clients/huake.webp",
+        "imageAlt": "HUAK"
+      },
+      {
+        "image": "assets/images/clients/huike.webp",
+        "imageAlt": "HKC"
+      },
+      {
+        "image": "assets/images/clients/xiwo.webp",
+        "imageAlt": "Seewo"
+      },
+      {
+        "image": "assets/images/clients/kangjia.webp",
+        "imageAlt": "Konka"
+      },
+      {
+        "image": "assets/images/clients/changhong.gif",
+        "imageAlt": "Changhong"
+      }
+    ]
+  },
+  "seo": {
+    "title": "About Us | TXAM",
+    "description": "TXAM — founded in Shenzhen, 19 years of non-standard automation production lines."
+  }
+}

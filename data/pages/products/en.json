@@ -1,0 +1,22 @@
+{
+  "pageKey": "products",
+  "lang": "en",
+  "hero": {
+    "title": "Core Manufacturing Matrix",
+    "lead": "From high-precision single flexible units to complete unmanned factory lines.<br class=\"hidden md:block\">Full-spectrum automation equipment for electronic manufacturing."
+  },
+  "filters": {
+    "all": "All Products",
+    "single": "Single Machines",
+    "dispensing": "Dispensing",
+    "optical": "Optical Assembly",
+    "flip": "Flip Detection",
+    "logistics": "Logistics",
+    "packaging": "Packaging",
+    "robot": "Robot Integration"
+  },
+  "seo": {
+    "title": "Products | TXAM Tongxing",
+    "description": "TXAM product center — dispensing, flip inspection, screw fastening, optical assembly, transfer, packaging and robot integration."
+  }
+}

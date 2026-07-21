@@ -130,6 +130,8 @@
     <div data-footer-placeholder></div>
 
     <script src="../assets/js/data-loader.js"></script>
+  <script src="../assets/js/site-common.js"></script>
+  <script src="../assets/js/site-nav.js"></script>
     <script src="../data/products/en.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
@@ -179,7 +181,16 @@
             TXAM.setMedia('product-image', product.image, product.name);
             document.getElementById('product-desc').textContent = product.summary || product.desc || '';
             document.getElementById('product-detail').innerHTML = product.contentHtml || product.detail || '';
-            document.title = product.name + ' | TXAM';
+            if (TXAM.applySeo) {
+                TXAM.applySeo({
+                    title: product.name + ' | TXAM',
+                    description: product.summary || product.desc || '',
+                    image: product.image,
+                    type: 'product'
+                });
+            } else {
+                document.title = product.name + ' | TXAM';
+            }
 
             var specs = product.specs || [];
             document.getElementById('product-specs').innerHTML = specs.map(function (spec) {
@@ -208,6 +219,7 @@
             TXAM.bindMobileMenu();
         });
     </script>
-    <script src="../assets/js/footer-en.js" defer></script>
+    <script src="../data/i18n/en.js"></script>
+    <script src="../assets/js/site-footer.js" defer></script>
 </body>
 </html>

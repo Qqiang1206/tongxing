@@ -1,0 +1,33 @@
+{
+  "updatedAt": "2026-07-21T02:04:23.524Z",
+  "resources": {
+    "products": {
+      "en": "stale",
+      "ru": "stale"
+    },
+    "news": {
+      "en": "stale",
+      "ru": "stale"
+    },
+    "solutions": {
+      "en": "stale",
+      "ru": "stale"
+    },
+    "site": {
+      "en": "current",
+      "ru": "current"
+    },
+    "pages:contact": {
+      "en": "current",
+      "ru": "current"
+    },
+    "pages:home": {
+      "en": "current",
+      "ru": "current"
+    },
+    "pages:about": {
+      "en": "current",
+      "ru": "current"
+    }
+  }
+}

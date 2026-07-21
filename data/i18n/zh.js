@@ -1,0 +1,38 @@
+/* auto-generated from zh.json — do not edit */
+window.__TXAM_SITE_ZH={
+  "nav": {
+    "home": "首页",
+    "about": "关于我们",
+    "solutions": "解决方案",
+    "products": "产品中心",
+    "news": "新闻中心",
+    "contact": "联系我们"
+  },
+  "lang": {
+    "zh": "ZH",
+    "en": "EN",
+    "ru": "RU"
+  },
+  "common": {
+    "relatedProducts": "相关产品",
+    "relatedSolutions": "相关解决方案",
+    "relatedArticles": "相关文章",
+    "coreParams": "核心参数",
+    "productFeatures": "产品特点",
+    "detailTitle": "详细说明",
+    "backToProducts": "返回产品中心",
+    "backToSolutions": "返回解决方案",
+    "breadcrumbHome": "首页",
+    "industryPainPoints": "行业痛点",
+    "coreProcess": "核心工艺流程",
+    "applicationAreas": "应用领域",
+    "techAdvantages": "技术优势"
+  },
+  "footer": {
+    "tagline": "以卓越品质，不负每一份信任。",
+    "wechatAlt": "微信客服",
+    "copyright": "© 2007-2026 广东同兴高科智能装备有限公司.",
+    "icp": "粤ICP备16101583号-1",
+    "icpUrl": "https://beian.miit.gov.cn/"
+  }
+};

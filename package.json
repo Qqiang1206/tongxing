@@ -7,7 +7,16 @@
       "extract-data": "node scripts/extract-content-data.js",
       "restructure": "node scripts/restructure-site.js",
       "generate-data-js": "node scripts/generate-data-js.js",
-      "validate": "node scripts/validate-data.js",
-      "build": "node scripts/generate-data-js.js && node scripts/build.js"
-    }
+    "validate": "node scripts/validate-data.js",
+    "sync-product-i18n": "node scripts/sync-product-i18n.js",
+    "sync-catalog-i18n": "node scripts/sync-catalog-i18n.js",
+    "backup-data": "node scripts/backup-data.js",
+    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "patch-list-pages": "node scripts/patch-list-pages.js",
+    "patch-phase3": "node scripts/patch-phase3.js",
+    "ensure-data-js": "node scripts/ensure-data-js-scripts.js",
+    "build": "node scripts/generate-data-js.js && node scripts/generate-sitemap.js && node scripts/build.js",
+    "server:import": "npm run import --prefix server",
+    "server:dev": "npm run dev --prefix server"
+  }
 }

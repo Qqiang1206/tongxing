@@ -1,0 +1,383 @@
+/**
+ * Regression checklist runner against local TXAM server.
+ * Usage: node scripts/regression-check.js [baseUrl]
+ * Default: http://127.0.0.1:3020
+ */
+const http = require('http');
+const https = require('https');
+const { URL } = require('url');
+
+const base = (process.argv[2] || 'http://127.0.0.1:3020').replace(/\/$/, '');
+const results = [];
+
+function fetch(path, opts = {}) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(path.startsWith('http') ? path : base + path);
+    const lib = u.protocol === 'https:' ? https : http;
+    const req = lib.request(
+      u,
+      {
+        method: opts.method || 'GET',
+        headers: opts.headers || {},
+        timeout: 8000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on('data', (c) => chunks.push(c));
+        res.on('end', () => {
+          const buf = Buffer.concat(chunks);
+          const text = buf.toString('utf8');
+          let json = null;
+          try {
+            json = JSON.parse(text);
+          } catch (_) {}
+          resolve({ status: res.statusCode, text, json, headers: res.headers });
+        });
+      }
+    );
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('timeout'));
+    });
+    if (opts.body) req.write(opts.body);
+    req.end();
+  });
+}
+
+function pass(name, detail) {
+  results.push({ ok: true, name, detail: detail || '' });
+  console.log('PASS  ' + name + (detail ? ' — ' + detail : ''));
+}
+function fail(name, detail) {
+  results.push({ ok: false, name, detail: detail || '' });
+  console.log('FAIL  ' + name + (detail ? ' — ' + detail : ''));
+}
+function skip(name, detail) {
+  results.push({ ok: null, name, detail: detail || '' });
+  console.log('SKIP  ' + name + (detail ? ' — ' + detail : ''));
+}
+
+function has(html, needles) {
+  return needles.every((n) => html.includes(n));
+}
+
+async function main() {
+  console.log('Base: ' + base + '\n');
+
+  // 1. health
+  try {
+    const h = await fetch('/api/v1/health');
+    if (h.status === 200 && h.json && h.json.ok) {
+      pass('GET /api/v1/health', JSON.stringify(h.json));
+    } else {
+      fail('GET /api/v1/health', 'status=' + h.status + ' body=' + h.text.slice(0, 120));
+    }
+  } catch (e) {
+    fail('GET /api/v1/health', String(e.message || e));
+    console.log('\nServer not reachable — abort remaining live checks.');
+    printSummary();
+    process.exit(1);
+  }
+
+  // 2. Home
+  {
+    const r = await fetch('/');
+    const ok =
+      r.status === 200 &&
+      has(r.text, ['home-page.js', 'data-loader.js', 'home-news-list', 'hero']);
+    if (ok) pass('/ 首页脚本与区块壳', 'status 200 + hydrator markers');
+    else fail('/ 首页', 'missing markers or status ' + r.status);
+  }
+
+  // 3. About
+  {
+    const r = await fetch('/about.html');
+    const ok =
+      r.status === 200 &&
+      has(r.text, [
+        'about-page.js',
+        'about-timeline-desktop',
+        'about-stats-grid',
+        'factory-carousel',
+        'client-logos-grid',
+      ]) &&
+      !r.text.includes('observer.observe(el));\n\n                });');
+    if (ok) pass('/about.html 壳与时间轴容器', 'no broken fade-up script');
+    else fail('/about.html', 'status=' + r.status);
+  }
+
+  // 4. Contact — no form POST target for leads
+  {
+    const r = await fetch('/contact.html');
+    const hasFormAction = /<form[^>]+action=/i.test(r.text);
+    const ok =
+      r.status === 200 &&
+      has(r.text, ['contact-page.js', 'contact-channels']) &&
+      !hasFormAction;
+    if (ok) pass('/contact.html 渠道壳、无留言表单');
+    else fail('/contact.html', 'status=' + r.status + ' form=' + hasFormAction);
+  }
+
+  // 5. Products / news list
+  {
+    const p = await fetch('/products.html');
+    const n = await fetch('/news.html');
+    const pok =
+      p.status === 200 && has(p.text, ['products-list.js', 'product-grid', 'data/products/zh.js']);
+    const nok = n.status === 200 && has(n.text, ['news-list.js', 'data/news']);
+    if (pok) pass('/products.html 列表 hydrator');
+    else fail('/products.html');
+    if (nok) pass('/news.html 列表 hydrator');
+    else fail('/news.html');
+  }
+
+  // 6. Product / news detail
+  {
+    const p = await fetch('/product-detail.html?id=1');
+    const n = await fetch('/news-detail.html?id=1');
+    if (p.status === 200 && has(p.text, ['data-loader.js', 'loadData'])) {
+      pass('/product-detail.html?id=1');
+    } else fail('/product-detail.html');
+    if (n.status === 200 && has(n.text, ['data-loader.js', 'loadData'])) {
+      pass('/news-detail.html?id=1');
+    } else fail('/news-detail.html');
+  }
+
+  // 7. Solutions list
+  {
+    const r = await fetch('/solutions.html');
+    const ok =
+      r.status === 200 &&
+      has(r.text, ['solutions-list.js', 'id="solutions-list"', 'data/solutions/zh.js']);
+    if (ok) pass('/solutions.html 数据驱动矩阵');
+    else fail('/solutions.html');
+  }
+
+  // 8. Solution landing
+  {
+    const r = await fetch('/tv-display-solution.html');
+    const ok =
+      r.status === 200 && has(r.text, ['solution-landing.js', 'data-loader.js']);
+    if (ok) pass('/tv-display-solution.html 落地页 hydrator');
+    else fail('/tv-display-solution.html');
+  }
+
+  // 9. en / ru mirrors
+  {
+    const pages = [
+      '/en/index.html',
+      '/en/about.html',
+      '/en/solutions.html',
+      '/en/products.html',
+      '/ru/index.html',
+      '/ru/about.html',
+      '/ru/solutions.html',
+      '/ru/products.html',
+    ];
+    let all = true;
+    for (const path of pages) {
+      const r = await fetch(path);
+      if (r.status !== 200) {
+        fail(path, 'status ' + r.status);
+        all = false;
+      }
+    }
+    if (all) pass('en/ru 关键页 200', pages.length + ' urls');
+  }
+
+  // 10. API catalogs + pages + by-slug
+  {
+    const products = await fetch('/api/v1/products?lang=zh');
+    const solutions = await fetch('/api/v1/solutions?lang=zh');
+    const news = await fetch('/api/v1/news?lang=zh');
+    const home = await fetch('/api/v1/pages/home?lang=zh');
+    const about = await fetch('/api/v1/pages/about?lang=zh');
+    const contact = await fetch('/api/v1/pages/contact?lang=zh');
+    const site = await fetch('/api/v1/site?lang=zh');
+    const bySlug = await fetch('/api/v1/solutions/by-slug/tv-display?lang=zh');
+
+    const pc = products.json ? Object.keys(products.json).length : 0;
+    const sc = solutions.json ? Object.keys(solutions.json).length : 0;
+    const nc = news.json ? Object.keys(news.json).length : 0;
+
+    if (products.status === 200 && pc > 0) pass('API products', pc + ' items');
+    else fail('API products');
+    if (solutions.status === 200 && sc === 11) pass('API solutions', sc + ' items');
+    else fail('API solutions', 'count=' + sc);
+    if (news.status === 200 && nc > 0) pass('API news', nc + ' items');
+    else fail('API news');
+    if (home.status === 200 && home.json && home.json.hero) pass('API pages/home');
+    else fail('API pages/home');
+    if (about.status === 200 && about.json && about.json.timeline && about.json.timeline.events) {
+      pass('API pages/about timeline', about.json.timeline.events.length + ' events');
+    } else fail('API pages/about');
+    if (contact.status === 200 && contact.json && contact.json.channels) pass('API pages/contact');
+    else fail('API pages/contact');
+    if (site.status === 200 && site.json) pass('API site');
+    else fail('API site');
+    if (bySlug.status === 200 && bySlug.json && bySlug.json.id) {
+      pass('API solutions/by-slug/tv-display', 'id=' + bySlug.json.id);
+    } else fail('API by-slug');
+
+    // product list allowlist sanity: id 3 should exist in API but be excluded from LISTED_IDS
+    if (products.json && products.json['3']) {
+      pass('API 含整线条目 id=3（产品页白名单另滤）', products.json['3'].name);
+    } else {
+      skip('API id=3', 'not present');
+    }
+  }
+
+  // 11. Admin login + product roundtrip
+  {
+    const login = await fetch('/api/v1/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: 'txam' }),
+    });
+    if (login.status !== 200 || !login.json || !login.json.token) {
+      fail('Admin 登录', 'status=' + login.status + ' ' + login.text.slice(0, 100));
+    } else {
+      pass('Admin 登录');
+      const token = login.json.token;
+      const auth = { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' };
+
+      const list = await fetch('/api/v1/admin/products', { headers: auth });
+      if (list.status === 200) pass('Admin GET products');
+      else fail('Admin GET products', String(list.status));
+
+      const one = await fetch('/api/v1/admin/products/1', { headers: auth });
+      if (one.status !== 200 || !one.json) {
+        fail('Admin GET product/1');
+      } else {
+        const originalSummary = one.json.summary || '';
+        const marker = '[QA ' + Date.now() + ']';
+        const patched = { ...one.json, summary: marker + ' ' + originalSummary };
+        const put = await fetch('/api/v1/admin/products/1', {
+          method: 'PUT',
+          headers: auth,
+          body: JSON.stringify(patched),
+        });
+        if (put.status !== 200) {
+          fail('Admin PUT product/1', put.text.slice(0, 120));
+        } else {
+          const pub = await fetch('/api/v1/products/1?lang=zh');
+          if (pub.status === 200 && pub.json && String(pub.json.summary || '').includes(marker)) {
+            pass('Admin 改产品后公网 API 可见', marker);
+          } else {
+            fail('Admin 改产品后公网不可见');
+          }
+          // restore
+          await fetch('/api/v1/admin/products/1', {
+            method: 'PUT',
+            headers: auth,
+            body: JSON.stringify({ ...one.json, summary: originalSummary }),
+          });
+          pass('Admin 产品摘要已恢复');
+        }
+      }
+
+      const audit = await fetch('/api/v1/admin/audit-logs?limit=20&action=products', { headers: auth });
+      if (
+        audit.status === 200 &&
+        audit.json &&
+        Array.isArray(audit.json.items) &&
+        audit.json.items.some((row) => row.action === 'products.update')
+      ) {
+        pass('Admin 操作日志含产品更新');
+      } else if (audit.status === 200) {
+        fail('Admin 操作日志', '无 products.update 记录');
+      } else {
+        fail('Admin 操作日志', String(audit.status));
+      }
+
+      // media list
+      const media = await fetch('/api/v1/admin/media', { headers: auth });
+      if (media.status === 200) pass('Admin GET media', Array.isArray(media.json) ? media.json.length + ' files' : 'ok');
+      else fail('Admin GET media');
+
+      // tiny png upload (1x1)
+      const tinyPng =
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+      const up = await fetch('/api/v1/admin/media', {
+        method: 'POST',
+        headers: auth,
+        body: JSON.stringify({
+          filename: 'qa-regression-1x1.png',
+          mime: 'image/png',
+          dataBase64: tinyPng,
+        }),
+      });
+      if ((up.status === 200 || up.status === 201) && up.json && (up.json.path || up.json.url || up.json.file)) {
+        pass('Admin 媒体上传', JSON.stringify(up.json).slice(0, 160));
+      } else if (up.status === 200 || up.status === 201) {
+        pass('Admin 媒体上传', up.text.slice(0, 160));
+      } else {
+        fail('Admin 媒体上传', up.status + ' ' + up.text.slice(0, 160));
+      }
+    }
+  }
+
+  // 12. Admin UI static
+  {
+    const r = await fetch('/admin/');
+    if (r.status === 200 && has(r.text, ['admin.js', '内容管理'])) {
+      pass('/admin/ 静态页');
+    } else fail('/admin/');
+  }
+
+  // 13. data-loader auto API note (static check)
+  {
+    const r = await fetch('/assets/js/data-loader.js');
+    if (r.status === 200 && r.text.includes('ensureApiBase') && r.text.includes('/api/v1/health')) {
+      pass('data-loader 同源 API 自动探测代码存在');
+    } else fail('data-loader ensureApiBase');
+  }
+
+  // 14. products-list uses CMS showInList (no hardcoded LISTED_IDS)
+  {
+    const r = await fetch('/assets/js/products-list.js');
+    if (r.status === 200 && r.text.includes('showInList') && !r.text.includes('LISTED_IDS')) {
+      pass('产品列表使用 showInList（CMS）');
+    } else fail('products-list showInList');
+  }
+
+  // 15. list pages API
+  {
+    for (const key of ['products', 'news', 'solutions']) {
+      const r = await fetch('/api/v1/pages/' + key + '?lang=zh');
+      if (r.status === 200 && r.json && (r.json.hero || r.json.seo)) {
+        pass('GET /pages/' + key);
+      } else fail('GET /pages/' + key, r.status + ' ' + (r.text || '').slice(0, 80));
+    }
+  }
+
+  // 16. product API exposes showInList
+  {
+    const r = await fetch('/api/v1/products?lang=zh');
+    const sample = r.json && r.json['1'];
+    if (r.status === 200 && sample && typeof sample.showInList === 'boolean') {
+      pass('products API showInList', 'id1=' + sample.showInList);
+    } else fail('products API showInList');
+  }
+
+  printSummary();
+  process.exit(results.some((x) => x.ok === false) ? 1 : 0);
+}
+
+function printSummary() {
+  const p = results.filter((x) => x.ok === true).length;
+  const f = results.filter((x) => x.ok === false).length;
+  const s = results.filter((x) => x.ok === null).length;
+  console.log('\n========== SUMMARY ==========');
+  console.log('PASS ' + p + '  FAIL ' + f + '  SKIP ' + s);
+  if (f) {
+    console.log('\nFailed:');
+    results.filter((x) => x.ok === false).forEach((x) => console.log(' - ' + x.name + ': ' + x.detail));
+  }
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

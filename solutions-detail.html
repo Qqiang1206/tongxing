@@ -249,6 +249,8 @@
     <div data-footer-placeholder></div>
 
     <script src="assets/js/data-loader.js"></script>
+  <script src="assets/js/site-common.js"></script>
+  <script src="assets/js/site-nav.js"></script>
     <script src="data/solutions/zh.js"></script>
     <script>
         function getUrlParameter(name) {
@@ -328,7 +330,16 @@
                     });
             }
 
-            document.title = data.name + ' | 同兴高科';
+            if (TXAM.applySeo) {
+                TXAM.applySeo({
+                    title: data.name + ' | 同兴高科',
+                    description: data.summary || data.desc || '',
+                    image: data.image,
+                    type: 'article'
+                });
+            } else {
+                document.title = data.name + ' | 同兴高科';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', async function () {
@@ -346,6 +357,7 @@
             TXAM.bindMobileMenu();
         });
     </script>
-    <script src="assets/js/footer.js" defer></script>
+    <script src="data/i18n/zh.js"></script>
+    <script src="assets/js/site-footer.js" defer></script>
 </body>
 </html>

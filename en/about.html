@@ -73,10 +73,10 @@
     <!-- 📍 P1. Brand Introduction -->
     <header class="pt-40 pb-10 px-6 md:px-24 w-full relative">
         <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
-            <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
+            <h1 id="about-hero-title" class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
                 19 Years Focused on<br>Intelligent Manufacturing
             </h1>
-            <p class="text-body-lg text-[#86868B] font-medium mb-0 max-w-4xl leading-[1.8] tracking-wide">
+            <p id="about-hero-lead" class="text-body-lg text-[#86868B] font-medium mb-0 max-w-4xl leading-[1.8] tracking-wide">
                 Guangdong TXAM Intelligent Equipment Co., Ltd. (abbreviated as "TXAM"), originated in 1998, officially established in 2007 in Shenzhen, a national technology hub. We have always adhered to our corporate philosophy of <strong class="text-[#1D1D1F] font-bold">Dedication, Steady Development, Reputation First, Quality Supreme</strong>, committed to providing world-class enterprises with one-stop delivery services for intelligent equipment.
             </p>
         </div>
@@ -86,38 +86,12 @@
     <section class="factory-carousel-section" aria-label="Shenzhen and Huizhou manufacturing bases">
         <div class="factory-carousel-section__inner">
             <div id="factory-carousel" class="factory-carousel">
-                <div class="factory-carousel__slide is-active" aria-hidden="false">
-                    <img src="../assets/images/hero/szgc1.png" alt="TXAM Shenzhen HQ Factory" fetchpriority="high">
-                    <div class="factory-carousel__gradient"></div>
-                    <div class="factory-carousel__caption">
-                        <p class="factory-carousel__tag">Shenzhen HQ</p>
-                        <h2 class="factory-carousel__title">Shenzhen Headquarters Factory</h2>
-                        <p class="factory-carousel__desc">R&amp;D · Manufacturing · HQ — 19 years of intelligent manufacturing</p>
-                    </div>
-                </div>
-                <div class="factory-carousel__slide" aria-hidden="true">
-                    <img src="../assets/images/hero/hzgc2.jpg" alt="TXAM Huizhou Smart Manufacturing Base" loading="lazy">
-                    <div class="factory-carousel__gradient"></div>
-                    <div class="factory-carousel__caption">
-                        <p class="factory-carousel__tag">Huizhou Base</p>
-                        <h2 class="factory-carousel__title">Huizhou Smart Manufacturing Base</h2>
-                        <p class="factory-carousel__desc">60,000㎡ capacity expansion · Built for large-scale global delivery</p>
-                    </div>
-                </div>
+                <div id="factory-carousel-slides"></div>
                 <div class="factory-carousel__controls">
                     <button type="button" class="factory-carousel__arrow" data-factory-prev aria-label="Previous base">
                         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                     </button>
-                    <div class="factory-carousel__dots" role="tablist">
-                        <button type="button" class="factory-carousel__dot is-active" data-factory-dot role="tab" aria-selected="true" aria-label="Shenzhen HQ">
-                            <span class="factory-carousel__dot-label">Shenzhen</span>
-                            <span class="factory-carousel__dot-mark"></span>
-                        </button>
-                        <button type="button" class="factory-carousel__dot" data-factory-dot role="tab" aria-selected="false" aria-label="Huizhou Base">
-                            <span class="factory-carousel__dot-label">Huizhou</span>
-                            <span class="factory-carousel__dot-mark"></span>
-                        </button>
-                    </div>
+                    <div id="factory-carousel-dots" class="factory-carousel__dots" role="tablist"></div>
                     <button type="button" class="factory-carousel__arrow" data-factory-next aria-label="Next base">
                         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
@@ -129,7 +103,7 @@
     <!-- 📍 P2. Core Data Display -->
     <section class="py-20 bg-white px-6 md:px-24">
         <div class="max-w-[1400px] mx-auto fade-up">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-[#E5E5EA] pt-16">
+            <div id="about-stats-grid" class="grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-[#E5E5EA] pt-16">
                 <div>
                     <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">19</div>
                     <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Years of Automation Manufacturing</p>
@@ -157,27 +131,11 @@
     <!-- 📍 P2.5 Corporate Culture -->
     <section class="py-32 bg-[#1D1D1F] text-white px-6 md:px-24">
         <div class="max-w-[1400px] mx-auto text-center fade-up relative z-10">
-            <h2 class="text-h1 tracking-tighter mb-20 leading-tight">
+            <h2 id="about-culture-headline" class="text-h1 tracking-tighter mb-20 leading-tight">
                 Providing Exceptional Intelligent Equipment<br>to World-Class Enterprises.
             </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-white/10 pt-20 text-left">
-                <!-- Vision -->
-                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
-                    <h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">【 Corporate Vision 】</h3>
-                    <p class="text-gray-300 text-body-lg leading-relaxed font-light">Build a highly internationally competitive<br>automation benchmark enterprise.</p>
-                </div>
-                <!-- Mission -->
-                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
-                    <h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">【 Corporate Mission 】</h3>
-                    <p class="text-gray-300 text-body-lg leading-relaxed font-light">Lead China's intelligent manufacturing era,<br>reshaping global industry delivery standards.</p>
-                </div>
-                <!-- Core Values -->
-                <div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">
-                    <h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">【 Core Values 】</h3>
-                    <p class="text-gray-300 text-body-lg leading-relaxed font-light">Customer-centric, collaborating with partners, achieving mutual success.<br>Ensuring safety first, pursuing efficiency first.</p>
-                </div>
-            </div>
+            <div id="about-culture-pillars" class="grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-white/10 pt-20 text-left"></div>
         </div>
     </section>
 
@@ -185,213 +143,36 @@
     <section class="py-32 bg-[#F5F5F7] px-6 md:px-24 relative border-y border-[#E5E5EA]">
         <div class="max-w-[1200px] mx-auto fade-up">
             <div class="text-center mb-24">
-                <h2 class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Development History</h2>
-                <p class="text-[#86868B] text-xl">A steady evolution history of intelligent manufacturing.</p>
+                <h2 id="about-timeline-title" class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Development History</h2>
+                <p id="about-timeline-subtitle" class="text-[#86868B] text-xl">A steady evolution history of intelligent manufacturing.</p>
             </div>
             
-            <!-- Desktop Timeline -->
             <div class="hidden md:block relative max-w-4xl mx-auto py-10">
                 <div class="absolute inset-0 flex justify-center">
                     <div class="w-1 bg-[#E5E5EA] h-full"></div>
                 </div>
-                
-                <!-- Node 1 (Left) -->
-                <div class="flex items-center justify-between w-full mb-16 fade-up">
-                    <div class="w-5/12 text-right pr-10">
-                        <h3 class="text-h2 text-[#1D1D1F] mb-3 mono-num">1998/2007</h3>
-                        <p class="text-[#86868B] text-sm leading-relaxed">Technical team prototype born, officially registered "Guangdong TXAM Intelligent Equipment Co., Ltd." in Shenzhen in 2007, embarking on the journey of non-standard automated production line exploration and intelligent manufacturing.</p>
-                    </div>
-                    <div class="w-2/12 flex justify-center relative z-10">
-                        <div class="w-5 h-5 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md shadow-orange-500/30"></div>
-                    </div>
-                    <div class="w-5/12"></div>
-                </div>
-                
-                <!-- Node 2 (Right) -->
-                <div class="flex items-center justify-between w-full mb-16 fade-up">
-                    <div class="w-5/12"></div>
-                    <div class="w-2/12 flex justify-center relative z-10">
-                        <div class="w-5 h-5 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
-                    </div>
-                    <div class="w-5/12 pl-10">
-                        <h3 class="text-h2 text-[#1D1D1F] mb-3 mono-num">2015</h3>
-                        <p class="text-[#86868B] text-sm leading-relaxed">Business footprint fully expanded. With exceptional quality, officially became a core intelligent manufacturing supplier for major home appliance and commercial display leading enterprises including TCL, Skyworth, Midea, Konka, and Changhong, establishing an industry leadership position.</p>
-                    </div>
-                </div>
-
-                <!-- Node 3 (Left) -->
-                <div class="flex items-center justify-between w-full mb-16 fade-up">
-                    <div class="w-5/12 text-right pr-10">
-                        <h3 class="text-h2 text-[#1D1D1F] mb-3 mono-num">2023</h3>
-                        <p class="text-[#86868B] text-sm leading-relaxed">New energy intelligent equipment R&D team established. With self-developed "Circular Automatic Lifting Machine" and other core equipment, debuted at CIBF International Battery Exhibition, fully entering the new energy and automated warehouse logistics track.</p>
-                    </div>
-                    <div class="w-2/12 flex justify-center relative z-10">
-                        <div class="w-5 h-5 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
-                    </div>
-                    <div class="w-5/12"></div>
-                </div>
-
-                <!-- Node 4 (Right - Highlight) -->
-                <div class="flex items-center justify-between w-full fade-up">
-                    <div class="w-5/12"></div>
-                    <div class="w-2/12 flex justify-center relative z-10">
-                        <div class="w-5 h-5 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md shadow-orange-500/30"></div>
-                    </div>
-                    <div class="w-5/12 pl-10">
-                        <h3 class="text-h2 text-[#FF6B00] mb-3 mono-num">NOW</h3>
-                        <p class="text-[#1D1D1F] font-bold text-sm leading-relaxed mb-2">100,000㎡ Shenzhen-Huizhou dual base pattern fully formed.</p>
-                        <p class="text-[#86868B] text-sm leading-relaxed">Self-developed core technologies including UVW platform calibration and ultra-large screen lifting have won nearly 100 patents. Equipment exported to 15 countries and regions including North America, Europe, and Southeast Asia.</p>
-                    </div>
-                </div>
+                <div id="about-timeline-desktop"></div>
             </div>
             
-            <!-- Mobile Timeline -->
-            <div class="md:hidden relative border-l-2 border-[#E5E5EA] ml-4 mt-10">
-                <div class="mb-10 ml-8 relative fade-up">
-                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
-                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">1998/2007</h3>
-                    <p class="text-[#86868B] text-sm leading-relaxed">Registered "Guangdong TXAM Intelligent Equipment Co., Ltd.", embarked on non-standard automated production line intelligent manufacturing journey.</p>
-                </div>
-                <div class="mb-10 ml-8 relative fade-up">
-                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
-                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">2015</h3>
-                    <p class="text-[#86868B] text-sm leading-relaxed">Became core supplier for major enterprises including TCL, Skyworth, Midea, Konka, and Changhong.</p>
-                </div>
-                <div class="mb-10 ml-8 relative fade-up">
-                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
-                    <h3 class="text-3xl font-black text-[#1D1D1F] mb-2 mono-num">2023</h3>
-                    <p class="text-[#86868B] text-sm leading-relaxed">Established new energy equipment R&D team, debuted core equipment at CIBF Battery Exhibition.</p>
-                </div>
-                <div class="ml-8 relative fade-up">
-                    <div class="absolute -left-[41px] top-1 w-4 h-4 bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md"></div>
-                    <h3 class="text-3xl font-black text-[#FF6B00] mb-2 mono-num">NOW</h3>
-                    <p class="text-[#1D1D1F] text-sm leading-relaxed">100,000㎡ dual base formed, 98 patents won, equipment exported to 15 countries.</p>
-                </div>
-            </div>
+            <div id="about-timeline-mobile" class="md:hidden relative border-l-2 border-[#E5E5EA] ml-4 mt-10"></div>
         </div>
     </section>
 
-    <!-- 📍 P4. Qualifications & Patents Gallery -->
-    <section class="py-32 bg-white px-6 md:px-24">
+        <section class="py-32 bg-white px-6 md:px-24">
         <div class="max-w-[1400px] mx-auto fade-up">
             <div class="text-center mb-20">
-                <h2 class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Corporate Qualifications & Core Patents</h2>
-                <p class="text-[#86868B] text-xl">Proven strength through genuine honors and 98 patent certificates.</p>
+                <h2 id="about-credentials-title" class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Corporate Qualifications & Core Patents</h2>
+                <p id="about-credentials-subtitle" class="text-[#86868B] text-xl">Proven strength through genuine honors and 98 patent certificates.</p>
             </div>
-            
-            <!-- Section 1: Honor Qualifications -->
-            <div class="mb-24">
-                <h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Honor Qualifications</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="apple-card p-3 flex flex-col items-center">
-                        <div class="w-full bg-white radius-sm overflow-hidden">
-                            <picture><source srcset="../assets/images/certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp" alt="High-Tech Enterprise Certificate" class="w-full h-full object-contain"></picture>
-                        </div>
-                    </div>
-                    <div class="apple-card p-3 flex flex-col items-center">
-                        <div class="w-full bg-white radius-sm overflow-hidden">
-                            <img loading="lazy" src="../assets/images/certifications/rongyuzizhi/guanfangzizhi-chuangxinxingzhongxiaoqiye.jpg" alt="Innovation SME Certificate" class="w-full h-full object-contain">
-                        </div>
-                    </div>
-                    <div class="apple-card p-3 flex flex-col items-center">
-                        <div class="w-full bg-white radius-sm overflow-hidden">
-                            <picture><source srcset="../assets/images/certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp" alt="Specialized & Distinctive SME Certificate" class="w-full h-full object-contain"></picture>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 2: Quality Qualifications -->
-            <div class="mb-24">
-                <h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Quality Qualifications</h3>
-                <div class="patent-marquee" style="--marquee-duration: 40s">
-                    <div class="patent-marquee__track" data-patent-marquee>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media">
-                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114404_97_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
-                            </div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media">
-                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114503_107_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
-                            </div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media">
-                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114504_108_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
-                            </div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media">
-                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114505_109_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
-                            </div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media">
-                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114506_110_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
-                            </div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media">
-                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114507_111_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
-                            </div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media">
-                                <img loading="lazy" src="../assets/images/certifications/zhiliangzizhi/weixintupian_20260330114508_112_27.jpg" alt="Quality Certification" class="w-full h-full object-contain">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 3: Patent Qualifications -->
-            <div>
-                <h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">Patent Qualifications</h3>
-                <div class="patent-marquee" style="--marquee-duration: 60s">
-                    <div class="patent-marquee__track" data-patent-marquee>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><picture><source srcset="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp" alt="Patent Certificate" class="w-full h-full object-contain"></picture></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><picture><source srcset="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp" type="image/webp"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp" alt="Patent Certificate" class="w-full h-full object-contain"></picture></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114513_117_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114515_119_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114516_121_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114517_122_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114518_123_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_124_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_125_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                        <div class="patent-card apple-card p-4 flex flex-col items-center">
-                            <div class="patent-card__media"><img loading="lazy" src="../assets/images/certifications/zhuanlizizhi/weixintupian_20260330114520_126_27.jpg" alt="Patent Certificate" class="w-full h-full object-contain"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="about-credentials-groups"></div>
         </div>
     </section>
 
-    <!-- 📍 P5. Client Logo Wall -->
+<!-- 📍 P5. Client Logo Wall -->
     <section class="py-32 bg-[#F5F5F7] px-6 md:px-24 border-t border-[#E5E5EA]">
         <div class="max-w-[1400px] mx-auto fade-up text-center">
-            <h2 class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Our Clients</h2>
-            <p class="text-[#86868B] text-xl mb-16">The Choice of World-Class Manufacturing Enterprises.</p>
-            
+            <h2 id="about-clients-title" class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Our Clients</h2>
+            <p id="about-clients-subtitle" class="text-[#86868B] text-xl mb-16">The Choice of World-Class Manufacturing Enterprises.</p>
             <div id="client-logos-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6"></div>
         </div>
     </section>
@@ -427,42 +208,17 @@
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
-
-                        const clientLogos = [
-                { src: '../assets/images/clients/tcl.webp', alt: 'TCL' },
-                { src: '../assets/images/clients/chuangwei.webp', alt: 'Skyworth' },
-                { src: '../assets/images/clients/meide.webp', alt: 'Midea' },
-                { src: '../assets/images/clients/fushikang.webp', alt: 'Foxconn' },
-                { src: '../assets/images/clients/jingdongfang.webp', alt: 'BOE' },
-                { src: '../assets/images/clients/ningdeshidai.webp', alt: 'CATL' },
-                { src: '../assets/images/clients/zhouming.webp', alt: 'Unilumin' },
-                { src: '../assets/images/clients/qunchuangguangdian.webp', alt: 'Qunchuang' },
-                { src: '../assets/images/clients/lianxiang.webp', alt: 'Lenovo' },
-                { src: '../assets/images/clients/huake.webp', alt: 'HUAK' },
-                { src: '../assets/images/clients/huike.webp', alt: 'HKC' },
-                { src: '../assets/images/clients/xiwo.webp', alt: 'Seewo' },
-                { src: '../assets/images/clients/kangjia.webp', alt: 'Kongjia' },
-                { src: '../assets/images/clients/changhong.gif', alt: 'Changhong' },
-            ];
-
-            const grid = document.getElementById('client-logos-grid');
-            if (grid) {
-                clientLogos.forEach(logo => {
-                    const card = document.createElement('div');
-                    card.className = 'client-card h-28 bg-white border border-[#E5E5EA] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300';
-                    const img = document.createElement('img');
-                    img.src = logo.src;
-                    img.alt = logo.alt;
-                    img.className = 'max-h-full max-w-full client-logo';
-                    img.onerror = function() { this.parentElement.style.display = 'none'; };
-                    card.appendChild(img);
-                    grid.appendChild(card);
-                });
-            }
         });
     </script>
     <script src="../assets/js/factory-carousel.js" defer></script>
     <script src="../assets/js/patent-marquee.js"></script>
-    <script src="../assets/js/footer-en.js" defer></script>
+    <script src="../data/i18n/en.js"></script>    <script src="../assets/js/data-loader.js"></script>
+  <script src="../assets/js/site-common.js"></script>
+  <script src="../assets/js/site-nav.js"></script>
+    <script src="../data/pages/about/en.js"></script>
+    <script src="../assets/js/about-page.js"></script>
+    <script>document.addEventListener('DOMContentLoaded',function(){TXAM.initAboutPage({lang:'en'});});</script>
+
+    <script src="../assets/js/site-footer.js" defer></script>
 </body>
 </html>

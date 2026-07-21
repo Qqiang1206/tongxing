@@ -1,0 +1,60 @@
+{
+  "nextId": 3,
+  "jobs": [
+    {
+      "id": 1,
+      "resource": "pages:about",
+      "sourceLang": "zh",
+      "targetLangs": [
+        "en",
+        "ru"
+      ],
+      "status": "applied",
+      "note": null,
+      "error": null,
+      "result": {
+        "mode": "stub",
+        "message": "AI 翻译未接入。请用外部工具更新 en/ru 对应 JSON，然后点击「应用」将状态标为 current。",
+        "provider": null,
+        "applied": true
+      },
+      "createdAt": "2026-07-20T09:37:20.313Z",
+      "startedAt": "2026-07-20T09:37:20.327Z",
+      "completedAt": "2026-07-20T09:37:20.327Z",
+      "appliedAt": "2026-07-20T09:37:20.335Z"
+    },
+    {
+      "id": 2,
+      "resource": "pages:contact",
+      "sourceLang": "zh",
+      "targetLangs": [
+        "en"
+      ],
+      "status": "applied",
+      "note": null,
+      "error": null,
+      "result": {
+        "provider": "echo",
+        "model": "gpt-4o-mini",
+        "mode": "echo",
+        "message": "已用 echo 写入 en/ru（文案带 [EN]/[RU] 前缀，仅供联调）。配置 TRANSLATION_API_KEY 后可真实翻译。",
+        "stats": {
+          "resource": "pages:contact",
+          "provider": "echo",
+          "model": "gpt-4o-mini",
+          "langs": {
+            "en": {
+              "strings": 22
+            }
+          },
+          "stringCount": 22
+        },
+        "applied": true
+      },
+      "createdAt": "2026-07-20T12:40:17.066Z",
+      "startedAt": "2026-07-20T12:40:17.079Z",
+      "completedAt": "2026-07-20T12:40:17.083Z",
+      "appliedAt": "2026-07-20T12:40:17.083Z"
+    }
+  ]
+}

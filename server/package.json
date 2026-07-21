@@ -1,0 +1,16 @@
+{
+  "name": "txam-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TXAM CMS read API — zh source language, en/ru via translation pipeline",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "dev": "node src/index.js",
+    "import": "node scripts/import-from-json.js",
+    "import:reset": "node scripts/import-from-json.js --reset",
+    "setup": "node scripts/import-from-json.js"
+  }
+}

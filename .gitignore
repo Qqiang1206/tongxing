@@ -1,0 +1,10 @@
+node_modules/
+_unused-images/
+_backups/
+_deploy-package-*/
+*.zip
+server/.env
+server/data/*.db
+server/data/*.db-journal
+.DS_Store
+Thumbs.db
