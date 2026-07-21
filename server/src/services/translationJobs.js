@@ -62,6 +62,12 @@ export function createTranslationJob({ resource, targetLangs, note } = {}) {
 export function enqueueStaleJobs() {
   const status = readTranslationStatus();
   const db = getDb();
+  /* Mid-flight jobs left as running after refresh/crash would block new enqueue */
+  db.prepare(
+    `UPDATE translation_job_store
+     SET status='failed', error='interrupted', completed_at=datetime('now')
+     WHERE status='running'`
+  ).run();
   const pending = db
     .prepare(`SELECT resource FROM translation_job_store WHERE status IN ('pending','running')`)
     .all()

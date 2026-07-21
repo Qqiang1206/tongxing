@@ -21,8 +21,26 @@
     pageCache: {},
     siteCache: null,
     auditActors: [],
-    hubTabs: { products: 'items', news: 'items', solutions: 'items' },
+    hubTabs: {
+      products: 'items',
+      news: 'items',
+      solutions: 'items',
+      sitewide: 'site',
+      system: 'translation',
+    },
     sectionTabs: {},
+    txSync: {
+      active: false,
+      preparing: false,
+      items: [],
+      done: 0,
+      total: 0,
+      failed: 0,
+      currentLabel: '',
+      startedAt: 0,
+      itemStartedAt: 0,
+      _timer: null,
+    },
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -249,22 +267,43 @@
     'page-products': 'products',
     'page-news': 'news',
     'page-solutions': 'solutions',
+    sitewide: 'sitewide',
+    system: 'system',
   };
   var VIEW_BY_LEGACY = {
     products: 'page-products',
     news: 'page-news',
     solutions: 'page-solutions',
+    site: 'sitewide',
+    categories: 'sitewide',
+    media: 'sitewide',
+    translation: 'system',
+    audit: 'system',
+  };
+  var LEGACY_HUB_TAB = {
+    site: 'site',
+    categories: 'categories',
+    media: 'media',
+    translation: 'translation',
+    audit: 'audit',
   };
 
   function applyHubTab(hub, tab) {
     if (!hub) return;
     if (tab) state.hubTabs[hub] = tab;
-    var current = state.hubTabs[hub] || 'items';
+    var defaults = {
+      products: 'items', news: 'items', solutions: 'items',
+      sitewide: 'site', system: 'translation',
+    };
+    var current = state.hubTabs[hub] || defaults[hub] || 'items';
     document.querySelectorAll('.hub-tabs[data-hub="' + hub + '"] .hub-tab').forEach(function (btn) {
       btn.classList.toggle('is-active', btn.getAttribute('data-hub-tab') === current);
     });
     document.querySelectorAll('.hub-panel[data-hub="' + hub + '"]').forEach(function (panel) {
       panel.classList.toggle('hidden', panel.getAttribute('data-hub-panel') !== current);
+    });
+    document.querySelectorAll('.hub-actions[data-hub="' + hub + '"] [data-hub-action]').forEach(function (el) {
+      el.classList.toggle('hidden', el.getAttribute('data-hub-action') !== current);
     });
     document.querySelectorAll('.hub-actions[data-hub="' + hub + '"] .hub-action-page').forEach(function (el) {
       el.classList.toggle('hidden', current !== 'page');
@@ -294,6 +333,10 @@
       await Promise.all([loadPageForm('news'), loadNews()]);
     } else if (hub === 'solutions') {
       await Promise.all([loadPageForm('solutions'), loadSolutions()]);
+    } else if (hub === 'sitewide') {
+      await Promise.all([loadSiteForm(), loadCategories(), loadMedia()]);
+    } else if (hub === 'system') {
+      await Promise.all([loadTranslation(), loadAudit()]);
     }
     updateHubCount(hub);
   }
@@ -301,8 +344,11 @@
   function setView(name, opts) {
     opts = opts || {};
     var preferredTab = opts.hubTab || null;
+    if (LEGACY_HUB_TAB[name] && !preferredTab) preferredTab = LEGACY_HUB_TAB[name];
     if (VIEW_BY_LEGACY[name]) {
-      preferredTab = preferredTab || 'items';
+      if (!preferredTab && (name === 'products' || name === 'news' || name === 'solutions')) {
+        preferredTab = 'items';
+      }
       name = VIEW_BY_LEGACY[name];
     }
     state.view = name;
@@ -331,11 +377,6 @@
       'page-home': function () { return loadPageForm('home'); },
       'page-about': function () { return loadPageForm('about'); },
       'page-contact': function () { return loadPageForm('contact'); },
-      site: loadSiteForm,
-      categories: loadCategories,
-      media: loadMedia,
-      translation: loadTranslation,
-      audit: loadAudit,
     };
     if (loaders[name]) {
       return Promise.resolve(loaders[name]()).catch(function (e) { toast(e.message, true); });
@@ -796,7 +837,7 @@
       stat('产品数量', state.products.length, '已发布 ' + pubProducts + ' 条') +
       stat('解决方案', state.solutions.length, '已发布 ' + pubSolutions + ' 条') +
       stat('新闻文章', state.news.length, '已发布 ' + pubNews + ' 条') +
-      stat('待同步翻译', stale, stale ? '请到「翻译同步」处理' : 'en / ru 均已最新', stale > 0);
+      stat('待同步翻译', stale, stale ? '请到「系统 → 翻译同步」处理' : 'en / ru 均已最新', stale > 0);
     if ($('dash-content-status')) {
       $('dash-content-status').innerHTML =
         '<table class="status-table"><thead><tr><th>模块</th><th>数量</th><th>说明</th></tr></thead><tbody>' +
@@ -2697,99 +2738,497 @@
     await loadMedia();
   }
 
+  var RESOURCE_LABELS = {
+    products: '产品中心（全部条目）',
+    news: '新闻中心（全部条目）',
+    solutions: '解决方案（全部条目）',
+    site: '全站 · 导航与页脚',
+    'pages:home': '首页文案',
+    'pages:about': '关于我们文案',
+    'pages:contact': '联系我们文案',
+    'pages:products': '产品中心 · 列表页文案',
+    'pages:news': '新闻中心 · 列表页文案',
+    'pages:solutions': '解决方案 · 列表页文案',
+  };
+  var LANG_LABELS = { en: '英文', ru: '俄文' };
+  var STATUS_LABELS = {
+    stale: '待同步',
+    current: '已同步',
+    pending: '排队中',
+    running: '翻译中',
+    done: '已完成',
+    failed: '失败',
+    applied: '已应用',
+  };
+
+  function resourceLabel(key) {
+    return RESOURCE_LABELS[key] || key;
+  }
+
+  function statusLabel(status) {
+    return STATUS_LABELS[status] || status;
+  }
+
+  function collectStaleItems(resources) {
+    var items = [];
+    Object.keys(resources || {}).sort().forEach(function (key) {
+      var langs = resources[key] || {};
+      var need = [];
+      if (langs.en === 'stale') need.push('en');
+      if (langs.ru === 'stale') need.push('ru');
+      if (need.length) {
+        items.push({ resource: key, langs: need, en: langs.en, ru: langs.ru });
+      }
+    });
+    return items;
+  }
+
+  function setTxSyncLock(on) {
+    document.body.classList.toggle('tx-syncing', !!on);
+    var syncBtn = $('sync-all-stale');
+    if (syncBtn) {
+      syncBtn.disabled = !!on;
+      syncBtn.textContent = on ? '同步中…' : '立即同步';
+    }
+    var inline = $('tx-sync-inline');
+    if (inline) {
+      inline.disabled = !!on;
+      inline.textContent = on ? '同步中…' : '立即同步';
+    }
+    ['enqueue-stale-jobs', 'refresh-jobs', 'refresh-translation'].forEach(function (id) {
+      if ($(id)) $(id).disabled = !!on;
+    });
+    document.querySelectorAll('[data-sync-one], [data-run], [data-apply], [data-job-res], [data-res]').forEach(function (el) {
+      el.disabled = !!on;
+    });
+  }
+
+  function formatElapsed(ms) {
+    var s = Math.max(0, Math.floor((ms || 0) / 1000));
+    if (s < 60) return s + ' 秒';
+    return Math.floor(s / 60) + ' 分 ' + (s % 60) + ' 秒';
+  }
+
+  function stopTxProgressTicker() {
+    if (state.txSync && state.txSync._timer) {
+      clearInterval(state.txSync._timer);
+      state.txSync._timer = null;
+    }
+  }
+
+  function startTxProgressTicker() {
+    stopTxProgressTicker();
+    state.txSync._timer = setInterval(function () {
+      if (!state.txSync || !state.txSync.active) {
+        stopTxProgressTicker();
+        return;
+      }
+      var elapsed = $('tx-progress-elapsed');
+      var itemElapsed = $('tx-progress-item-elapsed');
+      var now = Date.now();
+      if (elapsed && state.txSync.startedAt) {
+        elapsed.textContent = formatElapsed(now - state.txSync.startedAt);
+      }
+      if (itemElapsed && state.txSync.itemStartedAt) {
+        itemElapsed.textContent = formatElapsed(now - state.txSync.itemStartedAt);
+      }
+    }, 1000);
+  }
+
+  /** One pending job per resource (newest id). Never queue historical failed duplicates. */
+  function collectPendingJobsForSync(listData) {
+    var byRes = {};
+    (listData.jobs || []).forEach(function (j) {
+      if (!j || j.status !== 'pending') return;
+      var prev = byRes[j.resource];
+      if (!prev || Number(j.id) > Number(prev.id)) byRes[j.resource] = j;
+    });
+    return Object.keys(byRes).sort().map(function (key) {
+      return { id: byRes[key].id, resource: byRes[key].resource };
+    });
+  }
+
+  function renderTxProgress() {
+    var box = $('translation-progress');
+    if (!box) return;
+    var sync = state.txSync;
+    if (!sync.items.length) {
+      stopTxProgressTicker();
+      box.classList.add('hidden');
+      box.innerHTML = '';
+      return;
+    }
+    box.classList.remove('hidden');
+    var busy = sync.active && sync.done < sync.total;
+    var pct = sync.total ? Math.round((sync.done / sync.total) * 100) : 0;
+    var pctLabel = busy && sync.done === 0 ? '进行中' : (pct + '%');
+    var now = Date.now();
+    var title = sync.active
+      ? ('正在同步（' + Math.min(sync.done + 1, sync.total) + ' / ' + sync.total + '）')
+      : (sync.failed
+        ? ('同步结束：成功 ' + (sync.total - sync.failed) + '，失败 ' + sync.failed)
+        : ('已完成 ' + sync.total + ' 项'));
+    var sub = sync.active
+      ? ('当前：' + (sync.currentLabel || '准备中…') +
+        ' · 总用时 <span id="tx-progress-elapsed">' +
+        escapeHtml(formatElapsed(sync.startedAt ? now - sync.startedAt : 0)) +
+        '</span>（产品/方案整库翻译可能需几分钟，请稍候）')
+      : (sync.failed ? '可重试失败项，或稍后再点「立即同步」。' : '英文 / 俄文已更新。');
+    var barClass = 'tx-progress-bar-fill' + (busy ? ' is-busy' : '');
+    var barWidth = busy && sync.done === 0 ? '100%' : (pct + '%');
+    var list = sync.items.map(function (it, idx) {
+      var mark = it.status === 'done' ? '✓' : (it.status === 'failed' ? '!' : (it.status === 'running' ? '…' : String(idx + 1)));
+      var statusText = it.status === 'done' ? '完成'
+        : (it.status === 'failed' ? ('失败' + (it.error ? '：' + it.error : ''))
+          : (it.status === 'running'
+            ? ('翻译中… 已用 <span id="tx-progress-item-elapsed">' +
+              escapeHtml(formatElapsed(sync.itemStartedAt ? now - sync.itemStartedAt : 0)) +
+              '</span>')
+            : '等待中'));
+      return '<li class="tx-progress-item is-' + escapeAttr(it.status) + '">' +
+        '<span class="tx-progress-mark" aria-hidden="true">' + mark + '</span>' +
+        '<div class="tx-progress-item-main">' +
+        '<strong>' + escapeHtml(resourceLabel(it.resource)) + '</strong>' +
+        '<span>' + statusText + '</span></div></li>';
+    }).join('');
+    var actions = '';
+    if (!sync.active && sync.failed) {
+      actions = '<div class="tx-progress-actions">' +
+        '<button type="button" class="btn btn-accent btn-sm" id="tx-retry-failed">重试失败项</button>' +
+        '<button type="button" class="btn btn-ghost btn-sm" id="tx-progress-dismiss">关闭</button></div>';
+    } else if (!sync.active && !sync.failed) {
+      actions = '<div class="tx-progress-actions">' +
+        '<button type="button" class="btn btn-ghost btn-sm" id="tx-progress-dismiss">关闭</button></div>';
+    }
+    box.innerHTML =
+      '<div class="tx-progress-card">' +
+      '<div class="tx-progress-head">' +
+      '<div><h3 class="tx-progress-title">' + escapeHtml(title) + '</h3>' +
+      '<p class="tx-progress-sub">' + sub + '</p></div>' +
+      '<span class="tx-progress-pct">' + escapeHtml(pctLabel) + '</span></div>' +
+      '<div class="tx-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '">' +
+      '<div class="' + barClass + '" style="width:' + barWidth + '"></div></div>' +
+      '<ul class="tx-progress-list">' + list + '</ul>' + actions + '</div>';
+    var retry = $('tx-retry-failed');
+    if (retry) {
+      retry.addEventListener('click', function () {
+        retryFailedTxSync().catch(function (e) { toast(e.message || '重试失败', true); });
+      });
+    }
+    var dismiss = $('tx-progress-dismiss');
+    if (dismiss) {
+      dismiss.addEventListener('click', function () {
+        stopTxProgressTicker();
+        state.txSync.items = [];
+        state.txSync.failed = 0;
+        renderTxProgress();
+        loadTranslation().catch(function () {});
+      });
+    }
+  }
+
+  function onTxSyncBeforeUnload(e) {
+    if (!state.txSync || !state.txSync.active) return;
+    e.preventDefault();
+    e.returnValue = '';
+  }
+
+  async function runTxSyncQueue(jobs) {
+    if (state.txSync.active) {
+      toast('正在同步中，请稍候', true);
+      return;
+    }
+    if (!jobs || !jobs.length) {
+      toast('没有需要同步的内容');
+      return;
+    }
+    state.txSync = {
+      active: true,
+      preparing: false,
+      items: jobs.map(function (j) {
+        return { id: j.id, resource: j.resource, status: 'waiting', error: '' };
+      }),
+      done: 0,
+      total: jobs.length,
+      failed: 0,
+      currentLabel: '',
+      startedAt: Date.now(),
+      itemStartedAt: 0,
+      _timer: null,
+    };
+    setTxSyncLock(true);
+    window.addEventListener('beforeunload', onTxSyncBeforeUnload);
+    if ($('translation-overview')) $('translation-overview').classList.add('is-dimmed');
+    if ($('translation-pending-card')) $('translation-pending-card').classList.add('is-dimmed');
+    renderTxProgress();
+    startTxProgressTicker();
+
+    for (var i = 0; i < state.txSync.items.length; i++) {
+      var item = state.txSync.items[i];
+      item.status = 'running';
+      state.txSync.currentLabel = resourceLabel(item.resource);
+      state.txSync.itemStartedAt = Date.now();
+      renderTxProgress();
+      try {
+        await api('/admin/translation-jobs/' + item.id + '/run', { method: 'POST', body: '{}' });
+        item.status = 'done';
+      } catch (err) {
+        item.status = 'failed';
+        item.error = err.message || '失败';
+        state.txSync.failed += 1;
+      }
+      state.txSync.done += 1;
+      renderTxProgress();
+    }
+
+    state.txSync.active = false;
+    state.txSync.currentLabel = '';
+    state.txSync.itemStartedAt = 0;
+    stopTxProgressTicker();
+    setTxSyncLock(false);
+    window.removeEventListener('beforeunload', onTxSyncBeforeUnload);
+    if ($('translation-overview')) $('translation-overview').classList.remove('is-dimmed');
+    if ($('translation-pending-card')) $('translation-pending-card').classList.remove('is-dimmed');
+
+    if (state.txSync.failed) {
+      toast('同步结束：成功 ' + (state.txSync.total - state.txSync.failed) + '，失败 ' + state.txSync.failed, true);
+      renderTxProgress();
+      return;
+    }
+    toast('已完成 ' + state.txSync.total + ' 项翻译同步');
+    renderTxProgress();
+    setTimeout(function () {
+      state.txSync.items = [];
+      renderTxProgress();
+      loadTranslation().catch(function () {});
+    }, 900);
+  }
+
+  async function retryFailedTxSync() {
+    if (state.txSync.active) return;
+    var failed = (state.txSync.items || []).filter(function (it) { return it.status === 'failed'; });
+    if (!failed.length) {
+      toast('没有失败项');
+      return;
+    }
+    await runTxSyncQueue(failed.map(function (it) {
+      return { id: it.id, resource: it.resource };
+    }));
+  }
+
+  async function syncAllStaleTranslations() {
+    if (state.txSync.active || state.txSync.preparing) {
+      toast('正在同步中，请稍候', true);
+      return;
+    }
+    state.txSync.preparing = true;
+    setTxSyncLock(true);
+    try {
+      toast('正在准备翻译任务…');
+      await api('/admin/translation-jobs', {
+        method: 'POST',
+        body: JSON.stringify({ enqueueStale: true }),
+      });
+      var data = await api('/admin/translation-jobs');
+      /* Only pending, one per resource — never re-queue old failed jobs */
+      var jobs = collectPendingJobsForSync(data);
+      if (!jobs.length) {
+        toast('没有需要同步的内容');
+        state.txSync.preparing = false;
+        setTxSyncLock(false);
+        loadTranslation();
+        return;
+      }
+      state.txSync.preparing = false;
+      setTxSyncLock(false);
+      await runTxSyncQueue(jobs);
+    } catch (err) {
+      toast(err.message || '同步失败', true);
+      state.txSync.preparing = false;
+      setTxSyncLock(false);
+      loadTranslation().catch(function () {});
+    }
+  }
+
+  async function syncOneTranslation(resource) {
+    if (state.txSync.active || state.txSync.preparing) {
+      toast('正在同步中，请稍候', true);
+      return;
+    }
+    state.txSync.preparing = true;
+    setTxSyncLock(true);
+    try {
+      var created = await api('/admin/translation-jobs', {
+        method: 'POST',
+        body: JSON.stringify({ resource: resource }),
+      });
+      var jobId = (created.job && created.job.id) || created.id;
+      state.txSync.preparing = false;
+      setTxSyncLock(false);
+      await runTxSyncQueue([{ id: jobId, resource: resource }]);
+    } catch (err) {
+      toast(err.message || '同步失败', true);
+      state.txSync.preparing = false;
+      setTxSyncLock(false);
+      loadTranslationJobs().catch(function () {});
+    }
+  }
   async function loadTranslation() {
+    if (state.txSync && state.txSync.active) return;
     var status = await api('/admin/translation-status');
     var cfg = await api('/admin/translation-config').catch(function () { return null; });
-    if (cfg && $('translation-config')) {
-      $('translation-config').innerHTML =
-        '<strong>翻译引擎：</strong>' + escapeHtml(cfg.provider) +
-        (cfg.model ? ' · ' + escapeHtml(cfg.model) : '') +
-        (cfg.hasApiKey ? ' · API Key 已配置' : ' · 未配置 API Key（echo 联调）') +
-        '<br><span style="opacity:.85">环境变量：TRANSLATION_PROVIDER=deepseek · TRANSLATION_API_KEY（或 DEEPSEEK_API_KEY）· TRANSLATION_MODEL</span>';
+    var staleItems = collectStaleItems(status.resources);
+    var staleLangCount = staleItems.reduce(function (n, it) { return n + it.langs.length; }, 0);
+    var overview = $('translation-overview');
+    if (overview) {
+      var engineLine = '翻译引擎未就绪';
+      if (cfg) {
+        engineLine = (cfg.hasApiKey
+          ? '引擎已就绪（' + (cfg.provider || 'api') + (cfg.model ? ' · ' + cfg.model : '') + '）'
+          : '联调模式（未配置 API Key，会写入带 [EN]/[RU] 前缀的占位文案）');
+      }
+      var title = staleItems.length
+        ? '有 ' + staleItems.length + ' 项内容待同步到英文 / 俄文'
+        : '英文 / 俄文均已与中文同步';
+      var sub = staleItems.length
+        ? '共 ' + staleLangCount + ' 个语言版本需要更新。改完中文后点右上角「立即同步」即可。'
+        : '继续改中文并保存后，这里会出现待同步项。';
+      overview.innerHTML =
+        '<div class="tx-hero' + (staleItems.length ? ' is-pending' : ' is-ok') + '">' +
+        '<div class="tx-hero-main">' +
+        '<p class="tx-hero-kicker">中文为源语言</p>' +
+        '<h3 class="tx-hero-title">' + escapeHtml(title) + '</h3>' +
+        '<p class="tx-hero-sub">' + escapeHtml(sub) + '</p>' +
+        '<p class="tx-hero-meta">' + escapeHtml(engineLine) +
+        (status.updatedAt ? ' · 状态更新于 ' + escapeHtml(status.updatedAt) : '') +
+        '</p></div>' +
+        (staleItems.length
+          ? '<button type="button" class="btn btn-accent" id="tx-sync-inline">立即同步</button>'
+          : '') +
+        '</div>';
+      var inline = $('tx-sync-inline');
+      if (inline) {
+        inline.addEventListener('click', function () {
+          if ($('sync-all-stale')) $('sync-all-stale').click();
+        });
+      }
     }
+
+    var pending = $('translation-pending');
+    if (pending) {
+      if (!staleItems.length) {
+        pending.innerHTML = '<p class="tx-empty">没有待同步内容。英文与俄文官网可直接预览。</p>';
+      } else {
+        pending.innerHTML =
+          '<ul class="tx-pending-list">' +
+          staleItems.map(function (it) {
+            var chips = it.langs.map(function (l) {
+              return '<span class="tx-lang-chip">' + escapeHtml(LANG_LABELS[l] || l) + '</span>';
+            }).join('');
+            return '<li class="tx-pending-item">' +
+              '<div class="tx-pending-main">' +
+              '<strong>' + escapeHtml(resourceLabel(it.resource)) + '</strong>' +
+              '<span class="tx-pending-key">' + escapeHtml(it.resource) + '</span>' +
+              '</div>' +
+              '<div class="tx-pending-langs">' + chips + '</div>' +
+              '<button type="button" class="btn btn-ghost btn-sm" data-sync-one="' + escapeAttr(it.resource) + '">单独同步</button>' +
+              '</li>';
+          }).join('') +
+          '</ul>';
+        pending.querySelectorAll('[data-sync-one]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            syncOneTranslation(btn.getAttribute('data-sync-one')).catch(function (e) {
+              toast(e.message || '同步失败', true);
+            });
+          });
+        });
+      }
+    }
+
     var rows = Object.keys(status.resources || {}).sort().map(function (resource) {
       var langs = status.resources[resource];
-      return '<tr><td><strong>' + escapeHtml(resource) + '</strong></td>' +
-        '<td><span class="badge badge-' + escapeHtml(langs.en) + '">' + escapeHtml(langs.en) + '</span></td>' +
-        '<td><span class="badge badge-' + escapeHtml(langs.ru) + '">' + escapeHtml(langs.ru) + '</span></td>' +
+      return '<tr><td><strong>' + escapeHtml(resourceLabel(resource)) + '</strong><br><code class="tx-code">' +
+        escapeHtml(resource) + '</code></td>' +
+        '<td><span class="badge badge-' + escapeHtml(langs.en) + '">' + escapeHtml(statusLabel(langs.en)) + '</span></td>' +
+        '<td><span class="badge badge-' + escapeHtml(langs.ru) + '">' + escapeHtml(statusLabel(langs.ru)) + '</span></td>' +
         '<td class="toolbar">' +
-        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeHtml(resource) + '" data-lang="en">en → current</button>' +
-        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeHtml(resource) + '" data-lang="ru">ru → current</button>' +
-        '<button type="button" class="btn btn-ghost btn-sm" data-job-res="' + escapeHtml(resource) + '">建任务</button></td></tr>';
+        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeAttr(resource) + '" data-lang="en">标英文已同步</button>' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeAttr(resource) + '" data-lang="ru">标俄文已同步</button>' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-job-res="' + escapeAttr(resource) + '">建任务</button></td></tr>';
     }).join('');
-    $('translation-table').innerHTML =
-      '<table class="data"><thead><tr><th>资源</th><th>EN</th><th>RU</th><th>操作</th></tr></thead><tbody>' + rows +
-      '</tbody></table><p style="margin-top:12px;color:var(--muted);font-size:13px">更新于 ' +
-      escapeHtml(status.updatedAt || '—') + '</p>';
-    $('translation-table').querySelectorAll('button[data-res]').forEach(function (btn) {
-      btn.addEventListener('click', async function () {
-        try {
-          await api('/admin/translation-status/mark-current', {
-            method: 'POST',
-            body: JSON.stringify({ resource: btn.getAttribute('data-res'), lang: btn.getAttribute('data-lang') }),
-          });
-          toast('已标记 current');
-          loadTranslation();
-        } catch (err) { toast(err.message, true); }
+    if ($('translation-table')) {
+      $('translation-table').innerHTML =
+        '<table class="data"><thead><tr><th>内容</th><th>英文</th><th>俄文</th><th>手动操作</th></tr></thead><tbody>' +
+        rows + '</tbody></table>';
+      $('translation-table').querySelectorAll('button[data-res]').forEach(function (btn) {
+        btn.addEventListener('click', async function () {
+          try {
+            await api('/admin/translation-status/mark-current', {
+              method: 'POST',
+              body: JSON.stringify({ resource: btn.getAttribute('data-res'), lang: btn.getAttribute('data-lang') }),
+            });
+            toast('已标记为同步');
+            loadTranslation();
+          } catch (err) { toast(err.message, true); }
+        });
       });
-    });
-    $('translation-table').querySelectorAll('button[data-job-res]').forEach(function (btn) {
-      btn.addEventListener('click', async function () {
-        try {
-          await api('/admin/translation-jobs', {
-            method: 'POST',
-            body: JSON.stringify({ resource: btn.getAttribute('data-job-res') }),
-          });
-          toast('任务已创建');
-          loadTranslationJobs();
-        } catch (err) { toast(err.message, true); }
+      $('translation-table').querySelectorAll('button[data-job-res]').forEach(function (btn) {
+        btn.addEventListener('click', async function () {
+          try {
+            await api('/admin/translation-jobs', {
+              method: 'POST',
+              body: JSON.stringify({ resource: btn.getAttribute('data-job-res') }),
+            });
+            toast('任务已创建（未运行）');
+            loadTranslationJobs();
+          } catch (err) { toast(err.message, true); }
+        });
       });
-    });
+    }
     await loadTranslationJobs();
   }
 
   async function loadTranslationJobs() {
     var data = await api('/admin/translation-jobs');
     var jobs = data.jobs || [];
+    if (!$('translation-jobs-table')) return;
     if (!jobs.length) {
-      $('translation-jobs-table').innerHTML = '<p style="color:var(--muted);font-size:14px;padding:8px">暂无任务</p>';
+      $('translation-jobs-table').innerHTML = '<p class="help">暂无任务记录</p>';
       return;
     }
     var rows = jobs.map(function (job) {
-      var langs = (job.targetLangs || []).join(', ');
+      var langs = (job.targetLangs || []).map(function (l) { return LANG_LABELS[l] || l; }).join('、');
       var actions = '';
       if (job.status === 'pending' || job.status === 'failed' || job.status === 'applied' || job.status === 'done') {
-        actions += '<button type="button" class="btn btn-accent btn-sm" data-run="' + job.id + '">运行</button>';
+        actions += '<button type="button" class="btn btn-accent btn-sm" data-run="' + job.id +
+          '" data-run-resource="' + escapeAttr(job.resource) + '">运行</button>';
       }
       if (job.status === 'done') {
         actions += '<button type="button" class="btn btn-ghost btn-sm" data-apply="' + job.id + '">应用</button>';
       }
       var msg = job.result && job.result.message ? job.result.message : (job.error || '—');
-      return '<tr><td>#' + job.id + '</td><td><strong>' + escapeHtml(job.resource) + '</strong></td>' +
+      return '<tr><td>#' + job.id + '</td><td><strong>' + escapeHtml(resourceLabel(job.resource)) + '</strong></td>' +
         '<td>' + escapeHtml(langs) + '</td>' +
-        '<td><span class="badge badge-' + escapeHtml(job.status) + '">' + escapeHtml(job.status) + '</span></td>' +
+        '<td><span class="badge badge-' + escapeHtml(job.status) + '">' + escapeHtml(statusLabel(job.status)) + '</span></td>' +
         '<td style="max-width:280px;font-size:12px;color:var(--muted)">' + escapeHtml(msg) + '</td>' +
         '<td class="toolbar">' + actions + '</td></tr>';
     }).join('');
     $('translation-jobs-table').innerHTML =
-      '<table class="data"><thead><tr><th>ID</th><th>资源</th><th>目标</th><th>状态</th><th>说明</th><th>操作</th></tr></thead><tbody>' +
+      '<table class="data"><thead><tr><th>ID</th><th>内容</th><th>目标语言</th><th>状态</th><th>说明</th><th>操作</th></tr></thead><tbody>' +
       rows + '</tbody></table>';
     $('translation-jobs-table').querySelectorAll('[data-run]').forEach(function (btn) {
-      btn.addEventListener('click', async function () {
-        btn.disabled = true;
-        toast('翻译运行中…');
-        try {
-          await api('/admin/translation-jobs/' + btn.getAttribute('data-run') + '/run', { method: 'POST', body: '{}' });
-          toast('翻译完成');
-          loadTranslation();
-        } catch (err) { toast(err.message, true); loadTranslationJobs(); }
+      btn.addEventListener('click', function () {
+        runTxSyncQueue([{
+          id: btn.getAttribute('data-run'),
+          resource: btn.getAttribute('data-run-resource') || '',
+        }]).catch(function (e) { toast(e.message || '运行失败', true); });
       });
     });
     $('translation-jobs-table').querySelectorAll('[data-apply]').forEach(function (btn) {
       btn.addEventListener('click', async function () {
         try {
           await api('/admin/translation-jobs/' + btn.getAttribute('data-apply') + '/apply', { method: 'POST', body: '{}' });
-          toast('已应用并标记 current');
+          toast('已应用并标记同步');
           loadTranslation();
         } catch (err) { toast(err.message, true); }
       });
@@ -2960,6 +3399,13 @@
         if (key === 'solutions') loadSolutions().catch(function (e) { toast(e.message, true); });
       } else if (tab === 'page') {
         loadPageForm(key).catch(function (e) { toast(e.message, true); });
+      } else if (key === 'sitewide') {
+        if (tab === 'site') loadSiteForm().catch(function (e) { toast(e.message, true); });
+        if (tab === 'categories') loadCategories().catch(function (e) { toast(e.message, true); });
+        if (tab === 'media') loadMedia().catch(function (e) { toast(e.message, true); });
+      } else if (key === 'system') {
+        if (tab === 'translation') loadTranslation().catch(function (e) { toast(e.message, true); });
+        if (tab === 'audit') loadAudit().catch(function (e) { toast(e.message, true); });
       }
     });
   });
@@ -2972,49 +3418,29 @@
   });
 
   $('refresh-dash').addEventListener('click', function () { loadDashboard().catch(function (e) { toast(e.message, true); }); });
-  $('refresh-translation').addEventListener('click', function () { loadTranslation().catch(function (e) { toast(e.message, true); }); });
-  $('refresh-jobs').addEventListener('click', function () { loadTranslationJobs().catch(function (e) { toast(e.message, true); }); });
-  $('enqueue-stale-jobs').addEventListener('click', async function () {
-    try {
-      var result = await api('/admin/translation-jobs', {
-        method: 'POST',
-        body: JSON.stringify({ enqueueStale: true }),
-      });
-      toast('已创建 ' + (result.created || 0) + ' 个任务');
-      loadTranslation();
-    } catch (err) { toast(err.message, true); }
-  });
-  if ($('sync-all-stale')) {
-    $('sync-all-stale').addEventListener('click', async function () {
-      var btn = $('sync-all-stale');
-      btn.disabled = true;
+  if ($('refresh-translation')) {
+    $('refresh-translation').addEventListener('click', function () { loadTranslation().catch(function (e) { toast(e.message, true); }); });
+  }
+  if ($('refresh-jobs')) {
+    $('refresh-jobs').addEventListener('click', function () { loadTranslationJobs().catch(function (e) { toast(e.message, true); }); });
+  }
+  if ($('enqueue-stale-jobs')) {
+    $('enqueue-stale-jobs').addEventListener('click', async function () {
       try {
-        toast('正在准备翻译任务…');
-        await api('/admin/translation-jobs', {
+        var result = await api('/admin/translation-jobs', {
           method: 'POST',
           body: JSON.stringify({ enqueueStale: true }),
         });
-        var data = await api('/admin/translation-jobs');
-        var jobs = (data.jobs || []).filter(function (j) {
-          return j.status === 'pending' || j.status === 'failed';
-        });
-        if (!jobs.length) {
-          toast('没有需要同步的内容');
-          loadTranslation();
-          return;
-        }
-        for (var i = 0; i < jobs.length; i++) {
-          toast('正在翻译（' + (i + 1) + '/' + jobs.length + '）：' + jobs[i].resource);
-          await api('/admin/translation-jobs/' + jobs[i].id + '/run', { method: 'POST', body: '{}' });
-        }
-        toast('已完成 ' + jobs.length + ' 项翻译同步');
+        toast('已创建 ' + (result.created || 0) + ' 个任务（未运行）');
         loadTranslation();
-      } catch (err) {
-        toast(err.message || '同步失败', true);
-        loadTranslation().catch(function () {});
-      } finally {
-        btn.disabled = false;
-      }
+      } catch (err) { toast(err.message, true); }
+    });
+  }
+  if ($('sync-all-stale')) {
+    $('sync-all-stale').addEventListener('click', function () {
+      syncAllStaleTranslations().catch(function (e) {
+        toast(e.message || '同步失败', true);
+      });
     });
   }
   $('refresh-media').addEventListener('click', function () { loadMedia().catch(function (e) { toast(e.message, true); }); });

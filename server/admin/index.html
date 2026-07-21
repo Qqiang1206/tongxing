@@ -67,38 +67,12 @@
           </div>
         </div>
 
-        <div class="nav-group" data-nav-group="sitewide">
-          <button type="button" class="nav-group-toggle" aria-expanded="true">
-            <span class="nav-group-label">全站</span>
-            <span class="nav-group-chevron" aria-hidden="true">▾</span>
-          </button>
-          <div class="nav-group-body">
-            <button type="button" class="nav-item" data-view="site" title="导航与页脚">
-              <span class="nav-ico" aria-hidden="true">▤</span><span class="nav-text">导航与页脚</span>
-            </button>
-            <button type="button" class="nav-item" data-view="categories" title="分类">
-              <span class="nav-ico" aria-hidden="true">⊞</span><span class="nav-text">分类</span>
-            </button>
-            <button type="button" class="nav-item" data-view="media" title="媒体库">
-              <span class="nav-ico" aria-hidden="true">⧉</span><span class="nav-text">媒体库</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="nav-group is-collapsed" data-nav-group="system">
-          <button type="button" class="nav-group-toggle" aria-expanded="false">
-            <span class="nav-group-label">系统</span>
-            <span class="nav-group-chevron" aria-hidden="true">▾</span>
-          </button>
-          <div class="nav-group-body">
-            <button type="button" class="nav-item" data-view="translation" title="翻译同步">
-              <span class="nav-ico" aria-hidden="true">文</span><span class="nav-text">翻译同步</span>
-            </button>
-            <button type="button" class="nav-item" data-view="audit" title="操作日志">
-              <span class="nav-ico" aria-hidden="true">≡</span><span class="nav-text">操作日志</span>
-            </button>
-          </div>
-        </div>
+        <button type="button" class="nav-item" data-view="sitewide" title="全站">
+          <span class="nav-ico" aria-hidden="true">▤</span><span class="nav-text">全站</span>
+        </button>
+        <button type="button" class="nav-item" data-view="system" title="系统">
+          <span class="nav-ico" aria-hidden="true">⚙</span><span class="nav-text">系统</span>
+        </button>
       </nav>
     </aside>
 
@@ -144,7 +118,7 @@
                 <button type="button" class="quick-btn" data-jump="page-news" data-hub-tab="items"><span>+</span>发布新闻</button>
                 <button type="button" class="quick-btn" data-jump="page-solutions" data-hub-tab="items"><span>+</span>编辑方案</button>
                 <button type="button" class="quick-btn" data-jump="page-products" data-hub-tab="items"><span>+</span>编辑产品</button>
-                <button type="button" class="quick-btn" data-jump="media"><span>↑</span>上传图片</button>
+                <button type="button" class="quick-btn" data-jump="sitewide" data-hub-tab="media"><span>↑</span>上传图片</button>
               </div>
             </div>
             <div class="card">
@@ -152,10 +126,10 @@
                 <h3 class="card-title">使用提示</h3>
               </div>
               <ul class="tip-list" id="dash-tips">
-                <li>侧栏顺序与<strong>官网顶栏</strong>一致。方案 / 产品 / 新闻中心里用「页面文案 / 条目」切换。</li>
+                <li>侧栏顺序与<strong>官网顶栏</strong>一致。方案 / 产品 / 新闻、全站、系统均用顶部 Tab 切换子功能。</li>
                 <li>只改<strong>中文</strong>；正文可用工具栏排版，不用写代码。</li>
                 <li>改完点<strong>保存</strong>，再用顶栏「打开官网」预览。</li>
-                <li>英文 / 俄文：到「系统 → 翻译同步」一键同步即可。</li>
+                <li>英文 / 俄文：打开「系统 → 翻译同步」，有待同步时点「立即同步」即可。</li>
               </ul>
             </div>
           </div>
@@ -240,7 +214,7 @@
             </button>
           </div>
           <div class="hub-panel hidden" data-hub="products" data-hub-panel="page">
-            <p class="page-hint">这里改列表页标题与「全部」按钮文案。分类选项在「全站 → 分类」维护。具体产品请进「产品条目」。</p>
+            <p class="page-hint">这里改列表页标题与「全部」按钮文案。分类选项在「全站 → 分类」Tab 维护。具体产品请进「产品条目」。</p>
             <div id="page-products-form"></div>
           </div>
           <div class="hub-panel" data-hub="products" data-hub-panel="items">
@@ -306,145 +280,150 @@
           <div id="page-contact-form"></div>
         </section>
 
-        <section id="view-site" class="view hidden">
-          <div class="page-head">
-            <div><h2>导航与页脚</h2><p class="page-sub">全站 · 对应前台顶栏六项菜单与页脚文案</p></div>
-            <button type="button" class="btn btn-accent" id="save-site">保存站点文案</button>
-          </div>
-          <div id="site-form"></div>
-        </section>
-
-        <section id="view-categories" class="view hidden">
+        <section id="view-sitewide" class="view hidden">
           <div class="page-head">
             <div>
-              <h2>分类</h2>
-              <p class="page-sub">全站 · 产品与新闻分类；会同步到产品中心 / 新闻中心的筛选按钮</p>
+              <h2>全站</h2>
+              <p class="page-sub">导航页脚、分类与媒体库</p>
             </div>
-            <button type="button" class="btn btn-ghost btn-sm" id="refresh-categories">刷新</button>
-          </div>
-          <p class="page-hint">改分类名称后，会自动同步到「官网页面 → 产品中心 / 新闻中心」的筛选文案。</p>
-          <div class="dash-grid" style="grid-template-columns:1fr 1fr">
-            <div class="card">
-              <div class="card-head">
-                <h3 class="card-title">产品分类</h3>
-                <button type="button" class="btn btn-accent btn-sm" id="add-product-cat">+ 新增</button>
-              </div>
-              <div id="product-cat-list" class="item-list"></div>
-            </div>
-            <div class="card">
-              <div class="card-head">
-                <h3 class="card-title">新闻分类</h3>
-                <button type="button" class="btn btn-accent btn-sm" id="add-news-cat">+ 新增</button>
-              </div>
-              <div id="news-cat-list" class="item-list"></div>
-            </div>
-          </div>
-        </section>
-
-        <section id="view-media" class="view hidden">
-          <div class="page-head">
-            <div>
-              <h2>媒体库</h2>
-              <p class="page-sub">全站 · 上传图片后，可在编辑表单中一键选用</p>
-            </div>
-            <div class="toolbar">
-              <label class="btn btn-accent" style="cursor:pointer">
+            <div class="toolbar hub-actions" data-hub="sitewide">
+              <button type="button" class="btn btn-accent hub-action" data-hub-action="site" id="save-site">保存站点文案</button>
+              <button type="button" class="btn btn-ghost btn-sm hub-action hidden" data-hub-action="categories" id="refresh-categories">刷新</button>
+              <label class="btn btn-accent hub-action hidden" data-hub-action="media" style="cursor:pointer">
                 + 上传图片
                 <input id="media-file" type="file" accept="image/*" hidden>
               </label>
-              <button type="button" class="btn btn-ghost btn-sm" id="refresh-media">刷新</button>
+              <button type="button" class="btn btn-ghost btn-sm hub-action hidden" data-hub-action="media" id="refresh-media">刷新</button>
             </div>
           </div>
-          <div class="card">
-            <div id="media-grid" class="media-grid"></div>
+          <div class="hub-tabs" data-hub="sitewide" role="tablist">
+            <button type="button" class="hub-tab is-active" data-hub-tab="site" role="tab">导航与页脚</button>
+            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab">分类</button>
+            <button type="button" class="hub-tab" data-hub-tab="media" role="tab">媒体库</button>
+          </div>
+          <div class="hub-panel" data-hub="sitewide" data-hub-panel="site">
+            <p class="page-hint">对应前台顶栏六项菜单与页脚文案。用分段 Tab 编辑导航、语言切换、通用与页脚。</p>
+            <div id="site-form"></div>
+          </div>
+          <div class="hub-panel hidden" data-hub="sitewide" data-hub-panel="categories">
+            <p class="page-hint">改分类名称后，会自动同步到「产品中心 / 新闻中心」的筛选文案。</p>
+            <div class="dash-grid" style="grid-template-columns:1fr 1fr">
+              <div class="card">
+                <div class="card-head">
+                  <h3 class="card-title">产品分类</h3>
+                  <button type="button" class="btn btn-accent btn-sm" id="add-product-cat">+ 新增</button>
+                </div>
+                <div id="product-cat-list" class="item-list"></div>
+              </div>
+              <div class="card">
+                <div class="card-head">
+                  <h3 class="card-title">新闻分类</h3>
+                  <button type="button" class="btn btn-accent btn-sm" id="add-news-cat">+ 新增</button>
+                </div>
+                <div id="news-cat-list" class="item-list"></div>
+              </div>
+            </div>
+          </div>
+          <div class="hub-panel hidden" data-hub="sitewide" data-hub-panel="media">
+            <p class="page-hint">上传图片后，可在编辑表单中一键选用。</p>
+            <div class="card">
+              <div id="media-grid" class="media-grid"></div>
+            </div>
           </div>
         </section>
 
-        <section id="view-translation" class="view hidden">
+        <section id="view-system" class="view hidden">
           <div class="page-head">
             <div>
-              <h2>翻译同步</h2>
-              <p class="page-sub">中文更新后，将英文 / 俄文标记为待同步</p>
+              <h2>系统</h2>
+              <p class="page-sub">翻译同步与操作审计</p>
             </div>
-            <div class="toolbar">
-              <button type="button" class="btn btn-ghost btn-sm" id="refresh-translation">刷新</button>
-              <button type="button" class="btn btn-accent btn-sm" id="sync-all-stale">一键同步待翻译</button>
-              <button type="button" class="btn btn-ghost btn-sm" id="enqueue-stale-jobs">仅为待同步建任务</button>
+            <div class="toolbar hub-actions" data-hub="system">
+              <button type="button" class="btn btn-ghost btn-sm hub-action" data-hub-action="translation" id="refresh-translation">刷新</button>
+              <button type="button" class="btn btn-accent btn-sm hub-action" data-hub-action="translation" id="sync-all-stale">立即同步</button>
+              <button type="button" class="btn btn-ghost btn-sm hub-action hidden" data-hub-action="audit" id="refresh-audit">刷新</button>
             </div>
           </div>
-          <p class="page-hint" id="translation-hint">改完中文后点「一键同步待翻译」，系统会自动建任务并调用翻译引擎写入英文 / 俄文。一般无需手写代码。</p>
-          <div class="card" id="translation-config" style="margin-bottom:16px;font-size:13px;color:var(--muted)"></div>
-          <div class="card"><div class="table-wrap" id="translation-table"></div></div>
-          <div class="page-head" style="margin-top:28px">
-            <div>
-              <h2>翻译任务</h2>
-              <p class="page-sub">运行后写入英文 / 俄文；未配置 API Key 时为联调模式</p>
-            </div>
-            <button type="button" class="btn btn-ghost btn-sm" id="refresh-jobs">刷新任务</button>
+          <div class="hub-tabs" data-hub="system" role="tablist">
+            <button type="button" class="hub-tab is-active" data-hub-tab="translation" role="tab">翻译同步</button>
+            <button type="button" class="hub-tab" data-hub-tab="audit" role="tab">操作日志</button>
           </div>
-          <div class="card"><div class="table-wrap" id="translation-jobs-table"></div></div>
+          <div class="hub-panel" data-hub="system" data-hub-panel="translation">
+            <div id="translation-overview" class="tx-overview"></div>
+            <div id="translation-progress" class="tx-progress hidden" aria-live="polite"></div>
+            <div class="card tx-pending-card" id="translation-pending-card">
+              <div class="card-head">
+                <h3 class="card-title">待同步内容</h3>
+              </div>
+              <div id="translation-pending"></div>
+            </div>
+            <details class="advanced-block tx-advanced">
+              <summary>高级：任务队列与手动标记</summary>
+              <p class="field-help" style="margin:0 0 12px">一般不用打开。仅在排查失败任务，或确认某语言已人工改好、只需改状态时使用。</p>
+              <div class="toolbar" style="margin-bottom:12px">
+                <button type="button" class="btn btn-ghost btn-sm" id="enqueue-stale-jobs">仅为待同步建任务（不运行）</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="refresh-jobs">刷新任务</button>
+              </div>
+              <div class="card" style="margin-bottom:12px"><div class="table-wrap" id="translation-jobs-table"></div></div>
+              <div class="card"><div class="table-wrap" id="translation-table"></div></div>
+            </details>
+          </div>
+          <div class="hub-panel hidden" data-hub="system" data-hub-panel="audit">
+            <p class="page-hint">记录谁在何时改了什么（写操作与登录；默认保留 90 天）。</p>
+            <div class="filter-bar">
+              <select id="audit-resource" class="select" title="资源类型">
+                <option value="">全部资源</option>
+                <option value="auth">登录</option>
+                <option value="products">产品</option>
+                <option value="solutions">方案</option>
+                <option value="news">新闻</option>
+                <option value="pages">页面</option>
+                <option value="site">导航/页脚</option>
+                <option value="categories">分类</option>
+                <option value="media">媒体</option>
+                <option value="translation">翻译</option>
+              </select>
+              <select id="audit-action" class="select" title="动作类型">
+                <option value="">全部动作</option>
+                <option value="login">登录</option>
+                <option value="products">产品相关</option>
+                <option value="solutions">方案相关</option>
+                <option value="news">新闻相关</option>
+                <option value="pages">页面相关</option>
+                <option value="site">站点相关</option>
+                <option value="categories">分类相关</option>
+                <option value="media">媒体相关</option>
+                <option value="translation">翻译相关</option>
+              </select>
+              <select id="audit-actor" class="select" title="操作人">
+                <option value="">全部操作人</option>
+              </select>
+              <input class="search" id="audit-q" type="search" placeholder="搜索摘要 / IP / 对象 ID">
+              <button type="button" class="btn btn-primary btn-sm" id="audit-filter-btn">筛选</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="audit-filter-reset">重置</button>
+            </div>
+            <div class="card table-card">
+              <div class="table-wrap">
+                <table class="data audit-table" id="audit-table">
+                  <thead>
+                    <tr>
+                      <th>时间</th>
+                      <th>操作人</th>
+                      <th>动作</th>
+                      <th>资源</th>
+                      <th>摘要</th>
+                      <th>结果</th>
+                      <th>来源</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="table-foot" id="audit-table-foot"></div>
+            </div>
+          </div>
         </section>
 
-        <section id="view-audit" class="view hidden">
-          <div class="page-head">
-            <div>
-              <h2>操作日志</h2>
-              <p class="page-sub">记录谁在何时改了什么（写操作与登录；默认保留 90 天）</p>
-            </div>
-            <button type="button" class="btn btn-ghost btn-sm" id="refresh-audit">刷新</button>
-          </div>
-          <div class="filter-bar">
-            <select id="audit-resource" class="select" title="资源类型">
-              <option value="">全部资源</option>
-              <option value="auth">登录</option>
-              <option value="products">产品</option>
-              <option value="solutions">方案</option>
-              <option value="news">新闻</option>
-              <option value="pages">页面</option>
-              <option value="site">导航/页脚</option>
-              <option value="categories">分类</option>
-              <option value="media">媒体</option>
-              <option value="translation">翻译</option>
-            </select>
-            <select id="audit-action" class="select" title="动作类型">
-              <option value="">全部动作</option>
-              <option value="login">登录</option>
-              <option value="products">产品相关</option>
-              <option value="solutions">方案相关</option>
-              <option value="news">新闻相关</option>
-              <option value="pages">页面相关</option>
-              <option value="site">站点相关</option>
-              <option value="categories">分类相关</option>
-              <option value="media">媒体相关</option>
-              <option value="translation">翻译相关</option>
-            </select>
-            <select id="audit-actor" class="select" title="操作人">
-              <option value="">全部操作人</option>
-            </select>
-            <input class="search" id="audit-q" type="search" placeholder="搜索摘要 / IP / 对象 ID">
-            <button type="button" class="btn btn-primary btn-sm" id="audit-filter-btn">筛选</button>
-            <button type="button" class="btn btn-ghost btn-sm" id="audit-filter-reset">重置</button>
-          </div>
-          <div class="card table-card">
-            <div class="table-wrap">
-              <table class="data audit-table" id="audit-table">
-                <thead>
-                  <tr>
-                    <th>时间</th>
-                    <th>操作人</th>
-                    <th>动作</th>
-                    <th>资源</th>
-                    <th>摘要</th>
-                    <th>结果</th>
-                    <th>来源</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-            </div>
-            <div class="table-foot" id="audit-table-foot"></div>
-          </div>
-        </section>
       </main>
     </div>
   </div>
