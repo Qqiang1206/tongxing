@@ -11,6 +11,7 @@
     "dev": "node src/index.js",
     "import": "node scripts/import-from-json.js",
     "import:reset": "node scripts/import-from-json.js --reset",
+    "import:media": "node scripts/import-site-images-to-media.js",
     "setup": "node scripts/import-from-json.js"
   }
 }

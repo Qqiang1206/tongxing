@@ -102,13 +102,18 @@ export function deleteUploadedMedia(idOrFilename) {
   if (!name || name.includes('..') || name !== String(idOrFilename).replace(/^.*[/\\]/, '')) {
     throw new Error('invalid_file_type');
   }
-  const abs = path.join(UPLOAD_DIR, name);
-  const resolved = path.resolve(abs);
-  if (!resolved.startsWith(path.resolve(UPLOAD_DIR))) throw new Error('invalid_file_type');
-  if (fs.existsSync(resolved)) fs.unlinkSync(resolved);
   const db = getDb();
+  const row = db.prepare('SELECT id, path FROM media WHERE id = ?').get(name);
+  const rel = row && row.path ? String(row.path).replace(/\\/g, '/') : `assets/images/uploads/${name}`;
+  const abs = path.join(REPO_ROOT, rel);
+  const resolved = path.resolve(abs);
+  const uploadsRoot = path.resolve(UPLOAD_DIR);
+  /* Only unlink files under uploads/ — site assets are registered by path, not owned by media lib */
+  if (resolved.startsWith(uploadsRoot + path.sep) || resolved === uploadsRoot) {
+    if (fs.existsSync(resolved)) fs.unlinkSync(resolved);
+  }
   db.prepare('DELETE FROM media WHERE id = ?').run(name);
-  return { filename: name, deleted: true };
+  return { filename: name, deleted: true, path: rel };
 }
 
 export function updateMediaAlt(idOrFilename, alt) {

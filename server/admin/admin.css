@@ -274,7 +274,7 @@ a { color: inherit; text-decoration: none; }
 }
 .icon-btn:hover { border-color: #ddd; color: var(--txam-dark); }
 
-.main { padding: 24px 28px 40px; }
+.main { padding: 24px 28px 48px; }
 
 .page-head {
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -283,6 +283,34 @@ a { color: inherit; text-decoration: none; }
 .page-head h2 { margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -0.03em; color: var(--txam-dark); }
 .page-sub { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
 .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.hub-actions:not(:has(> :not(.hidden))) { display: none; }
+
+/* Sticky save / preview bar for long page forms */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.form-actions.sticky-actions {
+  position: sticky;
+  bottom: 12px;
+  z-index: 30;
+  box-shadow: 0 -10px 28px rgba(28, 32, 40, 0.08);
+}
+.form-actions-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  max-width: 42ch;
+}
 
 /* ——— Buttons ——— */
 .btn {

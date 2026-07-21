@@ -128,7 +128,7 @@
               <ul class="tip-list" id="dash-tips">
                 <li>侧栏顺序与<strong>官网顶栏</strong>一致。方案 / 产品 / 新闻、全站、系统均用顶部 Tab 切换子功能。</li>
                 <li>只改<strong>中文</strong>；正文可用工具栏排版，不用写代码。</li>
-                <li>改完点<strong>保存</strong>，再用顶栏「打开官网」预览。</li>
+                <li>改完后用页面底部的<strong>保存</strong>；可用顶栏「打开官网」或底部「预览」查看效果。</li>
                 <li>英文 / 俄文：打开「系统 → 翻译同步」，有待同步时点「立即同步」即可。</li>
               </ul>
             </div>
@@ -141,23 +141,29 @@
               <h2>首页</h2>
               <p class="page-sub">对应前台「首页」· 标杆/精选在「解决方案 / 新闻」条目中设置</p>
             </div>
-            <div class="toolbar">
-              <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent" id="save-page-home">保存首页</button>
-            </div>
           </div>
           <div id="page-home-form"></div>
+          <div class="form-actions sticky-actions">
+            <p class="form-actions-hint">保存会写入整页全部区块（不限当前 Tab）</p>
+            <div class="toolbar">
+              <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent" id="save-page-home">保存</button>
+            </div>
+          </div>
         </section>
 
         <section id="view-page-about" class="view hidden">
           <div class="page-head">
             <div><h2>关于我们</h2><p class="page-sub">对应前台「关于我们」</p></div>
-            <div class="toolbar">
-              <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent" id="save-page-about">保存关于页</button>
-            </div>
           </div>
           <div id="page-about-form"></div>
+          <div class="form-actions sticky-actions">
+            <p class="form-actions-hint">保存会写入整页全部区块（不限当前 Tab）</p>
+            <div class="toolbar">
+              <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent" id="save-page-about">保存</button>
+            </div>
+          </div>
         </section>
 
         <section id="view-page-solutions" class="view hidden">
@@ -168,7 +174,6 @@
             </div>
             <div class="toolbar hub-actions" data-hub="solutions">
               <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent hub-action-page hidden" id="save-page-solutions">保存页面</button>
               <button type="button" class="btn btn-accent hub-action-items" id="create-solution">+ 新建方案</button>
             </div>
           </div>
@@ -181,6 +186,13 @@
           <div class="hub-panel hidden" data-hub="solutions" data-hub-panel="page">
             <p class="page-hint">这里改列表页大标题、SEO 与价值支柱。具体方案请进「方案条目」。</p>
             <div id="page-solutions-form"></div>
+            <div class="form-actions sticky-actions">
+              <p class="form-actions-hint">保存会写入本页全部文案</p>
+              <div class="toolbar">
+                <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览</a>
+                <button type="button" class="btn btn-accent" id="save-page-solutions">保存</button>
+              </div>
+            </div>
           </div>
           <div class="hub-panel" data-hub="solutions" data-hub-panel="items">
             <p class="page-hint">首页标杆 / 精选在方案详情里设置。列表页大标题在「页面文案」。</p>
@@ -203,7 +215,6 @@
             </div>
             <div class="toolbar hub-actions" data-hub="products">
               <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent hub-action-page hidden" id="save-page-products">保存页面</button>
               <button type="button" class="btn btn-accent hub-action-items" id="create-product">+ 新建产品</button>
             </div>
           </div>
@@ -216,6 +227,13 @@
           <div class="hub-panel hidden" data-hub="products" data-hub-panel="page">
             <p class="page-hint">这里改列表页标题与「全部」按钮文案。分类选项在「全站 → 分类」Tab 维护。具体产品请进「产品条目」。</p>
             <div id="page-products-form"></div>
+            <div class="form-actions sticky-actions">
+              <p class="form-actions-hint">保存会写入本页全部文案</p>
+              <div class="toolbar">
+                <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览</a>
+                <button type="button" class="btn btn-accent" id="save-page-products">保存</button>
+              </div>
+            </div>
           </div>
           <div class="hub-panel" data-hub="products" data-hub-panel="items">
             <div class="filter-bar">
@@ -242,7 +260,6 @@
             </div>
             <div class="toolbar hub-actions" data-hub="news">
               <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent hub-action-page hidden" id="save-page-news">保存页面</button>
               <button type="button" class="btn btn-accent hub-action-items" id="create-news">+ 新建新闻</button>
             </div>
           </div>
@@ -255,6 +272,13 @@
           <div class="hub-panel hidden" data-hub="news" data-hub-panel="page">
             <p class="page-hint">这里改列表页标题与筛选「全部」文案。具体文章请进「新闻条目」。</p>
             <div id="page-news-form"></div>
+            <div class="form-actions sticky-actions">
+              <p class="form-actions-hint">保存会写入本页全部文案</p>
+              <div class="toolbar">
+                <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览</a>
+                <button type="button" class="btn btn-accent" id="save-page-news">保存</button>
+              </div>
+            </div>
           </div>
           <div class="hub-panel" data-hub="news" data-hub-panel="items">
             <p class="page-hint">首页精选新闻在新闻详情里勾选。列表页大标题在「页面文案」。</p>
@@ -272,12 +296,15 @@
         <section id="view-page-contact" class="view hidden">
           <div class="page-head">
             <div><h2>联系我们</h2><p class="page-sub">对应前台「联系我们」（无在线留言）</p></div>
-            <div class="toolbar">
-              <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent" id="save-page-contact">保存联系页</button>
-            </div>
           </div>
           <div id="page-contact-form"></div>
+          <div class="form-actions sticky-actions">
+            <p class="form-actions-hint">保存会写入整页全部区块（不限当前 Tab）</p>
+            <div class="toolbar">
+              <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent" id="save-page-contact">保存</button>
+            </div>
+          </div>
         </section>
 
         <section id="view-sitewide" class="view hidden">
@@ -287,7 +314,6 @@
               <p class="page-sub">导航页脚、分类与媒体库</p>
             </div>
             <div class="toolbar hub-actions" data-hub="sitewide">
-              <button type="button" class="btn btn-accent hub-action" data-hub-action="site" id="save-site">保存站点文案</button>
               <button type="button" class="btn btn-ghost btn-sm hub-action hidden" data-hub-action="categories" id="refresh-categories">刷新</button>
               <label class="btn btn-accent hub-action hidden" data-hub-action="media" style="cursor:pointer">
                 + 上传图片
@@ -304,6 +330,12 @@
           <div class="hub-panel" data-hub="sitewide" data-hub-panel="site">
             <p class="page-hint">对应前台顶栏六项菜单与页脚文案。用分段 Tab 编辑导航、语言切换、通用与页脚。</p>
             <div id="site-form"></div>
+            <div class="form-actions sticky-actions">
+              <p class="form-actions-hint">保存会写入导航、语言、通用与页脚全部文案</p>
+              <div class="toolbar">
+                <button type="button" class="btn btn-accent" id="save-site">保存</button>
+              </div>
+            </div>
           </div>
           <div class="hub-panel hidden" data-hub="sitewide" data-hub-panel="categories">
             <p class="page-hint">改分类名称后，会自动同步到「产品中心 / 新闻中心」的筛选文案。</p>
