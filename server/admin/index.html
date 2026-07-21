@@ -39,50 +39,66 @@
         <button type="button" class="nav-item is-active" data-view="dashboard" title="工作台">
           <span class="nav-ico" aria-hidden="true">⌂</span><span class="nav-text">工作台</span>
         </button>
-        <button type="button" class="nav-item" data-view="products" title="产品管理">
-          <span class="nav-ico" aria-hidden="true">▣</span><span class="nav-text">产品管理</span>
-        </button>
-        <button type="button" class="nav-item" data-view="solutions" title="解决方案">
-          <span class="nav-ico" aria-hidden="true">◈</span><span class="nav-text">解决方案</span>
-        </button>
-        <button type="button" class="nav-item" data-view="news" title="新闻管理">
-          <span class="nav-ico" aria-hidden="true">☰</span><span class="nav-text">新闻管理</span>
-        </button>
-        <div class="nav-label">网站内容</div>
-        <button type="button" class="nav-item" data-view="page-home" title="首页内容">
-          <span class="nav-ico" aria-hidden="true">◆</span><span class="nav-text">首页内容</span>
-        </button>
-        <button type="button" class="nav-item" data-view="page-about" title="关于我们">
-          <span class="nav-ico" aria-hidden="true">◇</span><span class="nav-text">关于我们</span>
-        </button>
-        <button type="button" class="nav-item" data-view="page-contact" title="联系我们">
-          <span class="nav-ico" aria-hidden="true">✉</span><span class="nav-text">联系我们</span>
-        </button>
-        <button type="button" class="nav-item" data-view="page-products" title="产品列表页">
-          <span class="nav-ico" aria-hidden="true">▣</span><span class="nav-text">产品列表页</span>
-        </button>
-        <button type="button" class="nav-item" data-view="page-news" title="新闻列表页">
-          <span class="nav-ico" aria-hidden="true">☰</span><span class="nav-text">新闻列表页</span>
-        </button>
-        <button type="button" class="nav-item" data-view="page-solutions" title="方案列表页">
-          <span class="nav-ico" aria-hidden="true">◈</span><span class="nav-text">方案列表页</span>
-        </button>
-        <button type="button" class="nav-item" data-view="site" title="导航 / 页脚">
-          <span class="nav-ico" aria-hidden="true">▤</span><span class="nav-text">导航 / 页脚</span>
-        </button>
-        <button type="button" class="nav-item" data-view="categories" title="分类管理">
-          <span class="nav-ico" aria-hidden="true">⊞</span><span class="nav-text">分类管理</span>
-        </button>
-        <div class="nav-label">系统</div>
-        <button type="button" class="nav-item" data-view="media" title="媒体库">
-          <span class="nav-ico" aria-hidden="true">⧉</span><span class="nav-text">媒体库</span>
-        </button>
-        <button type="button" class="nav-item" data-view="translation" title="翻译同步">
-          <span class="nav-ico" aria-hidden="true">文</span><span class="nav-text">翻译同步</span>
-        </button>
-        <button type="button" class="nav-item" data-view="audit" title="操作日志">
-          <span class="nav-ico" aria-hidden="true">≡</span><span class="nav-text">操作日志</span>
-        </button>
+
+        <div class="nav-group" data-nav-group="pages">
+          <button type="button" class="nav-group-toggle" aria-expanded="true">
+            <span class="nav-group-label">官网页面</span>
+            <span class="nav-group-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="nav-group-body">
+            <button type="button" class="nav-item" data-view="page-home" title="首页">
+              <span class="nav-ico" aria-hidden="true">◆</span><span class="nav-text">首页</span>
+            </button>
+            <button type="button" class="nav-item" data-view="page-about" title="关于我们">
+              <span class="nav-ico" aria-hidden="true">◇</span><span class="nav-text">关于我们</span>
+            </button>
+            <button type="button" class="nav-item" data-view="page-solutions" title="解决方案">
+              <span class="nav-ico" aria-hidden="true">◈</span><span class="nav-text">解决方案</span>
+            </button>
+            <button type="button" class="nav-item" data-view="page-products" title="产品中心">
+              <span class="nav-ico" aria-hidden="true">▣</span><span class="nav-text">产品中心</span>
+            </button>
+            <button type="button" class="nav-item" data-view="page-news" title="新闻中心">
+              <span class="nav-ico" aria-hidden="true">☰</span><span class="nav-text">新闻中心</span>
+            </button>
+            <button type="button" class="nav-item" data-view="page-contact" title="联系我们">
+              <span class="nav-ico" aria-hidden="true">✉</span><span class="nav-text">联系我们</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="nav-group" data-nav-group="sitewide">
+          <button type="button" class="nav-group-toggle" aria-expanded="true">
+            <span class="nav-group-label">全站</span>
+            <span class="nav-group-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="nav-group-body">
+            <button type="button" class="nav-item" data-view="site" title="导航与页脚">
+              <span class="nav-ico" aria-hidden="true">▤</span><span class="nav-text">导航与页脚</span>
+            </button>
+            <button type="button" class="nav-item" data-view="categories" title="分类">
+              <span class="nav-ico" aria-hidden="true">⊞</span><span class="nav-text">分类</span>
+            </button>
+            <button type="button" class="nav-item" data-view="media" title="媒体库">
+              <span class="nav-ico" aria-hidden="true">⧉</span><span class="nav-text">媒体库</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="nav-group is-collapsed" data-nav-group="system">
+          <button type="button" class="nav-group-toggle" aria-expanded="false">
+            <span class="nav-group-label">系统</span>
+            <span class="nav-group-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="nav-group-body">
+            <button type="button" class="nav-item" data-view="translation" title="翻译同步">
+              <span class="nav-ico" aria-hidden="true">文</span><span class="nav-text">翻译同步</span>
+            </button>
+            <button type="button" class="nav-item" data-view="audit" title="操作日志">
+              <span class="nav-ico" aria-hidden="true">≡</span><span class="nav-text">操作日志</span>
+            </button>
+          </div>
+        </div>
       </nav>
     </aside>
 
@@ -124,9 +140,10 @@
                 <h3 class="card-title">快捷操作</h3>
               </div>
               <div class="quick-actions">
-                <button type="button" class="quick-btn" data-jump="products"><span>+</span>新建 / 编辑产品</button>
-                <button type="button" class="quick-btn" data-jump="news"><span>+</span>发布新闻</button>
-                <button type="button" class="quick-btn" data-jump="solutions"><span>+</span>编辑方案</button>
+                <button type="button" class="quick-btn" data-jump="page-home"><span>◆</span>改首页文案</button>
+                <button type="button" class="quick-btn" data-jump="page-news" data-hub-tab="items"><span>+</span>发布新闻</button>
+                <button type="button" class="quick-btn" data-jump="page-solutions" data-hub-tab="items"><span>+</span>编辑方案</button>
+                <button type="button" class="quick-btn" data-jump="page-products" data-hub-tab="items"><span>+</span>编辑产品</button>
                 <button type="button" class="quick-btn" data-jump="media"><span>↑</span>上传图片</button>
               </div>
             </div>
@@ -135,125 +152,163 @@
                 <h3 class="card-title">使用提示</h3>
               </div>
               <ul class="tip-list" id="dash-tips">
+                <li>侧栏顺序与<strong>官网顶栏</strong>一致。方案 / 产品 / 新闻中心里用「页面文案 / 条目」切换。</li>
                 <li>只改<strong>中文</strong>；正文可用工具栏排版，不用写代码。</li>
                 <li>改完点<strong>保存</strong>，再用顶栏「打开官网」预览。</li>
-                <li>图片先上传到「媒体库」，再点「从媒体库选图」。</li>
-                <li>英文 / 俄文：到「翻译同步」点一键同步即可。</li>
+                <li>英文 / 俄文：到「系统 → 翻译同步」一键同步即可。</li>
               </ul>
             </div>
           </div>
         </section>
 
-        <section id="view-products" class="view hidden">
-          <div class="page-head">
-            <div>
-              <h2>产品管理</h2>
-              <p class="page-sub">维护产品中心展示的设备与参数</p>
-            </div>
-            <button type="button" class="btn btn-accent" id="create-product">+ 新建产品</button>
-          </div>
-          <div class="filter-bar">
-            <select id="product-filter-status" class="select">
-              <option value="all">全部状态</option>
-              <option value="published">已发布</option>
-              <option value="draft">未发布</option>
-            </select>
-            <input class="search" id="product-search" type="search" placeholder="搜索名称 / 型号 / 分类">
-            <button type="button" class="btn btn-primary btn-sm" id="product-search-btn">搜索</button>
-          </div>
-          <div class="card list-card">
-            <div class="item-list" id="product-list" role="list"></div>
-            <div class="table-foot" id="product-table-foot"></div>
-          </div>
-        </section>
-
-        <section id="view-news" class="view hidden">
-          <div class="page-head">
-            <div>
-              <h2>新闻管理</h2>
-              <p class="page-sub">发布公司与行业动态</p>
-            </div>
-            <button type="button" class="btn btn-accent" id="create-news">+ 新建新闻</button>
-          </div>
-          <div class="filter-bar">
-            <input class="search" id="news-search" type="search" placeholder="搜索标题 / 分类">
-            <button type="button" class="btn btn-primary btn-sm" id="news-search-btn">搜索</button>
-          </div>
-          <div class="card list-card">
-            <div class="item-list" id="news-list" role="list"></div>
-            <div class="table-foot" id="news-table-foot"></div>
-          </div>
-        </section>
-
-        <section id="view-solutions" class="view hidden">
-          <div class="page-head">
-            <div>
-              <h2>解决方案</h2>
-              <p class="page-sub">行业整线方案与落地页内容</p>
-            </div>
-            <button type="button" class="btn btn-accent" id="create-solution">+ 新建方案</button>
-          </div>
-          <div class="filter-bar">
-            <input class="search" id="solution-search" type="search" placeholder="搜索名称 / ID">
-            <button type="button" class="btn btn-primary btn-sm" id="solution-search-btn">搜索</button>
-          </div>
-          <div class="card list-card">
-            <div class="item-list" id="solution-list" role="list"></div>
-            <div class="table-foot" id="solution-table-foot"></div>
-          </div>
-        </section>
-
         <section id="view-page-home" class="view hidden">
           <div class="page-head">
-            <div><h2>首页内容</h2><p class="page-sub">Hero、精选方案、关于区块等</p></div>
-            <button type="button" class="btn btn-accent" id="save-page-home">保存首页</button>
+            <div>
+              <h2>首页</h2>
+              <p class="page-sub">对应前台「首页」· 标杆/精选在「解决方案 / 新闻」条目中设置</p>
+            </div>
+            <div class="toolbar">
+              <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent" id="save-page-home">保存首页</button>
+            </div>
           </div>
           <div id="page-home-form"></div>
         </section>
 
         <section id="view-page-about" class="view hidden">
           <div class="page-head">
-            <div><h2>关于我们</h2><p class="page-sub">品牌介绍、企业文化与发展历程</p></div>
-            <button type="button" class="btn btn-accent" id="save-page-about">保存关于页</button>
+            <div><h2>关于我们</h2><p class="page-sub">对应前台「关于我们」</p></div>
+            <div class="toolbar">
+              <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent" id="save-page-about">保存关于页</button>
+            </div>
           </div>
           <div id="page-about-form"></div>
         </section>
 
-        <section id="view-page-contact" class="view hidden">
+        <section id="view-page-solutions" class="view hidden">
           <div class="page-head">
-            <div><h2>联系我们</h2><p class="page-sub">联系渠道与地图位置（无在线留言）</p></div>
-            <button type="button" class="btn btn-accent" id="save-page-contact">保存联系页</button>
+            <div>
+              <h2>解决方案</h2>
+              <p class="page-sub">对应前台「解决方案」</p>
+            </div>
+            <div class="toolbar hub-actions" data-hub="solutions">
+              <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent hub-action-page hidden" id="save-page-solutions">保存页面</button>
+              <button type="button" class="btn btn-accent hub-action-items" id="create-solution">+ 新建方案</button>
+            </div>
           </div>
-          <div id="page-contact-form"></div>
+          <div class="hub-tabs" data-hub="solutions" role="tablist">
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab">页面文案</button>
+            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab">
+              方案条目 <span class="hub-tab-count" id="hub-count-solutions"></span>
+            </button>
+          </div>
+          <div class="hub-panel hidden" data-hub="solutions" data-hub-panel="page">
+            <p class="page-hint">这里改列表页大标题、SEO 与价值支柱。具体方案请进「方案条目」。</p>
+            <div id="page-solutions-form"></div>
+          </div>
+          <div class="hub-panel" data-hub="solutions" data-hub-panel="items">
+            <p class="page-hint">首页标杆 / 精选在方案详情里设置。列表页大标题在「页面文案」。</p>
+            <div class="filter-bar">
+              <input class="search" id="solution-search" type="search" placeholder="搜索名称 / ID">
+              <button type="button" class="btn btn-primary btn-sm" id="solution-search-btn">搜索</button>
+            </div>
+            <div class="card list-card">
+              <div class="item-list" id="solution-list" role="list"></div>
+              <div class="table-foot" id="solution-table-foot"></div>
+            </div>
+          </div>
         </section>
 
         <section id="view-page-products" class="view hidden">
           <div class="page-head">
-            <div><h2>产品列表页</h2><p class="page-sub">产品中心 Hero / SEO / 筛选文案</p></div>
-            <button type="button" class="btn btn-accent" id="save-page-products">保存</button>
+            <div>
+              <h2>产品中心</h2>
+              <p class="page-sub">对应前台「产品中心」</p>
+            </div>
+            <div class="toolbar hub-actions" data-hub="products">
+              <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent hub-action-page hidden" id="save-page-products">保存页面</button>
+              <button type="button" class="btn btn-accent hub-action-items" id="create-product">+ 新建产品</button>
+            </div>
           </div>
-          <div id="page-products-form"></div>
+          <div class="hub-tabs" data-hub="products" role="tablist">
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab">页面文案</button>
+            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab">
+              产品条目 <span class="hub-tab-count" id="hub-count-products"></span>
+            </button>
+          </div>
+          <div class="hub-panel hidden" data-hub="products" data-hub-panel="page">
+            <p class="page-hint">这里改列表页标题与「全部」按钮文案。分类选项在「全站 → 分类」维护。具体产品请进「产品条目」。</p>
+            <div id="page-products-form"></div>
+          </div>
+          <div class="hub-panel" data-hub="products" data-hub-panel="items">
+            <div class="filter-bar">
+              <select id="product-filter-status" class="select">
+                <option value="all">全部状态</option>
+                <option value="published">已发布</option>
+                <option value="draft">未发布</option>
+              </select>
+              <input class="search" id="product-search" type="search" placeholder="搜索名称 / 型号 / 分类">
+              <button type="button" class="btn btn-primary btn-sm" id="product-search-btn">搜索</button>
+            </div>
+            <div class="card list-card">
+              <div class="item-list" id="product-list" role="list"></div>
+              <div class="table-foot" id="product-table-foot"></div>
+            </div>
+          </div>
         </section>
 
         <section id="view-page-news" class="view hidden">
           <div class="page-head">
-            <div><h2>新闻列表页</h2><p class="page-sub">新闻中心 Hero / SEO / 筛选文案</p></div>
-            <button type="button" class="btn btn-accent" id="save-page-news">保存</button>
+            <div>
+              <h2>新闻中心</h2>
+              <p class="page-sub">对应前台「新闻中心」</p>
+            </div>
+            <div class="toolbar hub-actions" data-hub="news">
+              <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent hub-action-page hidden" id="save-page-news">保存页面</button>
+              <button type="button" class="btn btn-accent hub-action-items" id="create-news">+ 新建新闻</button>
+            </div>
           </div>
-          <div id="page-news-form"></div>
+          <div class="hub-tabs" data-hub="news" role="tablist">
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab">页面文案</button>
+            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab">
+              新闻条目 <span class="hub-tab-count" id="hub-count-news"></span>
+            </button>
+          </div>
+          <div class="hub-panel hidden" data-hub="news" data-hub-panel="page">
+            <p class="page-hint">这里改列表页标题与筛选「全部」文案。具体文章请进「新闻条目」。</p>
+            <div id="page-news-form"></div>
+          </div>
+          <div class="hub-panel" data-hub="news" data-hub-panel="items">
+            <p class="page-hint">首页精选新闻在新闻详情里勾选。列表页大标题在「页面文案」。</p>
+            <div class="filter-bar">
+              <input class="search" id="news-search" type="search" placeholder="搜索标题 / 分类">
+              <button type="button" class="btn btn-primary btn-sm" id="news-search-btn">搜索</button>
+            </div>
+            <div class="card list-card">
+              <div class="item-list" id="news-list" role="list"></div>
+              <div class="table-foot" id="news-table-foot"></div>
+            </div>
+          </div>
         </section>
 
-        <section id="view-page-solutions" class="view hidden">
+        <section id="view-page-contact" class="view hidden">
           <div class="page-head">
-            <div><h2>方案列表页</h2><p class="page-sub">解决方案 Hero / SEO / 价值支柱</p></div>
-            <button type="button" class="btn btn-accent" id="save-page-solutions">保存</button>
+            <div><h2>联系我们</h2><p class="page-sub">对应前台「联系我们」（无在线留言）</p></div>
+            <div class="toolbar">
+              <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览</a>
+              <button type="button" class="btn btn-accent" id="save-page-contact">保存联系页</button>
+            </div>
           </div>
-          <div id="page-solutions-form"></div>
+          <div id="page-contact-form"></div>
         </section>
 
         <section id="view-site" class="view hidden">
           <div class="page-head">
-            <div><h2>导航 / 页脚</h2><p class="page-sub">站点导航与页脚中文文案</p></div>
+            <div><h2>导航与页脚</h2><p class="page-sub">全站 · 对应前台顶栏六项菜单与页脚文案</p></div>
             <button type="button" class="btn btn-accent" id="save-site">保存站点文案</button>
           </div>
           <div id="site-form"></div>
@@ -262,12 +317,12 @@
         <section id="view-categories" class="view hidden">
           <div class="page-head">
             <div>
-              <h2>分类管理</h2>
-              <p class="page-sub">统一管理产品与新闻分类；新建内容时从这里选择，避免手打写乱</p>
+              <h2>分类</h2>
+              <p class="page-sub">全站 · 产品与新闻分类；会同步到产品中心 / 新闻中心的筛选按钮</p>
             </div>
             <button type="button" class="btn btn-ghost btn-sm" id="refresh-categories">刷新</button>
           </div>
-          <p class="page-hint">放在「网站内容」里：改分类名称后，会同步到产品中心 / 新闻中心的筛选按钮文案。</p>
+          <p class="page-hint">改分类名称后，会自动同步到「官网页面 → 产品中心 / 新闻中心」的筛选文案。</p>
           <div class="dash-grid" style="grid-template-columns:1fr 1fr">
             <div class="card">
               <div class="card-head">
@@ -290,7 +345,7 @@
           <div class="page-head">
             <div>
               <h2>媒体库</h2>
-              <p class="page-sub">上传图片后，可在编辑表单中一键选用</p>
+              <p class="page-sub">全站 · 上传图片后，可在编辑表单中一键选用</p>
             </div>
             <div class="toolbar">
               <label class="btn btn-accent" style="cursor:pointer">

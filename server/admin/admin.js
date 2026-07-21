@@ -21,6 +21,7 @@
     pageCache: {},
     siteCache: null,
     auditActors: [],
+    hubTabs: { products: 'items', news: 'items', solutions: 'items' },
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -133,7 +134,7 @@
       var key = String(resource).slice(6);
       var pageNames = {
         home: '首页', about: '关于我们', contact: '联系我们',
-        products: '产品列表页', news: '新闻列表页', solutions: '方案列表页',
+        products: '产品中心', news: '新闻中心', solutions: '解决方案中心',
       };
       return '页面 · ' + (pageNames[key] || key);
     }
@@ -243,7 +244,66 @@
     $('app-view').classList.toggle('hidden', show);
   }
 
-  function setView(name) {
+  var HUB_BY_VIEW = {
+    'page-products': 'products',
+    'page-news': 'news',
+    'page-solutions': 'solutions',
+  };
+  var VIEW_BY_LEGACY = {
+    products: 'page-products',
+    news: 'page-news',
+    solutions: 'page-solutions',
+  };
+
+  function applyHubTab(hub, tab) {
+    if (!hub) return;
+    if (tab) state.hubTabs[hub] = tab;
+    var current = state.hubTabs[hub] || 'items';
+    document.querySelectorAll('.hub-tabs[data-hub="' + hub + '"] .hub-tab').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-hub-tab') === current);
+    });
+    document.querySelectorAll('.hub-panel[data-hub="' + hub + '"]').forEach(function (panel) {
+      panel.classList.toggle('hidden', panel.getAttribute('data-hub-panel') !== current);
+    });
+    document.querySelectorAll('.hub-actions[data-hub="' + hub + '"] .hub-action-page').forEach(function (el) {
+      el.classList.toggle('hidden', current !== 'page');
+    });
+    document.querySelectorAll('.hub-actions[data-hub="' + hub + '"] .hub-action-items').forEach(function (el) {
+      el.classList.toggle('hidden', current !== 'items');
+    });
+  }
+
+  function updateHubCount(hub, count) {
+    var el = $('hub-count-' + hub);
+    if (!el) return;
+    var n = count != null ? count : (
+      hub === 'products' ? (state.products || []).length :
+      hub === 'news' ? (state.news || []).length :
+      hub === 'solutions' ? (state.solutions || []).length : 0
+    );
+    el.textContent = n ? String(n) : '';
+  }
+
+  async function loadHub(hub, preferredTab) {
+    if (preferredTab) applyHubTab(hub, preferredTab);
+    else applyHubTab(hub);
+    if (hub === 'products') {
+      await Promise.all([loadPageForm('products'), loadProducts()]);
+    } else if (hub === 'news') {
+      await Promise.all([loadPageForm('news'), loadNews()]);
+    } else if (hub === 'solutions') {
+      await Promise.all([loadPageForm('solutions'), loadSolutions()]);
+    }
+    updateHubCount(hub);
+  }
+
+  function setView(name, opts) {
+    opts = opts || {};
+    var preferredTab = opts.hubTab || null;
+    if (VIEW_BY_LEGACY[name]) {
+      preferredTab = preferredTab || 'items';
+      name = VIEW_BY_LEGACY[name];
+    }
     state.view = name;
     closeDrawer();
     document.querySelectorAll('.nav-item').forEach(function (btn) {
@@ -252,17 +312,24 @@
     document.querySelectorAll('.view').forEach(function (sec) {
       sec.classList.toggle('hidden', sec.id !== 'view-' + name);
     });
+    var activeNav = document.querySelector('.nav-item[data-view="' + name + '"]');
+    if (activeNav) {
+      var group = activeNav.closest('.nav-group');
+      if (group) {
+        group.classList.remove('is-collapsed');
+        var toggle = group.querySelector('.nav-group-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+      }
+    }
+    var hub = HUB_BY_VIEW[name];
+    if (hub) {
+      return Promise.resolve(loadHub(hub, preferredTab)).catch(function (e) { toast(e.message, true); });
+    }
     var loaders = {
       dashboard: loadDashboard,
-      products: loadProducts,
-      news: loadNews,
-      solutions: loadSolutions,
       'page-home': function () { return loadPageForm('home'); },
       'page-about': function () { return loadPageForm('about'); },
       'page-contact': function () { return loadPageForm('contact'); },
-      'page-products': function () { return loadPageForm('products'); },
-      'page-news': function () { return loadPageForm('news'); },
-      'page-solutions': function () { return loadPageForm('solutions'); },
       site: loadSiteForm,
       categories: loadCategories,
       media: loadMedia,
@@ -270,8 +337,9 @@
       audit: loadAudit,
     };
     if (loaders[name]) {
-      Promise.resolve(loaders[name]()).catch(function (e) { toast(e.message, true); });
+      return Promise.resolve(loaders[name]()).catch(function (e) { toast(e.message, true); });
     }
+    return Promise.resolve();
   }
 
   function escapeHtml(s) {
@@ -758,6 +826,7 @@
   async function loadProducts() {
     state.products = (await api('/admin/products')).items || [];
     renderProductTable();
+    updateHubCount('products');
   }
 
   function renderProductTable() {
@@ -796,7 +865,7 @@
       '<select id="f-categoryKey">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「分类管理」里维护可选分类</p></div>';
+      '<p class="field-help">在「全站 → 分类」里维护可选分类</p></div>';
   }
 
   function newsCategorySelect(item) {
@@ -809,7 +878,7 @@
       '<select id="f-category">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「分类管理」里维护可选分类</p></div>';
+      '<p class="field-help">在「全站 → 分类」里维护可选分类</p></div>';
   }
 
   async function ensureCategoriesLoaded() {
@@ -1093,6 +1162,7 @@
   async function loadNews() {
     state.news = (await api('/admin/news')).items || [];
     renderNewsTable();
+    updateHubCount('news');
   }
 
   function renderNewsTable() {
@@ -1234,6 +1304,7 @@
   async function loadSolutions() {
     state.solutions = (await api('/admin/solutions')).items || [];
     renderSolutionTable();
+    updateHubCount('solutions');
   }
 
   function renderSolutionTable() {
@@ -1948,7 +2019,7 @@
       imageAlt: '',
     };
     var slotsHtml = '<div class="card" id="home-slots-status"><h3 class="card-title">首页精选坑位</h3>' +
-      '<p class="field-help">标杆方案（首屏大图）/ 精选方案（三大核心类目）/ 精选新闻为首页必填坑位，请在详情里设置；下架占用项时须指定替代。</p>' +
+      '<p class="field-help">标杆 / 精选在「解决方案」「新闻中心」的条目详情里设置；下架占用项时须指定替代。</p>' +
       '<p class="help">加载中…</p></div>';
     $('page-home-form').innerHTML =
       seoBlock(page) +
@@ -1987,7 +2058,7 @@
       field('news-sec-mission-body', '初心正文', news.missionBody, 'full', 'textarea') +
       field('news-sec-cta-label', 'CTA 文案', (news.cta || {}).label) +
       field('news-sec-cta-href', 'CTA 链接', (news.cta || {}).href) +
-      '<div class="field full"><p class="field-help">精选新闻条目请在「新闻管理」详情勾选「精选到首页」（最多 2 条）。</p></div>' +
+      '<div class="field full"><p class="field-help">精选新闻条目请在「新闻中心 → 新闻条目」详情勾选首页精选（最多 2 条）。</p></div>' +
       '</div></div>';
     bindImageFields($('page-home-form'));
     bindStatsRepeater();
@@ -2002,12 +2073,18 @@
     if (!box) return;
     try {
       var data = await api('/admin/home-slots');
-      function listBlock(title, bucket) {
+      function listBlock(title, bucket, hubView) {
         var items = (bucket && bucket.items) || [];
         var limit = (bucket && bucket.limit) || 0;
         var rows = items.length
           ? '<ul style="margin:6px 0 0;padding-left:18px">' + items.map(function (it) {
-            return '<li>' + escapeHtml(it.name || it.title || it.id) + ' <span class="help">#' + escapeHtml(it.id) + '</span></li>';
+            return '<li>' + escapeHtml(it.name || it.title || it.id) +
+              ' <span class="help">#' + escapeHtml(it.id) + '</span>' +
+              (hubView
+                ? ' <button type="button" class="btn btn-ghost btn-sm hub-slot-edit" data-hub-jump="' +
+                  escapeAttr(hubView) + '" data-edit-id="' + escapeAttr(it.id) + '">去编辑</button>'
+                : '') +
+              '</li>';
           }).join('') + '</ul>'
           : '<p class="help" style="margin:6px 0 0">（空）</p>';
         return '<div style="margin-top:10px"><strong>' + escapeHtml(title) + '</strong> ' +
@@ -2015,10 +2092,20 @@
       }
       box.innerHTML =
         '<h3 class="card-title">首页精选坑位</h3>' +
-        '<p class="field-help">在方案 / 新闻详情里设置；仅已发布计入名额，满员时保存会提示替换。</p>' +
-        listBlock('标杆方案（首屏大图）', data.hero) +
-        listBlock('精选方案（三大核心类目）', data.category) +
-        listBlock('精选新闻', data.news);
+        '<p class="field-help">在「解决方案 / 新闻中心」的条目详情里设置；仅已发布计入名额。</p>' +
+        listBlock('标杆方案（首屏大图）', data.hero, 'page-solutions') +
+        listBlock('精选方案（三大核心类目）', data.category, 'page-solutions') +
+        listBlock('精选新闻', data.news, 'page-news');
+      box.querySelectorAll('.hub-slot-edit').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var view = btn.getAttribute('data-hub-jump');
+          var id = btn.getAttribute('data-edit-id');
+          Promise.resolve(setView(view, { hubTab: 'items' })).then(function () {
+            if (view === 'page-solutions') return openSolution(id);
+            if (view === 'page-news') return openNews(id);
+          }).catch(function (e) { toast(e.message, true); });
+        });
+      });
     } catch (err) {
       box.innerHTML = '<h3 class="card-title">首页精选坑位</h3><p class="help">' + escapeHtml(err.message) + '</p>';
     }
@@ -2267,7 +2354,7 @@
       extra =
         cardBlock('筛选文案',
           field('filters-all', '「全部」按钮文案', filters.all || (key === 'news' ? '全部资讯' : '全部产品'), 'full') +
-          '<div class="field full"><p class="field-help">分类按钮文案由「网站内容 → 分类管理」维护，保存分类后会自动同步到本页 filters。</p></div>');
+          '<div class="field full"><p class="field-help">分类按钮文案由「全站 → 分类」维护，保存分类后会自动同步到本页 filters。</p></div>');
     }
     $(formId).innerHTML =
       seoBlock(page) +
@@ -2701,8 +2788,36 @@
   document.querySelectorAll('.nav-item').forEach(function (btn) {
     btn.addEventListener('click', function () { setView(btn.getAttribute('data-view')); });
   });
+  document.querySelectorAll('.nav-group-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var group = btn.closest('.nav-group');
+      if (!group) return;
+      var open = group.classList.toggle('is-collapsed');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+  document.querySelectorAll('.hub-tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var hub = btn.closest('.hub-tabs');
+      if (!hub) return;
+      var key = hub.getAttribute('data-hub');
+      var tab = btn.getAttribute('data-hub-tab');
+      applyHubTab(key, tab);
+      if (tab === 'items') {
+        if (key === 'products') loadProducts().catch(function (e) { toast(e.message, true); });
+        if (key === 'news') loadNews().catch(function (e) { toast(e.message, true); });
+        if (key === 'solutions') loadSolutions().catch(function (e) { toast(e.message, true); });
+      } else if (tab === 'page') {
+        loadPageForm(key).catch(function (e) { toast(e.message, true); });
+      }
+    });
+  });
   document.querySelectorAll('[data-jump]').forEach(function (btn) {
-    btn.addEventListener('click', function () { setView(btn.getAttribute('data-jump')); });
+    btn.addEventListener('click', function () {
+      setView(btn.getAttribute('data-jump'), {
+        hubTab: btn.getAttribute('data-hub-tab') || null,
+      });
+    });
   });
 
   $('refresh-dash').addEventListener('click', function () { loadDashboard().catch(function (e) { toast(e.message, true); }); });
