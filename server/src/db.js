@@ -65,6 +65,7 @@ export function getDb() {
   migrateHomeSlotColumns(db);
   ensureAuditTableInline(db);
   ensureCategoryTablesInline(db);
+  ensurePageViewsTableInline(db);
   seedResourceStatus(db);
   dbInstance = db;
   return db;
@@ -117,6 +118,19 @@ function ensureCategoryTablesInline(db) {
     );
     for (const r of rows) ins.run(...r);
   }
+}
+
+function ensurePageViewsTableInline(db) {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS page_view_daily (
+      day TEXT NOT NULL,
+      path TEXT NOT NULL,
+      hits INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT DEFAULT (datetime('now')),
+      PRIMARY KEY (day, path)
+    );
+    CREATE INDEX IF NOT EXISTS idx_page_view_day ON page_view_daily(day);
+  `);
 }
 
 function ensureAuditTableInline(db) {

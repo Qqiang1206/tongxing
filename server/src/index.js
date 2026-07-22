@@ -8,6 +8,7 @@ import { config, REPO_ROOT } from './config.js';
 import { catalog } from './services/catalog.js';
 import { handleAdmin } from './admin.js';
 import { getDb, dbPathForHealth } from './db.js';
+import { recordPageView } from './services/analytics.js';
 
 // Open SQLite on boot
 getDb();
@@ -281,7 +282,10 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'GET') {
-    if (serveSiteStatic(res, rawPath, origin)) return;
+    if (serveSiteStatic(res, rawPath, origin)) {
+      recordPageView(rawPath);
+      return;
+    }
   }
 
   sendJson(res, 404, { error: 'not_found' }, origin);

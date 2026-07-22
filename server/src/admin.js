@@ -16,6 +16,7 @@ import {
   markStale,
   markCurrent,
 } from './services/translationStatus.js';
+import { getAnalyticsSummary } from './services/analytics.js';
 import {
   listTranslationJobs,
   createTranslationJob,
@@ -890,6 +891,15 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     } catch (err) {
       sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
     }
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/analytics/summary' && req.method === 'GET') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    sendJson(res, 200, getAnalyticsSummary(), origin);
     return true;
   }
 

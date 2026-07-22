@@ -136,3 +136,13 @@ CREATE INDEX IF NOT EXISTS idx_solutions_slug ON solutions(slug);
 CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at);
 CREATE INDEX IF NOT EXISTS idx_audit_created ON admin_audit_log(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_audit_action ON admin_audit_log(action);
+
+CREATE TABLE IF NOT EXISTS page_view_daily (
+  day TEXT NOT NULL,
+  path TEXT NOT NULL,
+  hits INTEGER NOT NULL DEFAULT 0,
+  updated_at TEXT DEFAULT (datetime('now')),
+  PRIMARY KEY (day, path)
+);
+
+CREATE INDEX IF NOT EXISTS idx_page_view_day ON page_view_daily(day);
