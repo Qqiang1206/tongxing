@@ -462,14 +462,6 @@
       sec.classList.toggle('hidden', sec.id !== 'view-' + name);
     });
     var activeNav = document.querySelector('.nav-item[data-view="' + name + '"]');
-    if (activeNav) {
-      var group = activeNav.closest('.nav-group');
-      if (group) {
-        group.classList.remove('is-collapsed');
-        var toggle = group.querySelector('.nav-group-toggle');
-        if (toggle) toggle.setAttribute('aria-expanded', 'true');
-      }
-    }
     var hub = HUB_BY_VIEW[name];
     if (hub) {
       return Promise.resolve(loadHub(hub, preferredTab)).catch(function (e) { toast(e.message, true); });
@@ -3862,14 +3854,6 @@
       });
     });
   }
-  document.querySelectorAll('.nav-group-toggle').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var group = btn.closest('.nav-group');
-      if (!group) return;
-      var open = group.classList.toggle('is-collapsed');
-      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
-    });
-  });
   document.querySelectorAll('.hub-tab').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var hub = btn.closest('.hub-tabs');
@@ -3977,16 +3961,7 @@
   if ($('product-filter-status')) {
     $('product-filter-status').addEventListener('change', renderProductTable);
   }
-  if ($('sidebar-toggle')) {
-    $('sidebar-toggle').addEventListener('click', function () {
-      var shell = $('app-view');
-      if (!shell) return;
-      shell.classList.toggle('is-collapsed');
-      var collapsed = shell.classList.contains('is-collapsed');
-      $('sidebar-toggle').title = collapsed ? '展开菜单' : '折叠菜单';
-      $('sidebar-toggle').setAttribute('aria-label', collapsed ? '展开菜单' : '折叠菜单');
-    });
-  }
+
   if ($('drawer-close')) $('drawer-close').addEventListener('click', closeDrawer);
   if ($('drawer-backdrop')) $('drawer-backdrop').addEventListener('click', closeDrawer);
   document.addEventListener('keydown', function (e) {

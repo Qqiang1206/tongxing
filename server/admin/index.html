@@ -11,11 +11,11 @@
   <div id="login-view" class="login-page">
     <div class="login-card">
       <div class="login-brand">
-        <div class="login-mark">TX</div>
-        <div>
-          <h1>同兴高科</h1>
-          <p>内容管理后台 · 编辑中文源内容</p>
-        </div>
+        <picture class="brand-logo">
+          <source srcset="/assets/images/brand/logo.webp" type="image/webp">
+          <img src="/assets/images/brand/logo.png" alt="TXAM 同兴高科">
+        </picture>
+        <p>内容管理后台 · 编辑中文源内容</p>
       </div>
       <label for="actor">操作人</label>
       <input id="actor" type="text" autocomplete="username" placeholder="请输入姓名或工号" maxlength="40">
@@ -29,44 +29,38 @@
   <div id="app-view" class="app-shell hidden">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <div class="login-mark">TX</div>
-        <div>
-          <strong>TXAM 同兴高科</strong>
-          <span>官网内容管理</span>
-        </div>
+        <picture class="brand-logo">
+          <source srcset="/assets/images/brand/logo.webp" type="image/webp">
+          <img src="/assets/images/brand/logo.png" alt="TXAM 同兴高科">
+        </picture>
       </div>
       <nav class="nav" id="nav">
         <button type="button" class="nav-item is-active" data-view="dashboard" title="工作台">
           <span class="nav-ico nav-ico--symbol" aria-hidden="true">●</span><span class="nav-text">工作台</span>
         </button>
 
-        <div class="nav-group" data-nav-group="pages">
-          <button type="button" class="nav-group-toggle" aria-expanded="true">
-            <span class="nav-group-label">官网页面 · 前台顺序</span>
-            <span class="nav-group-chevron" aria-hidden="true">▾</span>
-          </button>
-          <div class="nav-group-body">
-            <button type="button" class="nav-item" data-view="page-home" title="首页">
-              <span class="nav-ico" aria-hidden="true">01</span><span class="nav-text">首页</span>
-            </button>
-            <button type="button" class="nav-item" data-view="page-about" title="关于我们">
-              <span class="nav-ico" aria-hidden="true">02</span><span class="nav-text">关于我们</span>
-            </button>
-            <button type="button" class="nav-item" data-view="page-solutions" title="解决方案">
-              <span class="nav-ico" aria-hidden="true">03</span><span class="nav-text">解决方案</span>
-            </button>
-            <button type="button" class="nav-item" data-view="page-products" title="产品中心">
-              <span class="nav-ico" aria-hidden="true">04</span><span class="nav-text">产品中心</span>
-            </button>
-            <button type="button" class="nav-item" data-view="page-news" title="新闻中心">
-              <span class="nav-ico" aria-hidden="true">05</span><span class="nav-text">新闻中心</span>
-            </button>
-            <button type="button" class="nav-item" data-view="page-contact" title="联系我们">
-              <span class="nav-ico" aria-hidden="true">06</span><span class="nav-text">联系我们</span>
-            </button>
-          </div>
-        </div>
+        <div class="nav-divider" aria-hidden="true"></div>
 
+        <button type="button" class="nav-item" data-view="page-home" title="首页">
+          <span class="nav-ico" aria-hidden="true">01</span><span class="nav-text">首页</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-about" title="关于我们">
+          <span class="nav-ico" aria-hidden="true">02</span><span class="nav-text">关于我们</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-solutions" title="解决方案">
+          <span class="nav-ico" aria-hidden="true">03</span><span class="nav-text">解决方案</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-products" title="产品中心">
+          <span class="nav-ico" aria-hidden="true">04</span><span class="nav-text">产品中心</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-news" title="新闻中心">
+          <span class="nav-ico" aria-hidden="true">05</span><span class="nav-text">新闻中心</span>
+        </button>
+        <button type="button" class="nav-item" data-view="page-contact" title="联系我们">
+          <span class="nav-ico" aria-hidden="true">06</span><span class="nav-text">联系我们</span>
+        </button>
+
+        <div class="nav-divider" aria-hidden="true"></div>
         <button type="button" class="nav-item" data-view="sitewide" title="全站公共内容">
           <span class="nav-ico nav-ico--word" aria-hidden="true">全</span><span class="nav-text">全站公共内容</span>
         </button>
@@ -86,10 +80,6 @@
     </aside>
 
     <div class="workspace">
-      <header class="topbar">
-        <button type="button" class="icon-btn" id="sidebar-toggle" title="折叠菜单" aria-label="折叠菜单">☰</button>
-      </header>
-
       <main class="main">
         <section id="view-dashboard" class="view">
           <div class="dash-welcome">
