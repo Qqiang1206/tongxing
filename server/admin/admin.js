@@ -359,7 +359,7 @@
         return '<label class="slot-replace-item" data-id="' + escapeAttr(o.id) + '">' +
           '<input type="radio" name="slot-replace" value="' + escapeAttr(o.id) + '">' +
           (img ? '<img src="' + escapeHtml(assetUrl(img)) + '" alt="">' : '') +
-          '<span><strong>' + escapeHtml(label) + '</strong><br><span class="help">ID ' + escapeHtml(o.id) + '</span></span>' +
+          '<span><strong>' + escapeHtml(label) + '</strong></span>' +
           '</label>';
       }).join('') || '<p class="empty">' + (isVacate ? '没有可替代的已发布内容，请先发布其他条目' : '暂无占用项') + '</p>';
       confirmBtn.disabled = true;
@@ -808,11 +808,11 @@
   function processRowsHtml(items) {
     items = items && items.length ? items : [{ step: '', title: '', desc: '' }];
     return '<div class="repeater" id="rep-process">' +
-      items.map(function (item) {
+      items.map(function (item, index) {
         return '<div class="repeater-row">' +
+          '<div class="repeater-row-head"><strong>流程 ' + String(index + 1).padStart(2, '0') + '</strong><span>序号由系统按当前顺序生成</span></div>' +
           '<div class="form-grid">' +
-          '<div class="field"><label>步骤</label><input class="rep-step" type="text" value="' + escapeAttr(item.step || '') + '"></div>' +
-          '<div class="field"><label>标题</label><input class="rep-title" type="text" value="' + escapeAttr(item.title || '') + '"></div>' +
+          '<div class="field full"><label>标题</label><input class="rep-title" type="text" value="' + escapeAttr(item.title || '') + '"></div>' +
           '<div class="field full"><label>说明</label><textarea class="rep-desc">' + escapeHtml(item.desc || '') + '</textarea></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
@@ -822,22 +822,36 @@
   function bindProcessRepeater() {
     var root = $('rep-process');
     if (!root) return;
+    function refreshRowHeadings() {
+      root.querySelectorAll('.repeater-row').forEach(function (row, index) {
+        var head = row.querySelector('.repeater-row-head');
+        if (!head) return;
+        var title = head.querySelector('strong');
+        var help = head.querySelector('span');
+        if (title) title.textContent = '流程 ' + String(index + 1).padStart(2, '0');
+        if (help) help.textContent = '序号由系统按当前顺序生成';
+      });
+    }
     root.addEventListener('click', function (e) {
       var t = e.target;
       if (t.classList.contains('rep-add-process')) {
         var row = document.createElement('div');
         row.className = 'repeater-row';
         row.innerHTML =
+          '<div class="repeater-row-head"><strong>新增流程</strong><span>保存后自动生成序号</span></div>' +
           '<div class="form-grid">' +
-          '<div class="field"><label>步骤</label><input class="rep-step" type="text" value=""></div>' +
-          '<div class="field"><label>标题</label><input class="rep-title" type="text" value=""></div>' +
+          '<div class="field full"><label>标题</label><input class="rep-title" type="text" value=""></div>' +
           '<div class="field full"><label>说明</label><textarea class="rep-desc"></textarea></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
         root.insertBefore(row, t);
+        refreshRowHeadings();
       }
       if (t.classList.contains('rep-remove')) {
         var r = t.closest('.repeater-row');
-        if (r && root.querySelectorAll('.repeater-row').length > 1) r.remove();
+        if (r && root.querySelectorAll('.repeater-row').length > 1) {
+          r.remove();
+          refreshRowHeadings();
+        }
       }
     });
   }
@@ -847,26 +861,27 @@
     if (!root) return [];
     return Array.prototype.map.call(root.querySelectorAll('.repeater-row'), function (row) {
       return {
-        step: (row.querySelector('.rep-step') || {}).value || '',
         title: (row.querySelector('.rep-title') || {}).value || '',
         desc: (row.querySelector('.rep-desc') || {}).value || '',
       };
-    }).filter(function (x) { return x.step || x.title || x.desc; });
+    }).filter(function (x) { return x.title || x.desc; }).map(function (x, index) {
+      x.step = String(index + 1).padStart(2, '0');
+      return x;
+    });
   }
 
   function statsRowsHtml(items) {
     items = items && items.length ? items : [{ value: '', unit: '', label: '' }];
     return '<div class="repeater" id="rep-stats">' +
-      items.map(function (item) {
-        return '<div class="repeater-row"><div class="form-grid">' +
+      items.map(function (item, i) {
+        return '<div class="repeater-row" data-source-index="' + i + '"><div class="form-grid">' +
           '<div class="field"><label>数值</label><input class="st-value" type="text" value="' + escapeAttr(item.value || '') + '"></div>' +
           '<div class="field"><label>单位</label><input class="st-unit" type="text" value="' + escapeAttr(item.unit || '') + '"></div>' +
           '<div class="field full"><label>说明</label><input class="st-label" type="text" value="' + escapeAttr(item.label || '') + '"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
-      '<button type="button" class="btn btn-ghost btn-sm rep-add-stats">＋ 添加统计</button></div>';
+      '<button type="button" class="btn btn-ghost btn-sm" id="rep-add-stat">＋ 添加数据</button></div>';
   }
-
   function bindStatsRepeater() {
     var root = $('rep-stats');
     if (!root) return;
@@ -1641,7 +1656,7 @@
     var pageInfo = paginateRows(rows, state.listPages.products, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.products) state.listPages.products = pageInfo.page;
     list.innerHTML = pageInfo.rows.map(function (p) {
-      var meta = [p.category, p.model, 'ID ' + p.id].filter(Boolean).join(' · ');
+      var meta = [p.model, p.category].filter(Boolean).join(' · ');
       return itemCardHtml({
         id: p.id,
         title: p.name,
@@ -1734,7 +1749,7 @@
         '<div class="item-main">' +
         '<div class="item-title-row"><span class="item-title">' + escapeHtml(c.name) + '</span></div>' +
         '<div class="item-meta">显示顺序 ' + escapeHtml(String(c.sortOrder)) +
-        ' · 系统标识 ' + escapeHtml(c.key) + '</div></div>' +
+        '' + '</div></div>' +
         '<div class="item-actions">' +
         '<button type="button" class="btn-edit" data-edit-pc="' + escapeAttr(c.key) + '">编辑</button>' +
         '</div></div>';
@@ -1761,7 +1776,7 @@
         '<div class="item-main">' +
         '<div class="item-title-row"><span class="item-title">' + escapeHtml(c.name) + '</span></div>' +
         '<div class="item-meta">显示顺序 ' + escapeHtml(String(c.sortOrder)) +
-        ' · 系统标识 ' + escapeHtml(c.key) + '</div></div>' +
+        '' + '</div></div>' +
         '<div class="item-actions">' +
         '<button type="button" class="btn-edit" data-edit-nc="' + escapeAttr(c.key) + '">编辑</button>' +
         '</div></div>';
@@ -1788,7 +1803,7 @@
         '<div class="item-main">' +
         '<div class="item-title-row"><span class="item-title">' + escapeHtml(c.name) + '</span></div>' +
         '<div class="item-meta">显示顺序 ' + escapeHtml(String(c.sortOrder)) +
-        ' · 系统标识 ' + escapeHtml(c.key) + '</div></div>' +
+        '' + '</div></div>' +
         '<div class="item-actions">' +
         '<button type="button" class="btn-edit" data-edit-sc="' + escapeAttr(c.key) + '">编辑</button>' +
         '</div></div>';
@@ -1846,9 +1861,11 @@
       '<div class="category-editor-intro">' +
         '<span class="category-editor-context">' + meta.hub + ' · 分类管理</span>' +
         '<h4>' + (isNew ? '创建一个新的' : '修改当前') + meta.label + '</h4>' +
-        '<p>保存后会自动同步到' + meta.sync + '。</p>' +
+        '<p>这里只维护访客看得见的分类名称；系统关联和多语言标识会自动处理。</p>' +
       '</div>' +
-      '<form id="category-form" novalidate data-category-kind="' + escapeAttr(kind) + '" data-category-mode="' + (isNew ? 'create' : 'edit') + '"' + (cat && cat.key ? ' data-category-key="' + escapeAttr(cat.key) + '"' : '') + '>' +
+      '<form id="category-form" novalidate data-category-kind="' + escapeAttr(kind) +
+        '" data-category-mode="' + (isNew ? 'create' : 'edit') +
+        '" data-category-key="' + escapeAttr(key) + '">' +
         '<div class="category-editor-card">' +
           '<div class="form-grid category-form-grid">' +
             '<div class="field full"><label for="category-name">分类名称 <span class="required-mark">*</span></label>' +
@@ -1856,26 +1873,15 @@
               '<p class="field-help">这是运营人员和前台访客看到的名称。</p><p class="field-error" id="category-name-error"></p></div>' +
             '<div class="field full"><label for="category-sort">显示顺序</label>' +
               '<input id="category-sort" type="number" min="0" step="1" value="' + escapeAttr(String(sortOrder)) + '">' +
-              '<p class="field-help">数字越小越靠前；建议按 10、20、30 排列，方便以后插入。</p><p class="field-error" id="category-sort-error"></p></div>' +
+              '<p class="field-help">数字越小越靠前；后续可升级为拖动排序。</p><p class="field-error" id="category-sort-error"></p></div>' +
           '</div>' +
-          '<div class="category-live-preview"><span>前台筛选预览</span><strong id="category-preview-name">' + escapeHtml(cat ? cat.name : '新分类') + '</strong></div>' +
-          '<details class="category-advanced">' +
-            '<summary>高级设置 <span>一般无需修改</span></summary>' +
-            '<div class="form-grid">' +
-              '<div class="field full"><label for="category-key">系统标识</label>' +
-                '<input id="category-key" type="text" maxlength="32" value="' + escapeAttr(key) + '"' + (isNew ? '' : ' readonly') + '>' +
-                '<p class="field-help">用于系统关联，需以英文小写字母开头。' + (isNew ? '已自动生成，也可以在创建前修改。' : '创建后不可修改，避免影响已有内容。') + '</p><p class="field-error" id="category-key-error"></p></div>' +
-              (meta.productLike
-                ? '<div class="field"><label for="category-name-en">英文名称</label><input id="category-name-en" type="text" value="' + escapeAttr(cat ? (cat.nameEn || '') : '') + '"></div>' +
-                  '<div class="field"><label for="category-filter-en">英文筛选标识</label><input id="category-filter-en" type="text" value="' + escapeAttr(cat ? (cat.filterKeyEn || key) : key) + '"></div>'
-                : '') +
-            '</div>' +
-          '</details>' +
+          '<div class="category-live-preview"><span>前台筛选预览</span><strong id="category-preview-name">' +
+            escapeHtml(cat ? cat.name : '新分类') + '</strong></div>' +
         '</div>' +
         '<div class="category-editor-actions">' +
           '<div>' + (!isNew
             ? '<button type="button" class="btn btn-ghost btn-danger-text" id="delete-category">删除分类</button>'
-            : '<span class="category-save-note">填写完成后保存即可创建</span>') + '</div>' +
+            : '<span class="category-save-note">填写名称后即可创建，保存后系统会自动完成关联</span>') + '</div>' +
           '<div class="toolbar"><button type="button" class="btn btn-ghost" id="cancel-category">取消</button>' +
             '<button type="submit" class="btn btn-accent" id="save-category">' + (isNew ? '创建分类' : '保存修改') + '</button></div>' +
         '</div>' +
@@ -1889,9 +1895,6 @@
       });
       setTimeout(function () { nameInput.focus(); }, 0);
     }
-    $('category-key').addEventListener('input', function () {
-      setCategoryFieldError('category-key', '');
-    });
     $('category-sort').addEventListener('input', function () {
       setCategoryFieldError('category-sort', '');
     });
@@ -1910,7 +1913,6 @@
       };
     }
   }
-
   async function saveCategoryEditor(kind, cat) {
     var meta = categoryKindMeta(kind);
     var form = $('category-form');
@@ -1924,24 +1926,23 @@
     }
     var isNew = !cat;
     var name = val('category-name').trim();
-    var key = val('category-key').trim().toLowerCase();
+    var key = (form && form.getAttribute('data-category-key') || (cat && cat.key) || generatedCategoryKey(kind)).trim().toLowerCase();
     var sortRaw = val('category-sort').trim();
     var validKey = /^[a-z][a-z0-9_-]{0,31}$/.test(key);
     var validSort = /^\d+$/.test(sortRaw);
     setCategoryFieldError('category-name', name ? '' : '请填写分类名称');
-    setCategoryFieldError('category-key', validKey ? '' : '请使用英文小写字母开头，可包含数字、短横线或下划线');
     setCategoryFieldError('category-sort', validSort ? '' : '请输入大于或等于 0 的整数');
     if (!name || !validKey || !validSort) {
-      if (!validKey) revealCategoryAdvanced();
-      var firstInvalid = !name ? $('category-name') : (!validSort ? $('category-sort') : $('category-key'));
+      if (!validKey) toast('系统未能生成分类标识，请关闭后重新创建', true);
+      var firstInvalid = !name ? $('category-name') : $('category-sort');
       if (firstInvalid) firstInvalid.focus();
       return;
     }
 
     var payload = { key: key, name: name, sortOrder: Number(sortRaw) };
     if (meta.productLike) {
-      payload.nameEn = val('category-name-en').trim();
-      payload.filterKeyEn = val('category-filter-en').trim() || key;
+      payload.nameEn = cat ? (cat.nameEn || '') : '';
+      payload.filterKeyEn = cat ? (cat.filterKeyEn || key) : key;
     }
     var saveButton = $('save-category');
     saveButton.disabled = true;
@@ -1956,14 +1957,8 @@
       closeDrawer();
       toast(meta.label + (isNew ? '已创建' : '已保存'));
     } catch (err) {
-      if (err.message === 'already_exists') {
-        revealCategoryAdvanced();
-        setCategoryFieldError('category-key', '该系统标识已存在，请换一个');
-        $('category-key').focus();
-      } else if (err.message === 'invalid_category_key') {
-        revealCategoryAdvanced();
-        setCategoryFieldError('category-key', '系统标识格式不正确');
-        $('category-key').focus();
+      if (err.message === 'already_exists' || err.message === 'invalid_category_key') {
+        toast('系统分类标识冲突，请关闭窗口后重新创建', true);
       } else if (err.message === 'missing_category_name') {
         setCategoryFieldError('category-name', '请填写分类名称');
       } else if (err.message === 'not_found') {
@@ -1975,7 +1970,6 @@
       saveButton.textContent = isNew ? '创建分类' : '保存修改';
     }
   }
-
   function editProductCategory(cat) {
     openCategoryEditor('products', cat);
   }
@@ -2044,9 +2038,7 @@
 
   function fillProductForm(item, isNew) {
     var title = item.name || '未命名产品';
-    var context = isNew
-      ? '尚未保存 · 创建后生成内容 ID'
-      : [item.model || null, item.id != null ? ('ID ' + item.id) : null].filter(Boolean).join(' · ');
+    var context = isNew ? '填写产品信息后保存' : (item.model || item.category || '产品内容');
     openDrawer('product', title, {
       eyebrow: isNew ? '新增产品' : '编辑产品',
       context: context,
@@ -2108,7 +2100,7 @@
           unpublishCatalog('products', item.id).catch(function (e) { toast(e.message, true); });
         };
       }
-      $('delete-product').onclick = function () { deleteCatalog('products', item.id); };
+      $('delete-product').onclick = function () { deleteCatalog('products', item.id, item.name); };
     }
   }
   async function saveProduct() {
@@ -2172,7 +2164,7 @@
     var pageInfo = paginateRows(rows, state.listPages.news, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.news) state.listPages.news = pageInfo.page;
     list.innerHTML = pageInfo.rows.map(function (n) {
-      var meta = [n.category, n.date, 'ID ' + n.id].filter(Boolean).join(' · ');
+      var meta = [n.category, n.date].filter(Boolean).join(' · ');
       return itemCardHtml({
         id: n.id,
         title: n.title,
@@ -2209,9 +2201,7 @@
 
   function fillNewsForm(item, isNew) {
     var title = item.title || '未命名新闻';
-    var context = isNew
-      ? '尚未保存 · 创建后生成内容 ID'
-      : [item.date || null, item.id != null ? ('ID ' + item.id) : null].filter(Boolean).join(' · ');
+    var context = isNew ? '填写新闻内容后保存' : (item.date || item.category || '新闻内容');
     openDrawer('news', title, {
       eyebrow: isNew ? '新增新闻' : '编辑新闻',
       context: context,
@@ -2272,7 +2262,7 @@
           unpublishCatalog('news', item.id).catch(function (e) { toast(e.message, true); });
         };
       }
-      $('delete-news').onclick = function () { deleteCatalog('news', item.id); };
+      $('delete-news').onclick = function () { deleteCatalog('news', item.id, item.title); };
     }
   }
   async function saveNews() {
@@ -2333,7 +2323,7 @@
     if (pageInfo.page !== state.listPages.solutions) state.listPages.solutions = pageInfo.page;
     list.innerHTML = pageInfo.rows.map(function (s) {
       var slotLabel = s.homeSlot === 'hero' ? '标杆方案' : s.homeSlot === 'category' ? '精选方案' : '';
-      var meta = [s.category, s.slug ? ('落地页 ' + s.slug) : null, 'ID ' + s.id].filter(Boolean).join(' · ');
+      var meta = [s.category].filter(Boolean).join(' · ');
       return itemCardHtml({
         id: s.id,
         title: s.name,
@@ -2372,15 +2362,14 @@
       capacitor: '电容', ac: '空调', microwave: '微波炉', coffee: '咖啡机',
       tablet: '平板', headlight: '车灯', robot: '机器人',
     };
-    return '<div class="field"><label>对应官网落地页</label><select id="f-slug">' +
-      '<option value="">（通用详情页，不绑固定落地页）</option>' +
+    return '<div class="field"><label>详情页面类型</label><select id="f-slug">' +
+      '<option value="">通用方案详情页</option>' +
       slugOpts.map(function (s) {
         return '<option value="' + s + '"' + (item.slug === s ? ' selected' : '') + '>' +
-          escapeHtml((slugLabels[s] || s) + ' · ' + s + '-solution.html') + '</option>';
+          escapeHtml(slugLabels[s] || s) + '</option>';
       }).join('') +
-      '</select></div>';
+      '</select><p class="field-help">按业务名称选择即可，系统会自动关联正确页面。</p></div>';
   }
-
   function solutionHomeSlotBlock(item) {
     var cur = item.homeSlot || '';
     function opt(value, title, desc) {
@@ -2406,9 +2395,7 @@
 
   function fillSolutionForm(item, isNew) {
     var title = item.name || '未命名方案';
-    var context = isNew
-      ? '尚未保存 · 新建方案默认不在首页展示'
-      : [item.category || null, item.id != null ? ('ID ' + item.id) : null].filter(Boolean).join(' · ');
+    var context = isNew ? '填写方案内容后保存 · 默认不在首页展示' : (item.category || '方案内容');
     openDrawer('solution', title, {
       eyebrow: isNew ? '新增方案' : '编辑方案',
       context: context,
@@ -2492,7 +2479,7 @@
           unpublishCatalog('solutions', item.id).catch(function (e) { toast(e.message, true); });
         };
       }
-      $('delete-solution').onclick = function () { deleteCatalog('solutions', item.id); };
+      $('delete-solution').onclick = function () { deleteCatalog('solutions', item.id, item.name); };
     }
   }
   async function saveSolution() {
@@ -2543,8 +2530,10 @@
     }).catch(function (e) { toast(e.message, true); });
   }
 
-  async function deleteCatalog(kind, id) {
-    if (!confirm('确认删除 ' + kind + ' #' + id + '？此操作不可撤销。')) return;
+  async function deleteCatalog(kind, id, title) {
+    var kindLabels = { products: '产品', solutions: '方案', news: '新闻' };
+    var subject = title ? '“' + title + '”' : (kindLabels[kind] || '该内容');
+    if (!confirm('确认删除' + subject + '？此操作不可撤销。')) return;
     var path = '/admin/' + kind + '/' + encodeURIComponent(id);
     try {
       await api(path, { method: 'DELETE' });
@@ -2557,7 +2546,7 @@
         throw err;
       }
     }
-    toast('已删除 #' + id);
+    toast('已删除' + subject);
     closeDrawer();
     if (kind === 'products') {
       state.selectedProductId = null;
@@ -2625,41 +2614,66 @@
     if (!root) return [];
     prevItems = prevItems || [];
     return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row, i) {
-      var item = {
+      var prev = prevItems[rowSourceIndex(row, i)] || {};
+      return Object.assign({}, prev, {
         value: (row.querySelector('.st-value') || {}).value || '',
         unit: (row.querySelector('.st-unit') || {}).value || '',
         label: (row.querySelector('.st-label') || {}).value || '',
-      };
-      if (prevItems[i] && prevItems[i].emphasis) item.emphasis = prevItems[i].emphasis;
-      return item;
+      });
     }).filter(function (x) { return x.value || x.label; });
   }
+  function textFromHtml(html) {
+    var normalized = String(html || '')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n');
+    var holder = document.createElement('div');
+    holder.innerHTML = normalized;
+    return (holder.textContent || holder.innerText || '').replace(/\u00a0/g, ' ').trim();
+  }
 
+  function textToHtml(text) {
+    return escapeHtml(String(text || '').trim()).replace(/\r?\n/g, '<br>');
+  }
+
+  function rowSourceIndex(row, fallback) {
+    var raw = row && row.getAttribute('data-source-index');
+    var parsed = raw == null || raw === '' ? NaN : Number(raw);
+    return Number.isInteger(parsed) && parsed >= 0 ? parsed : fallback;
+  }
+
+  var PAGE_LINK_CHOICES = [
+    { value: 'products.html', label: '产品中心' },
+    { value: 'solutions.html', label: '解决方案' },
+    { value: 'about.html', label: '关于我们' },
+    { value: 'news.html', label: '新闻中心' },
+    { value: 'contact.html', label: '联系我们' },
+  ];
+
+  function pageLinkSelect(name, label, value) {
+    var current = value || '';
+    var choices = PAGE_LINK_CHOICES.slice();
+    if (current && !choices.some(function (item) { return item.value === current; })) {
+      choices.push({ value: current, label: '保留当前跳转' });
+    }
+    return '<div class="field"><label for="f-' + name + '">' + escapeHtml(label) + '</label>' +
+      '<select id="f-' + name + '">' +
+      choices.map(function (item) {
+        return '<option value="' + escapeAttr(item.value) + '"' +
+          (item.value === current ? ' selected' : '') + '>' + escapeHtml(item.label) + '</option>';
+      }).join('') + '</select>' +
+      '<p class="field-help">只需选择要打开的前台页面，无需填写链接。</p></div>';
+  }
   /* ——— Home service steps / contact channels / about repeaters ——— */
   var HOME_STEP_BLANK =
     '<div class="form-grid">' +
-    '<div class="field"><label>序号</label><input class="hs-badge" type="text"></div>' +
-    '<div class="field"><label>样式</label><select class="hs-style">' +
-    '<option value="start">start</option><option value="mid" selected>mid</option><option value="accent">accent</option></select></div>' +
-    '<div class="field full"><label>标题</label><input class="hs-title" type="text"></div>' +
-    '<div class="field full"><label>要点（每行一条）</label><textarea class="hs-items"></textarea></div></div>' +
+    '<div class="field full"><label>步骤标题</label><input class="hs-title" type="text"></div>' +
+    '<div class="field full"><label>步骤要点（每行一条）</label><textarea class="hs-items"></textarea></div></div>' +
     '<button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
-
   var CHANNEL_BLANK =
     '<div class="form-grid">' +
-    '<div class="field"><label>类型</label><input class="ch-type" type="text" value="phone"></div>' +
-    '<div class="field"><label>图标</label><input class="ch-icon" type="text"></div>' +
-    '<div class="field"><label>标题</label><input class="ch-title" type="text"></div>' +
-    '<div class="field"><label>显示值</label><input class="ch-value" type="text"></div>' +
-    '<div class="field"><label>眉题</label><input class="ch-eyebrow" type="text"></div>' +
-    '<div class="field"><label>提示</label><input class="ch-hint" type="text"></div>' +
-    '<div class="field full"><label>链接</label><input class="ch-href" type="text"></div>' +
-    '<div class="field"><label>打开方式</label><select class="ch-target"><option value="_self">当前页</option><option value="_blank">新窗口</option></select></div>' +
-    '<div class="field"><label>占列</label><input class="ch-col" type="text" value="1"></div>' +
-    '<div class="field"><label>悬停样式</label><input class="ch-hover" type="text" value="dark"></div>' +
-    '<div class="field full"><label>按钮文案（可选）</label><input class="ch-cta" type="text"></div></div>' +
-    '<button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
-
+    '<div class="field full"><label>对外名称</label><input class="ch-title" type="text"></div>' +
+    '<div class="field full"><label>号码或邮箱</label><input class="ch-value" type="text"></div>' +
+    '<div class="field full"><label>联系人或辅助说明</label><input class="ch-hint" type="text"></div></div>';
   var PILLAR_BLANK =
     '<div class="form-grid"><div class="field full"><label>标题</label><input class="pl-title" type="text"></div>' +
     '<div class="field full"><label>说明</label><textarea class="pl-body"></textarea></div></div>' +
@@ -2667,144 +2681,131 @@
 
   var CULTURE_PILLAR_BLANK =
     '<div class="form-grid"><div class="field full"><label>标题</label><input class="cp-title" type="text"></div>' +
-    '<div class="field full"><label>正文 HTML</label><textarea class="cp-body"></textarea></div></div>' +
+    '<div class="field full"><label>正文</label><textarea class="cp-body"></textarea>' +
+    '<p class="field-help">直接输入文字和换行，无需填写 HTML。</p></div></div>' +
     '<button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
-
   var CLIENT_BLANK =
     '<div class="form-grid">' +
     '<div class="field full image-field"><label>Logo</label><div class="image-field-row">' +
     '<input class="cl-image" type="text"><button type="button" class="btn btn-ghost btn-sm" data-pick-inline>从媒体库选图</button></div></div>' +
-    '<div class="field full"><label>说明 / Alt</label><input class="cl-alt" type="text"></div></div>' +
+    '<div class="field full"><label>客户名称</label><input class="cl-alt" type="text"></div></div>' +
     '<button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
-
   var CAROUSEL_SLIDE_BLANK =
     '<div class="form-grid">' +
     '<div class="field full image-field"><label>图片</label><div class="image-field-row">' +
     '<input class="cs-image" type="text"><button type="button" class="btn btn-ghost btn-sm" data-pick-inline>从媒体库选图</button></div></div>' +
     '<div class="field"><label>标题</label><input class="cs-title" type="text"></div>' +
-    '<div class="field"><label>标签</label><input class="cs-tag" type="text"></div>' +
+    '<div class="field"><label>上方标签</label><input class="cs-tag" type="text"></div>' +
     '<div class="field full"><label>描述</label><input class="cs-desc" type="text"></div>' +
-    '<div class="field full"><label>图片说明</label><input class="cs-alt" type="text"></div>' +
-    '<div class="field"><label>圆点文案</label><input class="cs-dot" type="text"></div>' +
-    '<div class="field"><label>圆点无障碍</label><input class="cs-dotAria" type="text"></div></div>' +
+    '<div class="field"><label>切换标签</label><input class="cs-dot" type="text"></div></div>' +
     '<button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
-
   var TIMELINE_BLANK =
     '<div class="form-grid">' +
     '<div class="field"><label>年份</label><input class="tl-year" type="text"></div>' +
-    '<div class="field"><label>侧边</label><select class="tl-side"><option value="left">左</option><option value="right">右</option></select></div>' +
-    '<div class="field"><label>强调</label><select class="tl-accent"><option value="false">否</option><option value="true">是</option></select></div>' +
-    '<div class="field"><label>年份强调</label><select class="tl-yearAccent"><option value="false">否</option><option value="true">是</option></select></div>' +
-    '<div class="field full"><label>导语 HTML（可选）</label><textarea class="tl-lead"></textarea></div>' +
-    '<div class="field full"><label>正文 HTML</label><textarea class="tl-body"></textarea></div>' +
-    '<div class="field full"><label>移动端短文</label><textarea class="tl-mobile"></textarea></div></div>' +
+    '<div class="field full"><label>重点一句（可选）</label><textarea class="tl-lead"></textarea></div>' +
+    '<div class="field full"><label>详细内容</label><textarea class="tl-body"></textarea></div>' +
+    '<div class="field full"><label>手机端精简内容（可选）</label><textarea class="tl-mobile"></textarea>' +
+    '<p class="field-help">留空时手机端自动使用详细内容。</p></div></div>' +
     '<button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
-
   var CRED_ITEM_BLANK =
     '<div class="form-grid">' +
     '<div class="field full image-field"><label>图片</label><div class="image-field-row">' +
     '<input class="ci-image" type="text"><button type="button" class="btn btn-ghost btn-sm" data-pick-inline>从媒体库选图</button></div></div>' +
-    '<div class="field full"><label>说明 / Alt</label><input class="ci-alt" type="text"></div></div>' +
-    '<button type="button" class="btn btn-ghost btn-sm rep-remove-item">删除图片</button>';
-
-  function credGroupRowHtml(g) {
-    g = g || { id: '', title: '', layout: 'grid', marqueeDuration: '', items: [] };
+    '</div><button type="button" class="btn btn-ghost btn-sm rep-remove-item">删除图片</button>';
+  function credGroupRowHtml(g, sourceIndex) {
+    g = g || { title: '', items: [] };
     var items = g.items && g.items.length ? g.items : [{ image: '', imageAlt: '' }];
-    return '<div class="repeater-row cred-group"><div class="form-grid">' +
-      '<div class="field"><label>分组 ID</label><input class="cg-id" type="text" value="' + escapeAttr(g.id || '') + '"></div>' +
-      '<div class="field"><label>布局</label><select class="cg-layout">' +
-      ['grid', 'marquee'].map(function (o) {
-        return '<option value="' + o + '"' + ((g.layout || 'grid') === o ? ' selected' : '') + '>' + o + '</option>';
-      }).join('') + '</select></div>' +
+    var sourceAttr = Number.isInteger(sourceIndex) ? ' data-source-index="' + sourceIndex + '"' : '';
+    return '<div class="repeater-row cred-group"' + sourceAttr + '><div class="form-grid">' +
       '<div class="field full"><label>分组标题</label><input class="cg-title" type="text" value="' + escapeAttr(g.title || '') + '"></div>' +
-      '<div class="field"><label>跑马灯时长</label><input class="cg-duration" type="text" value="' + escapeAttr(g.marqueeDuration || '') + '" placeholder="如 40s"></div>' +
-      '</div><h4 class="sub-title">图片</h4><div class="repeater nested-rep">' +
-      items.map(function (it) {
-        return '<div class="repeater-row">' +
+      '</div><p class="field-help">展示方式和滚动速度由前端设计自动处理。</p>' +
+      '<h4 class="sub-title">图片</h4><div class="repeater nested-rep">' +
+      items.map(function (it, itemIndex) {
+        return '<div class="repeater-row" data-source-index="' + itemIndex + '">' +
           '<div class="form-grid">' +
           '<div class="field full image-field"><label>图片</label><div class="image-field-row">' +
           '<input class="ci-image" type="text" value="' + escapeAttr(it.image || '') + '">' +
           '<button type="button" class="btn btn-ghost btn-sm" data-pick-inline>从媒体库选图</button></div></div>' +
-          '<div class="field full"><label>说明 / Alt</label><input class="ci-alt" type="text" value="' + escapeAttr(it.imageAlt || '') + '"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove-item">删除图片</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-cred-item">＋ 添加图片</button></div>' +
       '<button type="button" class="btn btn-ghost btn-sm rep-remove">删除分组</button></div>';
   }
-
   function homeServiceStepsHtml(steps) {
-    steps = steps && steps.length ? steps : [{ badge: '', badgeStyle: 'mid', title: '', items: [] }];
+    steps = steps && steps.length ? steps : [{ title: '', items: [] }];
     return '<div class="repeater" id="rep-home-steps">' +
-      steps.map(function (s) {
-        return '<div class="repeater-row"><div class="form-grid">' +
-          '<div class="field"><label>序号</label><input class="hs-badge" type="text" value="' + escapeAttr(s.badge || '') + '"></div>' +
-          '<div class="field"><label>样式</label><select class="hs-style">' +
-          ['start', 'mid', 'accent'].map(function (o) {
-            return '<option value="' + o + '"' + ((s.badgeStyle || 'mid') === o ? ' selected' : '') + '>' + o + '</option>';
-          }).join('') + '</select></div>' +
-          '<div class="field full"><label>标题</label><input class="hs-title" type="text" value="' + escapeAttr(s.title || '') + '"></div>' +
-          '<div class="field full"><label>要点（每行一条）</label><textarea class="hs-items">' + escapeHtml((s.items || []).join('\n')) + '</textarea></div>' +
+      steps.map(function (s, i) {
+        return '<div class="repeater-row" data-source-index="' + i + '">' +
+          '<div class="repeater-row-head"><strong>第 ' + (i + 1) + ' 步</strong>' +
+          '<span class="help">序号和展示样式由系统自动处理</span></div><div class="form-grid">' +
+          '<div class="field full"><label>步骤标题</label><input class="hs-title" type="text" value="' + escapeAttr(s.title || '') + '"></div>' +
+          '<div class="field full"><label>步骤要点（每行一条）</label><textarea class="hs-items">' + escapeHtml((s.items || []).join('\n')) + '</textarea></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-generic">＋ 添加步骤</button></div>';
   }
-
   function collectHomeServiceSteps() {
     var root = $('rep-home-steps');
     if (!root) return [];
-    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row) {
+    var rows = Array.prototype.slice.call(root.querySelectorAll(':scope > .repeater-row'));
+    return rows.map(function (row, i) {
       return {
-        badge: (row.querySelector('.hs-badge') || {}).value || '',
-        badgeStyle: (row.querySelector('.hs-style') || {}).value || 'mid',
+        badge: String(i + 1).padStart(2, '0'),
+        badgeStyle: i === 0 ? 'start' : (i === rows.length - 1 ? 'accent' : 'mid'),
         title: (row.querySelector('.hs-title') || {}).value || '',
         items: ((row.querySelector('.hs-items') || {}).value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
       };
-    }).filter(function (x) { return x.title || x.badge; });
+    }).filter(function (x) { return x.title || x.items.length; });
   }
-
   function channelRowsHtml(items) {
-    items = items && items.length ? items : [{ type: 'phone', icon: '', href: '', target: '_self', eyebrow: '', title: '', value: '', hint: '', cta: '', colSpan: 1, hover: 'dark' }];
-    return '<div class="repeater" id="rep-channels">' +
-      items.map(function (c) {
-        return '<div class="repeater-row"><div class="form-grid">' +
-          '<div class="field"><label>类型</label><input class="ch-type" type="text" value="' + escapeAttr(c.type || '') + '"></div>' +
-          '<div class="field"><label>图标</label><input class="ch-icon" type="text" value="' + escapeAttr(c.icon || '') + '"></div>' +
-          '<div class="field"><label>标题</label><input class="ch-title" type="text" value="' + escapeAttr(c.title || '') + '"></div>' +
-          '<div class="field"><label>显示值</label><input class="ch-value" type="text" value="' + escapeAttr(c.value || '') + '"></div>' +
-          '<div class="field"><label>眉题</label><input class="ch-eyebrow" type="text" value="' + escapeAttr(c.eyebrow || '') + '"></div>' +
-          '<div class="field"><label>提示</label><input class="ch-hint" type="text" value="' + escapeAttr(c.hint || '') + '"></div>' +
-          '<div class="field full"><label>链接</label><input class="ch-href" type="text" value="' + escapeAttr(c.href || '') + '"></div>' +
-          '<div class="field"><label>打开方式</label><select class="ch-target"><option value="_self"' + (c.target !== '_blank' ? ' selected' : '') + '>当前页</option><option value="_blank"' + (c.target === '_blank' ? ' selected' : '') + '>新窗口</option></select></div>' +
-          '<div class="field"><label>占列</label><input class="ch-col" type="text" value="' + escapeAttr(c.colSpan != null ? c.colSpan : 1) + '"></div>' +
-          '<div class="field"><label>悬停样式</label><input class="ch-hover" type="text" value="' + escapeAttr(c.hover || 'dark') + '"></div>' +
-          '<div class="field full"><label>按钮文案（可选）</label><input class="ch-cta" type="text" value="' + escapeAttr(c.cta || '') + '"></div>' +
-          '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
-      }).join('') +
-      '<button type="button" class="btn btn-ghost btn-sm rep-add-generic">＋ 添加渠道</button></div>';
+    items = items && items.length ? items : [
+      { type: 'phone', title: '国内业务专线', value: '', hint: '' },
+      { type: 'whatsapp', title: 'WhatsApp', value: '', hint: '' },
+      { type: 'email', title: '官方电子邮箱', value: '', hint: '' },
+    ];
+    function meta(type) {
+      if (type === 'email') return { title: '官方邮箱', value: '邮箱地址' };
+      if (type === 'whatsapp') return { title: 'WhatsApp', value: 'WhatsApp 号码' };
+      return { title: '国内业务电话', value: '电话号码' };
+    }
+    return '<div class="repeater contact-channel-list" id="rep-channels">' +
+      items.map(function (c, i) {
+        var copy = meta(c.type);
+        return '<div class="repeater-row contact-channel-card" data-source-index="' + i + '">' +
+          '<div class="repeater-row-head"><strong>' + escapeHtml(copy.title) + '</strong>' +
+          '<span class="help">图标、链接和展示样式由系统处理</span></div><div class="form-grid">' +
+          '<div class="field full"><label>对外名称</label><input class="ch-title" type="text" value="' + escapeAttr(c.title || '') + '"></div>' +
+          '<div class="field full"><label>' + escapeHtml(copy.value) + '</label><input class="ch-value" type="text" value="' + escapeAttr(c.value || '') + '"></div>' +
+          '<div class="field full"><label>联系人或辅助说明</label><input class="ch-hint" type="text" value="' + escapeAttr(c.hint || '') + '"></div>' +
+          '</div></div>';
+      }).join('') + '</div>';
   }
-
-  function collectChannels() {
+  function collectChannels(prevItems) {
     var root = $('rep-channels');
     if (!root) return [];
-    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row) {
-      var ch = {
-        type: (row.querySelector('.ch-type') || {}).value || '',
-        icon: (row.querySelector('.ch-icon') || {}).value || '',
-        href: (row.querySelector('.ch-href') || {}).value || '',
-        target: (row.querySelector('.ch-target') || {}).value || '_self',
-        eyebrow: (row.querySelector('.ch-eyebrow') || {}).value || '',
+    prevItems = prevItems || [];
+    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row, i) {
+      var prev = prevItems[rowSourceIndex(row, i)] || {};
+      var type = prev.type || (i === 1 ? 'whatsapp' : (i === 2 ? 'email' : 'phone'));
+      var value = (row.querySelector('.ch-value') || {}).value || '';
+      var href = prev.href || '';
+      if (type === 'email') href = 'mailto:' + value.trim();
+      else if (type === 'whatsapp') href = 'https://wa.me/' + value.replace(/\D/g, '');
+      else if (type === 'phone') href = 'tel:' + value.replace(/[^\d+]/g, '');
+      var defaults = type === 'whatsapp'
+        ? { icon: '💬', target: '_blank', colSpan: 1, hover: 'whatsapp' }
+        : type === 'email'
+          ? { icon: '📧', target: '_self', colSpan: 2, hover: 'dark', cta: '点击发送邮件 →' }
+          : { icon: '📞', target: '_self', colSpan: 1, hover: 'dark' };
+      return Object.assign({}, defaults, prev, {
+        type: type,
+        href: href,
         title: (row.querySelector('.ch-title') || {}).value || '',
-        value: (row.querySelector('.ch-value') || {}).value || '',
+        value: value,
         hint: (row.querySelector('.ch-hint') || {}).value || '',
-        colSpan: Number((row.querySelector('.ch-col') || {}).value) || 1,
-        hover: (row.querySelector('.ch-hover') || {}).value || 'dark',
-      };
-      var cta = (row.querySelector('.ch-cta') || {}).value || '';
-      if (cta) ch.cta = cta;
-      return ch;
-    }).filter(function (x) { return x.title || x.value || x.href; });
+      });
+    }).filter(function (x) { return x.title || x.value; });
   }
-
   function pillarsRowsHtml(items) {
     items = items && items.length ? items : [{ title: '', body: '' }];
     return '<div class="repeater" id="rep-pillars">' +
@@ -2831,124 +2832,121 @@
   function culturePillarsHtml(items) {
     items = items && items.length ? items : [{ title: '', bodyHtml: '' }];
     return '<div class="repeater" id="rep-culture-pillars">' +
-      items.map(function (p) {
-        return '<div class="repeater-row"><div class="form-grid">' +
+      items.map(function (p, i) {
+        return '<div class="repeater-row" data-source-index="' + i + '"><div class="form-grid">' +
           '<div class="field full"><label>标题</label><input class="cp-title" type="text" value="' + escapeAttr(p.title || '') + '"></div>' +
-          '<div class="field full"><label>正文 HTML</label><textarea class="cp-body">' + escapeHtml(p.bodyHtml || '') + '</textarea></div>' +
+          '<div class="field full"><label>正文</label><textarea class="cp-body">' + escapeHtml(textFromHtml(p.bodyHtml || '')) + '</textarea>' +
+          '<p class="field-help">直接输入文字和换行，无需填写 HTML。</p></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-generic">＋ 添加支柱</button></div>';
   }
-
-  function collectCulturePillars() {
+  function collectCulturePillars(prevItems) {
     var root = $('rep-culture-pillars');
     if (!root) return [];
-    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row) {
-      return {
+    prevItems = prevItems || [];
+    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row, i) {
+      var prev = prevItems[rowSourceIndex(row, i)] || {};
+      return Object.assign({}, prev, {
         title: (row.querySelector('.cp-title') || {}).value || '',
-        bodyHtml: (row.querySelector('.cp-body') || {}).value || '',
-      };
+        bodyHtml: textToHtml((row.querySelector('.cp-body') || {}).value || ''),
+      });
     }).filter(function (x) { return x.title || x.bodyHtml; });
   }
-
   function clientsItemsHtml(items) {
     items = items && items.length ? items : [{ image: '', imageAlt: '' }];
     return '<div class="repeater" id="rep-clients">' +
-      items.map(function (it) {
-        return '<div class="repeater-row"><div class="form-grid">' +
+      items.map(function (it, i) {
+        return '<div class="repeater-row" data-source-index="' + i + '"><div class="form-grid">' +
           '<div class="field full image-field"><label>Logo</label><div class="image-field-row">' +
           '<input class="cl-image" type="text" value="' + escapeAttr(it.image || '') + '">' +
           '<button type="button" class="btn btn-ghost btn-sm" data-pick-inline>从媒体库选图</button></div></div>' +
-          '<div class="field full"><label>说明 / Alt</label><input class="cl-alt" type="text" value="' + escapeAttr(it.imageAlt || '') + '"></div>' +
+          '<div class="field full"><label>客户名称</label><input class="cl-alt" type="text" value="' + escapeAttr(it.imageAlt || '') + '"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-generic">＋ 添加客户</button></div>';
   }
-
-  function collectClientsItems() {
+  function collectClientsItems(prevItems) {
     var root = $('rep-clients');
     if (!root) return [];
-    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row) {
-      return {
+    prevItems = prevItems || [];
+    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row, i) {
+      var prev = prevItems[rowSourceIndex(row, i)] || {};
+      return Object.assign({}, prev, {
         image: (row.querySelector('.cl-image') || {}).value || '',
         imageAlt: (row.querySelector('.cl-alt') || {}).value || '',
-      };
+      });
     }).filter(function (x) { return x.image || x.imageAlt; });
   }
-
   function carouselSlidesHtml(slides) {
-    slides = slides && slides.length ? slides : [{ image: '', imageAlt: '', tag: '', title: '', desc: '', dotLabel: '', dotAria: '' }];
+    slides = slides && slides.length ? slides : [{ image: '', tag: '', title: '', desc: '', dotLabel: '' }];
     return '<div class="repeater" id="rep-carousel">' +
       slides.map(function (s, i) {
-        return '<div class="repeater-row"><div class="form-grid">' +
+        return '<div class="repeater-row" data-source-index="' + i + '"><div class="form-grid">' +
           '<div class="field full image-field"><label>图片</label><div class="image-field-row">' +
           '<input class="cs-image" type="text" value="' + escapeAttr(s.image || '') + '">' +
           '<button type="button" class="btn btn-ghost btn-sm" data-pick-inline>从媒体库选图</button></div></div>' +
           '<div class="field"><label>标题</label><input class="cs-title" type="text" value="' + escapeAttr(s.title || '') + '"></div>' +
-          '<div class="field"><label>标签</label><input class="cs-tag" type="text" value="' + escapeAttr(s.tag || '') + '"></div>' +
+          '<div class="field"><label>上方标签</label><input class="cs-tag" type="text" value="' + escapeAttr(s.tag || '') + '"></div>' +
           '<div class="field full"><label>描述</label><input class="cs-desc" type="text" value="' + escapeAttr(s.desc || '') + '"></div>' +
-          '<div class="field full"><label>图片说明</label><input class="cs-alt" type="text" value="' + escapeAttr(s.imageAlt || '') + '"></div>' +
-          '<div class="field"><label>圆点文案</label><input class="cs-dot" type="text" value="' + escapeAttr(s.dotLabel || '') + '"></div>' +
-          '<div class="field"><label>圆点无障碍</label><input class="cs-dotAria" type="text" value="' + escapeAttr(s.dotAria || '') + '"></div>' +
+          '<div class="field"><label>切换标签</label><input class="cs-dot" type="text" value="' + escapeAttr(s.dotLabel || '') + '"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-generic">＋ 添加幻灯片</button></div>';
   }
-
   function collectCarouselSlides(prevSlides) {
     var root = $('rep-carousel');
     if (!root) return [];
     prevSlides = prevSlides || [];
     return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row, i) {
-      var slide = {
+      var prev = prevSlides[rowSourceIndex(row, i)] || {};
+      var title = (row.querySelector('.cs-title') || {}).value || '';
+      return Object.assign({}, prev, {
         image: (row.querySelector('.cs-image') || {}).value || '',
-        imageAlt: (row.querySelector('.cs-alt') || {}).value || '',
+        imageAlt: title,
         tag: (row.querySelector('.cs-tag') || {}).value || '',
-        title: (row.querySelector('.cs-title') || {}).value || '',
+        title: title,
         desc: (row.querySelector('.cs-desc') || {}).value || '',
         dotLabel: (row.querySelector('.cs-dot') || {}).value || '',
-        dotAria: (row.querySelector('.cs-dotAria') || {}).value || '',
-      };
-      if (prevSlides[i] && prevSlides[i].fetchpriority) slide.fetchpriority = prevSlides[i].fetchpriority;
-      return slide;
+        dotAria: title,
+      });
     }).filter(function (x) { return x.image || x.title; });
   }
-
   function timelineEventsHtml(events) {
-    events = events && events.length ? events : [{ year: '', side: 'left', accent: false, bodyHtml: '', mobileBody: '' }];
+    events = events && events.length ? events : [{ year: '', bodyHtml: '', mobileBody: '' }];
     return '<div class="repeater" id="rep-timeline">' +
-      events.map(function (ev) {
-        return '<div class="repeater-row"><div class="form-grid">' +
+      events.map(function (ev, i) {
+        return '<div class="repeater-row" data-source-index="' + i + '">' +
+          '<div class="repeater-row-head"><strong>历程 ' + (i + 1) + '</strong>' +
+          '<span class="help">左右位置和强调样式由系统自动处理</span></div><div class="form-grid">' +
           '<div class="field"><label>年份</label><input class="tl-year" type="text" value="' + escapeAttr(ev.year || '') + '"></div>' +
-          '<div class="field"><label>侧边</label><select class="tl-side"><option value="left"' + (ev.side !== 'right' ? ' selected' : '') + '>左</option><option value="right"' + (ev.side === 'right' ? ' selected' : '') + '>右</option></select></div>' +
-          '<div class="field"><label>强调</label><select class="tl-accent"><option value="false"' + (!ev.accent ? ' selected' : '') + '>否</option><option value="true"' + (ev.accent ? ' selected' : '') + '>是</option></select></div>' +
-          '<div class="field"><label>年份强调</label><select class="tl-yearAccent"><option value="false"' + (!ev.yearAccent ? ' selected' : '') + '>否</option><option value="true"' + (ev.yearAccent ? ' selected' : '') + '>是</option></select></div>' +
-          '<div class="field full"><label>导语 HTML（可选）</label><textarea class="tl-lead">' + escapeHtml(ev.leadHtml || '') + '</textarea></div>' +
-          '<div class="field full"><label>正文 HTML</label><textarea class="tl-body">' + escapeHtml(ev.bodyHtml || '') + '</textarea></div>' +
-          '<div class="field full"><label>移动端短文</label><textarea class="tl-mobile">' + escapeHtml(ev.mobileBody || '') + '</textarea></div>' +
+          '<div class="field full"><label>重点一句（可选）</label><textarea class="tl-lead">' + escapeHtml(textFromHtml(ev.leadHtml || '')) + '</textarea></div>' +
+          '<div class="field full"><label>详细内容</label><textarea class="tl-body">' + escapeHtml(textFromHtml(ev.bodyHtml || '')) + '</textarea></div>' +
+          '<div class="field full"><label>手机端精简内容（可选）</label><textarea class="tl-mobile">' + escapeHtml(textFromHtml(ev.mobileBody || '')) + '</textarea>' +
+          '<p class="field-help">留空时手机端自动使用详细内容。</p></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-generic">＋ 添加事件</button></div>';
   }
-
   function collectTimelineEvents() {
     var root = $('rep-timeline');
     if (!root) return [];
-    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row) {
-      var ev = {
-        year: (row.querySelector('.tl-year') || {}).value || '',
-        side: (row.querySelector('.tl-side') || {}).value || 'left',
-        accent: (row.querySelector('.tl-accent') || {}).value === 'true',
-        bodyHtml: (row.querySelector('.tl-body') || {}).value || '',
-        mobileBody: (row.querySelector('.tl-mobile') || {}).value || '',
-      };
-      if ((row.querySelector('.tl-yearAccent') || {}).value === 'true') ev.yearAccent = true;
+    var rows = Array.prototype.slice.call(root.querySelectorAll(':scope > .repeater-row'));
+    return rows.map(function (row, i) {
       var lead = (row.querySelector('.tl-lead') || {}).value || '';
-      if (lead) ev.leadHtml = lead;
-      return ev;
+      var body = (row.querySelector('.tl-body') || {}).value || '';
+      var mobile = (row.querySelector('.tl-mobile') || {}).value || '';
+      return {
+        year: (row.querySelector('.tl-year') || {}).value || '',
+        side: i % 2 === 0 ? 'left' : 'right',
+        accent: i === 0 || i === rows.length - 1,
+        yearAccent: i === rows.length - 1,
+        leadHtml: lead ? textToHtml(lead) : '',
+        bodyHtml: textToHtml(body),
+        mobileBody: mobile ? textToHtml(mobile) : '',
+      };
     }).filter(function (x) { return x.year || x.bodyHtml; });
   }
-
   function credentialsGroupsHtml(groups) {
     groups = groups && groups.length ? groups : [{ id: '', title: '', layout: 'grid', items: [] }];
     return '<div class="repeater" id="rep-cred-groups">' +
@@ -2989,27 +2987,29 @@
     });
   }
 
-  function collectCredentialsGroups() {
+  function collectCredentialsGroups(prevGroups) {
     var root = $('rep-cred-groups');
     if (!root) return [];
-    return Array.prototype.map.call(root.querySelectorAll(':scope > .cred-group'), function (group) {
-      var g = {
-        id: (group.querySelector('.cg-id') || {}).value || '',
-        title: (group.querySelector('.cg-title') || {}).value || '',
-        layout: (group.querySelector('.cg-layout') || {}).value || 'grid',
-        items: Array.prototype.map.call(group.querySelectorAll('.nested-rep > .repeater-row'), function (row) {
-          return {
-            image: (row.querySelector('.ci-image') || {}).value || '',
-            imageAlt: (row.querySelector('.ci-alt') || {}).value || '',
-          };
-        }).filter(function (x) { return x.image || x.imageAlt; }),
-      };
-      var dur = (group.querySelector('.cg-duration') || {}).value || '';
-      if (dur) g.marqueeDuration = dur;
-      return g;
-    }).filter(function (x) { return x.title || x.id || (x.items && x.items.length); });
+    prevGroups = prevGroups || [];
+    return Array.prototype.map.call(root.querySelectorAll(':scope > .cred-group'), function (group, i) {
+      var prev = prevGroups[rowSourceIndex(group, i)] || {};
+      var title = (group.querySelector('.cg-title') || {}).value || '';
+      var prevItems = prev.items || [];
+      var items = Array.prototype.map.call(group.querySelectorAll('.nested-rep > .repeater-row'), function (row, itemIndex) {
+        var prevItem = prevItems[rowSourceIndex(row, itemIndex)] || {};
+        return Object.assign({}, prevItem, {
+          image: (row.querySelector('.ci-image') || {}).value || '',
+          imageAlt: prevItem.imageAlt || title,
+        });
+      }).filter(function (x) { return x.image; });
+      return Object.assign({}, prev, {
+        id: prev.id || ('group-' + (i + 1)),
+        title: title,
+        layout: prev.layout || 'grid',
+        items: items,
+      });
+    }).filter(function (x) { return x.title || (x.items && x.items.length); });
   }
-
   function bindLeafRepeaterRemove(rootId) {
     var root = $(rootId);
     if (!root || root._removeBound) return;
@@ -3065,8 +3065,8 @@
         key: 'hero', label: '首屏区域',
         html: cardBlock('首屏区域',
           field('hero-title', '主标题', hero.title) + field('hero-lead', '副文案', hero.lead, 'full', 'textarea') +
-          field('hero-cta1-label', '主按钮文案', (hero.primaryCta || {}).label) + field('hero-cta1-href', '主按钮链接', (hero.primaryCta || {}).href) +
-          field('hero-cta2-label', '次按钮文案', (hero.secondaryCta || {}).label) + field('hero-cta2-href', '次按钮链接', (hero.secondaryCta || {}).href)),
+          field('hero-cta1-label', '主按钮文案', (hero.primaryCta || {}).label) + pageLinkSelect('hero-cta1-href', '主按钮跳转到', (hero.primaryCta || {}).href) +
+          field('hero-cta2-label', '次按钮文案', (hero.secondaryCta || {}).label) + pageLinkSelect('hero-cta2-href', '次按钮跳转到', (hero.secondaryCta || {}).href)),
       },
       {
         key: 'featured', label: '标杆方案',
@@ -3090,12 +3090,10 @@
           field('prod-sec-subtitle', '副标题', products.subtitle, 'full', 'textarea') +
           '<p class="form-section-title">固定卡片 · 单元设备</p>' +
           field('unit-eyebrow', '眉题', unit.eyebrow) +
-          field('unit-href', '链接', unit.href || 'products.html') +
           field('unit-title', '标题', unit.title, 'full') +
           field('unit-summary', '简介', unit.summary, 'full', 'textarea') +
           field('unit-tags', '标签（每行一条）', (unit.tags || []).join('\n'), 'full', 'textarea') +
           imageField('unit-image', '图片', unit.image || '') +
-          field('unit-alt', '图片说明', unit.imageAlt || '', 'full') +
           '</div></div>',
       },
       {
@@ -3111,8 +3109,8 @@
           field('news-sec-title', '标题', news.title, 'full') +
           field('news-sec-mission-title', '初心标题', news.missionTitle) +
           field('news-sec-mission-body', '初心正文', news.missionBody, 'full', 'textarea') +
-          field('news-sec-cta-label', 'CTA 文案', (news.cta || {}).label) +
-          field('news-sec-cta-href', 'CTA 链接', (news.cta || {}).href) +
+          field('news-sec-cta-label', '按钮文案', (news.cta || {}).label) +
+          pageLinkSelect('news-sec-cta-href', '按钮跳转到', (news.cta || {}).href) +
           '<div class="field full"><p class="field-help">精选新闻请在「新闻中心 → 新闻管理」详情中设置（最多 2 条）。</p></div>' +
           '</div></div>',
       },
@@ -3138,8 +3136,7 @@
         var limit = (bucket && bucket.limit) || 0;
         var rows = items.length
           ? '<ul style="margin:6px 0 0;padding-left:18px">' + items.map(function (it) {
-            return '<li>' + escapeHtml(it.name || it.title || it.id) +
-              ' <span class="help">#' + escapeHtml(it.id) + '</span>' +
+            return '<li>' + escapeHtml(it.name || it.title || '未命名内容') +
               (hubView
                 ? ' <button type="button" class="btn btn-ghost btn-sm hub-slot-edit" data-hub-jump="' +
                   escapeAttr(hubView) + '" data-edit-id="' + escapeAttr(it.id) + '">去编辑</button>'
@@ -3199,9 +3196,9 @@
           title: val('f-unit-title'),
           summary: val('f-unit-summary'),
           tags: val('f-unit-tags').split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
-          href: val('f-unit-href') || 'products.html',
+          href: 'products.html',
           image: val('f-unit-image'),
-          imageAlt: val('f-unit-alt'),
+          imageAlt: val('f-unit-title'),
         },
       },
       serviceSection: {
@@ -3237,15 +3234,11 @@
       {
         key: 'carousel', label: '工厂环境', badge: (carousel.slides || []).length,
         html: '<div class="card"><h3 class="card-title">工厂环境</h3><div class="form-grid">' +
-          field('carousel-aria', '区块无障碍标签', carousel.sectionAriaLabel || '', 'full') +
-          field('carousel-prev', '上一张文案', carousel.prevLabel || '') +
-          field('carousel-next', '下一张文案', carousel.nextLabel || '') +
           '</div><h4 class="sub-title">幻灯片</h4>' + carouselSlidesHtml(carousel.slides || []) + '</div>',
       },
       {
         key: 'stats', label: '核心数据', badge: (stats.items || []).length,
         html: '<div class="card"><h3 class="card-title">核心数据</h3><div class="form-grid">' +
-          field('stats-columns', '列数', stats.columns != null ? stats.columns : 5) +
           '</div><h4 class="sub-title">条目</h4>' + statsRowsHtml(stats.items || []) + '</div>',
       },
       {
@@ -3304,16 +3297,16 @@
       hero: { title: val('f-hero-title'), leadHtml: getRichHtml('hero-lead') },
       culture: {
         headlineHtml: getRichHtml('culture-headline'),
-        pillars: collectCulturePillars(),
+        pillars: collectCulturePillars(((prev.culture || {}).pillars) || []),
       },
       carousel: {
-        sectionAriaLabel: val('f-carousel-aria'),
-        prevLabel: val('f-carousel-prev'),
-        nextLabel: val('f-carousel-next'),
+        sectionAriaLabel: (prev.carousel || {}).sectionAriaLabel || '工厂环境',
+        prevLabel: (prev.carousel || {}).prevLabel || '上一张',
+        nextLabel: (prev.carousel || {}).nextLabel || '下一张',
         slides: collectCarouselSlides(prevSlides),
       },
       stats: {
-        columns: Number(val('f-stats-columns')) || 5,
+        columns: (prev.stats || {}).columns || 5,
         items: collectStatsFrom('rep-stats', prevStats),
       },
       timeline: {
@@ -3324,31 +3317,30 @@
       credentials: {
         title: val('f-cred-title'),
         subtitle: val('f-cred-subtitle'),
-        groups: collectCredentialsGroups(),
+        groups: collectCredentialsGroups(((prev.credentials || {}).groups) || []),
       },
       clients: {
         title: val('f-clients-title'),
         subtitle: val('f-clients-subtitle'),
-        items: collectClientsItems(),
+        items: collectClientsItems(((prev.clients || {}).items) || []),
       },
     };
   }
 
   function locationRowsHtml(items) {
-    items = items && items.length ? items : [{ name: '', address: '', navLabel: '', navUrl: '', badge: '' }];
+    items = items && items.length ? items : [{ name: '', address: '', badge: '' }];
     return '<div class="repeater" id="rep-locations">' +
-      items.map(function (loc) {
-        return '<div class="repeater-row"><div class="form-grid">' +
-          '<div class="field"><label>名称</label><input class="loc-name" type="text" value="' + escapeAttr(loc.name || '') + '"></div>' +
-          '<div class="field"><label>徽章</label><input class="loc-badge" type="text" value="' + escapeAttr(loc.badge || '') + '"></div>' +
-          '<div class="field full"><label>地址</label><input class="loc-address" type="text" value="' + escapeAttr(loc.address || '') + '"></div>' +
-          '<div class="field"><label>导航文案</label><input class="loc-navLabel" type="text" value="' + escapeAttr(loc.navLabel || '') + '"></div>' +
-          '<div class="field"><label>导航链接</label><input class="loc-navUrl" type="text" value="' + escapeAttr(loc.navUrl || '') + '"></div>' +
+      items.map(function (loc, i) {
+        return '<div class="repeater-row" data-source-index="' + i + '">' +
+          '<div class="repeater-row-head"><strong>公司地址 ' + (i + 1) + '</strong>' +
+          '<span class="help">导航按钮和标记颜色由系统处理</span></div><div class="form-grid">' +
+          '<div class="field"><label>基地名称</label><input class="loc-name" type="text" value="' + escapeAttr(loc.name || '') + '"></div>' +
+          '<div class="field"><label>状态徽章（可选）</label><input class="loc-badge" type="text" value="' + escapeAttr(loc.badge || '') + '"></div>' +
+          '<div class="field full"><label>详细地址</label><input class="loc-address" type="text" value="' + escapeAttr(loc.address || '') + '"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-loc">＋ 添加地址</button></div>';
   }
-
   function bindLocationRepeater() {
     var root = $('rep-locations');
     if (!root || root._bound) return;
@@ -3358,42 +3350,48 @@
       if (t.classList.contains('rep-add-loc')) {
         var row = document.createElement('div');
         row.className = 'repeater-row';
-        row.innerHTML = '<div class="form-grid">' +
-          '<div class="field"><label>名称</label><input class="loc-name" type="text"></div>' +
-          '<div class="field"><label>徽章</label><input class="loc-badge" type="text"></div>' +
-          '<div class="field full"><label>地址</label><input class="loc-address" type="text"></div>' +
-          '<div class="field"><label>导航文案</label><input class="loc-navLabel" type="text"></div>' +
-          '<div class="field"><label>导航链接</label><input class="loc-navUrl" type="text"></div>' +
+        row.innerHTML = '<div class="repeater-row-head"><strong>新公司地址</strong>' +
+          '<span class="help">导航按钮和标记颜色由系统处理</span></div><div class="form-grid">' +
+          '<div class="field"><label>基地名称</label><input class="loc-name" type="text"></div>' +
+          '<div class="field"><label>状态徽章（可选）</label><input class="loc-badge" type="text"></div>' +
+          '<div class="field full"><label>详细地址</label><input class="loc-address" type="text"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
         root.insertBefore(row, t);
       }
       if (t.classList.contains('rep-remove')) {
-        var r = t.closest('.repeater-row');
-        if (r && root.querySelectorAll(':scope > .repeater-row').length > 1) r.remove();
+        var rowToRemove = t.closest('.repeater-row');
+        if (rowToRemove && root.querySelectorAll(':scope > .repeater-row').length > 1) rowToRemove.remove();
       }
     });
   }
-
-  function collectLocations() {
+  function collectLocations(prevItems) {
     var root = $('rep-locations');
     if (!root) return [];
-    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row) {
-      var loc = {
+    prevItems = prevItems || [];
+    return Array.prototype.map.call(root.querySelectorAll(':scope > .repeater-row'), function (row, i) {
+      var prev = prevItems[rowSourceIndex(row, i)] || {};
+      var address = (row.querySelector('.loc-address') || {}).value || '';
+      var badge = (row.querySelector('.loc-badge') || {}).value || '';
+      var loc = Object.assign({}, prev, {
         name: (row.querySelector('.loc-name') || {}).value || '',
-        address: (row.querySelector('.loc-address') || {}).value || '',
-        navLabel: (row.querySelector('.loc-navLabel') || {}).value || '',
-        navUrl: (row.querySelector('.loc-navUrl') || {}).value || '',
-        badge: (row.querySelector('.loc-badge') || {}).value || '',
-      };
-      if (!loc.badge) delete loc.badge;
+        address: address,
+        navLabel: prev.navLabel || '高德地图导航',
+        navUrl: prev.navUrl || ('https://uri.amap.com/search?keyword=' + encodeURIComponent(address)),
+        dotColor: prev.dotColor || (i === 0 ? '#1D1D1F' : '#FF6B00'),
+      });
+      if (badge) loc.badge = badge;
+      else delete loc.badge;
       return loc;
     }).filter(function (x) { return x.name || x.address; });
   }
-
   function renderContactForm(page) {
     var hero = page.hero || {};
     var map = page.map || {};
     var center = (map.center || []).join(', ');
+    var mapAdvanced = advancedBlock(
+      field('map-center', '地图中心坐标', center, 'full') +
+      field('map-zoom', '地图缩放级别', map.zoom != null ? map.zoom : 14) +
+      '<div class="field full"><p class="field-help">一般无需修改；后续会升级为地图选点。</p></div>');
     var sections = [
       { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
@@ -3402,14 +3400,13 @@
       },
       {
         key: 'channels', label: '联系方式', badge: (page.channels || []).length,
-        html: '<div class="card"><h3 class="card-title">联系方式</h3>' + channelRowsHtml(page.channels || []) + '</div>',
+        html: '<div class="card"><h3 class="card-title">联系方式</h3>' +
+          '<p class="field-help">电话、WhatsApp 和邮箱使用固定卡片；填写显示内容即可。</p>' +
+          channelRowsHtml(page.channels || []) + '</div>',
       },
       {
         key: 'map', label: '地图位置',
-        html: cardBlock('地图',
-          field('map-title', '标题', map.title || '', 'full') +
-          field('map-center', '中心坐标 lng,lat', center, 'full') +
-          field('map-zoom', '缩放级别', map.zoom != null ? map.zoom : 14)),
+        html: cardBlock('地图区域', field('map-title', '区域标题', map.title || '', 'full')) + mapAdvanced,
       },
       {
         key: 'locations', label: '公司地址', badge: (page.locations || []).length,
@@ -3420,31 +3417,25 @@
     bindSectionTabs('page-contact-form');
     bindPageDirty('page-contact-form', 'contact');
     bindLocationRepeater();
-    bindGenericRepeater('rep-channels', CHANNEL_BLANK);
-    bindLeafRepeaterRemove('rep-channels');
     bindImageFields($('page-contact-form'));
   }
-
   function collectContactForm() {
+    var prev = state.pageCache.contact || {};
     var centerRaw = val('f-map-center').split(/[,，\s]+/).map(Number).filter(function (n) { return !isNaN(n); });
+    var prevMap = prev.map || {};
     return {
       pageKey: 'contact', lang: 'zh',
       seo: collectSeo(),
       hero: { title: val('f-hero-title'), lead: val('f-hero-lead') },
-      channels: collectChannels(),
+      channels: collectChannels(prev.channels || []),
       map: {
         title: val('f-map-title'),
-        center: centerRaw.length >= 2 ? [centerRaw[0], centerRaw[1]] : [114.316297, 22.726056],
-        zoom: Number(val('f-map-zoom')) || 14,
+        center: centerRaw.length >= 2 ? [centerRaw[0], centerRaw[1]] : (prevMap.center || [114.316297, 22.726056]),
+        zoom: Number(val('f-map-zoom')) || prevMap.zoom || 14,
       },
-      locations: collectLocations().map(function (loc, i) {
-        var prev = ((state.pageCache.contact || {}).locations || [])[i];
-        if (prev && prev.dotColor) loc.dotColor = prev.dotColor;
-        return loc;
-      }),
+      locations: collectLocations(prev.locations || []),
     };
   }
-
   function renderListPageForm(key, page) {
     var formId = 'page-' + key + '-form';
     var filters = page.filters || {};
@@ -3574,55 +3565,29 @@
     techAdvantages: '技术优势',
   };
   var SITE_FOOTER_LABELS = {
-    tagline: '标语', wechatAlt: '微信图 Alt', copyright: '版权文案', icp: '备案号', icpUrl: '备案链接',
+    tagline: '页脚标语', copyright: '版权文案', icp: '备案号',
   };
 
   async function loadSiteForm() {
     var site = await api('/admin/site');
     state.siteCache = site;
     var sections = [
-      { key: 'nav', label: '导航', html: cardBlock('导航文案', siteKvFields('nav', site.nav, SITE_NAV_LABELS)) },
-      { key: 'lang', label: '语言切换', html: cardBlock('语言切换标签', siteKvFields('lang', site.lang, SITE_LANG_LABELS)) },
-      { key: 'common', label: '通用文案', html: cardBlock('通用文案', siteKvFields('common', site.common, SITE_COMMON_LABELS)) },
-      { key: 'footer', label: '页脚', html: cardBlock('页脚', siteKvFields('footer', site.footer, SITE_FOOTER_LABELS)) },
-      {
-        key: 'advanced', label: '高级 JSON',
-        html: advancedBlock(
-          field('nav-json', 'nav JSON', JSON.stringify(site.nav || {}, null, 2), 'full', 'textarea-code') +
-          field('lang-json', 'lang JSON', JSON.stringify(site.lang || {}, null, 2), 'full', 'textarea-code') +
-          field('common-json', 'common JSON', JSON.stringify(site.common || {}, null, 2), 'full', 'textarea-code') +
-          field('footer-json', 'footer JSON', JSON.stringify(site.footer || {}, null, 2), 'full', 'textarea-code') +
-          '<div class="field full"><p class="field-help">若修改了上方表单，请直接点保存；高级 JSON 仅在需要增减字段时使用（保存时以表单为准，除非勾选下方覆盖）。</p>' +
-          '<label class="check-row" style="text-transform:none"><input type="checkbox" id="site-use-json"> 保存时使用高级 JSON 覆盖表单</label></div>'),
-      },
+      { key: 'nav', label: '导航', html: cardBlock('顶部导航名称', siteKvFields('nav', site.nav, SITE_NAV_LABELS)) },
+      { key: 'common', label: '通用文案', html: cardBlock('详情页通用文案', siteKvFields('common', site.common, SITE_COMMON_LABELS)) },
+      { key: 'footer', label: '页脚', html: cardBlock('页脚可见内容', siteKvFields('footer', site.footer, SITE_FOOTER_LABELS)) },
     ];
     $('site-form').innerHTML = buildSectionTabs('site-form', sections, 'nav');
     bindSectionTabs('site-form');
   }
-
   async function saveSite() {
     try {
-      var body;
-      if ($('site-use-json') && $('site-use-json').checked) {
-        body = {
-          nav: JSON.parse(val('f-nav-json') || '{}'),
-          lang: JSON.parse(val('f-lang-json') || '{}'),
-          common: JSON.parse(val('f-common-json') || '{}'),
-          footer: JSON.parse(val('f-footer-json') || '{}'),
-        };
-      } else {
-        body = {
-          nav: collectSiteKv('nav', SITE_NAV_LABELS),
-          lang: collectSiteKv('lang', SITE_LANG_LABELS),
-          common: collectSiteKv('common', SITE_COMMON_LABELS),
-          footer: collectSiteKv('footer', SITE_FOOTER_LABELS),
-        };
-        /* preserve any extra keys not in the form */
-        var prev = state.siteCache || {};
-        ['nav', 'lang', 'common', 'footer'].forEach(function (section) {
-          body[section] = Object.assign({}, prev[section] || {}, body[section]);
-        });
-      }
+      var prev = state.siteCache || {};
+      var body = {
+        nav: Object.assign({}, prev.nav || {}, collectSiteKv('nav', SITE_NAV_LABELS)),
+        lang: Object.assign({ zh: 'ZH', en: 'EN', ru: 'RU' }, prev.lang || {}),
+        common: Object.assign({}, prev.common || {}, collectSiteKv('common', SITE_COMMON_LABELS)),
+        footer: Object.assign({}, prev.footer || {}, collectSiteKv('footer', SITE_FOOTER_LABELS)),
+      };
       await api('/admin/site', { method: 'PUT', body: JSON.stringify(body) });
       state.siteCache = body;
       toast('站点文案已保存');
@@ -3630,7 +3595,6 @@
       toast(err.message || '保存失败', true);
     }
   }
-
   /* Media */
   async function loadMedia() {
     var data = await api('/admin/media');
@@ -3642,7 +3606,7 @@
     $('media-grid').innerHTML = items.map(function (m) {
       return '<div class="media-item"><img src="' + escapeHtml(assetUrl(m.path)) + '" alt="' + escapeAttr(m.alt || '') + '">' +
         '<div class="meta"><code>' + escapeHtml(m.path) + '</code>' +
-        '<input class="media-alt" data-id="' + escapeAttr(m.filename) + '" type="text" placeholder="Alt 文案" value="' + escapeAttr(m.alt || '') + '" style="width:100%;margin-top:6px">' +
+        '<input class="media-alt" data-id="' + escapeAttr(m.filename) + '" type="text" placeholder="图片说明" value="' + escapeAttr(m.alt || '') + '" style="width:100%;margin-top:6px">' +
         '<button type="button" class="btn btn-ghost btn-sm" data-copy="' + escapeAttr(m.path) + '">复制路径</button> ' +
         '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" data-del="' + escapeAttr(m.filename) + '">删除</button></div></div>';
     }).join('');
@@ -3673,7 +3637,7 @@
             method: 'PUT',
             body: JSON.stringify({ alt: input.value }),
           });
-          toast('Alt 已保存');
+          toast('图片说明已保存');
         } catch (err) { toast(err.message, true); }
       });
     });

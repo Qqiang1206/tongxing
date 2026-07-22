@@ -102,6 +102,26 @@ export function writePageJson(pageKey, lang, data) {
   return true;
 }
 
+function isPlainObject(value) {
+  return !!value && typeof value === 'object' && !Array.isArray(value);
+}
+
+/**
+ * Admin page forms intentionally expose only operator-facing fields. Keep
+ * implementation-only keys already stored in nested objects when a partial
+ * form payload is saved. Arrays are replaced on purpose so operators can
+ * still add and remove visible content rows.
+ */
+function mergeAdminPagePayload(previous, incoming) {
+  if (!isPlainObject(incoming)) return incoming;
+  const merged = isPlainObject(previous) ? { ...previous } : {};
+  for (const [key, value] of Object.entries(incoming)) {
+    merged[key] = isPlainObject(value) && isPlainObject(merged[key])
+      ? mergeAdminPagePayload(merged[key], value)
+      : value;
+  }
+  return merged;
+}
 function adminErrorStatus(message) {
   if (
     message === 'invalid_page_key' ||
@@ -729,9 +749,11 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     }
     try {
       const body = await readBody(req);
-      body.pageKey = pageKey;
-      body.lang = 'zh';
-      writePageJson(pageKey, 'zh', body);
+      const current = readPageJson(pageKey, 'zh') || {};
+      const payload = mergeAdminPagePayload(current, body || {});
+      payload.pageKey = pageKey;
+      payload.lang = 'zh';
+      writePageJson(pageKey, 'zh', payload);
       regeneratePageJs(pageKey, 'zh');
       markStale(`pages:${pageKey}`);
       writeAudit({

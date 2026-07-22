@@ -1264,6 +1264,25 @@ body.tx-syncing .hub-actions [data-hub-action="translation"] {
 .repeater-row {
   border: 1px dashed var(--border); border-radius: 10px; padding: 12px; background: #FAFBFC;
 }
+.repeater-row-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ECECF0;
+}
+.repeater-row-head strong {
+  color: var(--txam-dark);
+  font-size: 14px;
+  font-weight: 850;
+}
+.repeater-row-head .help {
+  max-width: 280px;
+  line-height: 1.55;
+  text-align: right;
+}
 
 /* ——— Drawer ——— */
 .drawer {
