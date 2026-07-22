@@ -207,6 +207,34 @@ function mapAuditRow(row) {
   };
 }
 
+export function listRecentContentUpdates({ limit = 10 } = {}) {
+  const db = getDb();
+  ensureAuditTable(db);
+  const lim = Math.min(Math.max(Number(limit) || 10, 1), 30);
+  const items = db
+    .prepare(
+      `SELECT id, created_at AS createdAt, actor, action, resource, resource_id AS resourceId,
+              summary, detail_json AS detailJson, ip, ok
+       FROM admin_audit_log
+       WHERE action NOT LIKE 'login.%'
+         AND action NOT LIKE 'translation.%'
+         AND (
+           action LIKE 'products.%'
+           OR action LIKE 'solutions.%'
+           OR action LIKE 'news.%'
+           OR action LIKE 'pages.%'
+           OR action LIKE 'site.%'
+           OR action LIKE 'media.%'
+           OR action LIKE 'categories.%'
+         )
+       ORDER BY id DESC
+       LIMIT ?`
+    )
+    .all(lim)
+    .map(mapAuditRow);
+  return { items };
+}
+
 export function getAuditLog(id) {
   const db = getDb();
   ensureAuditTable(db);

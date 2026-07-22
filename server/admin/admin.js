@@ -78,6 +78,14 @@
     news: 'page-news-form',
     contact: 'page-contact-form',
   };
+  var PAGE_VIEW_BY_KEY = {
+    home: 'page-home',
+    about: 'page-about',
+    solutions: 'page-solutions',
+    products: 'page-products',
+    news: 'page-news',
+    contact: 'page-contact',
+  };
 
   function pageStatusElement(key) {
     return document.querySelector('[data-save-status="' + key + '"]');
@@ -937,13 +945,15 @@
       api('/admin/news'),
       api('/admin/solutions'),
       api('/admin/translation-status'),
-      api('/admin/analytics/summary').catch(function () { return null; }),
+      api('/admin/analytics/summary'),
+      api('/admin/dashboard/recent-updates?limit=10'),
     ]);
     state.products = results[0].items || [];
     state.news = results[1].items || [];
     state.solutions = results[2].items || [];
     var status = results[3];
     var analytics = results[4];
+    state.dashboardRecent = (results[5].items || []);
     var stale = 0;
     Object.keys(status.resources || {}).forEach(function (key) {
       var r = status.resources[key];
@@ -963,10 +973,8 @@
         now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日 · ' +
         WEEKDAY_LABELS[now.getDay()] + ' · 天天开心';
     }
-    var todayVisits = analytics ? analytics.today : 0;
-    var visitHint = analytics
-      ? ('昨日 ' + analytics.yesterday + ' · 近7日 ' + analytics.week)
-      : '统计加载中';
+    var todayVisits = analytics.today;
+    var visitHint = '昨日 ' + analytics.yesterday + ' · 近7日 ' + analytics.week;
     $('dash-stats').innerHTML =
       stat('今日访问', todayVisits, visitHint, false, 'visit') +
       stat('产品数量', state.products.length, '已发布 ' + pubProducts + ' 条') +
@@ -974,19 +982,131 @@
       stat('新闻文章', state.news.length, '已发布 ' + pubNews + ' 条') +
       stat('待同步翻译', stale, stale ? '请到「系统 → 翻译同步」处理' : 'en / ru 均已最新', stale > 0);
     if ($('dash-traffic')) {
-      if (!analytics) {
-        $('dash-traffic').innerHTML = '<p class="help">访问统计暂不可用，请刷新页面重试。</p>';
-      } else {
-        $('dash-traffic').innerHTML =
-          '<div class="traffic-summary">' +
-          '<div class="traffic-stat"><span class="traffic-label">今日</span><strong>' + analytics.today + '</strong></div>' +
-          '<div class="traffic-stat"><span class="traffic-label">昨日</span><strong>' + analytics.yesterday + '</strong></div>' +
-          '<div class="traffic-stat"><span class="traffic-label">近7日</span><strong>' + analytics.week + '</strong></div>' +
-          '</div>' +
-          renderTrafficList('今日热门页面', analytics.topToday) +
-          renderTrafficList('近7日热门页面', analytics.topWeek);
-      }
+      $('dash-traffic').innerHTML =
+        '<div class="traffic-summary">' +
+        '<div class="traffic-stat"><span class="traffic-label">今日</span><strong>' + analytics.today + '</strong></div>' +
+        '<div class="traffic-stat"><span class="traffic-label">昨日</span><strong>' + analytics.yesterday + '</strong></div>' +
+        '<div class="traffic-stat"><span class="traffic-label">近7日</span><strong>' + analytics.week + '</strong></div>' +
+        '</div>' +
+        renderTrafficList('今日热门页面', analytics.topToday) +
+        renderTrafficList('近7日热门页面', analytics.topWeek);
     }
+    renderRecentUpdates(state.dashboardRecent);
+  }
+
+  function formatDashTime(iso) {
+    if (!iso) return '—';
+    var full = formatAuditTime(iso);
+    if (full === '—') return full;
+    var now = new Date();
+    var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+    var today = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+    if (full.indexOf(today) === 0) return '今天 ' + full.slice(11, 16);
+    return full.slice(5, 16);
+  }
+
+  function recentUpdateDeleted(row) {
+    return /\.delete$/.test(row.action || '');
+  }
+
+  function recentUpdateTypeLabel(row) {
+    var action = row.action || '';
+    if (action.indexOf('products.') === 0) return '产品';
+    if (action.indexOf('solutions.') === 0) return '方案';
+    if (action.indexOf('news.') === 0) return '新闻';
+    if (action.indexOf('pages.') === 0) return '页面';
+    if (action.indexOf('site.') === 0) return '全站';
+    if (action.indexOf('media.') === 0) return '媒体';
+    if (action.indexOf('categories.product.') === 0) return '产品分类';
+    if (action.indexOf('categories.news.') === 0) return '新闻分类';
+    return auditResourceLabel(row.resource);
+  }
+
+  function recentUpdateActionLabel(row) {
+    if (recentUpdateDeleted(row)) return '删除';
+    if (/\.create$/.test(row.action || '')) return '新建';
+    if (/\.update/.test(row.action || '') || /\.upload$/.test(row.action || '')) return '更新';
+    return auditActionLabel(row.action).replace(/^(新建|更新|删除)/, function (m) { return m; });
+  }
+
+  function jumpToRecentUpdate(row) {
+    if (!row || recentUpdateDeleted(row)) return Promise.resolve();
+    var action = row.action || '';
+    var id = row.resourceId;
+    if (action.indexOf('products.') === 0) {
+      return Promise.resolve(setView('page-products', { hubTab: 'items' })).then(function () {
+        if (id) return openProduct(id);
+      });
+    }
+    if (action.indexOf('solutions.') === 0) {
+      return Promise.resolve(setView('page-solutions', { hubTab: 'items' })).then(function () {
+        if (id) return openSolution(id);
+      });
+    }
+    if (action.indexOf('news.') === 0) {
+      return Promise.resolve(setView('page-news', { hubTab: 'items' })).then(function () {
+        if (id) return openNews(id);
+      });
+    }
+    if (action.indexOf('pages.') === 0) {
+      var pageKey = id || String(row.resource || '').replace(/^pages:/, '');
+      var hubPages = { solutions: 'page-solutions', products: 'page-products', news: 'page-news' };
+      if (hubPages[pageKey]) {
+        return Promise.resolve(setView(hubPages[pageKey], { hubTab: 'page' }));
+      }
+      var view = PAGE_VIEW_BY_KEY[pageKey];
+      if (view) return Promise.resolve(setView(view));
+    }
+    if (action.indexOf('site.') === 0) {
+      return Promise.resolve(setView('sitewide', { hubTab: 'site' }));
+    }
+    if (action.indexOf('media.') === 0) {
+      return Promise.resolve(setView('sitewide', { hubTab: 'media' }));
+    }
+    if (action.indexOf('categories.product.') === 0) {
+      return Promise.resolve(setView('page-products', { hubTab: 'categories' }));
+    }
+    if (action.indexOf('categories.news.') === 0) {
+      return Promise.resolve(setView('page-news', { hubTab: 'categories' }));
+    }
+    return Promise.resolve();
+  }
+
+  function renderRecentUpdates(items) {
+    var box = $('dash-recent');
+    if (!box) return;
+    items = items || [];
+    if (!items.length) {
+      box.innerHTML = '<p class="help">暂无内容变更记录。保存页面、产品、方案或新闻后会出现在这里。</p>';
+      return;
+    }
+    box.innerHTML =
+      '<ul class="recent-list">' +
+      items.map(function (row, index) {
+        var deleted = recentUpdateDeleted(row);
+        var typeLabel = recentUpdateTypeLabel(row);
+        var actionLabel = recentUpdateActionLabel(row);
+        var summary = row.summary || auditActionLabel(row.action);
+        return '<li class="recent-item' + (deleted ? ' is-deleted' : '') + (deleted ? '' : ' is-clickable') + '"' +
+          (deleted ? '' : ' data-recent-idx="' + index + '"') + '>' +
+          '<span class="recent-time">' + escapeHtml(formatDashTime(row.createdAt)) + '</span>' +
+          '<span class="recent-type">' + escapeHtml(typeLabel) + '</span>' +
+          '<span class="recent-body">' +
+          '<span class="recent-action">' + escapeHtml(actionLabel) + '</span>' +
+          '<span class="recent-summary">' + escapeHtml(summary) + '</span>' +
+          '</span>' +
+          '<span class="recent-actor">' + escapeHtml(row.actor || '—') + '</span>' +
+          (deleted ? '' : '<span class="recent-go" aria-hidden="true">›</span>') +
+          '</li>';
+      }).join('') +
+      '</ul>';
+    box.querySelectorAll('[data-recent-idx]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var idx = Number(el.getAttribute('data-recent-idx'));
+        var row = state.dashboardRecent && state.dashboardRecent[idx];
+        jumpToRecentUpdate(row).catch(function (e) { toast(e.message, true); });
+      });
+    });
   }
 
   function renderTrafficList(title, rows) {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TXAM 内容管理 · 同兴高科</title>
+  <title>同兴高科 TXAM  · 后台管理</title>
   <link rel="stylesheet" href="./admin.css">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
@@ -107,13 +107,20 @@
               <div id="dash-traffic"></div>
             </div>
           </div>
+          <div class="card dash-recent-card">
+            <div class="card-head">
+              <h3 class="card-title">最近更新</h3>
+              <button type="button" class="btn btn-ghost btn-sm" id="dash-recent-all" data-jump="system" data-hub-tab="audit">查看全部</button>
+            </div>
+            <div id="dash-recent"></div>
+          </div>
         </section>
 
         <section id="view-page-home" class="view hidden">
           <div class="page-head">
             <div>
               <h2>首页</h2>
-              <p class="page-sub">首页所有可见内容按前台从上到下排列，推荐方案和精选新闻也可在本页定位管理。</p>
+              <p class="page-sub">首页所有可见内容包括推荐方案和精选新闻也可在本页定位管理。</p>
             </div>
             <div class="page-head-actions">
               <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览首页</a>
@@ -133,7 +140,7 @@
           <div class="page-head">
             <div>
               <h2>关于我们</h2>
-              <p class="page-sub">区块顺序与前台页面一致：首屏、工厂环境、核心数据、企业文化、发展历程、资质荣誉和合作客户。</p>
+              <p class="page-sub">关于我们所有可见内容在本页定位管理。</p>
             </div>
             <div class="page-head-actions">
               <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览关于我们</a>
@@ -153,7 +160,7 @@
           <div class="page-head">
             <div>
               <h2>解决方案</h2>
-              <p class="page-sub">页面内容和具体方案都在这里管理。</p>
+              <p class="page-sub">解决方案所有可见内容在本页定位管理。</p>
             </div>
             <div class="toolbar hub-actions" data-hub="solutions">
               <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览</a>
@@ -194,7 +201,7 @@
           <div class="page-head">
             <div>
               <h2>产品中心</h2>
-              <p class="page-sub">页面内容、具体产品、产品分类和展示状态都在这里管理。</p>
+              <p class="page-sub">产品中心所有可见内容在本页定位管理。</p>
             </div>
             <div class="toolbar hub-actions" data-hub="products">
               <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览</a>
@@ -254,7 +261,7 @@
           <div class="page-head">
             <div>
               <h2>新闻中心</h2>
-              <p class="page-sub">页面内容、新闻文章、新闻分类和首页精选都在这里管理。</p>
+              <p class="page-sub">新闻中心所有可见内容在本页定位管理。</p>
             </div>
             <div class="toolbar hub-actions" data-hub="news">
               <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览</a>
@@ -310,7 +317,7 @@
           <div class="page-head">
             <div>
               <h2>联系我们</h2>
-              <p class="page-sub">在这里修改前台联系方式、公司地址与地图位置；当前官网不包含在线留言。</p>
+              <p class="page-sub">联系我们所有可见内容在本页定位管理。</p>
             </div>
             <div class="page-head-actions">
               <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览联系我们</a>
@@ -330,7 +337,7 @@
           <div class="page-head">
             <div>
               <h2>全站公共内容</h2>
-              <p class="page-sub">管理所有前台页面共用的导航、页脚与素材。</p>
+              <p class="page-sub">前台页面共用的导航、页脚与素材在本页管理。</p>
             </div>
             <div class="toolbar hub-actions" data-hub="sitewide">
 
@@ -368,7 +375,7 @@
           <div class="page-head">
             <div>
               <h2>系统管理</h2>
-              <p class="page-sub">管理多语言同步与操作记录；日常页面编辑无需进入这里。</p>
+              <p class="page-sub">多语言同步与操作记录在本页管理。</p>
             </div>
             <div class="toolbar hub-actions" data-hub="system">
               <button type="button" class="btn btn-ghost btn-sm hub-action" data-hub-action="translation" id="refresh-translation">刷新</button>

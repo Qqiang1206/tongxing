@@ -177,7 +177,17 @@
     }, 200);
   }
 
+  function loadAnalytics() {
+    if (document.querySelector('script[data-txam-analytics]')) return;
+    var s = document.createElement('script');
+    s.src = assetPrefix() + 'assets/js/analytics.js';
+    s.defer = true;
+    s.setAttribute('data-txam-analytics', '1');
+    document.head.appendChild(s);
+  }
+
   async function boot() {
+    loadAnalytics();
     var lang = detectLang();
     var prefix = assetPrefix();
     var site = await resolveSite(lang);

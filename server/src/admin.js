@@ -27,7 +27,7 @@ import {
 } from './services/translationJobs.js';
 import { getTranslationConfig } from './services/translateProvider.js';
 import { saveUploadedMedia, listUploadedMedia, deleteUploadedMedia, updateMediaAlt } from './services/media.js';
-import { writeAudit, listAuditLogs, getAuditLog } from './services/audit.js';
+import { writeAudit, listAuditLogs, getAuditLog, listRecentContentUpdates } from './services/audit.js';
 import {
   getCategoriesBundle,
   listProductCategories,
@@ -900,6 +900,17 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       return true;
     }
     sendJson(res, 200, getAnalyticsSummary(), origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/dashboard/recent-updates' && req.method === 'GET') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    const url = new URL(req.url || '/', 'http://localhost');
+    const limit = url.searchParams.get('limit') || 10;
+    sendJson(res, 200, listRecentContentUpdates({ limit }), origin);
     return true;
   }
 

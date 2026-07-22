@@ -256,6 +256,12 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === '/api/v1/analytics/hit' && (req.method === 'GET' || req.method === 'POST')) {
+    recordPageView(query.path || rawPath || '/');
+    sendJson(res, 204, {}, origin);
+    return;
+  }
+
   if (pathname.startsWith('/api/v1')) {
     if (req.method !== 'GET') {
       sendJson(res, 405, { error: 'method_not_allowed' }, origin);
@@ -282,10 +288,7 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'GET') {
-    if (serveSiteStatic(res, rawPath, origin)) {
-      recordPageView(rawPath);
-      return;
-    }
+    if (serveSiteStatic(res, rawPath, origin)) return;
   }
 
   sendJson(res, 404, { error: 'not_found' }, origin);
