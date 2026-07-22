@@ -105,7 +105,7 @@
     state.dirtyPages[key] = !!dirty;
     var form = $(PAGE_FORM_IDS[key]);
     if (!dirty && form) {
-      form.querySelectorAll('.section-tabs .hub-tab').forEach(function (tab) {
+      form.querySelectorAll('[data-section-tab]').forEach(function (tab) {
         tab.classList.remove('is-dirty');
       });
     }
@@ -120,7 +120,7 @@
   }
 
   function markActiveSectionDirty(root) {
-    var activeTab = root && root.querySelector('.section-tabs .hub-tab.is-active');
+    var activeTab = root && root.querySelector('[data-section-tab].is-active');
     if (activeTab) activeTab.classList.add('is-dirty');
   }
 
@@ -400,7 +400,9 @@
     };
     var current = state.hubTabs[hub] || defaults[hub] || 'items';
     document.querySelectorAll('.hub-tabs[data-hub="' + hub + '"] .hub-tab').forEach(function (btn) {
-      btn.classList.toggle('is-active', btn.getAttribute('data-hub-tab') === current);
+      var active = btn.getAttribute('data-hub-tab') === current;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
     });
     document.querySelectorAll('.hub-panel[data-hub="' + hub + '"]').forEach(function (panel) {
       var show = panel.getAttribute('data-hub-panel') === current;
@@ -536,6 +538,13 @@
 
   /** Page sections mirror the visible frontend order; search settings stay last. */
   function buildSectionTabs(formRootId, sections, defaultKey) {
+    var useOutline = /^page-(solutions|products|news)-form$/.test(formRootId);
+    var sectionDescriptions = {
+      hero: '标题、导语与首屏展示',
+      pillars: '核心价值与优势说明',
+      filters: '前台筛选按钮文案',
+      seo: '浏览器标题、关键词与描述',
+    };
     var seoSections = sections.filter(function (s) { return s.key === 'seo'; });
     sections = sections.filter(function (s) { return s.key !== 'seo'; }).concat(seoSections);
     defaultKey = defaultKey || (sections[0] && sections[0].key) || '';
@@ -543,20 +552,29 @@
     if (!sections.some(function (s) { return s.key === remembered; })) remembered = defaultKey;
     if (!state.sectionTabs) state.sectionTabs = {};
     state.sectionTabs[formRootId] = remembered;
-    var tabsHtml =
-      '<div class="hub-tabs section-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
+    var tabButtonsHtml =
       sections.map(function (s, index) {
         var order = String(index + 1).padStart(2, '0');
         return '<button type="button" class="hub-tab' + (s.key === remembered ? ' is-active' : '') +
           '" data-section-tab="' + escapeAttr(s.key) + '" role="tab" aria-selected="' + (s.key === remembered ? 'true' : 'false') + '">' +
-          '<span class="section-index">' + order + '</span><span>' + escapeHtml(s.label) + '</span></button>';
-      }).join('') +
-      '</div>';
+          (useOutline
+            ? '<span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>' +
+              escapeHtml(s.label) + '</strong><small>' + escapeHtml(sectionDescriptions[s.key] || '编辑当前页面区域') + '</small></span>'
+            : '<span class="section-index">' + order + '</span><span>' + escapeHtml(s.label) + '</span>') +
+          '</button>';
+      }).join('');
+    var tabsHtml = useOutline
+      ? '<aside class="section-outline"><div class="section-outline-head"><strong>页面结构</strong><span>按前台顺序定位</span></div>' +
+        '<div class="section-tabs section-outline-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
+        tabButtonsHtml + '</div></aside>'
+      : '<div class="hub-tabs section-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
+        tabButtonsHtml + '</div>';
     var panelsHtml = sections.map(function (s) {
       return '<div class="section-panel' + (s.key === remembered ? '' : ' hidden') +
         '" data-section-panel="' + escapeAttr(s.key) + '">' + s.html + '</div>';
     }).join('');
-    return tabsHtml + '<div class="section-panels-scroll">' + panelsHtml + '</div>';
+    var panels = '<div class="section-panels-scroll">' + panelsHtml + '</div>';
+    return useOutline ? '<div class="section-workspace section-workspace--outline">' + tabsHtml + panels + '</div>' : tabsHtml + panels;
   }
 
   function resetPanelScroll(panel) {
@@ -1004,6 +1022,35 @@
         renderTrafficList('近7日热门页面', analytics.topWeek);
     }
     renderRecentUpdates(state.dashboardRecent);
+    syncDashboardScrollAreas();
+  }
+
+  var dashboardScrollRaf = 0;
+
+  function syncDashboardScrollAreas() {
+    cancelAnimationFrame(dashboardScrollRaf);
+    dashboardScrollRaf = requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        var view = document.getElementById('view-dashboard');
+        if (!view || view.classList.contains('hidden')) return;
+        view.querySelectorAll('.dash-recent-scroll, .dash-traffic-card #dash-traffic').forEach(function (el) {
+          el.classList.toggle('is-scrollable', el.scrollHeight > el.clientHeight + 1);
+        });
+      });
+    });
+  }
+
+  function bindDashboardScrollSync() {
+    if (bindDashboardScrollSync.bound) return;
+    bindDashboardScrollSync.bound = true;
+    window.addEventListener('resize', syncDashboardScrollAreas);
+    var view = document.getElementById('view-dashboard');
+    if (view && window.ResizeObserver) {
+      var observer = new ResizeObserver(syncDashboardScrollAreas);
+      observer.observe(view);
+      var grid = view.querySelector('.dash-grid');
+      if (grid) observer.observe(grid);
+    }
   }
 
   function formatDashTime(iso) {
@@ -1090,6 +1137,7 @@
     items = items || [];
     if (!items.length) {
       box.innerHTML = '<p class="help">暂无内容变更记录。保存页面、产品、方案或新闻后会出现在这里。</p>';
+      syncDashboardScrollAreas();
       return;
     }
     box.innerHTML =
@@ -3109,14 +3157,14 @@
         label: '筛选文案',
         html: cardBlock('筛选文案',
           field('filters-all', '「全部」按钮文案', filters.all || (key === 'news' ? '全部资讯' : '全部产品'), 'full') +
-          '<div class="field full"><p class="field-help">分类按钮文案由当前栏目中的「分类设置」维护，保存后会自动同步到当前页面。</p></div>'),
+          '<div class="field full"><p class="field-help">分类按钮文案由当前栏目的「分类管理」维护，保存后会自动同步到当前页面。</p></div>'),
       };
     }
     var sections = [
       { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: '首屏内容',
-        html: cardBlock('首屏内容',
+        key: 'hero', label: '首屏区域',
+        html: cardBlock('首屏区域',
           field('hero-title', '标题', (page.hero || {}).title, 'full') +
           field('hero-lead', '导语', (page.hero || {}).lead || '', 'full', 'textarea')),
       },
@@ -4128,6 +4176,8 @@
     uploadMedia(file).catch(function (err) { toast(err.message, true); });
     e.target.value = '';
   });
+
+  bindDashboardScrollSync();
 
   if (token) {
     updateUserChip();

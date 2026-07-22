@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css?v=20260722d2">
+  <link rel="stylesheet" href="./admin.css?v=20260722g">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
@@ -169,27 +169,30 @@
               <button type="button" class="btn btn-accent hub-action-items" id="create-solution">+ 新建方案</button>
             </div>
           </div>
-          <div class="hub-tabs" data-hub="solutions" role="tablist">
-            <button type="button" class="hub-tab" data-hub-tab="page" role="tab">页面内容</button>
-            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab">
-              方案内容 <span class="hub-tab-count" id="hub-count-solutions"></span>
+          <div class="hub-tabs hub-mode-nav" data-hub="solutions" role="tablist" aria-label="解决方案管理方式">
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">页</span>
+              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、价值说明与搜索信息</small></span>
+            </button>
+            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab" aria-selected="true">
+              <span class="hub-mode-icon" aria-hidden="true">案</span>
+              <span class="hub-mode-copy"><strong>方案管理 <span class="hub-tab-count" id="hub-count-solutions"></span></strong><small>新增、编辑和发布具体方案</small></span>
             </button>
           </div>
           <div class="hub-panel hidden hub-panel--editor" data-hub="solutions" data-hub-panel="page">
-            <p class="page-hint">这里修改解决方案列表页的首屏标题、价值说明和搜索设置。具体方案请进入「方案内容」。</p>
             <div class="editor-stack">
               <div id="page-solutions-form" class="page-form-root"></div>
               <div class="form-actions docked-actions">
                 <p class="form-actions-hint" data-save-status="solutions">所有更改均已保存 · 保存会更新“解决方案页面”内容</p>
                 <div class="toolbar">
                   <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览修改位置</a>
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存页面内容</button>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存页面设置</button>
                 </div>
               </div>
             </div>
           </div>
           <div class="hub-panel" data-hub="solutions" data-hub-panel="items">
-            <p class="page-hint">首页标杆和精选方案在方案详情中设置；列表页标题请进入「页面内容」。</p>
+            <p class="page-hint">首页标杆和精选方案在方案详情中设置；列表页标题请进入「页面设置」。</p>
             <div class="filter-bar">
               <input class="search" id="solution-search" type="search" placeholder="搜索名称 / ID">
               <button type="button" class="btn btn-primary btn-sm" id="solution-search-btn">搜索</button>
@@ -212,23 +215,28 @@
               <button type="button" class="btn btn-accent hub-action-items" id="create-product">+ 新建产品</button>
             </div>
           </div>
-          <div class="hub-tabs" data-hub="products" role="tablist">
-            <button type="button" class="hub-tab" data-hub-tab="page" role="tab">页面内容</button>
-            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab">
-              产品内容 <span class="hub-tab-count" id="hub-count-products"></span>
+          <div class="hub-tabs hub-mode-nav" data-hub="products" role="tablist" aria-label="产品中心管理方式">
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">页</span>
+              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、筛选文案与搜索信息</small></span>
             </button>
-            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab">分类设置</button>
-
+            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab" aria-selected="true">
+              <span class="hub-mode-icon" aria-hidden="true">品</span>
+              <span class="hub-mode-copy"><strong>产品管理 <span class="hub-tab-count" id="hub-count-products"></span></strong><small>新增、编辑和发布具体产品</small></span>
+            </button>
+            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">类</span>
+              <span class="hub-mode-copy"><strong>分类管理</strong><small>维护前台筛选与内容分类</small></span>
+            </button>
           </div>
           <div class="hub-panel hidden hub-panel--editor" data-hub="products" data-hub-panel="page">
-            <p class="page-hint">这里修改列表页标题与「全部」按钮文案。产品分类请进入当前栏目的「分类设置」，具体产品请进入「产品内容」。</p>
             <div class="editor-stack">
               <div id="page-products-form" class="page-form-root"></div>
               <div class="form-actions docked-actions">
                 <p class="form-actions-hint" data-save-status="products">所有更改均已保存 · 保存会更新“产品中心页面”内容</p>
                 <div class="toolbar">
                   <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览修改位置</a>
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存页面内容</button>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存页面设置</button>
                 </div>
               </div>
             </div>
@@ -274,29 +282,34 @@
               <button type="button" class="btn btn-accent hub-action-items" id="create-news">+ 新建新闻</button>
             </div>
           </div>
-          <div class="hub-tabs" data-hub="news" role="tablist">
-            <button type="button" class="hub-tab" data-hub-tab="page" role="tab">页面内容</button>
-            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab">
-              新闻内容 <span class="hub-tab-count" id="hub-count-news"></span>
+          <div class="hub-tabs hub-mode-nav" data-hub="news" role="tablist" aria-label="新闻中心管理方式">
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">页</span>
+              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、筛选文案与搜索信息</small></span>
             </button>
-            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab">分类设置</button>
-
+            <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab" aria-selected="true">
+              <span class="hub-mode-icon" aria-hidden="true">闻</span>
+              <span class="hub-mode-copy"><strong>新闻管理 <span class="hub-tab-count" id="hub-count-news"></span></strong><small>新增、编辑和发布新闻文章</small></span>
+            </button>
+            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">类</span>
+              <span class="hub-mode-copy"><strong>分类管理</strong><small>维护前台筛选与新闻分类</small></span>
+            </button>
           </div>
           <div class="hub-panel hidden hub-panel--editor" data-hub="news" data-hub-panel="page">
-            <p class="page-hint">这里修改列表页标题与筛选「全部」文案。新闻分类请进入当前栏目的「分类设置」，具体文章请进入「新闻内容」。</p>
             <div class="editor-stack">
               <div id="page-news-form" class="page-form-root"></div>
               <div class="form-actions docked-actions">
                 <p class="form-actions-hint" data-save-status="news">所有更改均已保存 · 保存会更新“新闻中心页面”内容</p>
                 <div class="toolbar">
                   <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览修改位置</a>
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存页面内容</button>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存页面设置</button>
                 </div>
               </div>
             </div>
           </div>
           <div class="hub-panel" data-hub="news" data-hub-panel="items">
-            <p class="page-hint">首页精选新闻在新闻详情中设置；列表页标题请进入「页面内容」。</p>
+            <p class="page-hint">首页精选新闻在新闻详情中设置；列表页标题请进入「页面设置」。</p>
             <div class="filter-bar">
               <input class="search" id="news-search" type="search" placeholder="搜索标题 / 分类">
               <button type="button" class="btn btn-primary btn-sm" id="news-search-btn">搜索</button>
