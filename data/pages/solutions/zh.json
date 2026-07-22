@@ -19,6 +19,18 @@
       "body": "基于 10万㎡ 双基地的超级吞吐量，保障大型产线如期落地。"
     }
   ],
+  "filters": {
+    "all": "全部方案",
+    "tv-display": "家电行业",
+    "refrigerator": "物流行业",
+    "packaging": "储能行业",
+    "washer": "立库行业",
+    "capacitor": "新能源汽车行业",
+    "ac": "TV/商显行业",
+    "microwave": "储能行业",
+    "coffee": "3C/数码行业",
+    "robot": "机器人"
+  },
   "seo": {
     "title": "解决方案 | 同兴高科 TXAM",
     "description": "同兴高科行业整线解决方案：显示、家电、包装、电容、机器人等。"

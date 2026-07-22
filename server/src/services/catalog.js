@@ -86,6 +86,8 @@ function solutionApiFromRows(row, i18n) {
       published: !!row.published,
       sort_order: row.sort_order,
       home_slot: row.home_slot || '',
+      filter_key: row.filter_key,
+      filter_key_en: row.filter_key_en,
     },
     i18n
   );
@@ -313,6 +315,8 @@ function rowToSolutionRaw(s, i) {
     slug: s.slug || SOLUTION_SLUG_BY_ID[s.id] || '',
     sortOrder: Number(s.sort_order) || 0,
     homeSlot: s.home_slot === 'hero' || s.home_slot === 'category' ? s.home_slot : '',
+    filterKey: s.filter_key || '',
+    filterKeyEn: s.filter_key_en || '',
   };
   const pain = parseJson(i?.pain_points_json, null);
   const process = parseJson(i?.process_json, null);
@@ -557,11 +561,12 @@ function writeSolutionRow(db, item) {
         ? item.home_slot
         : '';
   db.prepare(
-    `INSERT INTO solutions (id, slug, category_key, image, sort_order, home_slot, published, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO solutions (id, slug, category_key, image, sort_order, home_slot, filter_key, filter_key_en, published, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(id) DO UPDATE SET
        slug=excluded.slug, category_key=excluded.category_key, image=excluded.image,
        sort_order=excluded.sort_order, home_slot=excluded.home_slot,
+       filter_key=excluded.filter_key, filter_key_en=excluded.filter_key_en,
        published=excluded.published, updated_at=datetime('now')`
   ).run(
     id,
@@ -570,6 +575,8 @@ function writeSolutionRow(db, item) {
     item.image || '',
     Number(item.sortOrder != null ? item.sortOrder : item.sort_order) || Number(id) || 0,
     homeSlot,
+    item.filterKey || item.filter_key || '',
+    item.filterKeyEn || item.filter_key_en || '',
     publishedInt(item.published)
   );
   upsertSolutionLang(db, id, 'zh', item, 'source');

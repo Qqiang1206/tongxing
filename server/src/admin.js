@@ -32,11 +32,15 @@ import {
   getCategoriesBundle,
   listProductCategories,
   listNewsCategories,
+  listSolutionCategories,
   upsertProductCategory,
   upsertNewsCategory,
+  upsertSolutionCategory,
   deleteProductCategory,
   deleteNewsCategory,
+  deleteSolutionCategory,
   resolveProductCategoryFields,
+  resolveSolutionCategoryFields,
 } from './services/categories.js';
 import { getHomeSlotsStatus } from './services/homeSlots.js';
 
@@ -51,6 +55,10 @@ function normalizeCatalogBody(kind, body) {
   if (kind === 'products') {
     const pick = body.categoryKey || body.filterKey || body.category || '';
     if (pick) Object.assign(next, resolveProductCategoryFields(pick));
+  }
+  if (kind === 'solutions') {
+    const pick = body.categoryKey || body.filterKey || body.category || '';
+    if (pick) Object.assign(next, resolveSolutionCategoryFields(pick));
   }
   return next;
 }
@@ -886,6 +894,74 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         resource: 'categories',
         resourceId: key,
         summary: `更新新闻分类 ${item.name}`,
+      });
+      sendJson(res, 200, { ok: true, item }, origin);
+    } catch (err) {
+      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+    }
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/categories/solutions' && req.method === 'GET') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    sendJson(res, 200, { items: listSolutionCategories() }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/categories/solutions' && req.method === 'POST') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    try {
+      const body = await readBody(req);
+      const item = upsertSolutionCategory(body, { isNew: true });
+      writeAudit({
+        req,
+        action: 'categories.solution.create',
+        resource: 'categories',
+        resourceId: item.key,
+        summary: `新建方案分类 ${item.name}`,
+      });
+      sendJson(res, 201, { ok: true, item }, origin);
+    } catch (err) {
+      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+    }
+    return true;
+  }
+
+  const catSolutionMatch = pathname.match(/^\/api\/v1\/admin\/categories\/solutions\/([^/]+)$/);
+  if (catSolutionMatch && (req.method === 'PUT' || req.method === 'DELETE')) {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    const key = decodeURIComponent(catSolutionMatch[1]);
+    try {
+      if (req.method === 'DELETE') {
+        const result = deleteSolutionCategory(key);
+        writeAudit({
+          req,
+          action: 'categories.solution.delete',
+          resource: 'categories',
+          resourceId: key,
+          summary: `删除方案分类 ${key}`,
+        });
+        sendJson(res, 200, result, origin);
+        return true;
+      }
+      const body = await readBody(req);
+      body.key = key;
+      const item = upsertSolutionCategory(body, { isNew: false });
+      writeAudit({
+        req,
+        action: 'categories.solution.update',
+        resource: 'categories',
+        resourceId: key,
+        summary: `更新方案分类 ${item.name}`,
       });
       sendJson(res, 200, { ok: true, item }, origin);
     } catch (err) {

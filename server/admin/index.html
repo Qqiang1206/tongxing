@@ -172,6 +172,10 @@
               <span class="hub-mode-icon" aria-hidden="true">案</span>
               <span class="hub-mode-copy"><strong>方案管理 <span class="hub-tab-count" id="hub-count-solutions"></span></strong><small>新增、编辑和发布具体方案</small></span>
             </button>
+            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">类</span>
+              <span class="hub-mode-copy"><strong>分类管理</strong><small>维护前台筛选与内容分类</small></span>
+            </button>
           </div>
           <div class="hub-panel hidden hub-panel--editor" data-hub="solutions" data-hub-panel="page">
             <div class="editor-stack">
@@ -217,6 +221,28 @@
                     <span id="solution-table-foot"></span>
                     <div class="pagination" id="solution-pagination"></div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hub-panel hidden" data-hub="solutions" data-hub-panel="categories">
+            <div class="section-workspace section-workspace--outline">
+              <aside class="section-outline">
+                <div class="section-outline-head"><strong>分类管理</strong><span>维护前台筛选分类</span></div>
+                <div class="section-tabs section-outline-tabs" role="tablist">
+                  <button type="button" class="hub-tab is-active" role="tab" aria-selected="true">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>全部分类</strong><small>查看并维护所有分类</small></span>
+                  </button>
+                </div>
+              </aside>
+              <div class="catalog-workspace-main">
+                <p class="page-hint">修改分类名称后，方案筛选和方案编辑表单会自动同步。</p>
+                <div class="filter-bar filter-bar--actions">
+                  <button type="button" class="btn btn-accent btn-sm" id="add-solution-cat">+ 新增分类</button>
+                </div>
+                <div class="card list-card">
+                  <div id="solution-cat-list" class="item-list"></div>
                 </div>
               </div>
             </div>

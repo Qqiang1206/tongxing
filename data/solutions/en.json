@@ -1,7 +1,7 @@
 {
   "31": {
     "id": "31",
-    "category": "解决方案",
+    "category": "TV/商显行业",
     "name": "TV/Commercial Display Production Line Solutions",
     "image": "assets/images/solutions/tv-flex-line.webp",
     "specs": [
@@ -16,6 +16,8 @@
     "slug": "tv-display",
     "sortOrder": 31,
     "homeSlot": "hero",
+    "filterKey": "ac",
+    "filterKeyEn": "ac",
     "painPoints": [
       {
         "title": "Difficulty in Large-Size Assembly",
@@ -87,7 +89,7 @@
   },
   "32": {
     "id": "32",
-    "category": "解决方案",
+    "category": "家电行业",
     "name": "Refrigerator Production Line Solutions",
     "image": "assets/images/solutions/refrigerator-production-line.webp",
     "specs": [
@@ -102,6 +104,8 @@
     "slug": "refrigerator",
     "sortOrder": 32,
     "homeSlot": "category",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
     "painPoints": [
       {
         "title": "Numerous Assembly Processes",
@@ -173,7 +177,7 @@
   },
   "33": {
     "id": "33",
-    "category": "解决方案",
+    "category": "物流行业",
     "name": "Packaging and Logistics Automation Line",
     "image": "assets/images/solutions/pkg-logistics-line.webp",
     "specs": [
@@ -188,6 +192,8 @@
     "slug": "packaging",
     "sortOrder": 33,
     "homeSlot": "category",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
     "painPoints": [
       {
         "title": "Packaging efficiency bottleneck",
@@ -259,7 +265,7 @@
   },
   "34": {
     "id": "34",
-    "category": "解决方案",
+    "category": "家电行业",
     "name": "Washing machine production line solution",
     "image": "assets/images/solutions/washer-production-line.webp",
     "specs": [
@@ -274,6 +280,8 @@
     "slug": "washer",
     "sortOrder": 34,
     "homeSlot": "",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
     "painPoints": [
       {
         "title": "Complex assembly process",
@@ -345,7 +353,7 @@
   },
   "35": {
     "id": "35",
-    "category": "解决方案",
+    "category": "新能源汽车行业",
     "name": "Capacitor production line solution",
     "image": "assets/images/solutions/capacitor-production-line.webp",
     "specs": [
@@ -360,6 +368,8 @@
     "slug": "capacitor",
     "sortOrder": 35,
     "homeSlot": "",
+    "filterKey": "capacitor",
+    "filterKeyEn": "capacitor",
     "painPoints": [
       {
         "title": "High winding accuracy requirements",
@@ -431,7 +441,7 @@
   },
   "36": {
     "id": "36",
-    "category": "解决方案",
+    "category": "家电行业",
     "name": "Air conditioning production line solution",
     "image": "assets/images/solutions/ac-production-line.webp",
     "specs": [
@@ -446,6 +456,8 @@
     "slug": "ac",
     "sortOrder": 36,
     "homeSlot": "",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
     "painPoints": [
       {
         "title": "Difficult heat exchanger assembly",
@@ -517,7 +529,7 @@
   },
   "37": {
     "id": "37",
-    "category": "解决方案",
+    "category": "家电行业",
     "name": "Microwave oven production line solution",
     "image": "assets/images/solutions/microwave-production-line.webp",
     "specs": [
@@ -532,6 +544,8 @@
     "slug": "microwave",
     "sortOrder": 37,
     "homeSlot": "",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
     "painPoints": [
       {
         "title": "Difficult cavity assembly",
@@ -603,7 +617,7 @@
   },
   "38": {
     "id": "38",
-    "category": "解决方案",
+    "category": "家电行业",
     "name": "Coffee machine production line solution",
     "image": "assets/images/solutions/coffee-production-line.webp",
     "specs": [
@@ -618,6 +632,8 @@
     "slug": "coffee",
     "sortOrder": 38,
     "homeSlot": "",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
     "painPoints": [
       {
         "title": "Heating component precision",
@@ -689,7 +705,7 @@
   },
   "39": {
     "id": "39",
-    "category": "解决方案",
+    "category": "3C/数码行业",
     "name": "Tablet PC production line solutions",
     "image": "assets/images/solutions/tablet-production-line.webp",
     "specs": [
@@ -704,6 +720,8 @@
     "slug": "tablet",
     "sortOrder": 39,
     "homeSlot": "",
+    "filterKey": "coffee",
+    "filterKeyEn": "coffee",
     "painPoints": [
       {
         "title": "Precision display assembly",
@@ -775,7 +793,7 @@
   },
   "40": {
     "id": "40",
-    "category": "解决方案",
+    "category": "新能源汽车行业",
     "name": "Headlamp production line solutions",
     "image": "assets/images/solutions/headlight-production-line.webp",
     "specs": [
@@ -790,6 +808,8 @@
     "slug": "headlight",
     "sortOrder": 40,
     "homeSlot": "",
+    "filterKey": "capacitor",
+    "filterKeyEn": "capacitor",
     "painPoints": [
       {
         "title": "High optical precision requirements",
@@ -861,7 +881,7 @@
   },
   "41": {
     "id": "41",
-    "category": "公司新闻",
+    "category": "机器人",
     "name": "Robot Cell Equipment",
     "image": "assets/images/solutions/robot-unit.webp",
     "specs": [
@@ -876,6 +896,8 @@
     "slug": "robot",
     "sortOrder": 4,
     "homeSlot": "",
+    "filterKey": "robot",
+    "filterKeyEn": "robot",
     "painPoints": [
       {
         "title": "Low Space Utilization",

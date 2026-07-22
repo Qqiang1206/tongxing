@@ -1,6 +1,6 @@
 /**
- * Product / news category taxonomy (admin-managed).
- * Product keys drive products.html filter buttons + product.filterKey.
+ * Product / solution / news category taxonomy (admin-managed).
+ * Product & solution keys drive list-page filter buttons + item filterKey.
  */
 import { getDb } from '../db.js';
 import {
@@ -29,6 +29,20 @@ const NEWS_SEED = [
   { key: 'industry', name: '行业洞察', sortOrder: 30 },
 ];
 
+const SOLUTION_SEED = [
+  { key: 'tv-display', name: 'TV / 商显', nameEn: 'TV & Commercial Display', filterKeyEn: 'tv-display', sortOrder: 10 },
+  { key: 'refrigerator', name: '冰箱', nameEn: 'Refrigerator', filterKeyEn: 'refrigerator', sortOrder: 20 },
+  { key: 'packaging', name: '包装', nameEn: 'Packaging', filterKeyEn: 'packaging', sortOrder: 30 },
+  { key: 'washer', name: '洗衣机', nameEn: 'Washer', filterKeyEn: 'washer', sortOrder: 40 },
+  { key: 'capacitor', name: '电容', nameEn: 'Capacitor', filterKeyEn: 'capacitor', sortOrder: 50 },
+  { key: 'ac', name: '空调', nameEn: 'Air Conditioning', filterKeyEn: 'ac', sortOrder: 60 },
+  { key: 'microwave', name: '微波炉', nameEn: 'Microwave', filterKeyEn: 'microwave', sortOrder: 70 },
+  { key: 'coffee', name: '咖啡机', nameEn: 'Coffee Machine', filterKeyEn: 'coffee', sortOrder: 80 },
+  { key: 'tablet', name: '平板', nameEn: 'Tablet', filterKeyEn: 'tablet', sortOrder: 90 },
+  { key: 'headlight', name: '车灯', nameEn: 'Headlight', filterKeyEn: 'headlight', sortOrder: 100 },
+  { key: 'robot', name: '机器人', nameEn: 'Robot', filterKeyEn: 'robot', sortOrder: 110 },
+];
+
 export function ensureCategoryTables(db) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS product_categories (
@@ -42,6 +56,14 @@ export function ensureCategoryTables(db) {
     CREATE TABLE IF NOT EXISTS news_categories (
       key TEXT PRIMARY KEY,
       name TEXT NOT NULL,
+      sort_order INTEGER DEFAULT 0,
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE TABLE IF NOT EXISTS solution_categories (
+      key TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      name_en TEXT DEFAULT '',
+      filter_key_en TEXT DEFAULT '',
       sort_order INTEGER DEFAULT 0,
       updated_at TEXT DEFAULT (datetime('now'))
     );
@@ -69,9 +91,32 @@ function seedIfEmpty(db) {
       ins.run(row.key, row.name, row.sortOrder);
     }
   }
+  const sc = db.prepare('SELECT COUNT(*) AS c FROM solution_categories').get()?.c || 0;
+  if (sc === 0) {
+    const ins = db.prepare(
+      `INSERT INTO solution_categories (key, name, name_en, filter_key_en, sort_order)
+       VALUES (?, ?, ?, ?, ?)`
+    );
+    for (const row of SOLUTION_SEED) {
+      ins.run(row.key, row.name, row.nameEn, row.filterKeyEn, row.sortOrder);
+    }
+    try {
+      syncSolutionPageFilters();
+    } catch (_) { /* page json may not exist yet */ }
+  }
 }
 
 function rowProduct(r) {
+  return {
+    key: r.key,
+    name: r.name,
+    nameEn: r.name_en || '',
+    filterKeyEn: r.filter_key_en || r.key,
+    sortOrder: Number(r.sort_order) || 0,
+  };
+}
+
+function rowSolution(r) {
   return {
     key: r.key,
     name: r.name,
@@ -107,10 +152,20 @@ export function listNewsCategories() {
     .map(rowNews);
 }
 
+export function listSolutionCategories() {
+  const db = getDb();
+  ensureCategoryTables(db);
+  return db
+    .prepare('SELECT * FROM solution_categories ORDER BY sort_order, key')
+    .all()
+    .map(rowSolution);
+}
+
 export function getCategoriesBundle() {
   return {
     products: listProductCategories(),
     news: listNewsCategories(),
+    solutions: listSolutionCategories(),
   };
 }
 
@@ -189,6 +244,75 @@ export function deleteProductCategory(key) {
   if (used > 0) throw new Error('category_in_use');
   db.prepare('DELETE FROM product_categories WHERE key = ?').run(k);
   syncProductPageFilters();
+  return { ok: true, deleted: k };
+}
+
+export function upsertSolutionCategory(input, { isNew = false } = {}) {
+  const db = getDb();
+  ensureCategoryTables(db);
+  const key = assertKey(input.key);
+  const name = String(input.name || '').trim();
+  if (!name) throw new Error('missing_category_name');
+  const existing = db.prepare('SELECT key FROM solution_categories WHERE key = ?').get(key);
+  if (isNew && existing) throw new Error('already_exists');
+  if (!isNew && !existing) throw new Error('not_found');
+
+  const prev = existing
+    ? db.prepare('SELECT * FROM solution_categories WHERE key = ?').get(key)
+    : null;
+
+  db.prepare(
+    `INSERT INTO solution_categories (key, name, name_en, filter_key_en, sort_order, updated_at)
+     VALUES (?, ?, ?, ?, ?, datetime('now'))
+     ON CONFLICT(key) DO UPDATE SET
+       name=excluded.name, name_en=excluded.name_en, filter_key_en=excluded.filter_key_en,
+       sort_order=excluded.sort_order, updated_at=datetime('now')`
+  ).run(
+    key,
+    name,
+    String(input.nameEn || '').trim(),
+    String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
+    Number(input.sortOrder != null ? input.sortOrder : input.sort_order) || 0
+  );
+
+  if (prev && prev.name !== name) {
+    db.prepare(
+      `UPDATE solutions SET category_key = ?, updated_at = datetime('now')
+       WHERE filter_key = ? OR category_key = ?`
+    ).run(name, key, prev.name);
+  }
+  db.prepare(
+    `UPDATE solutions SET filter_key = ?, filter_key_en = ?, category_key = ?
+     WHERE filter_key = ?`
+  ).run(
+    key,
+    String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
+    name,
+    key
+  );
+
+  syncSolutionPageFilters();
+  try {
+    regenerateCatalogJs('solutions', 'zh');
+    markStale('solutions');
+  } catch (_) { /* ignore if empty */ }
+  return listSolutionCategories().find((c) => c.key === key);
+}
+
+export function deleteSolutionCategory(key) {
+  const db = getDb();
+  ensureCategoryTables(db);
+  const k = assertKey(key);
+  const row = db.prepare('SELECT * FROM solution_categories WHERE key = ?').get(k);
+  if (!row) throw new Error('not_found');
+  const used = db
+    .prepare(
+      `SELECT COUNT(*) AS c FROM solutions WHERE filter_key = ? OR category_key = ?`
+    )
+    .get(k, row.name)?.c || 0;
+  if (used > 0) throw new Error('category_in_use');
+  db.prepare('DELETE FROM solution_categories WHERE key = ?').run(k);
+  syncSolutionPageFilters();
   return { ok: true, deleted: k };
 }
 
@@ -285,8 +409,48 @@ export function syncNewsPageFilters() {
   return filters;
 }
 
+export function syncSolutionPageFilters() {
+  const cats = listSolutionCategories();
+  const page = readPageJson('solutions', 'zh') || {
+    pageKey: 'solutions',
+    lang: 'zh',
+    hero: {},
+    filters: {},
+    pillars: [],
+    seo: {},
+  };
+  const filters = { all: (page.filters && page.filters.all) || '全部方案' };
+  for (const c of cats) filters[c.key] = c.name;
+  page.filters = filters;
+  page.pageKey = 'solutions';
+  page.lang = 'zh';
+  writePageJsonAny('solutions', 'zh', page);
+  regeneratePageJs('solutions', 'zh');
+  markStale('pages:solutions');
+  return filters;
+}
+
 export function resolveProductCategoryFields(categoryKeyOrName) {
   const cats = listProductCategories();
+  const hit =
+    cats.find((c) => c.key === categoryKeyOrName) ||
+    cats.find((c) => c.name === categoryKeyOrName);
+  if (!hit) {
+    return {
+      category: categoryKeyOrName || '',
+      filterKey: '',
+      filterKeyEn: '',
+    };
+  }
+  return {
+    category: hit.name,
+    filterKey: hit.key,
+    filterKeyEn: hit.filterKeyEn || hit.key,
+  };
+}
+
+export function resolveSolutionCategoryFields(categoryKeyOrName) {
+  const cats = listSolutionCategories();
   const hit =
     cats.find((c) => c.key === categoryKeyOrName) ||
     cats.find((c) => c.name === categoryKeyOrName);

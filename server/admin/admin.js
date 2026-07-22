@@ -18,6 +18,7 @@
     isNewSolution: false,
     productCategories: [],
     newsCategories: [],
+    solutionCategories: [],
     pageCache: {},
     siteCache: null,
     auditActors: [],
@@ -238,6 +239,9 @@
     'categories.product.create': '新建产品分类',
     'categories.product.update': '更新产品分类',
     'categories.product.delete': '删除产品分类',
+    'categories.solution.create': '新建方案分类',
+    'categories.solution.update': '更新方案分类',
+    'categories.solution.delete': '删除方案分类',
     'categories.news.create': '新建新闻分类',
     'categories.news.update': '更新新闻分类',
     'categories.news.delete': '删除新闻分类',
@@ -466,7 +470,7 @@
     } else if (hub === 'news') {
       await Promise.all([loadPageForm('news'), loadNews(), loadCategories()]);
     } else if (hub === 'solutions') {
-      await Promise.all([loadPageForm('solutions'), loadSolutions()]);
+      await Promise.all([loadPageForm('solutions'), loadSolutions(), loadCategories()]);
     } else if (hub === 'sitewide') {
       await Promise.all([loadSiteForm(), loadMedia()]);
     } else if (hub === 'system') {
@@ -527,6 +531,7 @@
     if (/关于|公司介绍|企业文化|发展历程|资质|客户/.test(q)) return setView('page-about');
     if (/联系|地址|电话|邮箱|地图/.test(q)) return setView('page-contact');
     if (/解决方案|方案/.test(q)) return setView('page-solutions', { hubTab: wantsPageContent ? 'page' : 'items' });
+    if (/方案.*分类|分类.*方案/.test(q)) return setView('page-solutions', { hubTab: 'categories' });
     if (/产品.*分类|分类.*产品/.test(q)) return setView('page-products', { hubTab: 'categories' });
     if (/(新闻|资讯).*分类|分类.*(新闻|资讯)/.test(q)) return setView('page-news', { hubTab: 'categories' });
     if (/产品/.test(q)) return setView('page-products', { hubTab: wantsPageContent ? 'page' : 'items' });
@@ -1104,6 +1109,7 @@
     if (action.indexOf('site.') === 0) return '全站';
     if (action.indexOf('media.') === 0) return '媒体';
     if (action.indexOf('categories.product.') === 0) return '产品分类';
+    if (action.indexOf('categories.solution.') === 0) return '方案分类';
     if (action.indexOf('categories.news.') === 0) return '新闻分类';
     return auditResourceLabel(row.resource);
   }
@@ -1151,6 +1157,9 @@
     }
     if (action.indexOf('categories.product.') === 0) {
       return Promise.resolve(setView('page-products', { hubTab: 'categories' }));
+    }
+    if (action.indexOf('categories.solution.') === 0) {
+      return Promise.resolve(setView('page-solutions', { hubTab: 'categories' }));
     }
     if (action.indexOf('categories.news.') === 0) {
       return Promise.resolve(setView('page-news', { hubTab: 'categories' }));
@@ -1582,6 +1591,23 @@
       '<p class="field-help">在「产品中心 → 分类管理」中维护可选分类</p></div>';
   }
 
+  function solutionCategorySelect(item) {
+    var selected = item.filterKey || '';
+    if (!selected && item.category) {
+      var hit = state.solutionCategories.find(function (c) { return c.name === item.category; });
+      if (hit) selected = hit.key;
+    }
+    var opts = state.solutionCategories.map(function (c) {
+      return '<option value="' + escapeAttr(c.key) + '"' + (c.key === selected ? ' selected' : '') + '>' +
+        escapeHtml(c.name) + '</option>';
+    }).join('');
+    return '<div class="field"><label for="f-categoryKey">分类名称</label>' +
+      '<select id="f-categoryKey">' +
+      '<option value="">请选择分类</option>' + opts +
+      '</select>' +
+      '<p class="field-help">在「解决方案 → 分类管理」中维护可选分类</p></div>';
+  }
+
   function newsCategorySelect(item) {
     var selected = item.category || '';
     var opts = state.newsCategories.map(function (c) {
@@ -1596,18 +1622,21 @@
   }
 
   async function ensureCategoriesLoaded() {
-    if (state.productCategories.length && state.newsCategories.length) return;
+    if (state.productCategories.length && state.newsCategories.length && state.solutionCategories.length) return;
     var data = await api('/admin/categories');
     state.productCategories = data.products || [];
     state.newsCategories = data.news || [];
+    state.solutionCategories = data.solutions || [];
   }
 
   async function loadCategories() {
     var data = await api('/admin/categories');
     state.productCategories = data.products || [];
     state.newsCategories = data.news || [];
+    state.solutionCategories = data.solutions || [];
     renderProductCatList();
     renderNewsCatList();
+    renderSolutionCatList();
   }
 
   function renderProductCatList() {
@@ -1664,6 +1693,33 @@
       });
     });
   }
+  function renderSolutionCatList() {
+    var root = $('solution-cat-list');
+    if (!root) return;
+    var items = state.solutionCategories;
+    if (!items.length) {
+      root.innerHTML = '<p class="empty">暂无方案分类</p>';
+      return;
+    }
+    root.innerHTML = items.map(function (c, index) {
+      return '<div class="item-row" style="cursor:default">' +
+        '<span class="category-order">' + String(index + 1).padStart(2, '0') + '</span>' +
+        '<div class="item-main">' +
+        '<div class="item-title-row"><span class="item-title">' + escapeHtml(c.name) + '</span></div>' +
+        '<div class="item-meta">显示顺序 ' + escapeHtml(String(c.sortOrder)) +
+        ' · 系统标识 ' + escapeHtml(c.key) + '</div></div>' +
+        '<div class="item-actions">' +
+        '<button type="button" class="btn-edit" data-edit-sc="' + escapeAttr(c.key) + '">编辑</button>' +
+        '</div></div>';
+    }).join('');
+    root.querySelectorAll('[data-edit-sc]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-edit-sc');
+        var cat = state.solutionCategories.find(function (c) { return c.key === key; });
+        if (cat) editSolutionCategory(cat);
+      });
+    });
+  }
   function nextCategorySort(items) {
     if (!items || !items.length) return 10;
     return Math.max.apply(null, items.map(function (item) {
@@ -1672,7 +1728,18 @@
   }
 
   function generatedCategoryKey(kind) {
-    return (kind === 'products' ? 'product-' : 'news-') + Date.now().toString(36).slice(-7);
+    var prefix = kind === 'products' ? 'product-' : kind === 'solutions' ? 'solution-' : 'news-';
+    return prefix + Date.now().toString(36).slice(-7);
+  }
+
+  function categoryKindMeta(kind) {
+    if (kind === 'products') {
+      return { label: '产品分类', hub: '产品中心', sync: '产品筛选与产品编辑表单', productLike: true, items: state.productCategories };
+    }
+    if (kind === 'solutions') {
+      return { label: '方案分类', hub: '解决方案', sync: '方案筛选与方案编辑表单', productLike: true, items: state.solutionCategories };
+    }
+    return { label: '新闻分类', hub: '新闻中心', sync: '新闻筛选与新闻编辑表单', productLike: false, items: state.newsCategories };
   }
 
   function setCategoryFieldError(id, message) {
@@ -1688,24 +1755,23 @@
   }
 
   function openCategoryEditor(kind, cat) {
-    var isProduct = kind === 'products';
+    var meta = categoryKindMeta(kind);
     var isNew = !cat;
-    var label = isProduct ? '产品分类' : '新闻分类';
-    var items = isProduct ? state.productCategories : state.newsCategories;
+    var items = meta.items || [];
     var key = cat ? cat.key : generatedCategoryKey(kind);
     var sortOrder = cat ? cat.sortOrder : nextCategorySort(items);
-    openDrawer('category', (isNew ? '新增' : '编辑') + label);
+    openDrawer('category', (isNew ? '新增' : '编辑') + meta.label);
     $('category-editor').innerHTML =
       '<div class="category-editor-intro">' +
-        '<span class="category-editor-context">' + (isProduct ? '产品中心' : '新闻中心') + ' · 分类管理</span>' +
-        '<h4>' + (isNew ? '创建一个新的' : '修改当前') + label + '</h4>' +
-        '<p>保存后会自动同步到' + (isProduct ? '产品筛选与产品编辑表单' : '新闻筛选与新闻编辑表单') + '。</p>' +
+        '<span class="category-editor-context">' + meta.hub + ' · 分类管理</span>' +
+        '<h4>' + (isNew ? '创建一个新的' : '修改当前') + meta.label + '</h4>' +
+        '<p>保存后会自动同步到' + meta.sync + '。</p>' +
       '</div>' +
-      '<form id="category-form" novalidate>' +
+      '<form id="category-form" novalidate data-category-kind="' + escapeAttr(kind) + '" data-category-mode="' + (isNew ? 'create' : 'edit') + '"' + (cat && cat.key ? ' data-category-key="' + escapeAttr(cat.key) + '"' : '') + '>' +
         '<div class="category-editor-card">' +
           '<div class="form-grid category-form-grid">' +
             '<div class="field full"><label for="category-name">分类名称 <span class="required-mark">*</span></label>' +
-              '<input id="category-name" type="text" maxlength="40" value="' + escapeAttr(cat ? cat.name : '') + '" placeholder="例如：光学元件组装">' +
+              '<input id="category-name" type="text" maxlength="40" value="' + escapeAttr(cat ? cat.name : '') + '">' +
               '<p class="field-help">这是运营人员和前台访客看到的名称。</p><p class="field-error" id="category-name-error"></p></div>' +
             '<div class="field full"><label for="category-sort">显示顺序</label>' +
               '<input id="category-sort" type="number" min="0" step="1" value="' + escapeAttr(String(sortOrder)) + '">' +
@@ -1718,8 +1784,8 @@
               '<div class="field full"><label for="category-key">系统标识</label>' +
                 '<input id="category-key" type="text" maxlength="32" value="' + escapeAttr(key) + '"' + (isNew ? '' : ' readonly') + '>' +
                 '<p class="field-help">用于系统关联，需以英文小写字母开头。' + (isNew ? '已自动生成，也可以在创建前修改。' : '创建后不可修改，避免影响已有内容。') + '</p><p class="field-error" id="category-key-error"></p></div>' +
-              (isProduct
-                ? '<div class="field"><label for="category-name-en">英文名称</label><input id="category-name-en" type="text" value="' + escapeAttr(cat ? (cat.nameEn || '') : '') + '" placeholder="Optical Assembly"></div>' +
+              (meta.productLike
+                ? '<div class="field"><label for="category-name-en">英文名称</label><input id="category-name-en" type="text" value="' + escapeAttr(cat ? (cat.nameEn || '') : '') + '"></div>' +
                   '<div class="field"><label for="category-filter-en">英文筛选标识</label><input id="category-filter-en" type="text" value="' + escapeAttr(cat ? (cat.filterKeyEn || key) : key) + '"></div>'
                 : '') +
             '</div>' +
@@ -1757,20 +1823,30 @@
     });
     if ($('delete-category')) {
       $('delete-category').onclick = function () {
-        if (isProduct) deleteProductCategory(cat.key, cat.name, true);
+        if (kind === 'products') deleteProductCategory(cat.key, cat.name, true);
+        else if (kind === 'solutions') deleteSolutionCategoryUi(cat.key, cat.name, true);
         else deleteNewsCategoryUi(cat.key, cat.name, true);
       };
     }
   }
 
   async function saveCategoryEditor(kind, cat) {
-    var isProduct = kind === 'products';
+    var meta = categoryKindMeta(kind);
+    var form = $('category-form');
+    if (form) {
+      kind = form.getAttribute('data-category-kind') || kind;
+      meta = categoryKindMeta(kind);
+      if (form.getAttribute('data-category-mode') === 'create') cat = null;
+      else if (!cat && form.getAttribute('data-category-key')) {
+        cat = { key: form.getAttribute('data-category-key') };
+      }
+    }
     var isNew = !cat;
     var name = val('category-name').trim();
     var key = val('category-key').trim().toLowerCase();
     var sortRaw = val('category-sort').trim();
     var validKey = /^[a-z][a-z0-9_-]{0,31}$/.test(key);
-    var validSort = /^d+$/.test(sortRaw);
+    var validSort = /^\d+$/.test(sortRaw);
     setCategoryFieldError('category-name', name ? '' : '请填写分类名称');
     setCategoryFieldError('category-key', validKey ? '' : '请使用英文小写字母开头，可包含数字、短横线或下划线');
     setCategoryFieldError('category-sort', validSort ? '' : '请输入大于或等于 0 的整数');
@@ -1782,7 +1858,7 @@
     }
 
     var payload = { key: key, name: name, sortOrder: Number(sortRaw) };
-    if (isProduct) {
+    if (meta.productLike) {
       payload.nameEn = val('category-name-en').trim();
       payload.filterKeyEn = val('category-filter-en').trim() || key;
     }
@@ -1797,7 +1873,7 @@
       });
       await loadCategories();
       closeDrawer();
-      toast((isProduct ? '产品分类' : '新闻分类') + (isNew ? '已创建' : '已保存'));
+      toast(meta.label + (isNew ? '已创建' : '已保存'));
     } catch (err) {
       if (err.message === 'already_exists') {
         revealCategoryAdvanced();
@@ -1809,6 +1885,8 @@
         $('category-key').focus();
       } else if (err.message === 'missing_category_name') {
         setCategoryFieldError('category-name', '请填写分类名称');
+      } else if (err.message === 'not_found') {
+        toast(isNew ? '创建失败：后台接口未就绪，请重启 server 后重试' : '分类不存在或已被删除，请刷新列表后重试', true);
       } else {
         toast(err.message || '保存失败，请稍后重试', true);
       }
@@ -1819,6 +1897,10 @@
 
   function editProductCategory(cat) {
     openCategoryEditor('products', cat);
+  }
+
+  function editSolutionCategory(cat) {
+    openCategoryEditor('solutions', cat);
   }
 
   function editNewsCategory(cat) {
@@ -1847,6 +1929,19 @@
       })
       .catch(function (e) {
         toast(e.message === 'category_in_use' ? '仍有新闻在使用这个分类，暂时不能删除' : e.message, true);
+      });
+  }
+
+  function deleteSolutionCategoryUi(key, name, closeAfter) {
+    if (!confirm('确定删除方案分类「' + (name || key) + '」吗？正在被方案使用的分类不能删除。')) return;
+    api('/admin/categories/solutions/' + encodeURIComponent(key), { method: 'DELETE' })
+      .then(function () {
+        if (closeAfter) closeDrawer();
+        toast('方案分类已删除');
+        return loadCategories();
+      })
+      .catch(function (e) {
+        toast(e.message === 'category_in_use' ? '仍有方案在使用这个分类，暂时不能删除' : e.message, true);
       });
   }
   async function openProduct(id) {
@@ -2174,13 +2269,14 @@
     state.isNewSolution = false;
     state.selectedSolutionId = id;
     renderSolutionTable();
+    await ensureCategoriesLoaded();
     var item = await api('/admin/solutions/' + encodeURIComponent(id));
     fillSolutionForm(item, false);
   }
 
   function blankSolution() {
     return {
-      name: '', category: '解决方案', image: '', specs: [], summary: '',
+      name: '', category: '', filterKey: '', image: '', specs: [], summary: '',
       contentHtml: '', published: false, painPoints: [], process: [], slug: '', sortOrder: 0,
       homeSlot: '',
     };
@@ -2244,7 +2340,7 @@
     var basicHtml =
       '<div class="form-grid">' +
       field('name', '方案名称', item.name, 'full') +
-      field('category', '分类名称', item.category) +
+      solutionCategorySelect(item) +
       solutionSlugSelect(item) +
       field('summary', '一句话介绍', item.summary, 'full', 'textarea') +
       '</div>';
@@ -2322,9 +2418,14 @@
       toast('请填写方案名称', true);
       return false;
     }
+    var categoryKey = val('f-categoryKey');
+    if (!categoryKey) {
+      toast('请选择方案分类', true);
+      return false;
+    }
     var slotEl = document.querySelector('#solution-home-slot input[name="homeSlot"]:checked');
     var body = {
-      name: name, category: val('f-category'), image: val('f-image'),
+      name: name, categoryKey: categoryKey, image: val('f-image'),
       slug: val('f-slug'),
       sortOrder: Number(val('f-sortOrder')) || 0,
       specs: val('f-specs').split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
@@ -2354,7 +2455,9 @@
     state.isNewSolution = true;
     state.selectedSolutionId = null;
     renderSolutionTable();
-    fillSolutionForm(blankSolution(), true);
+    ensureCategoriesLoaded().then(function () {
+      fillSolutionForm(blankSolution(), true);
+    }).catch(function (e) { toast(e.message, true); });
   }
 
   async function deleteCatalog(kind, id) {
@@ -3278,6 +3381,15 @@
           '<div class="field full"><p class="field-help">分类按钮文案由当前栏目的「分类管理」维护，保存后会自动同步到当前页面。</p></div>'),
       };
     }
+    var filterSection = key === 'solutions'
+      ? {
+        key: 'filters',
+        label: '筛选文案',
+        html: cardBlock('筛选文案',
+          field('filters-all', '「全部」按钮文案', filters.all || '全部方案', 'full') +
+          '<div class="field full"><p class="field-help">分类按钮文案由当前栏目的「分类管理」维护，保存后会自动同步到当前页面。</p></div>'),
+      }
+      : null;
     var sections = [
       { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
@@ -3286,8 +3398,9 @@
           field('hero-title', '标题', (page.hero || {}).title, 'full') +
           field('hero-lead', '导语', (page.hero || {}).lead || '', 'full', 'textarea')),
       },
-      extraSection,
     ];
+    if (filterSection) sections.push(filterSection);
+    sections.push(extraSection);
     $(formId).innerHTML = buildSectionTabs(formId, sections, 'hero');
     bindSectionTabs(formId);
     bindPageDirty(formId, key);
@@ -3306,6 +3419,8 @@
     };
     if (key === 'solutions') {
       body.pillars = collectPillars();
+      var prevFilters = ((state.pageCache[key] || {}).filters) || {};
+      body.filters = Object.assign({}, prevFilters, { all: val('f-filters-all') || prevFilters.all || '全部方案' });
     } else {
       var prev = ((state.pageCache[key] || {}).filters) || {};
       body.filters = Object.assign({}, prev, { all: val('f-filters-all') || prev.all || '' });
@@ -4170,7 +4285,7 @@
         if (key === 'solutions') loadSolutions().catch(function (e) { toast(e.message, true); });
       } else if (tab === 'page') {
         loadPageForm(key).catch(function (e) { toast(e.message, true); });
-      } else if (tab === 'categories' && (key === 'products' || key === 'news')) {
+      } else if (tab === 'categories' && (key === 'products' || key === 'news' || key === 'solutions')) {
         loadCategories().catch(function (e) { toast(e.message, true); });
       } else if (key === 'sitewide') {
         if (tab === 'site') loadSiteForm().catch(function (e) { toast(e.message, true); });
@@ -4299,6 +4414,9 @@
 
   if ($('add-product-cat')) {
     $('add-product-cat').addEventListener('click', function () { editProductCategory(null); });
+  }
+  if ($('add-solution-cat')) {
+    $('add-solution-cat').addEventListener('click', function () { editSolutionCategory(null); });
   }
   if ($('add-news-cat')) {
     $('add-news-cat').addEventListener('click', function () { editNewsCategory(null); });

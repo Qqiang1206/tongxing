@@ -41,6 +41,8 @@ export function mapSolution(row, i18n) {
     published: !!row.published,
     sortOrder: Number(row.sort_order) || 0,
     homeSlot: row.home_slot === 'hero' || row.home_slot === 'category' ? row.home_slot : '',
+    filterKey: row.filter_key || '',
+    filterKeyEn: row.filter_key_en || '',
   };
   const painPoints = parseJsonField(i18n.pain_points_json, null);
   const process = parseJsonField(i18n.process_json, null);

@@ -62,9 +62,10 @@ export function getDb() {
   `);
 
   migrateProductColumns(db);
+  ensureCategoryTablesInline(db);
+  migrateSolutionColumns(db);
   migrateHomeSlotColumns(db);
   ensureAuditTableInline(db);
-  ensureCategoryTablesInline(db);
   ensurePageViewsTableInline(db);
   seedResourceStatus(db);
   dbInstance = db;
@@ -84,6 +85,14 @@ function ensureCategoryTablesInline(db) {
     CREATE TABLE IF NOT EXISTS news_categories (
       key TEXT PRIMARY KEY,
       name TEXT NOT NULL,
+      sort_order INTEGER DEFAULT 0,
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE TABLE IF NOT EXISTS solution_categories (
+      key TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      name_en TEXT DEFAULT '',
+      filter_key_en TEXT DEFAULT '',
       sort_order INTEGER DEFAULT 0,
       updated_at TEXT DEFAULT (datetime('now'))
     );
@@ -115,6 +124,26 @@ function ensureCategoryTablesInline(db) {
     ];
     const ins = db.prepare(
       `INSERT INTO news_categories (key, name, sort_order) VALUES (?,?,?)`
+    );
+    for (const r of rows) ins.run(...r);
+  }
+  const sc = db.prepare('SELECT COUNT(*) AS c FROM solution_categories').get()?.c || 0;
+  if (sc === 0) {
+    const rows = [
+      ['tv-display', 'TV / 商显', 'TV & Commercial Display', 'tv-display', 10],
+      ['refrigerator', '冰箱', 'Refrigerator', 'refrigerator', 20],
+      ['packaging', '包装', 'Packaging', 'packaging', 30],
+      ['washer', '洗衣机', 'Washer', 'washer', 40],
+      ['capacitor', '电容', 'Capacitor', 'capacitor', 50],
+      ['ac', '空调', 'Air Conditioning', 'ac', 60],
+      ['microwave', '微波炉', 'Microwave', 'microwave', 70],
+      ['coffee', '咖啡机', 'Coffee Machine', 'coffee', 80],
+      ['tablet', '平板', 'Tablet', 'tablet', 90],
+      ['headlight', '车灯', 'Headlight', 'headlight', 100],
+      ['robot', '机器人', 'Robot', 'robot', 110],
+    ];
+    const ins = db.prepare(
+      `INSERT INTO solution_categories (key, name, name_en, filter_key_en, sort_order) VALUES (?,?,?,?,?)`
     );
     for (const r of rows) ins.run(...r);
   }
@@ -257,6 +286,42 @@ function migrateProductColumns(db) {
         fe[sid] || '',
         sid
       );
+    }
+  }
+}
+
+function migrateSolutionColumns(db) {
+  const cols = db.prepare('PRAGMA table_info(solutions)').all().map((c) => c.name);
+  const add = (name, ddl) => {
+    if (!cols.includes(name)) db.exec(`ALTER TABLE solutions ADD COLUMN ${ddl}`);
+  };
+  add('filter_key', "filter_key TEXT DEFAULT ''");
+  add('filter_key_en', "filter_key_en TEXT DEFAULT ''");
+
+  const stats = db
+    .prepare(
+      `SELECT COUNT(*) AS total,
+              SUM(CASE WHEN filter_key IS NULL OR filter_key = '' THEN 1 ELSE 0 END) AS empty
+       FROM solutions`
+    )
+    .get();
+  if (!stats || !stats.total || stats.empty === 0) return;
+
+  const cats = db.prepare('SELECT key, name FROM solution_categories').all();
+  const catByKey = Object.fromEntries(cats.map((c) => [c.key, c.name]));
+  const upd = db.prepare(
+    `UPDATE solutions SET filter_key = ?, filter_key_en = ?, category_key = ? WHERE id = ?`
+  );
+  for (const row of db.prepare('SELECT id, slug, category_key, filter_key FROM solutions').all()) {
+    if (row.filter_key) continue;
+    const slug = String(row.slug || '').trim();
+    if (slug && catByKey[slug]) {
+      upd.run(slug, slug, catByKey[slug], row.id);
+      continue;
+    }
+    const fallback = cats[0];
+    if (fallback) {
+      upd.run(fallback.key, fallback.key, fallback.name, row.id);
     }
   }
 }
