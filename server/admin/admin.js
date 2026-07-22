@@ -403,7 +403,9 @@
       btn.classList.toggle('is-active', btn.getAttribute('data-hub-tab') === current);
     });
     document.querySelectorAll('.hub-panel[data-hub="' + hub + '"]').forEach(function (panel) {
-      panel.classList.toggle('hidden', panel.getAttribute('data-hub-panel') !== current);
+      var show = panel.getAttribute('data-hub-panel') === current;
+      panel.classList.toggle('hidden', !show);
+      if (show) resetPanelScroll(panel);
     });
     document.querySelectorAll('.hub-actions[data-hub="' + hub + '"] [data-hub-action]').forEach(function (el) {
       el.classList.toggle('hidden', el.getAttribute('data-hub-action') !== current);
@@ -469,6 +471,8 @@
     document.querySelectorAll('.view').forEach(function (sec) {
       sec.classList.toggle('hidden', sec.id !== 'view-' + name);
     });
+    var main = document.querySelector('.main');
+    if (main) main.scrollTop = 0;
     var activeNav = document.querySelector('.nav-item[data-view="' + name + '"]');
     var hub = HUB_BY_VIEW[name];
     if (hub) {
@@ -552,7 +556,12 @@
       return '<div class="section-panel' + (s.key === remembered ? '' : ' hidden') +
         '" data-section-panel="' + escapeAttr(s.key) + '">' + s.html + '</div>';
     }).join('');
-    return tabsHtml + panelsHtml;
+    return tabsHtml + '<div class="section-panels-scroll">' + panelsHtml + '</div>';
+  }
+
+  function resetPanelScroll(panel) {
+    if (!panel) return;
+    panel.scrollTop = 0;
   }
 
   function bindSectionTabs(formRootId) {
@@ -572,10 +581,13 @@
         t.classList.toggle('is-active', active);
         t.setAttribute('aria-selected', active ? 'true' : 'false');
       });
-      root.querySelectorAll(':scope > .section-panel').forEach(function (p) {
+      root.querySelectorAll('.section-panels-scroll > .section-panel').forEach(function (p) {
         var show = p.getAttribute('data-section-panel') === key;
         p.classList.toggle('hidden', !show);
-        if (show) flushRichEditorsInPanel(p);
+        if (show) {
+          resetPanelScroll(p);
+          flushRichEditorsInPanel(p);
+        }
       });
     });
   }

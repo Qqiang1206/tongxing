@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css?v=20260722">
+  <link rel="stylesheet" href="./admin.css?v=20260722b">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
@@ -15,11 +15,11 @@
           <source srcset="/assets/images/brand/logo.webp" type="image/webp">
           <img src="/assets/images/brand/logo.png" alt="TXAM 同兴高科">
         </picture>
-        <p>内容管理后台 · 编辑中文源内容</p>
+        <p>官网内容管理后台</p>
       </div>
-      <label for="actor">操作人</label>
-      <input id="actor" type="text" autocomplete="username" placeholder="请输入姓名或工号" maxlength="40">
-      <label for="password">管理员密码</label>
+      <label for="actor">账号</label>
+      <input id="actor" type="text" autocomplete="username" placeholder="请输入账号" maxlength="40">
+      <label for="password">密码</label>
       <input id="password" type="password" autocomplete="current-password" placeholder="请输入密码">
       <button id="login-btn" class="btn btn-primary btn-block" type="button">进入后台</button>
       <div id="login-msg" class="msg"></div>
@@ -114,7 +114,7 @@
           </div>
         </section>
 
-        <section id="view-page-home" class="view hidden">
+        <section id="view-page-home" class="view page-editor-view hidden">
           <div class="page-head">
             <div>
               <h2>首页</h2>
@@ -124,17 +124,19 @@
               <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览首页</a>
             </div>
           </div>
-          <div id="page-home-form"></div>
-          <div class="form-actions sticky-actions">
-            <p class="form-actions-hint" data-save-status="home">所有更改均已保存 · 保存会更新首页全部区块</p>
-            <div class="toolbar">
-              <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览修改位置</a>
-              <button type="button" class="btn btn-accent save-page-btn" id="save-page-home">保存首页</button>
+          <div class="editor-stack">
+            <div id="page-home-form" class="page-form-root"></div>
+            <div class="form-actions docked-actions">
+              <p class="form-actions-hint" data-save-status="home">所有更改均已保存 · 保存会更新首页全部区块</p>
+              <div class="toolbar">
+                <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览修改位置</a>
+                <button type="button" class="btn btn-accent save-page-btn" id="save-page-home">保存首页</button>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="view-page-about" class="view hidden">
+        <section id="view-page-about" class="view page-editor-view hidden">
           <div class="page-head">
             <div>
               <h2>关于我们</h2>
@@ -144,17 +146,19 @@
               <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览关于我们</a>
             </div>
           </div>
-          <div id="page-about-form"></div>
-          <div class="form-actions sticky-actions">
-            <p class="form-actions-hint" data-save-status="about">所有更改均已保存 · 保存会更新“关于我们”全部区块</p>
-            <div class="toolbar">
-              <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览修改位置</a>
-              <button type="button" class="btn btn-accent save-page-btn" id="save-page-about">保存关于我们</button>
+          <div class="editor-stack">
+            <div id="page-about-form" class="page-form-root"></div>
+            <div class="form-actions docked-actions">
+              <p class="form-actions-hint" data-save-status="about">所有更改均已保存 · 保存会更新“关于我们”全部区块</p>
+              <div class="toolbar">
+                <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览修改位置</a>
+                <button type="button" class="btn btn-accent save-page-btn" id="save-page-about">保存关于我们</button>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="view-page-solutions" class="view hidden">
+        <section id="view-page-solutions" class="view hub-view hidden">
           <div class="page-head">
             <div>
               <h2>解决方案</h2>
@@ -171,14 +175,16 @@
               方案内容 <span class="hub-tab-count" id="hub-count-solutions"></span>
             </button>
           </div>
-          <div class="hub-panel hidden" data-hub="solutions" data-hub-panel="page">
+          <div class="hub-panel hidden hub-panel--editor" data-hub="solutions" data-hub-panel="page">
             <p class="page-hint">这里修改解决方案列表页的首屏标题、价值说明和搜索设置。具体方案请进入「方案内容」。</p>
-            <div id="page-solutions-form"></div>
-            <div class="form-actions sticky-actions">
-              <p class="form-actions-hint" data-save-status="solutions">所有更改均已保存 · 保存会更新“解决方案页面”内容</p>
-              <div class="toolbar">
-                <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览修改位置</a>
-                <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存页面内容</button>
+            <div class="editor-stack">
+              <div id="page-solutions-form" class="page-form-root"></div>
+              <div class="form-actions docked-actions">
+                <p class="form-actions-hint" data-save-status="solutions">所有更改均已保存 · 保存会更新“解决方案页面”内容</p>
+                <div class="toolbar">
+                  <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览修改位置</a>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存页面内容</button>
+                </div>
               </div>
             </div>
           </div>
@@ -195,7 +201,7 @@
           </div>
         </section>
 
-        <section id="view-page-products" class="view hidden">
+        <section id="view-page-products" class="view hub-view hidden">
           <div class="page-head">
             <div>
               <h2>产品中心</h2>
@@ -214,14 +220,16 @@
             <button type="button" class="hub-tab" data-hub-tab="categories" role="tab">分类设置</button>
 
           </div>
-          <div class="hub-panel hidden" data-hub="products" data-hub-panel="page">
+          <div class="hub-panel hidden hub-panel--editor" data-hub="products" data-hub-panel="page">
             <p class="page-hint">这里修改列表页标题与「全部」按钮文案。产品分类请进入当前栏目的「分类设置」，具体产品请进入「产品内容」。</p>
-            <div id="page-products-form"></div>
-            <div class="form-actions sticky-actions">
-              <p class="form-actions-hint" data-save-status="products">所有更改均已保存 · 保存会更新“产品中心页面”内容</p>
-              <div class="toolbar">
-                <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览修改位置</a>
-                <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存页面内容</button>
+            <div class="editor-stack">
+              <div id="page-products-form" class="page-form-root"></div>
+              <div class="form-actions docked-actions">
+                <p class="form-actions-hint" data-save-status="products">所有更改均已保存 · 保存会更新“产品中心页面”内容</p>
+                <div class="toolbar">
+                  <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览修改位置</a>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存页面内容</button>
+                </div>
               </div>
             </div>
           </div>
@@ -255,7 +263,7 @@
           </div>
         </section>
 
-        <section id="view-page-news" class="view hidden">
+        <section id="view-page-news" class="view hub-view hidden">
           <div class="page-head">
             <div>
               <h2>新闻中心</h2>
@@ -274,14 +282,16 @@
             <button type="button" class="hub-tab" data-hub-tab="categories" role="tab">分类设置</button>
 
           </div>
-          <div class="hub-panel hidden" data-hub="news" data-hub-panel="page">
+          <div class="hub-panel hidden hub-panel--editor" data-hub="news" data-hub-panel="page">
             <p class="page-hint">这里修改列表页标题与筛选「全部」文案。新闻分类请进入当前栏目的「分类设置」，具体文章请进入「新闻内容」。</p>
-            <div id="page-news-form"></div>
-            <div class="form-actions sticky-actions">
-              <p class="form-actions-hint" data-save-status="news">所有更改均已保存 · 保存会更新“新闻中心页面”内容</p>
-              <div class="toolbar">
-                <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览修改位置</a>
-                <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存页面内容</button>
+            <div class="editor-stack">
+              <div id="page-news-form" class="page-form-root"></div>
+              <div class="form-actions docked-actions">
+                <p class="form-actions-hint" data-save-status="news">所有更改均已保存 · 保存会更新“新闻中心页面”内容</p>
+                <div class="toolbar">
+                  <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览修改位置</a>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存页面内容</button>
+                </div>
               </div>
             </div>
           </div>
@@ -311,7 +321,7 @@
           </div>
         </section>
 
-        <section id="view-page-contact" class="view hidden">
+        <section id="view-page-contact" class="view page-editor-view hidden">
           <div class="page-head">
             <div>
               <h2>联系我们</h2>
@@ -321,17 +331,19 @@
               <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览联系我们</a>
             </div>
           </div>
-          <div id="page-contact-form"></div>
-          <div class="form-actions sticky-actions">
-            <p class="form-actions-hint" data-save-status="contact">所有更改均已保存 · 保存会更新“联系我们”全部区块</p>
-            <div class="toolbar">
-              <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览修改位置</a>
-              <button type="button" class="btn btn-accent save-page-btn" id="save-page-contact">保存联系我们</button>
+          <div class="editor-stack">
+            <div id="page-contact-form" class="page-form-root"></div>
+            <div class="form-actions docked-actions">
+              <p class="form-actions-hint" data-save-status="contact">所有更改均已保存 · 保存会更新“联系我们”全部区块</p>
+              <div class="toolbar">
+                <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览修改位置</a>
+                <button type="button" class="btn btn-accent save-page-btn" id="save-page-contact">保存联系我们</button>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="view-sitewide" class="view hidden">
+        <section id="view-sitewide" class="view hub-view hidden">
           <div class="page-head">
             <div>
               <h2>全站公共内容</h2>
@@ -351,13 +363,15 @@
 
             <button type="button" class="hub-tab" data-hub-tab="media" role="tab">素材库</button>
           </div>
-          <div class="hub-panel" data-hub="sitewide" data-hub-panel="site">
+          <div class="hub-panel hub-panel--editor" data-hub="sitewide" data-hub-panel="site">
             <p class="page-hint">对应前台顶栏六项菜单与页脚文案。用分段 Tab 编辑导航、语言切换、通用与页脚。</p>
-            <div id="site-form"></div>
-            <div class="form-actions sticky-actions">
-              <p class="form-actions-hint">保存会写入导航、语言、通用与页脚全部文案</p>
-              <div class="toolbar">
-                <button type="button" class="btn btn-accent" id="save-site">保存</button>
+            <div class="editor-stack">
+              <div id="site-form" class="page-form-root"></div>
+              <div class="form-actions docked-actions">
+                <p class="form-actions-hint">保存会写入导航、语言、通用与页脚全部文案</p>
+                <div class="toolbar">
+                  <button type="button" class="btn btn-accent" id="save-site">保存</button>
+                </div>
               </div>
             </div>
           </div>
@@ -369,7 +383,7 @@
           </div>
         </section>
 
-        <section id="view-system" class="view hidden">
+        <section id="view-system" class="view hub-view hidden">
           <div class="page-head">
             <div>
               <h2>系统管理</h2>
