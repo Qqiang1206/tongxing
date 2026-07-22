@@ -207,10 +207,10 @@ function mapAuditRow(row) {
   };
 }
 
-export function listRecentContentUpdates({ limit = 10 } = {}) {
+export function listRecentContentUpdates({ limit = 8 } = {}) {
   const db = getDb();
   ensureAuditTable(db);
-  const lim = Math.min(Math.max(Number(limit) || 10, 1), 30);
+  const lim = Math.min(Math.max(Number(limit) || 8, 1), 30);
   const items = db
     .prepare(
       `SELECT id, created_at AS createdAt, actor, action, resource, resource_id AS resourceId,

@@ -946,7 +946,7 @@
       api('/admin/solutions'),
       api('/admin/translation-status'),
       api('/admin/analytics/summary'),
-      api('/admin/dashboard/recent-updates?limit=10'),
+      api('/admin/dashboard/recent-updates?limit=8'),
     ]);
     state.products = results[0].items || [];
     state.news = results[1].items || [];

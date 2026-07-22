@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css">
+  <link rel="stylesheet" href="./admin.css?v=20260722">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
@@ -87,32 +87,30 @@
             <p id="dash-date" class="page-sub"></p>
           </div>
           <div class="stat-grid" id="dash-stats"></div>
-          <div class="dash-grid">
-            <div class="card">
-              <div class="card-head">
-                <h3 class="card-title">快捷操作</h3>
-              </div>
-              <div class="quick-actions">
-                <button type="button" class="quick-btn" data-jump="page-home"><span>◆</span>改首页文案</button>
-                <button type="button" class="quick-btn" data-jump="page-news" data-hub-tab="items"><span>+</span>发布新闻</button>
-                <button type="button" class="quick-btn" data-jump="page-solutions" data-hub-tab="items"><span>+</span>编辑方案</button>
-                <button type="button" class="quick-btn" data-jump="page-products" data-hub-tab="items"><span>+</span>编辑产品</button>
-                <button type="button" class="quick-btn" data-jump="sitewide" data-hub-tab="media"><span>↑</span>上传图片</button>
-              </div>
+          <div class="dash-toolbar">
+            <span class="dash-toolbar-label">快捷操作</span>
+            <div class="quick-actions">
+              <button type="button" class="quick-btn" data-jump="page-home"><span>◆</span>改首页文案</button>
+              <button type="button" class="quick-btn" data-jump="page-news" data-hub-tab="items"><span>+</span>发布新闻</button>
+              <button type="button" class="quick-btn" data-jump="page-solutions" data-hub-tab="items"><span>+</span>编辑方案</button>
+              <button type="button" class="quick-btn" data-jump="page-products" data-hub-tab="items"><span>+</span>编辑产品</button>
+              <button type="button" class="quick-btn" data-jump="sitewide" data-hub-tab="media"><span>↑</span>上传图片</button>
             </div>
-            <div class="card">
+          </div>
+          <div class="dash-grid">
+            <div class="card dash-recent-card">
+              <div class="card-head">
+                <h3 class="card-title">最近更新</h3>
+                <button type="button" class="btn btn-ghost btn-sm" id="dash-recent-all" data-jump="system" data-hub-tab="audit">查看全部</button>
+              </div>
+              <div id="dash-recent" class="dash-recent-scroll"></div>
+            </div>
+            <div class="card dash-traffic-card">
               <div class="card-head">
                 <h3 class="card-title">访问概况</h3>
               </div>
               <div id="dash-traffic"></div>
             </div>
-          </div>
-          <div class="card dash-recent-card">
-            <div class="card-head">
-              <h3 class="card-title">最近更新</h3>
-              <button type="button" class="btn btn-ghost btn-sm" id="dash-recent-all" data-jump="system" data-hub-tab="audit">查看全部</button>
-            </div>
-            <div id="dash-recent"></div>
           </div>
         </section>
 

@@ -909,7 +909,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       return true;
     }
     const url = new URL(req.url || '/', 'http://localhost');
-    const limit = url.searchParams.get('limit') || 10;
+    const limit = url.searchParams.get('limit') || 8;
     sendJson(res, 200, listRecentContentUpdates({ limit }), origin);
     return true;
   }
