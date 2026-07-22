@@ -250,7 +250,7 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   max-width: 1480px;
   margin: 0 auto;
-  padding: 30px 34px 64px;
+  padding: 30px 34px 30px;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -263,8 +263,43 @@ a { color: inherit; text-decoration: none; }
   min-height: 0;
 }
 
-.main > .view:not(.hidden):not(.page-editor-view):not(.hub-view) {
+.main > .view:not(.hidden):not(.page-editor-view):not(.hub-view):not(#view-dashboard) {
   overflow-y: auto;
+}
+
+#view-dashboard:not(.hidden) {
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  flex: 1;
+  min-height: 0;
+}
+
+#view-dashboard .dash-welcome {
+  margin-bottom: 14px;
+}
+
+#view-dashboard .stat-grid {
+  margin-bottom: 14px;
+}
+
+#view-dashboard .dash-toolbar {
+  margin-bottom: 12px;
+}
+
+#view-dashboard .dash-grid {
+  flex: 0 0 auto;
+  align-items: start;
+  margin-bottom: 4px;
+  padding-bottom: 12px;
+}
+
+#view-dashboard .card {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.main:has(> #view-dashboard:not(.hidden)) {
+  overflow: visible;
 }
 
 .page-editor-view:not(.hidden),
@@ -1625,13 +1660,13 @@ body {
 }
 
 @media (max-width: 900px) {
-  .main { padding: 24px 20px 56px; }
+  .main { padding: 24px 20px 24px; }
   .page-head { align-items: flex-start; }
   .page-head-actions { width: 100%; }
 }
 
 @media (max-width: 640px) {
-  .main { padding: 20px 14px 48px; }
+  .main { padding: 20px 14px 20px; }
   .page-head h2 { font-size: 27px; }
   .card { padding: 17px; }
   .form-actions.sticky-actions { bottom: 8px; }
