@@ -61,9 +61,15 @@
         </button>
 
         <div class="nav-divider" aria-hidden="true"></div>
-        <button type="button" class="nav-item" data-view="sitewide" title="全站公共内容">
-          <span class="nav-ico nav-ico--word" aria-hidden="true">全</span><span class="nav-text">全站公共内容</span>
+        <button type="button" class="nav-item" data-view="sitewide" title="全站设置">
+          <span class="nav-ico nav-ico--word" aria-hidden="true">全</span><span class="nav-text">全站设置</span>
         </button>
+        <button type="button" class="nav-item" data-view="media" title="素材库">
+          <span class="nav-ico nav-ico--word" aria-hidden="true">素</span><span class="nav-text">素材库</span>
+        </button>
+
+        <div class="nav-divider" aria-hidden="true"></div>
+
         <button type="button" class="nav-item" data-view="system" title="系统管理">
           <span class="nav-ico nav-ico--word" aria-hidden="true">设</span><span class="nav-text">系统管理</span>
         </button>
@@ -94,7 +100,7 @@
               <button type="button" class="quick-btn" data-jump="page-news" data-hub-tab="items"><span>+</span>发布新闻</button>
               <button type="button" class="quick-btn" data-jump="page-solutions" data-hub-tab="items"><span>+</span>编辑方案</button>
               <button type="button" class="quick-btn" data-jump="page-products" data-hub-tab="items"><span>+</span>编辑产品</button>
-              <button type="button" class="quick-btn" data-jump="sitewide" data-hub-tab="media"><span>↑</span>上传图片</button>
+              <button type="button" class="quick-btn" data-jump="media"><span>↑</span>上传图片</button>
             </div>
           </div>
           <div class="dash-grid">
@@ -455,43 +461,48 @@
           </div>
         </section>
 
-        <section id="view-sitewide" class="view hub-view hidden">
+        <section id="view-sitewide" class="view page-editor-view hidden">
           <div class="page-head">
             <div>
-              <h2>全站公共内容</h2>
-              <p class="page-sub">前台页面共用的导航、页脚与素材在本页管理。</p>
+              <h2>全站设置</h2>
+              <p class="page-sub">管理每个前台页面共同使用的网站顶部、通用文案和网站底部。</p>
             </div>
-            <div class="toolbar hub-actions" data-hub="sitewide">
-
-              <label class="btn btn-accent hub-action hidden" data-hub-action="media" style="cursor:pointer">
-                + 上传图片
-                <input id="media-file" type="file" accept="image/*" hidden>
-              </label>
-              <button type="button" class="btn btn-ghost btn-sm hub-action hidden" data-hub-action="media" id="refresh-media">刷新</button>
-            </div>
+            <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览网站</a>
           </div>
-          <div class="hub-tabs" data-hub="sitewide" role="tablist">
-            <button type="button" class="hub-tab is-active" data-hub-tab="site" role="tab">导航与页脚</button>
-
-            <button type="button" class="hub-tab" data-hub-tab="media" role="tab">素材库</button>
-          </div>
-          <div class="hub-panel hub-panel--editor" data-hub="sitewide" data-hub-panel="site">
-            <p class="page-hint">对应前台顶栏六项菜单与页脚文案。用分段 Tab 编辑导航、通用文案与页脚。</p>
-            <div class="editor-stack">
-              <div id="site-form" class="page-form-root"></div>
-              <div class="form-actions docked-actions">
-                <p class="form-actions-hint">保存会写入导航、通用文案与页脚全部内容</p>
-                <div class="toolbar">
-                  <button type="button" class="btn btn-accent" id="save-site">保存</button>
-                </div>
+          <div class="editor-stack">
+            <div id="site-form" class="page-form-root"></div>
+            <div class="form-actions docked-actions">
+              <p class="form-actions-hint">保存会更新所有前台页面共同使用的内容</p>
+              <div class="toolbar">
+                <button type="button" class="btn btn-accent" id="save-site">保存全站设置</button>
               </div>
             </div>
           </div>
-          <div class="hub-panel hidden" data-hub="sitewide" data-hub-panel="media">
-            <p class="page-hint">上传图片后，可在编辑表单中一键选用。</p>
-            <div class="card">
-              <div id="media-grid" class="media-grid"></div>
+        </section>
+
+        <section id="view-media" class="view resource-view hidden">
+          <div class="page-head">
+            <div>
+              <h2>素材库</h2>
+              <p class="page-sub">统一管理首页、产品、方案和新闻等页面使用的图片素材。</p>
             </div>
+            <div class="toolbar">
+              <label class="btn btn-accent" style="cursor:pointer">
+                + 上传图片
+                <input id="media-file" type="file" accept="image/*" hidden>
+              </label>
+              <button type="button" class="btn btn-ghost btn-sm" id="refresh-media">刷新</button>
+            </div>
+          </div>
+          <div class="resource-toolbar card">
+            <div class="resource-toolbar-copy">
+              <strong>全部图片 <span class="hub-tab-count" id="media-count"></span></strong>
+              <span>上传后可在各页面编辑表单中直接选用</span>
+            </div>
+            <input class="search" id="media-search" type="search" placeholder="搜索素材名称 / 图片说明">
+          </div>
+          <div class="card resource-grid-card">
+            <div id="media-grid" class="media-grid"></div>
           </div>
         </section>
 
@@ -499,7 +510,7 @@
           <div class="page-head">
             <div>
               <h2>系统管理</h2>
-              <p class="page-sub">多语言同步与操作记录在本页管理。</p>
+              <p class="page-sub">按后台任务定位多语言同步与操作记录，系统功能集中但不混杂。</p>
             </div>
             <div class="toolbar hub-actions" data-hub="system">
               <button type="button" class="btn btn-ghost btn-sm hub-action" data-hub-action="translation" id="refresh-translation">刷新</button>
@@ -507,11 +518,20 @@
               <button type="button" class="btn btn-ghost btn-sm hub-action hidden" data-hub-action="audit" id="refresh-audit">刷新</button>
             </div>
           </div>
-          <div class="hub-tabs" data-hub="system" role="tablist">
-            <button type="button" class="hub-tab is-active" data-hub-tab="translation" role="tab">翻译同步</button>
-            <button type="button" class="hub-tab" data-hub-tab="audit" role="tab">操作日志</button>
-          </div>
-          <div class="hub-panel" data-hub="system" data-hub-panel="translation">
+          <div class="section-workspace section-workspace--outline system-task-workspace">
+            <aside class="section-outline">
+              <div class="section-outline-head"><strong>系统任务</strong><span>按管理员工作定位 · 共 2 项</span></div>
+              <div class="section-tabs section-outline-tabs hub-tabs" data-hub="system" role="tablist">
+                <button type="button" class="hub-tab is-active" data-hub-tab="translation" role="tab" aria-selected="true">
+                  <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>多语言同步</strong><small>处理英、俄文内容更新</small></span>
+                </button>
+                <button type="button" class="hub-tab" data-hub-tab="audit" role="tab" aria-selected="false">
+                  <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>操作记录</strong><small>查询登录和内容修改记录</small></span>
+                </button>
+              </div>
+            </aside>
+            <div class="section-panels-scroll">
+          <div class="section-panel hub-panel" data-hub="system" data-hub-panel="translation">
             <div id="translation-overview" class="tx-overview"></div>
             <div id="translation-progress" class="tx-progress hidden" aria-live="polite"></div>
             <div class="card tx-pending-card" id="translation-pending-card">
@@ -531,7 +551,7 @@
               <div class="card"><div class="table-wrap" id="translation-table"></div></div>
             </details>
           </div>
-          <div class="hub-panel hidden" data-hub="system" data-hub-panel="audit">
+          <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="audit">
             <p class="page-hint">记录谁在何时改了什么（写操作与登录；默认保留 90 天）。</p>
             <div class="filter-bar">
               <select id="audit-resource" class="select" title="资源类型">
@@ -583,6 +603,8 @@
                 </table>
               </div>
               <div class="table-foot" id="audit-table-foot"></div>
+            </div>
+          </div>
             </div>
           </div>
         </section>

@@ -21,12 +21,12 @@
     solutionCategories: [],
     pageCache: {},
     siteCache: null,
+    mediaItems: [],
     auditActors: [],
     hubTabs: {
       products: 'items',
       news: 'items',
       solutions: 'items',
-      sitewide: 'site',
       system: 'translation',
     },
     sectionTabs: {},
@@ -433,7 +433,6 @@
     'page-products': 'products',
     'page-news': 'news',
     'page-solutions': 'solutions',
-    sitewide: 'sitewide',
     system: 'system',
   };
   var VIEW_BY_LEGACY = {
@@ -442,14 +441,12 @@
     solutions: 'page-solutions',
     site: 'sitewide',
     categories: 'page-products',
-    media: 'sitewide',
     translation: 'system',
     audit: 'system',
   };
   var LEGACY_HUB_TAB = {
     site: 'site',
     categories: 'categories',
-    media: 'media',
     translation: 'translation',
     audit: 'audit',
   };
@@ -459,7 +456,7 @@
     if (tab) state.hubTabs[hub] = tab;
     var defaults = {
       products: 'items', news: 'items', solutions: 'items',
-      sitewide: 'site', system: 'translation',
+      system: 'translation',
     };
     var current = state.hubTabs[hub] || defaults[hub] || 'items';
     document.querySelectorAll('.hub-tabs[data-hub="' + hub + '"] .hub-tab').forEach(function (btn) {
@@ -503,8 +500,6 @@
       await Promise.all([loadPageForm('news'), loadNews(), loadCategories()]);
     } else if (hub === 'solutions') {
       await Promise.all([loadPageForm('solutions'), loadSolutions(), loadCategories()]);
-    } else if (hub === 'sitewide') {
-      await Promise.all([loadSiteForm(), loadMedia()]);
     } else if (hub === 'system') {
       await Promise.all([loadTranslation(), loadAudit()]);
     }
@@ -548,6 +543,8 @@
       'page-home': function () { return loadPageForm('home'); },
       'page-about': function () { return loadPageForm('about'); },
       'page-contact': function () { return loadPageForm('contact'); },
+      sitewide: loadSiteForm,
+      media: loadMedia,
     };
     if (loaders[name]) {
       return Promise.resolve(loaders[name]()).catch(function (e) { toast(e.message, true); });
@@ -568,9 +565,9 @@
     if (/(新闻|资讯).*分类|分类.*(新闻|资讯)/.test(q)) return setView('page-news', { hubTab: 'categories' });
     if (/产品/.test(q)) return setView('page-products', { hubTab: wantsPageContent ? 'page' : 'items' });
     if (/新闻|资讯|文章/.test(q)) return setView('page-news', { hubTab: wantsPageContent ? 'page' : 'items' });
-    if (/导航|页脚/.test(q)) return setView('sitewide', { hubTab: 'site' });
+    if (/导航|页脚|全站设置|公共内容/.test(q)) return setView('sitewide');
     if (/分类/.test(q)) return setView('page-products', { hubTab: 'categories' });
-    if (/素材|图片|媒体/.test(q)) return setView('sitewide', { hubTab: 'media' });
+    if (/素材|图片|媒体/.test(q)) return setView('media');
     if (/翻译|同步/.test(q)) return setView('system', { hubTab: 'translation' });
     if (/日志|记录/.test(q)) return setView('system', { hubTab: 'audit' });
     toast('没有找到对应页面，可尝试搜索“关于我们”“产品”或“素材库”', true);
@@ -602,8 +599,16 @@
 
   /** Page sections mirror the visible frontend order; search settings stay last. */
   function buildSectionTabs(formRootId, sections, defaultKey) {
-    var useOutline = /^page-(home|about|contact|solutions|products|news)-form$/.test(formRootId);
+    var useOutline = /^(site-form|page-(home|about|contact|solutions|products|news)-form)$/.test(formRootId);
     var outlineMeta = {
+      'site-form': {
+        title: '全站公共区域',
+        descriptions: {
+          nav: '前台顶部六项菜单名称',
+          common: '详情按钮、返回列表等共用文案',
+          footer: '页脚标语、版权与备案内容',
+        },
+      },
       'page-home-form': {
         title: '首页结构',
         descriptions: {
@@ -1227,10 +1232,10 @@
       if (view) return Promise.resolve(setView(view));
     }
     if (action.indexOf('site.') === 0) {
-      return Promise.resolve(setView('sitewide', { hubTab: 'site' }));
+      return Promise.resolve(setView('sitewide'));
     }
     if (action.indexOf('media.') === 0) {
-      return Promise.resolve(setView('sitewide', { hubTab: 'media' }));
+      return Promise.resolve(setView('media'));
     }
     if (action.indexOf('categories.product.') === 0) {
       return Promise.resolve(setView('page-products', { hubTab: 'categories' }));
@@ -3572,9 +3577,9 @@
     var site = await api('/admin/site');
     state.siteCache = site;
     var sections = [
-      { key: 'nav', label: '导航', html: cardBlock('顶部导航名称', siteKvFields('nav', site.nav, SITE_NAV_LABELS)) },
-      { key: 'common', label: '通用文案', html: cardBlock('详情页通用文案', siteKvFields('common', site.common, SITE_COMMON_LABELS)) },
-      { key: 'footer', label: '页脚', html: cardBlock('页脚可见内容', siteKvFields('footer', site.footer, SITE_FOOTER_LABELS)) },
+      { key: 'nav', label: '网站顶部', html: cardBlock('顶部导航名称', siteKvFields('nav', site.nav, SITE_NAV_LABELS)) },
+      { key: 'common', label: '通用文案', html: cardBlock('全站通用文案', siteKvFields('common', site.common, SITE_COMMON_LABELS)) },
+      { key: 'footer', label: '网站底部', html: cardBlock('网站底部可见内容', siteKvFields('footer', site.footer, SITE_FOOTER_LABELS)) },
     ];
     $('site-form').innerHTML = buildSectionTabs('site-form', sections, 'nav');
     bindSectionTabs('site-form');
@@ -3596,51 +3601,68 @@
     }
   }
   /* Media */
-  async function loadMedia() {
-    var data = await api('/admin/media');
-    var items = data.items || [];
-    if (!items.length) {
-      $('media-grid').innerHTML = '<p class="empty">暂无上传图片。点击右上角选择文件上传。</p>';
-      return;
-    }
-    $('media-grid').innerHTML = items.map(function (m) {
-      return '<div class="media-item"><img src="' + escapeHtml(assetUrl(m.path)) + '" alt="' + escapeAttr(m.alt || '') + '">' +
-        '<div class="meta"><code>' + escapeHtml(m.path) + '</code>' +
-        '<input class="media-alt" data-id="' + escapeAttr(m.filename) + '" type="text" placeholder="图片说明" value="' + escapeAttr(m.alt || '') + '" style="width:100%;margin-top:6px">' +
-        '<button type="button" class="btn btn-ghost btn-sm" data-copy="' + escapeAttr(m.path) + '">复制路径</button> ' +
-        '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" data-del="' + escapeAttr(m.filename) + '">删除</button></div></div>';
-    }).join('');
-    $('media-grid').querySelectorAll('[data-copy]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var path = btn.getAttribute('data-copy');
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(path).then(function () { toast('已复制'); });
-        } else {
-          toast(path);
-        }
+  function renderMediaGrid() {
+    var grid = $('media-grid');
+    if (!grid) return;
+    var allItems = state.mediaItems || [];
+    var q = String(($('media-search') || {}).value || '').trim().toLowerCase();
+    var items = allItems.filter(function (m) {
+      if (!q) return true;
+      return [m.alt, m.filename, m.path].some(function (value) {
+        return String(value || '').toLowerCase().indexOf(q) >= 0;
       });
     });
-    $('media-grid').querySelectorAll('[data-del]').forEach(function (btn) {
+    if ($('media-count')) $('media-count').textContent = String(allItems.length);
+    if (!allItems.length) {
+      grid.innerHTML = '<p class="empty">暂无图片素材，点击右上角“上传图片”开始添加。</p>';
+      return;
+    }
+    if (!items.length) {
+      grid.innerHTML = '<p class="empty">没有匹配的图片素材，请更换搜索关键词。</p>';
+      return;
+    }
+    grid.innerHTML = items.map(function (m) {
+      var displayName = m.alt || '未填写图片说明';
+      return '<div class="media-item">' +
+        '<img src="' + escapeHtml(assetUrl(m.path)) + '" alt="' + escapeAttr(m.alt || '') + '">' +
+        '<div class="meta"><strong class="media-item-title">' + escapeHtml(displayName) + '</strong>' +
+        '<label class="media-item-label">素材名称 / 图片说明</label>' +
+        '<input class="media-alt" data-id="' + escapeAttr(m.filename) + '" type="text" placeholder="例如：惠州生产基地外景" value="' + escapeAttr(m.alt || '') + '">' +
+        '<div class="media-item-actions"><button type="button" class="btn btn-ghost btn-sm btn-danger-text" data-del="' + escapeAttr(m.filename) + '" data-name="' + escapeAttr(displayName) + '">删除</button></div>' +
+        '</div></div>';
+    }).join('');
+    grid.querySelectorAll('[data-del]').forEach(function (btn) {
       btn.addEventListener('click', async function () {
-        if (!confirm('确认删除该图片？')) return;
+        var name = btn.getAttribute('data-name') || '该图片';
+        if (!confirm('确认删除“' + name + '”？删除后使用该图片的页面可能无法正常显示。')) return;
         try {
           await api('/admin/media/' + encodeURIComponent(btn.getAttribute('data-del')), { method: 'DELETE' });
-          toast('已删除');
+          toast('图片已删除');
           loadMedia();
         } catch (err) { toast(err.message, true); }
       });
     });
-    $('media-grid').querySelectorAll('.media-alt').forEach(function (input) {
+    grid.querySelectorAll('.media-alt').forEach(function (input) {
       input.addEventListener('change', async function () {
         try {
           await api('/admin/media/' + encodeURIComponent(input.getAttribute('data-id')), {
             method: 'PUT',
             body: JSON.stringify({ alt: input.value }),
           });
-          toast('图片说明已保存');
+          var item = (state.mediaItems || []).find(function (m) {
+            return String(m.filename) === String(input.getAttribute('data-id'));
+          });
+          if (item) item.alt = input.value;
+          toast('素材说明已保存');
         } catch (err) { toast(err.message, true); }
       });
     });
+  }
+
+  async function loadMedia() {
+    var data = await api('/admin/media');
+    state.mediaItems = data.items || [];
+    renderMediaGrid();
   }
 
   function fileToBase64(file) {
@@ -3666,7 +3688,7 @@
     products: '产品中心（全部条目）',
     news: '新闻中心（全部条目）',
     solutions: '解决方案（全部条目）',
-    site: '全站 · 导航与页脚',
+    site: '全站设置 · 公共区域',
     'pages:home': '首页文案',
     'pages:about': '关于我们文案',
     'pages:contact': '联系我们文案',
@@ -4334,9 +4356,6 @@
         loadPageForm(key).catch(function (e) { toast(e.message, true); });
       } else if (tab === 'categories' && (key === 'products' || key === 'news' || key === 'solutions')) {
         loadCategories().catch(function (e) { toast(e.message, true); });
-      } else if (key === 'sitewide') {
-        if (tab === 'site') loadSiteForm().catch(function (e) { toast(e.message, true); });
-        if (tab === 'media') loadMedia().catch(function (e) { toast(e.message, true); });
       } else if (key === 'system') {
         if (tab === 'translation') loadTranslation().catch(function (e) { toast(e.message, true); });
         if (tab === 'audit') loadAudit().catch(function (e) { toast(e.message, true); });
@@ -4377,6 +4396,9 @@
     });
   }
   $('refresh-media').addEventListener('click', function () { loadMedia().catch(function (e) { toast(e.message, true); }); });
+  if ($('media-search')) {
+    $('media-search').addEventListener('input', renderMediaGrid);
+  }
   if ($('refresh-audit')) {
     $('refresh-audit').addEventListener('click', function () { loadAudit().catch(function (e) { toast(e.message, true); }); });
   }
