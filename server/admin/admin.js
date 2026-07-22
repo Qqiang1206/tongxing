@@ -29,6 +29,7 @@
       system: 'translation',
     },
     sectionTabs: {},
+    dirtyPages: {},
     txSync: {
       active: false,
       preparing: false,
@@ -52,6 +53,96 @@
     clearTimeout(toast._t);
     toast._t = setTimeout(function () { el.classList.remove('show'); }, 2800);
   }
+
+  var PAGE_KEY_BY_VIEW = {
+    'page-home': 'home',
+    'page-about': 'about',
+    'page-solutions': 'solutions',
+    'page-products': 'products',
+    'page-news': 'news',
+    'page-contact': 'contact',
+  };
+  var PAGE_LABELS = {
+    home: '首页',
+    about: '关于我们',
+    solutions: '解决方案页面',
+    products: '产品中心页面',
+    news: '新闻中心页面',
+    contact: '联系我们',
+  };
+  var PAGE_FORM_IDS = {
+    home: 'page-home-form',
+    about: 'page-about-form',
+    solutions: 'page-solutions-form',
+    products: 'page-products-form',
+    news: 'page-news-form',
+    contact: 'page-contact-form',
+  };
+
+  function pageStatusElement(key) {
+    return document.querySelector('[data-save-status="' + key + '"]');
+  }
+
+  function setPageStatus(key, text, mode) {
+    var el = pageStatusElement(key);
+    if (!el) return;
+    el.textContent = text;
+    el.classList.toggle('is-dirty', mode === 'dirty');
+    el.classList.toggle('is-saving', mode === 'saving');
+    el.classList.toggle('is-error', mode === 'error');
+  }
+
+  function setPageDirty(key, dirty) {
+    if (!state.dirtyPages) state.dirtyPages = {};
+    state.dirtyPages[key] = !!dirty;
+    var form = $(PAGE_FORM_IDS[key]);
+    if (!dirty && form) {
+      form.querySelectorAll('.section-tabs .hub-tab').forEach(function (tab) {
+        tab.classList.remove('is-dirty');
+      });
+    }
+    if (dirty) {
+      setPageStatus(key, '有尚未保存的更改', 'dirty');
+    } else {
+      var status = pageStatusElement(key);
+      if (status && (status.classList.contains('is-dirty') || status.classList.contains('is-error'))) {
+        setPageStatus(key, '所有更改均已保存', 'saved');
+      }
+    }
+  }
+
+  function markActiveSectionDirty(root) {
+    var activeTab = root && root.querySelector('.section-tabs .hub-tab.is-active');
+    if (activeTab) activeTab.classList.add('is-dirty');
+  }
+
+  function bindPageDirty(formRootId, key) {
+    var root = $(formRootId);
+    if (!root) return;
+    root._pageDirtyKey = key;
+    if (!root._pageDirtyBound) {
+      root._pageDirtyBound = true;
+      ['input', 'change'].forEach(function (eventName) {
+        root.addEventListener(eventName, function () {
+          var pageKey = root._pageDirtyKey;
+          if (!pageKey) return;
+          setPageDirty(pageKey, true);
+          markActiveSectionDirty(root);
+        });
+      });
+    }
+    setPageDirty(key, false);
+  }
+
+  function hasUnsavedPages() {
+    return Object.keys(state.dirtyPages || {}).some(function (key) { return state.dirtyPages[key]; });
+  }
+
+  window.addEventListener('beforeunload', function (event) {
+    if (!hasUnsavedPages()) return;
+    event.preventDefault();
+    event.returnValue = '';
+  });
 
   function assetUrl(path) {
     if (!path) return '';
@@ -86,7 +177,11 @@
     var name = actorName || '管理员';
     if ($('user-name')) $('user-name').textContent = name;
     if ($('user-avatar')) $('user-avatar').textContent = name.charAt(0) || '管';
+    if ($('sidebar-user')) $('sidebar-user').title = '当前操作人：' + name;
+    if ($('sidebar-user-btn')) $('sidebar-user-btn').title = '退出登录（' + name + '）';
   }
+
+  var WEEKDAY_LABELS = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
   var AUDIT_ACTION_LABELS = {
     'login.ok': '登录成功',
@@ -185,7 +280,7 @@
       var items = isVacate ? (payload.candidates || []) : (payload.occupants || []);
       $('slot-replace-title').textContent = isVacate ? '需要指定替代' : '精选已满';
       $('slot-replace-msg').textContent = payload.message ||
-        (isVacate ? '请选择一条已发布内容顶替首页坑位后再下架。' : '该类精选已满，请选择要让出的一项。');
+        (isVacate ? '请选择一条已发布内容替换首页推荐后再下架。' : '该类精选已满，请选择要让出的一项。');
       confirmBtn.textContent = isVacate ? '用选中项顶替并继续' : '让出选中项并精选当前';
       list.innerHTML = items.map(function (o) {
         var label = o.name || o.title || ('#' + o.id);
@@ -275,7 +370,7 @@
     news: 'page-news',
     solutions: 'page-solutions',
     site: 'sitewide',
-    categories: 'sitewide',
+    categories: 'page-products',
     media: 'sitewide',
     translation: 'system',
     audit: 'system',
@@ -328,13 +423,13 @@
     if (preferredTab) applyHubTab(hub, preferredTab);
     else applyHubTab(hub);
     if (hub === 'products') {
-      await Promise.all([loadPageForm('products'), loadProducts()]);
+      await Promise.all([loadPageForm('products'), loadProducts(), loadCategories()]);
     } else if (hub === 'news') {
-      await Promise.all([loadPageForm('news'), loadNews()]);
+      await Promise.all([loadPageForm('news'), loadNews(), loadCategories()]);
     } else if (hub === 'solutions') {
       await Promise.all([loadPageForm('solutions'), loadSolutions()]);
     } else if (hub === 'sitewide') {
-      await Promise.all([loadSiteForm(), loadCategories(), loadMedia()]);
+      await Promise.all([loadSiteForm(), loadMedia()]);
     } else if (hub === 'system') {
       await Promise.all([loadTranslation(), loadAudit()]);
     }
@@ -350,6 +445,13 @@
         preferredTab = 'items';
       }
       name = VIEW_BY_LEGACY[name];
+    }
+    var leavingPageKey = PAGE_KEY_BY_VIEW[state.view];
+    if (leavingPageKey && state.dirtyPages[leavingPageKey] && name !== state.view) {
+      if (!confirm('“' + PAGE_LABELS[leavingPageKey] + '”有尚未保存的更改，确定离开并放弃修改吗？')) {
+        return Promise.resolve(false);
+      }
+      setPageDirty(leavingPageKey, false);
     }
     state.view = name;
     closeDrawer();
@@ -384,6 +486,27 @@
     return Promise.resolve();
   }
 
+  function handleGlobalSearch(query) {
+    var q = String(query || '').trim();
+    if (!q) return;
+    var wantsPageContent = /页面|文案|标题|导语/.test(q);
+    if (/首页/.test(q)) return setView('page-home');
+    if (/关于|公司介绍|企业文化|发展历程|资质|客户/.test(q)) return setView('page-about');
+    if (/联系|地址|电话|邮箱|地图/.test(q)) return setView('page-contact');
+    if (/解决方案|方案/.test(q)) return setView('page-solutions', { hubTab: wantsPageContent ? 'page' : 'items' });
+    if (/产品.*分类|分类.*产品/.test(q)) return setView('page-products', { hubTab: 'categories' });
+    if (/(新闻|资讯).*分类|分类.*(新闻|资讯)/.test(q)) return setView('page-news', { hubTab: 'categories' });
+    if (/产品/.test(q)) return setView('page-products', { hubTab: wantsPageContent ? 'page' : 'items' });
+    if (/新闻|资讯|文章/.test(q)) return setView('page-news', { hubTab: wantsPageContent ? 'page' : 'items' });
+    if (/导航|页脚/.test(q)) return setView('sitewide', { hubTab: 'site' });
+    if (/分类/.test(q)) return setView('page-products', { hubTab: 'categories' });
+    if (/素材|图片|媒体/.test(q)) return setView('sitewide', { hubTab: 'media' });
+    if (/翻译|同步/.test(q)) return setView('system', { hubTab: 'translation' });
+    if (/日志|记录/.test(q)) return setView('system', { hubTab: 'audit' });
+    toast('没有找到对应页面，可尝试搜索“关于我们”“产品”或“素材库”', true);
+    return Promise.resolve(false);
+  }
+
   function escapeHtml(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -407,18 +530,27 @@
     return '<div class="card"><h3 class="card-title">' + escapeHtml(title) + '</h3><div class="form-grid">' + inner + '</div></div>';
   }
 
-  /** Section tabs for long page forms. sections: [{ key, label, html }] */
+  /** Page sections mirror the visible frontend order; search settings stay last. */
   function buildSectionTabs(formRootId, sections, defaultKey) {
+    var seoSections = sections.filter(function (s) { return s.key === 'seo'; });
+    sections = sections.filter(function (s) { return s.key !== 'seo'; }).concat(seoSections);
     defaultKey = defaultKey || (sections[0] && sections[0].key) || '';
     var remembered = (state.sectionTabs && state.sectionTabs[formRootId]) || defaultKey;
     if (!sections.some(function (s) { return s.key === remembered; })) remembered = defaultKey;
     if (!state.sectionTabs) state.sectionTabs = {};
     state.sectionTabs[formRootId] = remembered;
+    var currentSection = sections.filter(function (s) { return s.key === remembered; })[0] || sections[0] || {};
     var tabsHtml =
+      '<div class="section-map-guide">' +
+        '<div><span class="section-map-eyebrow">前台页面区块</span><strong>按前台从上到下排列</strong></div>' +
+        '<span class="section-current">当前修改：<b data-section-current-label>' + escapeHtml(currentSection.label || '') + '</b></span>' +
+      '</div>' +
       '<div class="hub-tabs section-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
-      sections.map(function (s) {
+      sections.map(function (s, index) {
+        var order = String(index + 1).padStart(2, '0');
         return '<button type="button" class="hub-tab' + (s.key === remembered ? ' is-active' : '') +
-          '" data-section-tab="' + escapeAttr(s.key) + '" role="tab">' + escapeHtml(s.label) + '</button>';
+          '" data-section-tab="' + escapeAttr(s.key) + '" role="tab" aria-selected="' + (s.key === remembered ? 'true' : 'false') + '">' +
+          '<span class="section-index">' + order + '</span><span>' + escapeHtml(s.label) + '</span></button>';
       }).join('') +
       '</div>';
     var panelsHtml = sections.map(function (s) {
@@ -441,8 +573,12 @@
       if (!state.sectionTabs) state.sectionTabs = {};
       state.sectionTabs[formRootId] = key;
       tabBar.querySelectorAll('.hub-tab').forEach(function (t) {
-        t.classList.toggle('is-active', t.getAttribute('data-section-tab') === key);
+        var active = t.getAttribute('data-section-tab') === key;
+        t.classList.toggle('is-active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
       });
+      var currentLabel = root.querySelector('[data-section-current-label]');
+      if (currentLabel) currentLabel.textContent = btn.textContent.replace(/^\d+\s*/, '').trim();
       root.querySelectorAll(':scope > .section-panel').forEach(function (p) {
         var show = p.getAttribute('data-section-panel') === key;
         p.classList.toggle('hidden', !show);
@@ -716,6 +852,8 @@
       setup: function (editor) {
         editor.on('change keyup', function () {
           editor.save();
+          var source = editor.getElement();
+          if (source) source.dispatchEvent(new Event('input', { bubbles: true }));
         });
       },
     });
@@ -790,7 +928,7 @@
           var input = $(mediaPickerTarget);
           if (input) {
             input.value = path;
-            input.dispatchEvent(new Event('input'));
+            input.dispatchEvent(new Event('input', { bubbles: true }));
           }
           closeMediaPicker();
           toast('已填入路径');
@@ -814,11 +952,13 @@
       api('/admin/news'),
       api('/admin/solutions'),
       api('/admin/translation-status'),
+      api('/admin/analytics/summary').catch(function () { return null; }),
     ]);
     state.products = results[0].items || [];
     state.news = results[1].items || [];
     state.solutions = results[2].items || [];
     var status = results[3];
+    var analytics = results[4];
     var stale = 0;
     Object.keys(status.resources || {}).forEach(function (key) {
       var r = status.resources[key];
@@ -828,29 +968,56 @@
     var pubProducts = state.products.filter(function (p) { return p.published !== false; }).length;
     var pubNews = state.news.filter(function (n) { return n.published !== false; }).length;
     var pubSolutions = state.solutions.filter(function (s) { return s.published !== false; }).length;
-    if ($('dash-date')) {
-      var now = new Date();
-      $('dash-date').textContent =
-        now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日 · 中文为源语言';
+    var operator = actorName || '管理员';
+    var now = new Date();
+    if ($('dash-greeting')) {
+      $('dash-greeting').textContent = '欢迎回来，' + operator;
     }
+    if ($('dash-date')) {
+      $('dash-date').textContent =
+        now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日 · ' +
+        WEEKDAY_LABELS[now.getDay()] + ' · 天天开心';
+    }
+    var todayVisits = analytics ? analytics.today : 0;
+    var visitHint = analytics
+      ? ('昨日 ' + analytics.yesterday + ' · 近7日 ' + analytics.week)
+      : '统计加载中';
     $('dash-stats').innerHTML =
+      stat('今日访问', todayVisits, visitHint, false, 'visit') +
       stat('产品数量', state.products.length, '已发布 ' + pubProducts + ' 条') +
       stat('解决方案', state.solutions.length, '已发布 ' + pubSolutions + ' 条') +
       stat('新闻文章', state.news.length, '已发布 ' + pubNews + ' 条') +
       stat('待同步翻译', stale, stale ? '请到「系统 → 翻译同步」处理' : 'en / ru 均已最新', stale > 0);
-    if ($('dash-content-status')) {
-      $('dash-content-status').innerHTML =
-        '<table class="status-table"><thead><tr><th>模块</th><th>数量</th><th>说明</th></tr></thead><tbody>' +
-        '<tr><td>产品</td><td>' + state.products.length + '</td><td>产品中心列表</td></tr>' +
-        '<tr><td>解决方案</td><td>' + state.solutions.length + '</td><td>行业落地页</td></tr>' +
-        '<tr><td>新闻</td><td>' + state.news.length + '</td><td>新闻中心</td></tr>' +
-        '<tr><td>翻译</td><td>' + stale + '</td><td>' + (stale ? '有待同步语言' : '状态正常') + '</td></tr>' +
-        '</tbody></table>';
+    if ($('dash-traffic')) {
+      if (!analytics) {
+        $('dash-traffic').innerHTML = '<p class="help">访问统计暂不可用，请刷新页面重试。</p>';
+      } else {
+        $('dash-traffic').innerHTML =
+          '<div class="traffic-summary">' +
+          '<div class="traffic-stat"><span class="traffic-label">今日</span><strong>' + analytics.today + '</strong></div>' +
+          '<div class="traffic-stat"><span class="traffic-label">昨日</span><strong>' + analytics.yesterday + '</strong></div>' +
+          '<div class="traffic-stat"><span class="traffic-label">近7日</span><strong>' + analytics.week + '</strong></div>' +
+          '</div>' +
+          renderTrafficList('今日热门页面', analytics.topToday) +
+          renderTrafficList('近7日热门页面', analytics.topWeek);
+      }
     }
   }
 
-  function stat(label, value, hint, warn) {
-    return '<div class="stat-card' + (warn ? ' warn' : '') + '"><div class="label">' + escapeHtml(label) +
+  function renderTrafficList(title, rows) {
+    var list = rows && rows.length ? rows : [];
+    var body = list.length
+      ? list.map(function (row) {
+        return '<li><span class="traffic-page">' + escapeHtml(row.label || row.path) +
+          '</span><span class="traffic-hits">' + escapeHtml(String(row.hits)) + '</span></li>';
+      }).join('')
+      : '<li class="traffic-empty">暂无访问记录</li>';
+    return '<div class="traffic-block"><div class="traffic-block-title">' + escapeHtml(title) +
+      '</div><ul class="traffic-list">' + body + '</ul></div>';
+  }
+
+  function stat(label, value, hint, warn, extraClass) {
+    return '<div class="stat-card' + (warn ? ' warn' : '') + (extraClass ? ' ' + extraClass : '') + '"><div class="label">' + escapeHtml(label) +
       '</div><div class="value">' + escapeHtml(String(value)) + '</div><div class="hint">' + escapeHtml(hint) + '</div></div>';
   }
 
@@ -865,18 +1032,175 @@
     return '<div class="thumb placeholder">无图</div>';
   }
 
-  function openDrawer(kind, title) {
+  function openDrawer(kind, title, opts) {
     var drawer = $('editor-drawer');
     if (!drawer) return;
+    opts = opts || {};
     destroyRichEditors();
     drawer.classList.remove('hidden');
     drawer.setAttribute('aria-hidden', 'false');
+    drawer.classList.toggle('drawer--compact', kind === 'category');
+    drawer.classList.toggle('drawer--catalog', kind === 'product' || kind === 'news' || kind === 'solution');
+
+    if ($('drawer-eyebrow')) {
+      $('drawer-eyebrow').textContent = opts.eyebrow || (kind === 'category' ? '分类设置' : '编辑内容');
+    }
     if ($('drawer-title')) $('drawer-title').textContent = title || '编辑';
-    ['product-editor', 'news-editor', 'solution-editor'].forEach(function (id) {
-      if ($(id)) $(id).classList.toggle('hidden', id !== kind + '-editor');
+    if ($('drawer-context')) {
+      $('drawer-context').textContent = opts.context || '';
+      $('drawer-context').classList.toggle('hidden', !opts.context);
+    }
+
+    var nav = $('drawer-section-nav');
+    var sections = opts.sections || [];
+    if (nav) {
+      nav.innerHTML = sections.map(function (section, index) {
+        return '<button type="button" class="drawer-section-link' + (index === 0 ? ' is-active' : '') +
+          '" data-drawer-section="' + escapeAttr(section.key) + '">' +
+          '<span>' + String(index + 1).padStart(2, '0') + '</span>' + escapeHtml(section.label) + '</button>';
+      }).join('');
+      nav.classList.toggle('hidden', !sections.length);
+    }
+
+    ['product-editor', 'news-editor', 'solution-editor', 'category-editor'].forEach(function (id) {
+      var slot = $(id);
+      if (!slot) return;
+      var active = id === kind + '-editor';
+      slot.classList.toggle('hidden', !active);
+      if (!active) slot.innerHTML = '';
     });
+    var body = drawer.querySelector('.drawer-body');
+    if (body) {
+      if (body._drawerSectionScroll) body.removeEventListener('scroll', body._drawerSectionScroll);
+      body._drawerSectionScroll = null;
+      body.scrollTop = 0;
+    }
   }
 
+  function editorSection(key, title, description, innerHtml) {
+    return '<section class="catalog-editor-section" data-editor-section="' + escapeAttr(key) + '">' +
+      '<div class="catalog-editor-section-head"><div><span class="catalog-section-index">' +
+      escapeHtml(key === 'basic' ? '01' : key === 'content' ? '02' : '03') +
+      '</span><h4>' + escapeHtml(title) + '</h4></div>' +
+      (description ? '<p>' + escapeHtml(description) + '</p>' : '') + '</div>' +
+      '<div class="catalog-editor-card">' + innerHtml + '</div></section>';
+  }
+
+  function catalogSaveBar(kind, label, isNew) {
+    return '<div class="catalog-savebar">' +
+      '<p class="catalog-save-state" id="' + escapeAttr(kind) + '-save-state"><span></span>' +
+      (isNew ? '填写完成后保存即可创建' : '所有更改均已保存') + '</p>' +
+      '<div class="toolbar"><button type="button" class="btn btn-ghost" id="cancel-' + escapeAttr(kind) + '">取消</button>' +
+      '<button type="button" class="btn btn-accent" id="save-' + escapeAttr(kind) + '">' +
+      (isNew ? '创建' : '保存') + escapeHtml(label) + '</button></div></div>';
+  }
+
+  function catalogActionZone(kind, label, item, isNew, previewHref) {
+    if (isNew) {
+      return '<div class="catalog-new-note"><strong>创建后再进行预览和下架操作</strong>' +
+        '<p>新建内容默认不会自动发布，可以先保存为未发布内容。</p></div>';
+    }
+    return '<div class="catalog-action-zone"><div><strong>内容操作</strong>' +
+      '<p>预览不会保存当前修改；删除操作不可撤销。</p></div><div class="toolbar">' +
+      (previewHref ? previewLink(previewHref, '预览详情页') : '') +
+      '<button type="button" class="btn btn-ghost btn-sm" id="reload-' + escapeAttr(kind) + '">重新加载</button>' +
+      (item.published ? '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" id="unpublish-' +
+        escapeAttr(kind) + '">下架</button>' : '') +
+      '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" id="delete-' +
+        escapeAttr(kind) + '">删除' + escapeHtml(label) + '</button></div></div>';
+  }
+
+  function setCatalogSaveState(kind, text, mode) {
+    var el = $(kind + '-save-state');
+    if (!el) return;
+    el.lastChild.textContent = text;
+    el.classList.toggle('is-dirty', mode === 'dirty');
+    el.classList.toggle('is-saving', mode === 'saving');
+    el.classList.toggle('is-error', mode === 'error');
+  }
+
+  function bindCatalogEditorState(rootId, kind) {
+    var root = $(rootId);
+    if (!root) return;
+    root._catalogKind = kind;
+    if (!root._catalogDirtyBound) {
+      root._catalogDirtyBound = true;
+      ['input', 'change'].forEach(function (eventName) {
+        root.addEventListener(eventName, function () {
+          if (!root._catalogKind) return;
+          setCatalogSaveState(root._catalogKind, '有尚未保存的更改', 'dirty');
+        });
+      });
+    }
+  }
+
+  async function runCatalogSave(kind, label, saveFn) {
+    var button = $('save-' + kind);
+    var normalLabel = button ? button.textContent : ('保存' + label);
+    if (button) {
+      button.disabled = true;
+      button.textContent = '正在保存…';
+    }
+    setCatalogSaveState(kind, '正在保存' + label + '…', 'saving');
+    try {
+      var saved = await saveFn();
+      if (saved === false) {
+        setCatalogSaveState(kind, '有尚未保存的更改', 'dirty');
+        return;
+      }
+      var now = new Date();
+      var savedAt = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      setCatalogSaveState(kind, '已保存于 ' + savedAt, 'saved');
+    } catch (err) {
+      setCatalogSaveState(kind, '保存失败，请检查后重试', 'error');
+      toast(err.message || '保存失败', true);
+    } finally {
+      var currentButton = $('save-' + kind);
+      if (currentButton) {
+        currentButton.disabled = false;
+        if (currentButton === button) currentButton.textContent = normalLabel;
+      }
+    }
+  }
+
+  function bindDrawerSectionNav(rootId) {
+    var root = $(rootId);
+    var nav = $('drawer-section-nav');
+    var drawer = $('editor-drawer');
+    var body = drawer && drawer.querySelector('.drawer-body');
+    if (!root || !nav || !body) return;
+    var buttons = Array.prototype.slice.call(nav.querySelectorAll('[data-drawer-section]'));
+    var panels = Array.prototype.slice.call(root.querySelectorAll('[data-editor-section]'));
+    if (!buttons.length || !panels.length) return;
+
+    function setActive(key) {
+      buttons.forEach(function (button) {
+        button.classList.toggle('is-active', button.getAttribute('data-drawer-section') === key);
+      });
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        var key = button.getAttribute('data-drawer-section');
+        var panel = root.querySelector('[data-editor-section="' + key + '"]');
+        if (!panel) return;
+        var bodyRect = body.getBoundingClientRect();
+        var panelRect = panel.getBoundingClientRect();
+        body.scrollTo({ top: body.scrollTop + panelRect.top - bodyRect.top - 18, behavior: 'smooth' });
+        setActive(key);
+      });
+    });
+
+    body._drawerSectionScroll = function () {
+      var bodyTop = body.getBoundingClientRect().top + 42;
+      var active = panels[0];
+      panels.forEach(function (panel) {
+        if (panel.getBoundingClientRect().top <= bodyTop) active = panel;
+      });
+      if (active) setActive(active.getAttribute('data-editor-section'));
+    };
+    body.addEventListener('scroll', body._drawerSectionScroll, { passive: true });
+  }
   function closeDrawer() {
     var drawer = $('editor-drawer');
     if (!drawer) return;
@@ -978,7 +1302,7 @@
       '<select id="f-categoryKey">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「全站 → 分类」里维护可选分类</p></div>';
+      '<p class="field-help">在「产品中心 → 分类设置」中维护可选分类</p></div>';
   }
 
   function newsCategorySelect(item) {
@@ -991,7 +1315,7 @@
       '<select id="f-category">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「全站 → 分类」里维护可选分类</p></div>';
+      '<p class="field-help">在「新闻中心 → 分类设置」中维护可选分类</p></div>';
   }
 
   async function ensureCategoriesLoaded() {
@@ -1017,16 +1341,15 @@
       root.innerHTML = '<p class="empty">暂无产品分类</p>';
       return;
     }
-    root.innerHTML = items.map(function (c) {
+    root.innerHTML = items.map(function (c, index) {
       return '<div class="item-row" style="cursor:default">' +
+        '<span class="category-order">' + String(index + 1).padStart(2, '0') + '</span>' +
         '<div class="item-main">' +
         '<div class="item-title-row"><span class="item-title">' + escapeHtml(c.name) + '</span></div>' +
-        '<div class="item-meta">键 ' + escapeHtml(c.key) +
-        (c.filterKeyEn ? ' · 英筛 ' + escapeHtml(c.filterKeyEn) : '') +
-        ' · 排序 ' + escapeHtml(String(c.sortOrder)) + '</div></div>' +
+        '<div class="item-meta">显示顺序 ' + escapeHtml(String(c.sortOrder)) +
+        ' · 系统标识 ' + escapeHtml(c.key) + '</div></div>' +
         '<div class="item-actions">' +
         '<button type="button" class="btn-edit" data-edit-pc="' + escapeAttr(c.key) + '">编辑</button>' +
-        '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" data-del-pc="' + escapeAttr(c.key) + '">删除</button>' +
         '</div></div>';
     }).join('');
     root.querySelectorAll('[data-edit-pc]').forEach(function (btn) {
@@ -1036,13 +1359,7 @@
         if (cat) editProductCategory(cat);
       });
     });
-    root.querySelectorAll('[data-del-pc]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        deleteProductCategory(btn.getAttribute('data-del-pc'));
-      });
-    });
   }
-
   function renderNewsCatList() {
     var root = $('news-cat-list');
     if (!root) return;
@@ -1051,14 +1368,15 @@
       root.innerHTML = '<p class="empty">暂无新闻分类</p>';
       return;
     }
-    root.innerHTML = items.map(function (c) {
+    root.innerHTML = items.map(function (c, index) {
       return '<div class="item-row" style="cursor:default">' +
+        '<span class="category-order">' + String(index + 1).padStart(2, '0') + '</span>' +
         '<div class="item-main">' +
         '<div class="item-title-row"><span class="item-title">' + escapeHtml(c.name) + '</span></div>' +
-        '<div class="item-meta">键 ' + escapeHtml(c.key) + ' · 排序 ' + escapeHtml(String(c.sortOrder)) + '</div></div>' +
+        '<div class="item-meta">显示顺序 ' + escapeHtml(String(c.sortOrder)) +
+        ' · 系统标识 ' + escapeHtml(c.key) + '</div></div>' +
         '<div class="item-actions">' +
         '<button type="button" class="btn-edit" data-edit-nc="' + escapeAttr(c.key) + '">编辑</button>' +
-        '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" data-del-nc="' + escapeAttr(c.key) + '">删除</button>' +
         '</div></div>';
     }).join('');
     root.querySelectorAll('[data-edit-nc]').forEach(function (btn) {
@@ -1068,92 +1386,192 @@
         if (cat) editNewsCategory(cat);
       });
     });
-    root.querySelectorAll('[data-del-nc]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        deleteNewsCategoryUi(btn.getAttribute('data-del-nc'));
+  }
+  function nextCategorySort(items) {
+    if (!items || !items.length) return 10;
+    return Math.max.apply(null, items.map(function (item) {
+      return Number(item.sortOrder) || 0;
+    })) + 10;
+  }
+
+  function generatedCategoryKey(kind) {
+    return (kind === 'products' ? 'product-' : 'news-') + Date.now().toString(36).slice(-7);
+  }
+
+  function setCategoryFieldError(id, message) {
+    var input = $(id);
+    var error = $(id + '-error');
+    if (input) input.classList.toggle('is-invalid', !!message);
+    if (error) error.textContent = message || '';
+  }
+
+  function revealCategoryAdvanced() {
+    var details = document.querySelector('#category-editor .category-advanced');
+    if (details) details.open = true;
+  }
+
+  function openCategoryEditor(kind, cat) {
+    var isProduct = kind === 'products';
+    var isNew = !cat;
+    var label = isProduct ? '产品分类' : '新闻分类';
+    var items = isProduct ? state.productCategories : state.newsCategories;
+    var key = cat ? cat.key : generatedCategoryKey(kind);
+    var sortOrder = cat ? cat.sortOrder : nextCategorySort(items);
+    openDrawer('category', (isNew ? '新增' : '编辑') + label);
+    $('category-editor').innerHTML =
+      '<div class="category-editor-intro">' +
+        '<span class="category-editor-context">' + (isProduct ? '产品中心' : '新闻中心') + ' · 分类设置</span>' +
+        '<h4>' + (isNew ? '创建一个新的' : '修改当前') + label + '</h4>' +
+        '<p>保存后会自动同步到' + (isProduct ? '产品筛选与产品编辑表单' : '新闻筛选与新闻编辑表单') + '。</p>' +
+      '</div>' +
+      '<form id="category-form" novalidate>' +
+        '<div class="category-editor-card">' +
+          '<div class="form-grid category-form-grid">' +
+            '<div class="field full"><label for="category-name">分类名称 <span class="required-mark">*</span></label>' +
+              '<input id="category-name" type="text" maxlength="40" value="' + escapeAttr(cat ? cat.name : '') + '" placeholder="例如：光学元件组装">' +
+              '<p class="field-help">这是运营人员和前台访客看到的名称。</p><p class="field-error" id="category-name-error"></p></div>' +
+            '<div class="field full"><label for="category-sort">显示顺序</label>' +
+              '<input id="category-sort" type="number" min="0" step="1" value="' + escapeAttr(String(sortOrder)) + '">' +
+              '<p class="field-help">数字越小越靠前；建议按 10、20、30 排列，方便以后插入。</p><p class="field-error" id="category-sort-error"></p></div>' +
+          '</div>' +
+          '<div class="category-live-preview"><span>前台筛选预览</span><strong id="category-preview-name">' + escapeHtml(cat ? cat.name : '新分类') + '</strong></div>' +
+          '<details class="category-advanced">' +
+            '<summary>高级设置 <span>一般无需修改</span></summary>' +
+            '<div class="form-grid">' +
+              '<div class="field full"><label for="category-key">系统标识</label>' +
+                '<input id="category-key" type="text" maxlength="32" value="' + escapeAttr(key) + '"' + (isNew ? '' : ' readonly') + '>' +
+                '<p class="field-help">用于系统关联，需以英文小写字母开头。' + (isNew ? '已自动生成，也可以在创建前修改。' : '创建后不可修改，避免影响已有内容。') + '</p><p class="field-error" id="category-key-error"></p></div>' +
+              (isProduct
+                ? '<div class="field"><label for="category-name-en">英文名称</label><input id="category-name-en" type="text" value="' + escapeAttr(cat ? (cat.nameEn || '') : '') + '" placeholder="Optical Assembly"></div>' +
+                  '<div class="field"><label for="category-filter-en">英文筛选标识</label><input id="category-filter-en" type="text" value="' + escapeAttr(cat ? (cat.filterKeyEn || key) : key) + '"></div>'
+                : '') +
+            '</div>' +
+          '</details>' +
+        '</div>' +
+        '<div class="category-editor-actions">' +
+          '<div>' + (!isNew
+            ? '<button type="button" class="btn btn-ghost btn-danger-text" id="delete-category">删除分类</button>'
+            : '<span class="category-save-note">填写完成后保存即可创建</span>') + '</div>' +
+          '<div class="toolbar"><button type="button" class="btn btn-ghost" id="cancel-category">取消</button>' +
+            '<button type="submit" class="btn btn-accent" id="save-category">' + (isNew ? '创建分类' : '保存修改') + '</button></div>' +
+        '</div>' +
+      '</form>';
+
+    var nameInput = $('category-name');
+    if (nameInput) {
+      nameInput.addEventListener('input', function () {
+        setCategoryFieldError('category-name', '');
+        $('category-preview-name').textContent = nameInput.value.trim() || '新分类';
+      });
+      setTimeout(function () { nameInput.focus(); }, 0);
+    }
+    $('category-key').addEventListener('input', function () {
+      setCategoryFieldError('category-key', '');
+    });
+    $('category-sort').addEventListener('input', function () {
+      setCategoryFieldError('category-sort', '');
+    });
+    $('cancel-category').onclick = closeDrawer;
+    $('category-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      saveCategoryEditor(kind, cat).catch(function (e) {
+        toast(e.message || '保存失败，请稍后重试', true);
       });
     });
+    if ($('delete-category')) {
+      $('delete-category').onclick = function () {
+        if (isProduct) deleteProductCategory(cat.key, cat.name, true);
+        else deleteNewsCategoryUi(cat.key, cat.name, true);
+      };
+    }
+  }
+
+  async function saveCategoryEditor(kind, cat) {
+    var isProduct = kind === 'products';
+    var isNew = !cat;
+    var name = val('category-name').trim();
+    var key = val('category-key').trim().toLowerCase();
+    var sortRaw = val('category-sort').trim();
+    var validKey = /^[a-z][a-z0-9_-]{0,31}$/.test(key);
+    var validSort = /^d+$/.test(sortRaw);
+    setCategoryFieldError('category-name', name ? '' : '请填写分类名称');
+    setCategoryFieldError('category-key', validKey ? '' : '请使用英文小写字母开头，可包含数字、短横线或下划线');
+    setCategoryFieldError('category-sort', validSort ? '' : '请输入大于或等于 0 的整数');
+    if (!name || !validKey || !validSort) {
+      if (!validKey) revealCategoryAdvanced();
+      var firstInvalid = !name ? $('category-name') : (!validSort ? $('category-sort') : $('category-key'));
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
+    var payload = { key: key, name: name, sortOrder: Number(sortRaw) };
+    if (isProduct) {
+      payload.nameEn = val('category-name-en').trim();
+      payload.filterKeyEn = val('category-filter-en').trim() || key;
+    }
+    var saveButton = $('save-category');
+    saveButton.disabled = true;
+    saveButton.textContent = '正在保存…';
+    try {
+      var base = '/admin/categories/' + kind;
+      await api(isNew ? base : base + '/' + encodeURIComponent(cat.key), {
+        method: isNew ? 'POST' : 'PUT',
+        body: JSON.stringify(payload),
+      });
+      await loadCategories();
+      closeDrawer();
+      toast((isProduct ? '产品分类' : '新闻分类') + (isNew ? '已创建' : '已保存'));
+    } catch (err) {
+      if (err.message === 'already_exists') {
+        revealCategoryAdvanced();
+        setCategoryFieldError('category-key', '该系统标识已存在，请换一个');
+        $('category-key').focus();
+      } else if (err.message === 'invalid_category_key') {
+        revealCategoryAdvanced();
+        setCategoryFieldError('category-key', '系统标识格式不正确');
+        $('category-key').focus();
+      } else if (err.message === 'missing_category_name') {
+        setCategoryFieldError('category-name', '请填写分类名称');
+      } else {
+        toast(err.message || '保存失败，请稍后重试', true);
+      }
+      saveButton.disabled = false;
+      saveButton.textContent = isNew ? '创建分类' : '保存修改';
+    }
   }
 
   function editProductCategory(cat) {
-    var name = prompt('分类名称（中文）', cat ? cat.name : '');
-    if (name == null) return;
-    name = name.trim();
-    if (!name) { toast('名称不能为空', true); return; }
-    var isNew = !cat;
-    var key = cat ? cat.key : prompt('分类键（英文小写，如 optical）', '');
-    if (key == null) return;
-    key = String(key).trim().toLowerCase();
-    if (!/^[a-z][a-z0-9_-]{0,31}$/.test(key)) {
-      toast('分类键格式不对，请用英文小写字母开头', true);
-      return;
-    }
-    var sortOrder = cat ? cat.sortOrder : 100;
-    var sortRaw = prompt('排序（数字越小越靠前）', String(sortOrder));
-    if (sortRaw == null) return;
-    var payload = {
-      key: key,
-      name: name,
-      nameEn: cat ? cat.nameEn : '',
-      filterKeyEn: cat ? cat.filterKeyEn : key,
-      sortOrder: Number(sortRaw) || 0,
-    };
-    var req = isNew
-      ? api('/admin/categories/products', { method: 'POST', body: JSON.stringify(payload) })
-      : api('/admin/categories/products/' + encodeURIComponent(key), {
-        method: 'PUT', body: JSON.stringify(payload),
-      });
-    req.then(function () {
-      toast(isNew ? '产品分类已创建' : '产品分类已保存');
-      return loadCategories();
-    }).catch(function (e) { toast(e.message, true); });
+    openCategoryEditor('products', cat);
   }
 
   function editNewsCategory(cat) {
-    var name = prompt('分类名称', cat ? cat.name : '');
-    if (name == null) return;
-    name = name.trim();
-    if (!name) { toast('名称不能为空', true); return; }
-    var isNew = !cat;
-    var key = cat ? cat.key : prompt('分类键（英文小写，如 company）', '');
-    if (key == null) return;
-    key = String(key).trim().toLowerCase();
-    if (!/^[a-z][a-z0-9_-]{0,31}$/.test(key)) {
-      toast('分类键格式不对', true);
-      return;
-    }
-    var sortRaw = prompt('排序（数字越小越靠前）', String(cat ? cat.sortOrder : 100));
-    if (sortRaw == null) return;
-    var payload = { key: key, name: name, sortOrder: Number(sortRaw) || 0 };
-    var req = isNew
-      ? api('/admin/categories/news', { method: 'POST', body: JSON.stringify(payload) })
-      : api('/admin/categories/news/' + encodeURIComponent(key), {
-        method: 'PUT', body: JSON.stringify(payload),
-      });
-    req.then(function () {
-      toast(isNew ? '新闻分类已创建' : '新闻分类已保存');
-      return loadCategories();
-    }).catch(function (e) { toast(e.message, true); });
+    openCategoryEditor('news', cat);
   }
-
-  function deleteProductCategory(key) {
-    if (!confirm('删除产品分类「' + key + '」？若仍有产品使用该分类会失败。')) return;
+  function deleteProductCategory(key, name, closeAfter) {
+    if (!confirm('确定删除产品分类「' + (name || key) + '」吗？正在被产品使用的分类不能删除。')) return;
     api('/admin/categories/products/' + encodeURIComponent(key), { method: 'DELETE' })
-      .then(function () { toast('已删除'); return loadCategories(); })
+      .then(function () {
+        if (closeAfter) closeDrawer();
+        toast('产品分类已删除');
+        return loadCategories();
+      })
       .catch(function (e) {
-        toast(e.message === 'category_in_use' ? '仍有产品在用此分类，无法删除' : e.message, true);
+        toast(e.message === 'category_in_use' ? '仍有产品在使用这个分类，暂时不能删除' : e.message, true);
       });
   }
 
-  function deleteNewsCategoryUi(key) {
-    if (!confirm('删除新闻分类「' + key + '」？若仍有新闻使用会失败。')) return;
+  function deleteNewsCategoryUi(key, name, closeAfter) {
+    if (!confirm('确定删除新闻分类「' + (name || key) + '」吗？正在被新闻使用的分类不能删除。')) return;
     api('/admin/categories/news/' + encodeURIComponent(key), { method: 'DELETE' })
-      .then(function () { toast('已删除'); return loadCategories(); })
+      .then(function () {
+        if (closeAfter) closeDrawer();
+        toast('新闻分类已删除');
+        return loadCategories();
+      })
       .catch(function (e) {
-        toast(e.message === 'category_in_use' ? '仍有新闻在用此分类，无法删除' : e.message, true);
+        toast(e.message === 'category_in_use' ? '仍有新闻在使用这个分类，暂时不能删除' : e.message, true);
       });
   }
-
   async function openProduct(id) {
     state.isNewProduct = false;
     state.selectedProductId = id;
@@ -1172,51 +1590,65 @@
   }
 
   function fillProductForm(item, isNew) {
-    openDrawer('product', isNew ? '新建产品' : '编辑产品');
-    var toolbarTop = isNew
-      ? '<p class="field-help" style="margin-bottom:14px">填写后点「保存」才会真正创建；关闭窗口不会保存。</p>'
-      : '<div class="toolbar" style="margin-bottom:14px">' +
-        previewLink('/product-detail.html?id=' + encodeURIComponent(item.id), '预览详情页') + '</div>';
-    var actions =
-      '<div class="toolbar" style="margin-top:16px">' +
-      '<button type="button" class="btn btn-accent" id="save-product">保存</button>' +
-      (isNew
-        ? '<button type="button" class="btn btn-ghost" id="cancel-product">取消</button>'
-        : '<button type="button" class="btn btn-ghost" id="reload-product">重新加载</button>' +
-          (item.published
-            ? '<button type="button" class="btn btn-ghost btn-danger-text" id="unpublish-product">下架</button>'
-            : '') +
-          '<button type="button" class="btn btn-ghost btn-danger-text" id="delete-product">删除</button>') +
-      '</div>';
-    $('product-editor').innerHTML =
-      toolbarTop +
+    var title = item.name || '未命名产品';
+    var context = isNew
+      ? '尚未保存 · 创建后生成内容 ID'
+      : [item.model || null, item.id != null ? ('ID ' + item.id) : null].filter(Boolean).join(' · ');
+    openDrawer('product', title, {
+      eyebrow: isNew ? '新增产品' : '编辑产品',
+      context: context,
+      sections: [
+        { key: 'basic', label: '基本信息' },
+        { key: 'content', label: '展示内容' },
+        { key: 'publish', label: '发布设置' },
+      ],
+    });
+
+    var previewHref = !isNew && item.id != null
+      ? '/product-detail.html?id=' + encodeURIComponent(item.id)
+      : '';
+    var basicHtml =
       '<div class="form-grid">' +
-      '<p class="form-section-title">基本信息</p>' +
-      field('name', '产品名称', item.name) + field('model', '型号', item.model) +
+      field('name', '产品名称', item.name, 'full') +
+      field('model', '型号', item.model) +
       productCategorySelect(item) +
+      field('summary', '一句话介绍', item.summary, 'full', 'textarea') +
+      '</div>';
+    var contentHtml =
+      '<div class="form-grid">' +
       imageField('image', '封面图', item.image) +
       field('specs', '规格亮点（每行一条）', (item.specs || []).join('\n'), 'full', 'textarea') +
-      field('summary', '一句话介绍', item.summary, 'full', 'textarea') +
       richTextField('contentHtml', '产品详情', item.contentHtml, '用工具栏排版即可，不必手写代码') +
+      '</div>';
+    var publishHtml =
+      '<div class="form-grid catalog-publish-grid">' +
       publishedCheck('p-published', !!item.published) +
-      '<div class="field full"><p class="field-help">新建默认未发布。下架后官网不展示；可用「下架」按钮或取消勾选「已发布」后保存。</p></div>' +
+      '<div class="field full"><p class="field-help">新建默认未发布；取消发布后，官网将不再展示该产品。</p></div>' +
       '<div class="field full"><label class="check"><input type="checkbox" id="p-showInList"' +
       (item.showInList !== false ? ' checked' : '') + '> 在产品中心列表显示</label></div>' +
-      advancedBlock(
-        field('sortOrder', '列表排序（数字越小越靠前）', item.sortOrder != null ? item.sortOrder : 0)
-      ) +
-      '</div>' + actions;
+      field('sortOrder', '列表排序（数字越小越靠前）', item.sortOrder != null ? item.sortOrder : 0, 'full') +
+      '</div>' +
+      catalogActionZone('product', '产品', item, isNew, previewHref);
+
+    $('product-editor').innerHTML =
+      '<div class="catalog-editor-content">' +
+      (isNew ? '<p class="catalog-create-tip">填写基本信息后即可先保存，详情内容可以稍后继续完善。</p>' : '') +
+      editorSection('basic', '基本信息', '对应前台产品卡片与详情页首屏', basicHtml) +
+      editorSection('content', '展示内容', '封面、规格和产品详情', contentHtml) +
+      editorSection('publish', '发布设置', '控制官网展示状态与列表顺序', publishHtml) +
+      '</div>' +
+      catalogSaveBar('product', '产品', isNew);
+
     bindImageFields($('product-editor'));
     initRichEditors(['f-contentHtml']);
-    $('save-product').onclick = function () { saveProduct().catch(function (e) { toast(e.message, true); }); };
-    if (isNew) {
-      $('cancel-product').onclick = function () {
-        state.isNewProduct = false;
-        state.selectedProductId = null;
-        closeDrawer();
-        renderProductTable();
-      };
-    } else {
+    bindCatalogEditorState('product-editor', 'product');
+    bindDrawerSectionNav('product-editor');
+    $('save-product').onclick = function () {
+      runCatalogSave('product', '产品', saveProduct);
+    };
+    $('cancel-product').onclick = closeDrawer;
+
+    if (!isNew) {
       $('reload-product').onclick = function () { openProduct(item.id); };
       if ($('unpublish-product')) {
         $('unpublish-product').onclick = function () {
@@ -1226,17 +1658,16 @@
       $('delete-product').onclick = function () { deleteCatalog('products', item.id); };
     }
   }
-
   async function saveProduct() {
     var name = val('f-name').trim();
     if (!name) {
       toast('请填写产品名称', true);
-      return;
+      return false;
     }
     var categoryKey = val('f-categoryKey');
     if (!categoryKey) {
       toast('请选择产品分类', true);
-      return;
+      return false;
     }
     var body = {
       name: name, model: val('f-model'), categoryKey: categoryKey, image: val('f-image'),
@@ -1253,7 +1684,7 @@
       toast('产品已创建');
       await loadProducts();
       await openProduct(created.id);
-      return;
+      return true;
     }
     body.id = String(state.selectedProductId);
     await api('/admin/products/' + encodeURIComponent(state.selectedProductId), {
@@ -1261,6 +1692,7 @@
     });
     toast('产品已保存');
     await loadProducts();
+    return true;
   }
 
   async function createProduct() {
@@ -1319,50 +1751,64 @@
   }
 
   function fillNewsForm(item, isNew) {
-    openDrawer('news', isNew ? '新建新闻' : '编辑新闻');
-    var toolbarTop = isNew
-      ? '<p class="field-help" style="margin-bottom:14px">填写后点「保存」才会真正创建；关闭窗口不会保存。</p>'
-      : '<div class="toolbar" style="margin-bottom:14px">' +
-        previewLink('/news-detail.html?id=' + encodeURIComponent(item.id), '预览详情页') + '</div>';
-    var actions =
-      '<div class="toolbar" style="margin-top:16px">' +
-      '<button type="button" class="btn btn-accent" id="save-news">保存</button>' +
-      (isNew
-        ? '<button type="button" class="btn btn-ghost" id="cancel-news">取消</button>'
-        : '<button type="button" class="btn btn-ghost" id="reload-news">重新加载</button>' +
-          (item.published
-            ? '<button type="button" class="btn btn-ghost btn-danger-text" id="unpublish-news">下架</button>'
-            : '') +
-          '<button type="button" class="btn btn-ghost btn-danger-text" id="delete-news">删除</button>') +
-      '</div>';
-    $('news-editor').innerHTML =
-      toolbarTop +
+    var title = item.title || '未命名新闻';
+    var context = isNew
+      ? '尚未保存 · 创建后生成内容 ID'
+      : [item.date || null, item.id != null ? ('ID ' + item.id) : null].filter(Boolean).join(' · ');
+    openDrawer('news', title, {
+      eyebrow: isNew ? '新增新闻' : '编辑新闻',
+      context: context,
+      sections: [
+        { key: 'basic', label: '基本信息' },
+        { key: 'content', label: '正文内容' },
+        { key: 'publish', label: '发布设置' },
+      ],
+    });
+
+    var previewHref = !isNew && item.id != null
+      ? '/news-detail.html?id=' + encodeURIComponent(item.id)
+      : '';
+    var basicHtml =
       '<div class="form-grid">' +
-      '<p class="form-section-title">基本信息</p>' +
       field('title', '新闻标题', item.title, 'full') +
       newsCategorySelect(item) +
       field('date', '发布日期', item.date) +
+      '</div>';
+    var contentHtml =
+      '<div class="form-grid">' +
       imageField('cover', '封面图', item.cover) +
       richTextField('contentHtml', '新闻正文', item.contentHtml, '用工具栏排版即可，不必手写代码') +
+      '</div>';
+    var publishHtml =
+      '<div class="form-grid catalog-publish-grid">' +
       publishedCheck('n-published', !!item.published) +
-      '<div class="field full check-row"><input type="checkbox" id="n-home-featured"' + (item.homeFeatured ? ' checked' : '') + '>' +
-      '<label for="n-home-featured" style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--txam-dark)">精选新闻（首页固定 2 条，默认不精选）</label></div>' +
-      '<div class="field full"><p class="field-help">首页精选新闻为必填坑位。下架或取消精选时，若当前占用坑位，必须指定另一条已发布新闻替代。</p></div>' +
-      advancedBlock(
-        field('sortOrder', '列表排序', item.sortOrder != null ? item.sortOrder : 0)
-      ) +
-      '</div>' + actions;
+      '<div class="field full check-row"><input type="checkbox" id="n-home-featured"' +
+      (item.homeFeatured ? ' checked' : '') + '>' +
+      '<label for="n-home-featured" style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--txam-dark)">在首页展示为精选新闻</label></div>' +
+      '<div class="field full"><p class="field-help">首页精选需要始终保留内容；取消精选或下架时，可能需要指定另一条已发布新闻替代。</p></div>' +
+      field('sortOrder', '列表排序（数字越小越靠前）', item.sortOrder != null ? item.sortOrder : 0, 'full') +
+      '</div>' +
+      catalogActionZone('news', '新闻', item, isNew, previewHref);
+
+    $('news-editor').innerHTML =
+      '<div class="catalog-editor-content">' +
+      (isNew ? '<p class="catalog-create-tip">先填写标题与分类即可保存，正文和发布设置可以随后继续完善。</p>' : '') +
+      editorSection('basic', '基本信息', '对应新闻列表卡片与详情页首屏', basicHtml) +
+      editorSection('content', '正文内容', '新闻封面与正文排版', contentHtml) +
+      editorSection('publish', '发布设置', '控制官网状态、首页精选与列表顺序', publishHtml) +
+      '</div>' +
+      catalogSaveBar('news', '新闻', isNew);
+
     bindImageFields($('news-editor'));
     initRichEditors(['f-contentHtml']);
-    $('save-news').onclick = function () { saveNews().catch(function (e) { toast(e.message, true); }); };
-    if (isNew) {
-      $('cancel-news').onclick = function () {
-        state.isNewNews = false;
-        state.selectedNewsId = null;
-        closeDrawer();
-        renderNewsTable();
-      };
-    } else {
+    bindCatalogEditorState('news-editor', 'news');
+    bindDrawerSectionNav('news-editor');
+    $('save-news').onclick = function () {
+      runCatalogSave('news', '新闻', saveNews);
+    };
+    $('cancel-news').onclick = closeDrawer;
+
+    if (!isNew) {
       $('reload-news').onclick = function () { openNews(item.id); };
       if ($('unpublish-news')) {
         $('unpublish-news').onclick = function () {
@@ -1372,17 +1818,16 @@
       $('delete-news').onclick = function () { deleteCatalog('news', item.id); };
     }
   }
-
   async function saveNews() {
     var title = val('f-title').trim();
     if (!title) {
       toast('请填写新闻标题', true);
-      return;
+      return false;
     }
     var category = val('f-category');
     if (!category) {
       toast('请选择新闻分类', true);
-      return;
+      return false;
     }
     var body = {
       title: title, category: category, date: val('f-date'), cover: val('f-cover'),
@@ -1397,12 +1842,13 @@
       toast('新闻已创建');
       await loadNews();
       await openNews(created.id);
-      return;
+      return true;
     }
     body.id = String(state.selectedNewsId);
     await saveWithSlotRetry('/admin/news/' + encodeURIComponent(state.selectedNewsId), body, 'PUT');
     toast('新闻已保存');
     await loadNews();
+    return true;
   }
 
   async function createNews() {
@@ -1482,9 +1928,9 @@
         '<span class="slot-choice-body"><strong>' + escapeHtml(title) + '</strong>' +
         '<span class="help">' + escapeHtml(desc) + '</span></span></label>';
     }
-    return '<div class="card home-slot-card" style="margin-top:12px">' +
+    return '<div class="home-slot-card">' +
       '<h3 class="card-title">首页展示位置（可选）</h3>' +
-      '<p class="field-help">新建默认不进首页，只出现在落地页/列表。需要时再选下面其中一个位置（互斥）。首页标杆与精选为必填坑位，取消或下架时须指定替代。</p>' +
+      '<p class="field-help">新建内容默认不在首页展示，只出现在对应页面或内容列表。需要时再选择下面其中一个推荐位置（不可同时选择）。首页标杆与精选位置需要始终保留内容，取消或下架时须指定替代内容。</p>' +
       '<div class="slot-choice-list" id="solution-home-slot">' +
       opt('hero', '标杆方案', '首页首屏大图，全站 1 个') +
       opt('category', '精选方案', '首页「三大核心类目」方案卡，最多 2 个（另有固定单元设备卡）') +
@@ -1497,51 +1943,63 @@
   }
 
   function fillSolutionForm(item, isNew) {
-    openDrawer('solution', isNew ? '新建方案' : '编辑方案');
-    var toolbarTop = isNew
-      ? '<p class="field-help" style="margin-bottom:14px">填写后点「保存」才会真正创建；关闭窗口不会保存。新建默认不上首页。</p>'
-      : '';
-    var actions =
-      '<div class="toolbar" style="margin-top:16px">' +
-      '<button type="button" class="btn btn-accent" id="save-solution">保存</button>' +
-      (isNew
-        ? '<button type="button" class="btn btn-ghost" id="cancel-solution">取消</button>'
-        : '<button type="button" class="btn btn-ghost" id="reload-solution">重新加载</button>' +
-          (item.published
-            ? '<button type="button" class="btn btn-ghost btn-danger-text" id="unpublish-solution">下架</button>'
-            : '') +
-          '<button type="button" class="btn btn-ghost btn-danger-text" id="delete-solution">删除</button>') +
-      '</div>';
-    $('solution-editor').innerHTML =
-      toolbarTop +
+    var title = item.name || '未命名方案';
+    var context = isNew
+      ? '尚未保存 · 新建方案默认不在首页展示'
+      : [item.category || null, item.id != null ? ('ID ' + item.id) : null].filter(Boolean).join(' · ');
+    openDrawer('solution', title, {
+      eyebrow: isNew ? '新增方案' : '编辑方案',
+      context: context,
+      sections: [
+        { key: 'basic', label: '基本信息' },
+        { key: 'content', label: '方案内容' },
+        { key: 'publish', label: '发布设置' },
+      ],
+    });
+
+    var previewHref = !isNew && item.slug ? '/' + encodeURIComponent(item.slug) + '-solution.html' : '';
+    var basicHtml =
       '<div class="form-grid">' +
-      '<p class="form-section-title">基本信息</p>' +
       field('name', '方案名称', item.name, 'full') +
       field('category', '分类名称', item.category) +
       solutionSlugSelect(item) +
+      field('summary', '一句话介绍', item.summary, 'full', 'textarea') +
+      '</div>';
+    var contentHtml =
+      '<div class="form-grid">' +
       imageField('image', '封面图', item.image) +
       field('specs', '亮点标签（每行一条）', (item.specs || []).join('\n'), 'full', 'textarea') +
-      field('summary', '一句话介绍', item.summary, 'full', 'textarea') +
-      '</div>' +
-      solutionHomeSlotBlock(item) +
-      '<div class="form-grid" style="margin-top:12px">' +
       richTextField('contentHtml', '方案详情', item.contentHtml, '用工具栏排版即可，不必手写代码') +
       '</div>' +
-      '<div class="card" style="margin-top:12px">' +
-      '<h3 class="card-title">客户痛点</h3>' +
-      '<p class="field-help">用普通文字填写即可，例如「大尺寸装配难」</p>' +
+      '<div class="catalog-editor-subsection"><div class="catalog-editor-subhead"><h5>客户痛点</h5>' +
+      '<p>用普通文字填写，例如“大尺寸装配难”</p></div>' +
       pairRowsHtml('pain', item.painPoints || [], '痛点标题', '痛点说明') + '</div>' +
-      '<div class="card" style="margin-top:12px">' +
-      '<h3 class="card-title">工艺流程</h3>' +
-      '<p class="field-help">按步骤写清「做什么」，不用写代码</p>' +
-      processRowsHtml(item.process || []) + '</div>' +
-      '<div class="form-grid" style="margin-top:12px">' +
-      advancedBlock(field('sortOrder', '列表排序', item.sortOrder != null ? item.sortOrder : 0)) +
-      '</div>' + actions;
+      '<div class="catalog-editor-subsection"><div class="catalog-editor-subhead"><h5>工艺流程</h5>' +
+      '<p>按实际执行顺序写清每一步“做什么”</p></div>' +
+      processRowsHtml(item.process || []) + '</div>';
+    var publishHtml =
+      solutionHomeSlotBlock(item) +
+      '<div class="form-grid catalog-publish-grid">' +
+      field('sortOrder', '列表排序（数字越小越靠前）', item.sortOrder != null ? item.sortOrder : 0, 'full') +
+      '</div>' +
+      catalogActionZone('solution', '方案', item, isNew, previewHref);
+
+    $('solution-editor').innerHTML =
+      '<div class="catalog-editor-content">' +
+      (isNew ? '<p class="catalog-create-tip">先保存基本信息，再完善痛点、流程和首页展示位置。</p>' : '') +
+      editorSection('basic', '基本信息', '对应方案列表卡片与详情页首屏', basicHtml) +
+      editorSection('content', '方案内容', '封面、亮点、详情、客户痛点与工艺流程', contentHtml) +
+      editorSection('publish', '发布设置', '控制官网状态、首页推荐与列表顺序', publishHtml) +
+      '</div>' +
+      catalogSaveBar('solution', '方案', isNew);
+
     bindImageFields($('solution-editor'));
     bindPairRepeater('pain');
     bindProcessRepeater();
     initRichEditors(['f-contentHtml']);
+    bindCatalogEditorState('solution-editor', 'solution');
+    bindDrawerSectionNav('solution-editor');
+
     var slotRoot = $('solution-home-slot');
     if (slotRoot) {
       slotRoot.querySelectorAll('input[name="homeSlot"]').forEach(function (radio) {
@@ -1559,15 +2017,13 @@
         $('clear-home-slot').remove();
       };
     }
-    $('save-solution').onclick = function () { saveSolution().catch(function (e) { toast(e.message, true); }); };
-    if (isNew) {
-      $('cancel-solution').onclick = function () {
-        state.isNewSolution = false;
-        state.selectedSolutionId = null;
-        closeDrawer();
-        renderSolutionTable();
-      };
-    } else {
+
+    $('save-solution').onclick = function () {
+      runCatalogSave('solution', '方案', saveSolution);
+    };
+    $('cancel-solution').onclick = closeDrawer;
+
+    if (!isNew) {
       $('reload-solution').onclick = function () { openSolution(item.id); };
       if ($('unpublish-solution')) {
         $('unpublish-solution').onclick = function () {
@@ -1577,12 +2033,11 @@
       $('delete-solution').onclick = function () { deleteCatalog('solutions', item.id); };
     }
   }
-
   async function saveSolution() {
     var name = val('f-name').trim();
     if (!name) {
       toast('请填写方案名称', true);
-      return;
+      return false;
     }
     var slotEl = document.querySelector('#solution-home-slot input[name="homeSlot"]:checked');
     var body = {
@@ -1603,12 +2058,13 @@
       toast('方案已创建');
       await loadSolutions();
       await openSolution(created.id);
-      return;
+      return true;
     }
     body.id = String(state.selectedSolutionId);
     await saveWithSlotRetry('/admin/solutions/' + encodeURIComponent(state.selectedSolutionId), body, 'PUT');
     toast('方案已保存');
     await loadSolutions();
+    return true;
   }
 
   function createSolution() {
@@ -1677,7 +2133,7 @@
         openMediaPicker(null, function (path) {
           if (input) {
             input.value = path;
-            input.dispatchEvent(new Event('input'));
+            input.dispatchEvent(new Event('input', { bubbles: true }));
           }
         });
       });
@@ -1685,10 +2141,10 @@
   }
 
   function seoBlock(page) {
-    return cardBlock('SEO',
-      field('seo-title', '标题', (page.seo || {}).title, 'full') +
-      field('seo-desc', '描述', (page.seo || {}).description, 'full', 'textarea') +
-      imageField('seo-image', 'OG 图片', (page.seo || {}).image || ''));
+    return cardBlock('搜索设置',
+      field('seo-title', '浏览器标题', (page.seo || {}).title, 'full') +
+      field('seo-desc', '搜索摘要', (page.seo || {}).description, 'full', 'textarea') +
+      imageField('seo-image', '分享封面图片', (page.seo || {}).image || ''));
   }
 
   function collectSeo() {
@@ -2131,35 +2587,35 @@
       image: '',
       imageAlt: '',
     };
-    var slotsHtml = '<div class="card" id="home-slots-status"><h3 class="card-title">首页精选坑位</h3>' +
-      '<p class="field-help">标杆 / 精选在「解决方案」「新闻中心」的条目详情里设置；下架占用项时须指定替代。</p>' +
+    var slotsHtml = '<div class="card" id="home-slots-status"><h3 class="card-title">首页推荐内容</h3>' +
+      '<p class="field-help">标杆 / 精选在「解决方案」「新闻中心」的条目详情里设置；下架正在展示的内容时，需要先选择替代内容。</p>' +
       '<p class="help">加载中…</p></div>';
     var sections = [
-      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: 'Hero',
-        html: cardBlock('Hero',
+        key: 'hero', label: '首屏内容',
+        html: cardBlock('首屏内容',
           field('hero-title', '主标题', hero.title) + field('hero-lead', '副文案', hero.lead, 'full', 'textarea') +
           field('hero-cta1-label', '主按钮文案', (hero.primaryCta || {}).label) + field('hero-cta1-href', '主按钮链接', (hero.primaryCta || {}).href) +
           field('hero-cta2-label', '次按钮文案', (hero.secondaryCta || {}).label) + field('hero-cta2-href', '次按钮链接', (hero.secondaryCta || {}).href)),
       },
       {
-        key: 'featured', label: '标杆文案',
+        key: 'featured', label: '标杆方案',
         html: cardBlock('标杆方案区文案',
           field('feat-eyebrow', '眉题', feat.eyebrow || '标杆方案') +
           field('feat-subtitle', '副标题覆盖（可选，空则用方案亮点）', feat.subtitle || '', 'full') +
           field('feat-cta', '按钮文案', feat.cta || '查看方案详情 →', 'full')),
       },
-      { key: 'slots', label: '首页坑位', html: slotsHtml },
+      { key: 'slots', label: '推荐内容', html: slotsHtml },
       {
-        key: 'about', label: '关于区',
+        key: 'about', label: '公司简介',
         html: '<div class="card"><h3 class="card-title">关于区块</h3><div class="form-grid">' +
           field('about-title', '标题', about.title, 'full') +
           richTextField('about-body', '正文', about.bodyHtml || '', '支持加粗、换行等基础排版') +
-          '</div><h4 class="sub-title">统计数字</h4>' + statsRowsHtml(about.stats || []) + '</div>',
+          '</div><h4 class="sub-title">核心数据</h4>' + statsRowsHtml(about.stats || []) + '</div>',
       },
       {
-        key: 'products', label: '三大类目',
+        key: 'products', label: '核心业务',
         html: '<div class="card"><h3 class="card-title">产品类目区块</h3><div class="form-grid">' +
           field('prod-sec-title', '标题', products.title, 'full') +
           field('prod-sec-subtitle', '副标题', products.subtitle, 'full', 'textarea') +
@@ -2181,19 +2637,20 @@
           '</div><h4 class="sub-title">步骤</h4>' + homeServiceStepsHtml(service.steps || []) + '</div>',
       },
       {
-        key: 'news', label: '新闻区',
+        key: 'news', label: '精选新闻',
         html: '<div class="card"><h3 class="card-title">新闻区块文案</h3><div class="form-grid">' +
           field('news-sec-title', '标题', news.title, 'full') +
           field('news-sec-mission-title', '初心标题', news.missionTitle) +
           field('news-sec-mission-body', '初心正文', news.missionBody, 'full', 'textarea') +
           field('news-sec-cta-label', 'CTA 文案', (news.cta || {}).label) +
           field('news-sec-cta-href', 'CTA 链接', (news.cta || {}).href) +
-          '<div class="field full"><p class="field-help">精选新闻条目请在「新闻中心 → 新闻条目」详情勾选首页精选（最多 2 条）。</p></div>' +
+          '<div class="field full"><p class="field-help">精选新闻请在「新闻中心 → 新闻内容」详情中设置（最多 2 条）。</p></div>' +
           '</div></div>',
       },
     ];
     $('page-home-form').innerHTML = buildSectionTabs('page-home-form', sections, 'hero');
     bindSectionTabs('page-home-form');
+    bindPageDirty('page-home-form', 'home');
     bindImageFields($('page-home-form'));
     bindStatsRepeater();
     bindGenericRepeater('rep-home-steps', HOME_STEP_BLANK);
@@ -2225,8 +2682,8 @@
           '<span class="help">' + items.length + '/' + limit + '</span>' + rows + '</div>';
       }
       box.innerHTML =
-        '<h3 class="card-title">首页精选坑位</h3>' +
-        '<p class="field-help">在「解决方案 / 新闻中心」的条目详情里设置；仅已发布计入名额。</p>' +
+        '<h3 class="card-title">首页推荐内容</h3>' +
+        '<p class="field-help">在「解决方案 / 新闻中心」的条目详情里设置；只有已发布内容会显示在首页。</p>' +
         listBlock('标杆方案（首屏大图）', data.hero, 'page-solutions') +
         listBlock('精选方案（三大核心类目）', data.category, 'page-solutions') +
         listBlock('精选新闻', data.news, 'page-news');
@@ -2241,7 +2698,7 @@
         });
       });
     } catch (err) {
-      box.innerHTML = '<h3 class="card-title">首页精选坑位</h3><p class="help">' + escapeHtml(err.message) + '</p>';
+      box.innerHTML = '<h3 class="card-title">首页推荐内容</h3><p class="help">' + escapeHtml(err.message) + '</p>';
     }
   }
 
@@ -2301,24 +2758,24 @@
     var stats = page.stats || {};
     var timeline = page.timeline || {};
     var sections = [
-      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: 'Hero',
-        html: cardBlock('Hero',
+        key: 'hero', label: '首屏内容',
+        html: cardBlock('首屏内容',
           field('hero-title', '标题', hero.title, 'full') +
           richTextField('hero-lead', '导语', hero.leadHtml || '', '支持加粗等基础排版')),
       },
       {
-        key: 'carousel', label: '工厂轮播',
-        html: '<div class="card"><h3 class="card-title">工厂轮播</h3><div class="form-grid">' +
+        key: 'carousel', label: '工厂环境',
+        html: '<div class="card"><h3 class="card-title">工厂环境</h3><div class="form-grid">' +
           field('carousel-aria', '区块无障碍标签', carousel.sectionAriaLabel || '', 'full') +
           field('carousel-prev', '上一张文案', carousel.prevLabel || '') +
           field('carousel-next', '下一张文案', carousel.nextLabel || '') +
           '</div><h4 class="sub-title">幻灯片</h4>' + carouselSlidesHtml(carousel.slides || []) + '</div>',
       },
       {
-        key: 'stats', label: '统计数字',
-        html: '<div class="card"><h3 class="card-title">统计数字</h3><div class="form-grid">' +
+        key: 'stats', label: '核心数据',
+        html: '<div class="card"><h3 class="card-title">核心数据</h3><div class="form-grid">' +
           field('stats-columns', '列数', stats.columns != null ? stats.columns : 5) +
           '</div><h4 class="sub-title">条目</h4>' + statsRowsHtml(stats.items || []) + '</div>',
       },
@@ -2336,8 +2793,8 @@
           '</div><h4 class="sub-title">事件</h4>' + timelineEventsHtml(timeline.events || []) + '</div>',
       },
       {
-        key: 'credentials', label: '资质画廊',
-        html: '<div class="card"><h3 class="card-title">资质画廊</h3><div class="form-grid">' +
+        key: 'credentials', label: '资质荣誉',
+        html: '<div class="card"><h3 class="card-title">资质荣誉</h3><div class="form-grid">' +
           field('cred-title', '标题', credentials.title || '', 'full') +
           field('cred-subtitle', '副标题', credentials.subtitle || '', 'full', 'textarea') +
           '</div><h4 class="sub-title">分组</h4>' + credentialsGroupsHtml(credentials.groups || []) + '</div>',
@@ -2352,6 +2809,7 @@
     ];
     $('page-about-form').innerHTML = buildSectionTabs('page-about-form', sections, 'hero');
     bindSectionTabs('page-about-form');
+    bindPageDirty('page-about-form', 'about');
     bindImageFields($('page-about-form'));
     bindStatsRepeater();
     bindGenericRepeater('rep-culture-pillars', CULTURE_PILLAR_BLANK);
@@ -2468,29 +2926,30 @@
     var map = page.map || {};
     var center = (map.center || []).join(', ');
     var sections = [
-      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: 'Hero',
-        html: cardBlock('Hero', field('hero-title', '标题', hero.title, 'full') + field('hero-lead', '导语', hero.lead, 'full', 'textarea')),
+        key: 'hero', label: '首屏内容',
+        html: cardBlock('首屏内容', field('hero-title', '标题', hero.title, 'full') + field('hero-lead', '导语', hero.lead, 'full', 'textarea')),
       },
       {
-        key: 'channels', label: '联系渠道',
-        html: '<div class="card"><h3 class="card-title">联系渠道</h3>' + channelRowsHtml(page.channels || []) + '</div>',
+        key: 'channels', label: '联系方式',
+        html: '<div class="card"><h3 class="card-title">联系方式</h3>' + channelRowsHtml(page.channels || []) + '</div>',
       },
       {
-        key: 'map', label: '地图',
+        key: 'map', label: '地图位置',
         html: cardBlock('地图',
           field('map-title', '标题', map.title || '', 'full') +
           field('map-center', '中心坐标 lng,lat', center, 'full') +
           field('map-zoom', '缩放级别', map.zoom != null ? map.zoom : 14)),
       },
       {
-        key: 'locations', label: '工厂地址',
-        html: '<div class="card"><h3 class="card-title">工厂地址</h3>' + locationRowsHtml(page.locations || []) + '</div>',
+        key: 'locations', label: '公司地址',
+        html: '<div class="card"><h3 class="card-title">公司地址</h3>' + locationRowsHtml(page.locations || []) + '</div>',
       },
     ];
     $('page-contact-form').innerHTML = buildSectionTabs('page-contact-form', sections, 'hero');
     bindSectionTabs('page-contact-form');
+    bindPageDirty('page-contact-form', 'contact');
     bindLocationRepeater();
     bindGenericRepeater('rep-channels', CHANNEL_BLANK);
     bindLeafRepeaterRemove('rep-channels');
@@ -2524,7 +2983,7 @@
     if (key === 'solutions') {
       extraSection = {
         key: 'pillars',
-        label: '价值支柱',
+        label: '价值说明',
         html: '<div class="card"><h3 class="card-title">价值支柱</h3>' + pillarsRowsHtml(page.pillars || []) + '</div>',
       };
     } else {
@@ -2533,14 +2992,14 @@
         label: '筛选文案',
         html: cardBlock('筛选文案',
           field('filters-all', '「全部」按钮文案', filters.all || (key === 'news' ? '全部资讯' : '全部产品'), 'full') +
-          '<div class="field full"><p class="field-help">分类按钮文案由「全站 → 分类」维护，保存分类后会自动同步到本页 filters。</p></div>'),
+          '<div class="field full"><p class="field-help">分类按钮文案由当前栏目中的「分类设置」维护，保存后会自动同步到当前页面。</p></div>'),
       };
     }
     var sections = [
-      { key: 'seo', label: 'SEO', html: seoBlock(page) },
+      { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: 'Hero',
-        html: cardBlock('Hero',
+        key: 'hero', label: '首屏内容',
+        html: cardBlock('首屏内容',
           field('hero-title', '标题', (page.hero || {}).title, 'full') +
           field('hero-lead', '导语', (page.hero || {}).lead || '', 'full', 'textarea')),
       },
@@ -2548,6 +3007,7 @@
     ];
     $(formId).innerHTML = buildSectionTabs(formId, sections, 'hero');
     bindSectionTabs(formId);
+    bindPageDirty(formId, key);
     bindImageFields($(formId));
     if (key === 'solutions') {
       bindGenericRepeater('rep-pillars', PILLAR_BLANK);
@@ -2571,7 +3031,14 @@
   }
 
   async function savePage(key) {
+    var saveButton = $('save-page-' + key);
+    var originalLabel = saveButton ? saveButton.textContent : '';
     try {
+      if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent = '正在保存…';
+      }
+      setPageStatus(key, '正在保存“' + (PAGE_LABELS[key] || '当前页面') + '”…', 'saving');
       var body;
       if (key === 'home') body = collectHomeForm();
       else if (key === 'about') body = collectAboutForm();
@@ -2579,9 +3046,20 @@
       else body = collectListPageForm(key);
       await api('/admin/pages/' + key, { method: 'PUT', body: JSON.stringify(body) });
       state.pageCache[key] = body;
-      toast('页面已保存');
+      setPageDirty(key, false);
+      var now = new Date();
+      var savedAt = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      setPageStatus(key, '已保存于 ' + savedAt + ' · 英文和俄文版本等待同步', 'saved');
+      toast('“' + (PAGE_LABELS[key] || '页面') + '”已保存');
     } catch (err) {
+      state.dirtyPages[key] = true;
+      setPageStatus(key, '保存失败，请检查后重试', 'error');
       toast(err.message || '保存失败', true);
+    } finally {
+      if (saveButton) {
+        saveButton.disabled = false;
+        saveButton.textContent = originalLabel;
+      }
     }
   }
 
@@ -3366,18 +3844,31 @@
     });
   }
   $('password').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('login-btn').click(); });
-  $('logout-btn').addEventListener('click', function () {
+  function logout() {
     token = '';
     sessionStorage.removeItem('txam_admin_token');
     sessionStorage.removeItem('txam_admin_actor');
     actorName = '';
     updateUserChip();
     showLogin(true);
-  });
+  }
+  if ($('sidebar-user-btn')) {
+    $('sidebar-user-btn').addEventListener('click', logout);
+  }
 
   document.querySelectorAll('.nav-item').forEach(function (btn) {
     btn.addEventListener('click', function () { setView(btn.getAttribute('data-view')); });
   });
+  if ($('global-search')) {
+    $('global-search').addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      var query = event.currentTarget.value;
+      Promise.resolve(handleGlobalSearch(query)).then(function (result) {
+        if (result !== false) event.currentTarget.value = '';
+      });
+    });
+  }
   document.querySelectorAll('.nav-group-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var group = btn.closest('.nav-group');
@@ -3392,6 +3883,10 @@
       if (!hub) return;
       var key = hub.getAttribute('data-hub');
       var tab = btn.getAttribute('data-hub-tab');
+      if (state.hubTabs[key] === 'page' && tab !== 'page' && state.dirtyPages[key]) {
+        if (!confirm('“' + (PAGE_LABELS[key] || '当前页面') + '”有尚未保存的更改，确定切换并放弃修改吗？')) return;
+        setPageDirty(key, false);
+      }
       applyHubTab(key, tab);
       if (tab === 'items') {
         if (key === 'products') loadProducts().catch(function (e) { toast(e.message, true); });
@@ -3399,9 +3894,10 @@
         if (key === 'solutions') loadSolutions().catch(function (e) { toast(e.message, true); });
       } else if (tab === 'page') {
         loadPageForm(key).catch(function (e) { toast(e.message, true); });
+      } else if (tab === 'categories' && (key === 'products' || key === 'news')) {
+        loadCategories().catch(function (e) { toast(e.message, true); });
       } else if (key === 'sitewide') {
         if (tab === 'site') loadSiteForm().catch(function (e) { toast(e.message, true); });
-        if (tab === 'categories') loadCategories().catch(function (e) { toast(e.message, true); });
         if (tab === 'media') loadMedia().catch(function (e) { toast(e.message, true); });
       } else if (key === 'system') {
         if (tab === 'translation') loadTranslation().catch(function (e) { toast(e.message, true); });
@@ -3417,7 +3913,6 @@
     });
   });
 
-  $('refresh-dash').addEventListener('click', function () { loadDashboard().catch(function (e) { toast(e.message, true); }); });
   if ($('refresh-translation')) {
     $('refresh-translation').addEventListener('click', function () { loadTranslation().catch(function (e) { toast(e.message, true); }); });
   }
@@ -3513,11 +4008,7 @@
   $('create-solution').addEventListener('click', function () {
     try { createSolution(); } catch (e) { toast(e.message, true); }
   });
-  if ($('refresh-categories')) {
-    $('refresh-categories').addEventListener('click', function () {
-      loadCategories().catch(function (e) { toast(e.message, true); });
-    });
-  }
+
   if ($('add-product-cat')) {
     $('add-product-cat').addEventListener('click', function () { editProductCategory(null); });
   }
