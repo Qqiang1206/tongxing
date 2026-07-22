@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css?v=20260722g">
+  <link rel="stylesheet" href="./admin.css?v=20260722i">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
@@ -164,10 +164,6 @@
               <h2>解决方案</h2>
               <p class="page-sub">解决方案所有可见内容在本页定位管理。</p>
             </div>
-            <div class="toolbar hub-actions" data-hub="solutions">
-              <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent hub-action-items" id="create-solution">+ 新建方案</button>
-            </div>
           </div>
           <div class="hub-tabs hub-mode-nav" data-hub="solutions" role="tablist" aria-label="解决方案管理方式">
             <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
@@ -192,14 +188,39 @@
             </div>
           </div>
           <div class="hub-panel" data-hub="solutions" data-hub-panel="items">
-            <p class="page-hint">首页标杆和精选方案在方案详情中设置；列表页标题请进入「页面设置」。</p>
-            <div class="filter-bar">
-              <input class="search" id="solution-search" type="search" placeholder="搜索名称 / ID">
-              <button type="button" class="btn btn-primary btn-sm" id="solution-search-btn">搜索</button>
-            </div>
-            <div class="card list-card">
-              <div class="item-list" id="solution-list" role="list"></div>
-              <div class="table-foot" id="solution-table-foot"></div>
+            <div class="section-workspace section-workspace--outline">
+              <aside class="section-outline">
+                <div class="section-outline-head"><strong>内容筛选</strong><span>按发布状态查看</span></div>
+                <div class="section-tabs section-outline-tabs" data-list-status="solutions" role="tablist">
+                  <button type="button" class="hub-tab is-active" data-status="all" role="tab" aria-selected="true">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>全部方案</strong><small>查看所有方案条目</small></span>
+                  </button>
+                  <button type="button" class="hub-tab" data-status="published" role="tab" aria-selected="false">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>已上架</strong><small>前台可见的已发布方案</small></span>
+                  </button>
+                  <button type="button" class="hub-tab" data-status="draft" role="tab" aria-selected="false">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>未上架</strong><small>尚未发布或已下架方案</small></span>
+                  </button>
+                </div>
+              </aside>
+              <div class="catalog-workspace-main">
+                <p class="page-hint">首页标杆和精选方案在方案详情中设置；列表页标题请进入「页面设置」。</p>
+                <div class="filter-bar">
+                  <input class="search" id="solution-search" type="search" placeholder="搜索名称 / ID">
+                  <button type="button" class="btn btn-primary btn-sm" id="solution-search-btn">搜索</button>
+                  <button type="button" class="btn btn-accent btn-sm" id="create-solution">+ 新建方案</button>
+                </div>
+                <div class="card list-card">
+                  <div class="item-list" id="solution-list" role="list"></div>
+                  <div class="table-foot">
+                    <span id="solution-table-foot"></span>
+                    <div class="pagination" id="solution-pagination"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -209,10 +230,6 @@
             <div>
               <h2>产品中心</h2>
               <p class="page-sub">产品中心所有可见内容在本页定位管理。</p>
-            </div>
-            <div class="toolbar hub-actions" data-hub="products">
-              <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent hub-action-items" id="create-product">+ 新建产品</button>
             </div>
           </div>
           <div class="hub-tabs hub-mode-nav" data-hub="products" role="tablist" aria-label="产品中心管理方式">
@@ -242,31 +259,60 @@
             </div>
           </div>
           <div class="hub-panel" data-hub="products" data-hub-panel="items">
-            <div class="filter-bar">
-              <select id="product-filter-status" class="select">
-                <option value="all">全部状态</option>
-                <option value="published">已发布</option>
-                <option value="draft">未发布</option>
-              </select>
-              <input class="search" id="product-search" type="search" placeholder="搜索名称 / 型号 / 分类">
-              <button type="button" class="btn btn-primary btn-sm" id="product-search-btn">搜索</button>
-            </div>
-            <div class="card list-card">
-              <div class="item-list" id="product-list" role="list"></div>
-              <div class="table-foot" id="product-table-foot"></div>
+            <div class="section-workspace section-workspace--outline">
+              <aside class="section-outline">
+                <div class="section-outline-head"><strong>内容筛选</strong><span>按发布状态查看</span></div>
+                <div class="section-tabs section-outline-tabs" data-list-status="products" role="tablist">
+                  <button type="button" class="hub-tab is-active" data-status="all" role="tab" aria-selected="true">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>全部产品</strong><small>查看所有产品条目</small></span>
+                  </button>
+                  <button type="button" class="hub-tab" data-status="published" role="tab" aria-selected="false">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>已上架</strong><small>前台可见的已发布产品</small></span>
+                  </button>
+                  <button type="button" class="hub-tab" data-status="draft" role="tab" aria-selected="false">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>未上架</strong><small>尚未发布或已下架产品</small></span>
+                  </button>
+                </div>
+              </aside>
+              <div class="catalog-workspace-main">
+                <div class="filter-bar">
+                  <input class="search" id="product-search" type="search" placeholder="搜索名称 / 型号 / 分类">
+                  <button type="button" class="btn btn-primary btn-sm" id="product-search-btn">搜索</button>
+                  <button type="button" class="btn btn-accent btn-sm" id="create-product">+ 新建产品</button>
+                </div>
+                <div class="card list-card">
+                  <div class="item-list" id="product-list" role="list"></div>
+                  <div class="table-foot">
+                    <span id="product-table-foot"></span>
+                    <div class="pagination" id="product-pagination"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="hub-panel hidden" data-hub="products" data-hub-panel="categories">
-            <p class="page-hint">这里维护产品中心使用的全部分类。修改分类名称后，产品筛选和产品编辑表单会自动同步。</p>
-            <div class="card">
-              <div class="card-head">
-                <div>
-                  <h3 class="card-title">产品分类</h3>
-                  <p class="field-help">分类按排序数字从小到大展示；正在被产品使用的分类不能删除。</p>
+            <div class="section-workspace section-workspace--outline">
+              <aside class="section-outline">
+                <div class="section-outline-head"><strong>分类管理</strong><span>维护前台筛选分类</span></div>
+                <div class="section-tabs section-outline-tabs" role="tablist">
+                  <button type="button" class="hub-tab is-active" role="tab" aria-selected="true">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>全部分类</strong><small>查看并维护所有分类</small></span>
+                  </button>
                 </div>
-                <button type="button" class="btn btn-accent btn-sm" id="add-product-cat">+ 新增分类</button>
+              </aside>
+              <div class="catalog-workspace-main">
+                <p class="page-hint">修改分类名称后，产品筛选和产品编辑表单会自动同步。</p>
+                <div class="filter-bar filter-bar--actions">
+                  <button type="button" class="btn btn-accent btn-sm" id="add-product-cat">+ 新增分类</button>
+                </div>
+                <div class="card list-card">
+                  <div id="product-cat-list" class="item-list"></div>
+                </div>
               </div>
-              <div id="product-cat-list" class="item-list"></div>
             </div>
           </div>
         </section>
@@ -276,10 +322,6 @@
             <div>
               <h2>新闻中心</h2>
               <p class="page-sub">新闻中心所有可见内容在本页定位管理。</p>
-            </div>
-            <div class="toolbar hub-actions" data-hub="news">
-              <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览</a>
-              <button type="button" class="btn btn-accent hub-action-items" id="create-news">+ 新建新闻</button>
             </div>
           </div>
           <div class="hub-tabs hub-mode-nav" data-hub="news" role="tablist" aria-label="新闻中心管理方式">
@@ -309,27 +351,61 @@
             </div>
           </div>
           <div class="hub-panel" data-hub="news" data-hub-panel="items">
-            <p class="page-hint">首页精选新闻在新闻详情中设置；列表页标题请进入「页面设置」。</p>
-            <div class="filter-bar">
-              <input class="search" id="news-search" type="search" placeholder="搜索标题 / 分类">
-              <button type="button" class="btn btn-primary btn-sm" id="news-search-btn">搜索</button>
-            </div>
-            <div class="card list-card">
-              <div class="item-list" id="news-list" role="list"></div>
-              <div class="table-foot" id="news-table-foot"></div>
+            <div class="section-workspace section-workspace--outline">
+              <aside class="section-outline">
+                <div class="section-outline-head"><strong>内容筛选</strong><span>按发布状态查看</span></div>
+                <div class="section-tabs section-outline-tabs" data-list-status="news" role="tablist">
+                  <button type="button" class="hub-tab is-active" data-status="all" role="tab" aria-selected="true">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>全部新闻</strong><small>查看所有新闻文章</small></span>
+                  </button>
+                  <button type="button" class="hub-tab" data-status="published" role="tab" aria-selected="false">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>已上架</strong><small>前台可见的已发布新闻</small></span>
+                  </button>
+                  <button type="button" class="hub-tab" data-status="draft" role="tab" aria-selected="false">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>未上架</strong><small>尚未发布或已下架新闻</small></span>
+                  </button>
+                </div>
+              </aside>
+              <div class="catalog-workspace-main">
+                <p class="page-hint">首页精选新闻在新闻详情中设置；列表页标题请进入「页面设置」。</p>
+                <div class="filter-bar">
+                  <input class="search" id="news-search" type="search" placeholder="搜索标题 / 分类">
+                  <button type="button" class="btn btn-primary btn-sm" id="news-search-btn">搜索</button>
+                  <button type="button" class="btn btn-accent btn-sm" id="create-news">+ 新建新闻</button>
+                </div>
+                <div class="card list-card">
+                  <div class="item-list" id="news-list" role="list"></div>
+                  <div class="table-foot">
+                    <span id="news-table-foot"></span>
+                    <div class="pagination" id="news-pagination"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="hub-panel hidden" data-hub="news" data-hub-panel="categories">
-            <p class="page-hint">这里维护新闻中心使用的全部分类。修改分类名称后，新闻筛选和新闻编辑表单会自动同步。</p>
-            <div class="card">
-              <div class="card-head">
-                <div>
-                  <h3 class="card-title">新闻分类</h3>
-                  <p class="field-help">分类按排序数字从小到大展示；正在被新闻使用的分类不能删除。</p>
+            <div class="section-workspace section-workspace--outline">
+              <aside class="section-outline">
+                <div class="section-outline-head"><strong>分类管理</strong><span>维护前台筛选分类</span></div>
+                <div class="section-tabs section-outline-tabs" role="tablist">
+                  <button type="button" class="hub-tab is-active" role="tab" aria-selected="true">
+                    <span class="section-marker" aria-hidden="true"></span>
+                    <span class="section-nav-copy"><strong>全部分类</strong><small>查看并维护所有分类</small></span>
+                  </button>
                 </div>
-                <button type="button" class="btn btn-accent btn-sm" id="add-news-cat">+ 新增分类</button>
+              </aside>
+              <div class="catalog-workspace-main">
+                <p class="page-hint">修改分类名称后，新闻筛选和新闻编辑表单会自动同步。</p>
+                <div class="filter-bar filter-bar--actions">
+                  <button type="button" class="btn btn-accent btn-sm" id="add-news-cat">+ 新增分类</button>
+                </div>
+                <div class="card list-card">
+                  <div id="news-cat-list" class="item-list"></div>
+                </div>
               </div>
-              <div id="news-cat-list" class="item-list"></div>
             </div>
           </div>
         </section>

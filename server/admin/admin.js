@@ -30,6 +30,8 @@
     },
     sectionTabs: {},
     dirtyPages: {},
+    listStatus: { products: 'all', news: 'all', solutions: 'all' },
+    listPages: { products: 1, news: 1, solutions: 1 },
     txSync: {
       active: false,
       preparing: false,
@@ -1208,7 +1210,7 @@
     drawer.classList.toggle('drawer--catalog', kind === 'product' || kind === 'news' || kind === 'solution');
 
     if ($('drawer-eyebrow')) {
-      $('drawer-eyebrow').textContent = opts.eyebrow || (kind === 'category' ? '分类设置' : '编辑内容');
+      $('drawer-eyebrow').textContent = opts.eyebrow || (kind === 'category' ? '分类管理' : '编辑内容');
     }
     if ($('drawer-title')) $('drawer-title').textContent = title || '编辑';
     if ($('drawer-context')) {
@@ -1390,6 +1392,91 @@
   }
 
   /* Generic catalog list helpers */
+  var CATALOG_PAGE_SIZE = 5;
+
+  function applyListStatusFilter(rows, status) {
+    if (status === 'published') return rows.filter(function (r) { return r.published !== false; });
+    if (status === 'draft') return rows.filter(function (r) { return r.published === false; });
+    return rows;
+  }
+
+  function paginateRows(rows, page, pageSize) {
+    var total = rows.length;
+    var totalPages = Math.max(1, Math.ceil(total / pageSize) || 1);
+    var safePage = Math.min(Math.max(1, page || 1), totalPages);
+    var start = (safePage - 1) * pageSize;
+    return {
+      rows: rows.slice(start, start + pageSize),
+      page: safePage,
+      totalPages: totalPages,
+      total: total,
+    };
+  }
+
+  function catalogDomPrefix(kind) {
+    if (kind === 'products') return 'product';
+    if (kind === 'solutions') return 'solution';
+    return kind;
+  }
+
+  function renderCatalogPagination(kind, pageInfo) {
+    var prefix = catalogDomPrefix(kind);
+    var root = $(prefix + '-pagination');
+    var foot = $(prefix + '-table-foot');
+    if (foot) {
+      foot.textContent = pageInfo.total
+        ? ('共 ' + pageInfo.total + ' 条 · 第 ' + pageInfo.page + ' / ' + pageInfo.totalPages + ' 页')
+        : '暂无内容';
+    }
+    if (!root) return;
+    if (pageInfo.totalPages <= 1) {
+      root.innerHTML = '';
+      return;
+    }
+    var prevDisabled = pageInfo.page <= 1;
+    var nextDisabled = pageInfo.page >= pageInfo.totalPages;
+    root.innerHTML =
+      '<button type="button" class="btn-page" data-page="' + kind + '" data-dir="prev"' +
+      (prevDisabled ? ' disabled' : '') + '>上一页</button>' +
+      '<span class="page-indicator">' + pageInfo.page + ' / ' + pageInfo.totalPages + '</span>' +
+      '<button type="button" class="btn-page" data-page="' + kind + '" data-dir="next"' +
+      (nextDisabled ? ' disabled' : '') + '>下一页</button>';
+    root.querySelectorAll('[data-page="' + kind + '"]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        var dir = btn.getAttribute('data-dir');
+        if (dir === 'prev' && state.listPages[kind] > 1) state.listPages[kind] -= 1;
+        if (dir === 'next' && state.listPages[kind] < pageInfo.totalPages) state.listPages[kind] += 1;
+        if (kind === 'products') renderProductTable();
+        else if (kind === 'news') renderNewsTable();
+        else if (kind === 'solutions') renderSolutionTable();
+      });
+    });
+  }
+
+  function bindListStatusTabs() {
+    document.querySelectorAll('[data-list-status]').forEach(function (bar) {
+      if (bar._bound) return;
+      bar._bound = true;
+      var kind = bar.getAttribute('data-list-status');
+      bar.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-status]');
+        if (!btn || !bar.contains(btn)) return;
+        var status = btn.getAttribute('data-status');
+        state.listStatus[kind] = status;
+        state.listPages[kind] = 1;
+        bar.querySelectorAll('[data-status]').forEach(function (tab) {
+          var active = tab.getAttribute('data-status') === status;
+          tab.classList.toggle('is-active', active);
+          tab.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        if (kind === 'products') renderProductTable();
+        else if (kind === 'news') renderNewsTable();
+        else if (kind === 'solutions') renderSolutionTable();
+      });
+    });
+  }
+
   function filterItems(items, q, fields) {
     q = (q || '').trim().toLowerCase();
     if (!q) return items;
@@ -1435,10 +1522,10 @@
     var list = $('product-list');
     if (!list) return;
     var rows = filterItems(state.products, $('product-search').value, ['id', 'name', 'model', 'category']);
-    var statusFilter = $('product-filter-status') ? $('product-filter-status').value : 'all';
-    if (statusFilter === 'published') rows = rows.filter(function (r) { return r.published !== false; });
-    if (statusFilter === 'draft') rows = rows.filter(function (r) { return r.published === false; });
-    list.innerHTML = rows.map(function (p) {
+    rows = applyListStatusFilter(rows, state.listStatus.products || 'all');
+    var pageInfo = paginateRows(rows, state.listPages.products, CATALOG_PAGE_SIZE);
+    if (pageInfo.page !== state.listPages.products) state.listPages.products = pageInfo.page;
+    list.innerHTML = pageInfo.rows.map(function (p) {
       var meta = [p.category, p.model, 'ID ' + p.id].filter(Boolean).join(' · ');
       return itemCardHtml({
         id: p.id,
@@ -1450,7 +1537,7 @@
       });
     }).join('') || '<p class="empty">没有匹配的产品</p>';
     bindItemList(list, openProduct);
-    if ($('product-table-foot')) $('product-table-foot').textContent = '共 ' + rows.length + ' 条';
+    renderCatalogPagination('products', pageInfo);
   }
 
   function productCategorySelect(item) {
@@ -1467,7 +1554,7 @@
       '<select id="f-categoryKey">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「产品中心 → 分类设置」中维护可选分类</p></div>';
+      '<p class="field-help">在「产品中心 → 分类管理」中维护可选分类</p></div>';
   }
 
   function newsCategorySelect(item) {
@@ -1480,7 +1567,7 @@
       '<select id="f-category">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「新闻中心 → 分类设置」中维护可选分类</p></div>';
+      '<p class="field-help">在「新闻中心 → 分类管理」中维护可选分类</p></div>';
   }
 
   async function ensureCategoriesLoaded() {
@@ -1585,7 +1672,7 @@
     openDrawer('category', (isNew ? '新增' : '编辑') + label);
     $('category-editor').innerHTML =
       '<div class="category-editor-intro">' +
-        '<span class="category-editor-context">' + (isProduct ? '产品中心' : '新闻中心') + ' · 分类设置</span>' +
+        '<span class="category-editor-context">' + (isProduct ? '产品中心' : '新闻中心') + ' · 分类管理</span>' +
         '<h4>' + (isNew ? '创建一个新的' : '修改当前') + label + '</h4>' +
         '<p>保存后会自动同步到' + (isProduct ? '产品筛选与产品编辑表单' : '新闻筛选与新闻编辑表单') + '。</p>' +
       '</div>' +
@@ -1879,7 +1966,10 @@
     var list = $('news-list');
     if (!list) return;
     var rows = filterItems(state.news, $('news-search').value, ['id', 'title', 'category']);
-    list.innerHTML = rows.map(function (n) {
+    rows = applyListStatusFilter(rows, state.listStatus.news || 'all');
+    var pageInfo = paginateRows(rows, state.listPages.news, CATALOG_PAGE_SIZE);
+    if (pageInfo.page !== state.listPages.news) state.listPages.news = pageInfo.page;
+    list.innerHTML = pageInfo.rows.map(function (n) {
       var meta = [n.category, n.date, 'ID ' + n.id].filter(Boolean).join(' · ');
       return itemCardHtml({
         id: n.id,
@@ -1892,7 +1982,7 @@
       });
     }).join('') || '<p class="empty">没有匹配的新闻</p>';
     bindItemList(list, openNews);
-    if ($('news-table-foot')) $('news-table-foot').textContent = '共 ' + rows.length + ' 条';
+    renderCatalogPagination('news', pageInfo);
   }
 
   async function openNews(id) {
@@ -2035,7 +2125,10 @@
     var list = $('solution-list');
     if (!list) return;
     var rows = filterItems(state.solutions, $('solution-search').value, ['id', 'name', 'category']);
-    list.innerHTML = rows.map(function (s) {
+    rows = applyListStatusFilter(rows, state.listStatus.solutions || 'all');
+    var pageInfo = paginateRows(rows, state.listPages.solutions, CATALOG_PAGE_SIZE);
+    if (pageInfo.page !== state.listPages.solutions) state.listPages.solutions = pageInfo.page;
+    list.innerHTML = pageInfo.rows.map(function (s) {
       var slotLabel = s.homeSlot === 'hero' ? '标杆方案' : s.homeSlot === 'category' ? '精选方案' : '';
       var meta = [s.category, s.slug ? ('落地页 ' + s.slug) : null, 'ID ' + s.id].filter(Boolean).join(' · ');
       return itemCardHtml({
@@ -2049,7 +2142,7 @@
       });
     }).join('') || '<p class="empty">没有匹配的方案</p>';
     bindItemList(list, openSolution);
-    if ($('solution-table-foot')) $('solution-table-foot').textContent = '共 ' + rows.length + ' 条';
+    renderCatalogPagination('solutions', pageInfo);
   }
 
   async function openSolution(id) {
@@ -2809,7 +2902,7 @@
           field('news-sec-mission-body', '初心正文', news.missionBody, 'full', 'textarea') +
           field('news-sec-cta-label', 'CTA 文案', (news.cta || {}).label) +
           field('news-sec-cta-href', 'CTA 链接', (news.cta || {}).href) +
-          '<div class="field full"><p class="field-help">精选新闻请在「新闻中心 → 新闻内容」详情中设置（最多 2 条）。</p></div>' +
+          '<div class="field full"><p class="field-help">精选新闻请在「新闻中心 → 新闻管理」详情中设置（最多 2 条）。</p></div>' +
           '</div></div>',
       },
     ];
@@ -4132,14 +4225,35 @@
   $('media-picker').addEventListener('click', function (e) {
     if (e.target === $('media-picker')) closeMediaPicker();
   });
-  $('product-search').addEventListener('input', renderProductTable);
-  $('news-search').addEventListener('input', renderNewsTable);
-  $('solution-search').addEventListener('input', renderSolutionTable);
-  if ($('product-search-btn')) $('product-search-btn').addEventListener('click', renderProductTable);
-  if ($('news-search-btn')) $('news-search-btn').addEventListener('click', renderNewsTable);
-  if ($('solution-search-btn')) $('solution-search-btn').addEventListener('click', renderSolutionTable);
-  if ($('product-filter-status')) {
-    $('product-filter-status').addEventListener('change', renderProductTable);
+  $('product-search').addEventListener('input', function () {
+    state.listPages.products = 1;
+    renderProductTable();
+  });
+  $('news-search').addEventListener('input', function () {
+    state.listPages.news = 1;
+    renderNewsTable();
+  });
+  $('solution-search').addEventListener('input', function () {
+    state.listPages.solutions = 1;
+    renderSolutionTable();
+  });
+  if ($('product-search-btn')) {
+    $('product-search-btn').addEventListener('click', function () {
+      state.listPages.products = 1;
+      renderProductTable();
+    });
+  }
+  if ($('news-search-btn')) {
+    $('news-search-btn').addEventListener('click', function () {
+      state.listPages.news = 1;
+      renderNewsTable();
+    });
+  }
+  if ($('solution-search-btn')) {
+    $('solution-search-btn').addEventListener('click', function () {
+      state.listPages.solutions = 1;
+      renderSolutionTable();
+    });
   }
 
   if ($('drawer-close')) $('drawer-close').addEventListener('click', closeDrawer);
@@ -4178,6 +4292,7 @@
   });
 
   bindDashboardScrollSync();
+  bindListStatusTabs();
 
   if (token) {
     updateUserChip();

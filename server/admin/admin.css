@@ -829,6 +829,43 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-page {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--txam-dark);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-page:hover:not(:disabled) {
+  border-color: #FFC99F;
+  color: var(--txam-orange);
+}
+.btn-page:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.page-indicator {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.filter-bar--actions {
+  justify-content: flex-end;
 }
 
 /* Catalog item cards (products / news / solutions) */
@@ -2508,6 +2545,48 @@ body {
   background: #fff;
 }
 
+.section-workspace--outline > .catalog-workspace-main {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.catalog-workspace-main > .page-hint {
+  margin-top: 0;
+}
+
+.catalog-workspace-main > .filter-bar {
+  flex-shrink: 0;
+}
+
+.catalog-workspace-main > .list-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.catalog-workspace-main > .list-card > .item-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.hub-view > .hub-panel:not(.hidden):has(> .section-workspace--outline) {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.hub-view > .hub-panel:not(.hidden) > .section-workspace--outline {
+  flex: 1;
+  min-height: 0;
+}
+
 .section-workspace--outline > .section-panels-scroll > .section-panel {
   height: 100%;
   overflow-y: auto;
@@ -2559,7 +2638,8 @@ body {
     min-height: 58px;
   }
 
-  .section-workspace--outline > .section-panels-scroll {
+  .section-workspace--outline > .section-panels-scroll,
+  .section-workspace--outline > .catalog-workspace-main {
     padding: 13px;
   }
 }
