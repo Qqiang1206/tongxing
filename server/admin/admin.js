@@ -152,6 +152,27 @@
     if (activeTab) activeTab.classList.add('is-dirty');
   }
 
+  function refreshOutlineBadges(root) {
+    if (!root) return;
+    var badgeMaps = {
+      'page-home-form': { about: '#rep-stats', service: '#rep-home-steps' },
+      'page-about-form': {
+        carousel: '#rep-carousel', stats: '#rep-stats', culture: '#rep-culture-pillars',
+        timeline: '#rep-timeline', credentials: '#rep-credentials', clients: '#rep-clients',
+      },
+      'page-contact-form': { channels: '#rep-channels', locations: '#rep-locations' },
+    };
+    var map = badgeMaps[root.id];
+    if (!map) return;
+    Object.keys(map).forEach(function (sectionKey) {
+      var repeater = root.querySelector(map[sectionKey]);
+      var tab = root.querySelector('[data-section-tab="' + sectionKey + '"]');
+      var badge = tab && tab.querySelector('.hub-tab-count');
+      if (!repeater || !badge) return;
+      badge.textContent = repeater.querySelectorAll(':scope > .repeater-row').length;
+    });
+  }
+
   function bindPageDirty(formRootId, key) {
     var root = $(formRootId);
     if (!root) return;
@@ -166,8 +187,19 @@
           markActiveSectionDirty(root);
         });
       });
+      root.addEventListener('click', function (event) {
+        var mutationButton = event.target.closest(
+          '.rep-add, .rep-add-stats, .rep-add-generic, .rep-add-cred-group, .rep-add-cred-item, ' +
+          '.rep-add-loc, .rep-add-process, .rep-remove, .rep-remove-item'
+        );
+        if (!mutationButton || !root.contains(mutationButton)) return;
+        setPageDirty(root._pageDirtyKey, true);
+        markActiveSectionDirty(root);
+        setTimeout(function () { refreshOutlineBadges(root); }, 0);
+      });
     }
     setPageDirty(key, false);
+    refreshOutlineBadges(root);
   }
 
   function hasUnsavedPages() {
@@ -570,13 +602,41 @@
 
   /** Page sections mirror the visible frontend order; search settings stay last. */
   function buildSectionTabs(formRootId, sections, defaultKey) {
-    var useOutline = /^page-(solutions|products|news)-form$/.test(formRootId);
-    var sectionDescriptions = {
-      hero: '标题、导语与首屏展示',
-      pillars: '核心价值与优势说明',
-      filters: '前台筛选按钮文案',
-      seo: '浏览器标题、关键词与描述',
+    var useOutline = /^page-(home|about|contact|solutions|products|news)-form$/.test(formRootId);
+    var outlineMeta = {
+      'page-home-form': {
+        title: '首页结构',
+        descriptions: {
+          hero: '首页第一屏标题、按钮与主信息', featured: '标杆方案区域文案与按钮',
+          slots: '查看首页正在展示的方案与新闻', about: '公司简介正文与核心数据',
+          products: '核心业务与单元设备卡片', service: '服务流程标题与步骤',
+          news: '精选新闻区域文案与跳转', seo: '浏览器标题、关键词与描述',
+        },
+      },
+      'page-about-form': {
+        title: '关于我们结构',
+        descriptions: {
+          hero: '页面第一屏标题与公司导语', carousel: '工厂环境图片与轮播文案',
+          stats: '企业规模与能力数据', culture: '企业标语与文化支柱',
+          timeline: '企业发展年份与事件', credentials: '资质证书与荣誉分组',
+          clients: '合作客户标题与 Logo', seo: '浏览器标题、关键词与描述',
+        },
+      },
+      'page-contact-form': {
+        title: '联系我们结构',
+        descriptions: {
+          hero: '页面第一屏标题与联系导语', channels: '电话、邮箱等联系入口',
+          map: '地图标题、坐标与缩放级别', locations: '公司与基地地址信息',
+          seo: '浏览器标题、关键词与描述',
+        },
+      },
     };
+    var commonDescriptions = {
+      hero: '标题、导语与首屏展示', pillars: '核心价值与优势说明',
+      filters: '前台筛选按钮文案', seo: '浏览器标题、关键词与描述',
+    };
+    var currentMeta = outlineMeta[formRootId] || { title: '页面结构', descriptions: {} };
+    var sectionDescriptions = Object.assign({}, commonDescriptions, currentMeta.descriptions || {});
     var seoSections = sections.filter(function (s) { return s.key === 'seo'; });
     sections = sections.filter(function (s) { return s.key !== 'seo'; }).concat(seoSections);
     defaultKey = defaultKey || (sections[0] && sections[0].key) || '';
@@ -587,16 +647,18 @@
     var tabButtonsHtml =
       sections.map(function (s, index) {
         var order = String(index + 1).padStart(2, '0');
+        var badgeHtml = s.badge != null && s.badge !== ''
+          ? '<span class="hub-tab-count">' + escapeHtml(s.badge) + '</span>' : '';
         return '<button type="button" class="hub-tab' + (s.key === remembered ? ' is-active' : '') +
           '" data-section-tab="' + escapeAttr(s.key) + '" role="tab" aria-selected="' + (s.key === remembered ? 'true' : 'false') + '">' +
           (useOutline
             ? '<span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>' +
-              escapeHtml(s.label) + '</strong><small>' + escapeHtml(sectionDescriptions[s.key] || '编辑当前页面区域') + '</small></span>'
+              escapeHtml(s.label) + badgeHtml + '</strong><small>' + escapeHtml(sectionDescriptions[s.key] || '编辑当前页面区域') + '</small></span>'
             : '<span class="section-index">' + order + '</span><span>' + escapeHtml(s.label) + '</span>') +
           '</button>';
       }).join('');
     var tabsHtml = useOutline
-      ? '<aside class="section-outline"><div class="section-outline-head"><strong>页面结构</strong><span>按前台顺序定位</span></div>' +
+      ? '<aside class="section-outline"><div class="section-outline-head"><strong>' + escapeHtml(currentMeta.title) + '</strong><span>按前台顺序定位 · 共 ' + sections.length + ' 个区域</span></div>' +
         '<div class="section-tabs section-outline-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
         tabButtonsHtml + '</div></aside>'
       : '<div class="hub-tabs section-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
@@ -3000,8 +3062,8 @@
     var sections = [
       { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: '首屏内容',
-        html: cardBlock('首屏内容',
+        key: 'hero', label: '首屏区域',
+        html: cardBlock('首屏区域',
           field('hero-title', '主标题', hero.title) + field('hero-lead', '副文案', hero.lead, 'full', 'textarea') +
           field('hero-cta1-label', '主按钮文案', (hero.primaryCta || {}).label) + field('hero-cta1-href', '主按钮链接', (hero.primaryCta || {}).href) +
           field('hero-cta2-label', '次按钮文案', (hero.secondaryCta || {}).label) + field('hero-cta2-href', '次按钮链接', (hero.secondaryCta || {}).href)),
@@ -3013,9 +3075,9 @@
           field('feat-subtitle', '副标题覆盖（可选，空则用方案亮点）', feat.subtitle || '', 'full') +
           field('feat-cta', '按钮文案', feat.cta || '查看方案详情 →', 'full')),
       },
-      { key: 'slots', label: '推荐内容', html: slotsHtml },
+      { key: 'slots', label: '推荐内容', badge: '自动', html: slotsHtml },
       {
-        key: 'about', label: '公司简介',
+        key: 'about', label: '公司简介', badge: (about.stats || []).length,
         html: '<div class="card"><h3 class="card-title">关于区块</h3><div class="form-grid">' +
           field('about-title', '标题', about.title, 'full') +
           richTextField('about-body', '正文', about.bodyHtml || '', '支持加粗、换行等基础排版') +
@@ -3037,7 +3099,7 @@
           '</div></div>',
       },
       {
-        key: 'service', label: '服务流程',
+        key: 'service', label: '服务流程', badge: (service.steps || []).length,
         html: '<div class="card"><h3 class="card-title">服务流程区块</h3><div class="form-grid">' +
           field('svc-sec-title', '标题', service.title, 'full') +
           field('svc-sec-subtitle', '副标题', service.subtitle, 'full', 'textarea') +
@@ -3167,13 +3229,13 @@
     var sections = [
       { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: '首屏内容',
-        html: cardBlock('首屏内容',
+        key: 'hero', label: '首屏区域',
+        html: cardBlock('首屏区域',
           field('hero-title', '标题', hero.title, 'full') +
           richTextField('hero-lead', '导语', hero.leadHtml || '', '支持加粗等基础排版')),
       },
       {
-        key: 'carousel', label: '工厂环境',
+        key: 'carousel', label: '工厂环境', badge: (carousel.slides || []).length,
         html: '<div class="card"><h3 class="card-title">工厂环境</h3><div class="form-grid">' +
           field('carousel-aria', '区块无障碍标签', carousel.sectionAriaLabel || '', 'full') +
           field('carousel-prev', '上一张文案', carousel.prevLabel || '') +
@@ -3181,33 +3243,33 @@
           '</div><h4 class="sub-title">幻灯片</h4>' + carouselSlidesHtml(carousel.slides || []) + '</div>',
       },
       {
-        key: 'stats', label: '核心数据',
+        key: 'stats', label: '核心数据', badge: (stats.items || []).length,
         html: '<div class="card"><h3 class="card-title">核心数据</h3><div class="form-grid">' +
           field('stats-columns', '列数', stats.columns != null ? stats.columns : 5) +
           '</div><h4 class="sub-title">条目</h4>' + statsRowsHtml(stats.items || []) + '</div>',
       },
       {
-        key: 'culture', label: '企业文化',
+        key: 'culture', label: '企业文化', badge: (culture.pillars || []).length,
         html: '<div class="card"><h3 class="card-title">企业文化</h3><div class="form-grid">' +
           richTextField('culture-headline', '标语', culture.headlineHtml || '') +
           '</div><h4 class="sub-title">支柱</h4>' + culturePillarsHtml(culture.pillars || []) + '</div>',
       },
       {
-        key: 'timeline', label: '发展历程',
+        key: 'timeline', label: '发展历程', badge: (timeline.events || []).length,
         html: '<div class="card"><h3 class="card-title">发展历程</h3><div class="form-grid">' +
           field('timeline-title', '标题', timeline.title || '', 'full') +
           field('timeline-subtitle', '副标题', timeline.subtitle || '', 'full', 'textarea') +
           '</div><h4 class="sub-title">事件</h4>' + timelineEventsHtml(timeline.events || []) + '</div>',
       },
       {
-        key: 'credentials', label: '资质荣誉',
+        key: 'credentials', label: '资质荣誉', badge: (credentials.groups || []).length,
         html: '<div class="card"><h3 class="card-title">资质荣誉</h3><div class="form-grid">' +
           field('cred-title', '标题', credentials.title || '', 'full') +
           field('cred-subtitle', '副标题', credentials.subtitle || '', 'full', 'textarea') +
           '</div><h4 class="sub-title">分组</h4>' + credentialsGroupsHtml(credentials.groups || []) + '</div>',
       },
       {
-        key: 'clients', label: '合作客户',
+        key: 'clients', label: '合作客户', badge: (clients.items || []).length,
         html: '<div class="card"><h3 class="card-title">合作客户</h3><div class="form-grid">' +
           field('clients-title', '标题', clients.title || '', 'full') +
           field('clients-subtitle', '副标题', clients.subtitle || '', 'full', 'textarea') +
@@ -3335,11 +3397,11 @@
     var sections = [
       { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
-        key: 'hero', label: '首屏内容',
-        html: cardBlock('首屏内容', field('hero-title', '标题', hero.title, 'full') + field('hero-lead', '导语', hero.lead, 'full', 'textarea')),
+        key: 'hero', label: '首屏区域',
+        html: cardBlock('首屏区域', field('hero-title', '标题', hero.title, 'full') + field('hero-lead', '导语', hero.lead, 'full', 'textarea')),
       },
       {
-        key: 'channels', label: '联系方式',
+        key: 'channels', label: '联系方式', badge: (page.channels || []).length,
         html: '<div class="card"><h3 class="card-title">联系方式</h3>' + channelRowsHtml(page.channels || []) + '</div>',
       },
       {
@@ -3350,7 +3412,7 @@
           field('map-zoom', '缩放级别', map.zoom != null ? map.zoom : 14)),
       },
       {
-        key: 'locations', label: '公司地址',
+        key: 'locations', label: '公司地址', badge: (page.locations || []).length,
         html: '<div class="card"><h3 class="card-title">公司地址</h3>' + locationRowsHtml(page.locations || []) + '</div>',
       },
     ];

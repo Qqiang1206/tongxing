@@ -2681,3 +2681,188 @@ body {
     padding: 13px;
   }
 }
+
+/* Dedicated page maps keep every frontend field available without becoming one long form. */
+.page-editor-view .section-workspace--outline {
+  grid-template-columns: 252px minmax(0, 1fr);
+}
+
+.page-editor-view .section-outline {
+  padding-bottom: 28px;
+}
+
+.page-editor-view .section-outline-tabs .hub-tab {
+  min-height: 62px;
+}
+
+.page-editor-view .section-workspace--outline > .section-panels-scroll {
+  padding: 22px clamp(18px, 2.4vw, 32px) 30px;
+}
+
+.page-editor-view .section-workspace--outline .section-panel > .card {
+  width: min(100%, 1040px);
+  margin-right: auto;
+  margin-left: auto;
+  padding: clamp(20px, 2.4vw, 28px);
+}
+
+.page-editor-view .section-workspace--outline .card-title {
+  margin-bottom: 18px;
+  font-size: 18px;
+}
+
+.page-editor-view .section-workspace--outline .sub-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 14px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  color: var(--txam-dark);
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.page-editor-view .section-workspace--outline .sub-title::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--txam-orange);
+}
+
+.page-editor-view .section-workspace--outline .repeater {
+  counter-reset: page-editor-item;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-editor-view .section-workspace--outline .repeater > .repeater-row {
+  position: relative;
+  counter-increment: page-editor-item;
+  margin: 0;
+  padding: 44px 16px 16px;
+  border: 1px solid #E3E3E8;
+  border-radius: 12px;
+  background: #FCFCFD;
+  box-shadow: 0 3px 12px rgba(29, 29, 31, 0.025);
+}
+
+.page-editor-view .section-workspace--outline .repeater > .repeater-row::before {
+  content: '内容项 ' counter(page-editor-item, decimal-leading-zero);
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  color: #6E6F75;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .04em;
+}
+
+.page-editor-view .section-workspace--outline #rep-stats > .repeater-row::before {
+  content: '核心数据 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-home-steps > .repeater-row::before {
+  content: '服务步骤 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-carousel > .repeater-row::before {
+  content: '环境图片 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-culture-pillars > .repeater-row::before {
+  content: '文化支柱 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-timeline > .repeater-row::before {
+  content: '发展事件 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-credentials > .cred-group::before {
+  content: '资质分组 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-clients > .repeater-row::before {
+  content: '客户 Logo ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-channels > .repeater-row::before {
+  content: '联系方式 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline #rep-locations > .repeater-row::before {
+  content: '公司地址 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline .nested-rep > .repeater-row::before {
+  content: '图片 ' counter(page-editor-item, decimal-leading-zero);
+}
+
+.page-editor-view .section-workspace--outline .repeater > .btn {
+  align-self: flex-start;
+  min-width: 132px;
+  margin-top: 2px;
+}
+
+.page-editor-view .section-workspace--outline .repeater-row > .rep-remove {
+  margin-top: 12px;
+}
+
+.page-editor-view .section-workspace--outline .field-help {
+  line-height: 1.7;
+}
+
+.page-editor-view #home-slots-status > .field-help {
+  margin-bottom: 14px;
+}
+
+.page-editor-view #home-slots-status ul {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  list-style: none;
+}
+
+.page-editor-view #home-slots-status li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 10px 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #FAFAFC;
+}
+
+.page-editor-view #home-slots-status .hub-slot-edit {
+  margin-left: auto;
+}
+
+@media (max-width: 900px) {
+  .page-editor-view .section-workspace--outline {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-editor-view .section-workspace--outline > .section-panels-scroll {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-editor-view .section-workspace--outline .repeater > .repeater-row {
+    padding: 42px 13px 14px;
+  }
+
+  .page-editor-view #home-slots-status li {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .page-editor-view #home-slots-status .hub-slot-edit {
+    width: 100%;
+    margin-left: 0;
+  }
+}
