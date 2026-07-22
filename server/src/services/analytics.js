@@ -5,13 +5,23 @@ const PAGE_LABELS = {
   '/': '首页',
   '/about.html': '关于我们',
   '/products.html': '产品中心',
+  '/product-detail.html': '产品详情',
   '/solutions.html': '解决方案',
+  '/solution-detail.html': '方案详情',
   '/news.html': '新闻中心',
+  '/news-detail.html': '新闻详情',
   '/contact.html': '联系我们',
 };
 
 function pathLabel(pagePath) {
-  return PAGE_LABELS[pagePath] || pagePath;
+  const languageMatch = pagePath.match(/^\/(en|ru)(?=\/|$)/);
+  const language = languageMatch?.[1];
+  const localPath = language ? pagePath.slice(language.length + 1) || '/' : pagePath;
+  const pageLabel = PAGE_LABELS[localPath];
+  if (!pageLabel) return pagePath;
+  if (language === 'en') return '英文站 · ' + pageLabel;
+  if (language === 'ru') return '俄文站 · ' + pageLabel;
+  return pageLabel;
 }
 
 function mergeLegacyPageViewPaths(db) {

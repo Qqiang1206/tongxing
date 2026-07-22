@@ -1090,7 +1090,7 @@
       api('/admin/solutions'),
       api('/admin/translation-status'),
       api('/admin/analytics/summary'),
-      api('/admin/dashboard/recent-updates?limit=8'),
+      api('/admin/dashboard/recent-updates?limit=6'),
     ]);
     state.products = results[0].items || [];
     state.news = results[1].items || [];
@@ -1287,11 +1287,38 @@
     });
   }
 
+  var TRAFFIC_PAGE_LABELS = {
+    '/': '首页',
+    '/about.html': '关于我们',
+    '/products.html': '产品中心',
+    '/product-detail.html': '产品详情',
+    '/solutions.html': '解决方案',
+    '/solution-detail.html': '方案详情',
+    '/news.html': '新闻中心',
+    '/news-detail.html': '新闻详情',
+    '/contact.html': '联系我们',
+  };
+
+  function trafficPageLabel(row) {
+    var pagePath = row.path || '';
+    var suppliedLabel = row.label || '';
+    if (suppliedLabel && suppliedLabel !== pagePath) return suppliedLabel;
+    var languageMatch = pagePath.match(/^\/(en|ru)(?=\/|$)/);
+    var language = languageMatch && languageMatch[1];
+    var localPath = language ? pagePath.slice(language.length + 1) || '/' : pagePath;
+    var pageLabel = TRAFFIC_PAGE_LABELS[localPath];
+    if (!pageLabel) return pagePath;
+    if (language === 'en') return '英文站 · ' + pageLabel;
+    if (language === 'ru') return '俄文站 · ' + pageLabel;
+    return pageLabel;
+  }
+
   function renderTrafficList(title, rows) {
-    var list = rows && rows.length ? rows : [];
+    var list = rows && rows.length ? rows.slice(0, 5) : [];
     var body = list.length
       ? list.map(function (row) {
-        return '<li><span class="traffic-page">' + escapeHtml(row.label || row.path) +
+        var pagePath = row.path || '';
+        return '<li><span class="traffic-page"' + (pagePath ? ' title="' + escapeHtml(pagePath) + '"' : '') + '>' + escapeHtml(trafficPageLabel(row)) +
           '</span><span class="traffic-hits">' + escapeHtml(String(row.hits)) + '</span></li>';
       }).join('')
       : '<li class="traffic-empty">暂无访问记录</li>';

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
   <link rel="stylesheet" href="./admin.css?v=20260722l">
+  <link rel="stylesheet" href="./admin-design-system.css?v=20260722a">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
@@ -39,7 +40,7 @@
           <span class="nav-ico nav-ico--symbol" aria-hidden="true">●</span><span class="nav-text">工作台</span>
         </button>
 
-        <div class="nav-divider" aria-hidden="true"></div>
+        <div class="nav-group-label">页面管理</div>
 
         <button type="button" class="nav-item" data-view="page-home" title="首页">
           <span class="nav-ico" aria-hidden="true">01</span><span class="nav-text">首页</span>
@@ -60,7 +61,7 @@
           <span class="nav-ico" aria-hidden="true">06</span><span class="nav-text">联系我们</span>
         </button>
 
-        <div class="nav-divider" aria-hidden="true"></div>
+        <div class="nav-group-label">网站资源</div>
         <button type="button" class="nav-item" data-view="sitewide" title="全站设置">
           <span class="nav-ico nav-ico--word" aria-hidden="true">全</span><span class="nav-text">全站设置</span>
         </button>
@@ -68,7 +69,7 @@
           <span class="nav-ico nav-ico--word" aria-hidden="true">素</span><span class="nav-text">素材库</span>
         </button>
 
-        <div class="nav-divider" aria-hidden="true"></div>
+        <div class="nav-group-label">系统</div>
 
         <button type="button" class="nav-item" data-view="system" title="系统管理">
           <span class="nav-ico nav-ico--word" aria-hidden="true">设</span><span class="nav-text">系统管理</span>
@@ -222,6 +223,7 @@
                   <button type="button" class="btn btn-accent btn-sm" id="create-solution">+ 新建方案</button>
                 </div>
                 <div class="card list-card">
+                  <div class="catalog-list-head" aria-hidden="true"><span>封面</span><span>方案信息</span><span>操作</span></div>
                   <div class="item-list" id="solution-list" role="list"></div>
                   <div class="table-foot">
                     <span id="solution-table-foot"></span>
@@ -248,6 +250,7 @@
                   <button type="button" class="btn btn-accent btn-sm" id="add-solution-cat">+ 新增分类</button>
                 </div>
                 <div class="card list-card">
+                  <div class="catalog-list-head catalog-list-head--category" aria-hidden="true"><span>序号</span><span>分类信息</span><span>操作</span></div>
                   <div id="solution-cat-list" class="item-list"></div>
                 </div>
               </div>
@@ -314,6 +317,7 @@
                   <button type="button" class="btn btn-accent btn-sm" id="create-product">+ 新建产品</button>
                 </div>
                 <div class="card list-card">
+                  <div class="catalog-list-head" aria-hidden="true"><span>封面</span><span>产品信息</span><span>操作</span></div>
                   <div class="item-list" id="product-list" role="list"></div>
                   <div class="table-foot">
                     <span id="product-table-foot"></span>
@@ -340,6 +344,7 @@
                   <button type="button" class="btn btn-accent btn-sm" id="add-product-cat">+ 新增分类</button>
                 </div>
                 <div class="card list-card">
+                  <div class="catalog-list-head catalog-list-head--category" aria-hidden="true"><span>序号</span><span>分类信息</span><span>操作</span></div>
                   <div id="product-cat-list" class="item-list"></div>
                 </div>
               </div>
@@ -407,6 +412,7 @@
                   <button type="button" class="btn btn-accent btn-sm" id="create-news">+ 新建新闻</button>
                 </div>
                 <div class="card list-card">
+                  <div class="catalog-list-head" aria-hidden="true"><span>封面</span><span>新闻信息</span><span>操作</span></div>
                   <div class="item-list" id="news-list" role="list"></div>
                   <div class="table-foot">
                     <span id="news-table-foot"></span>
@@ -433,6 +439,7 @@
                   <button type="button" class="btn btn-accent btn-sm" id="add-news-cat">+ 新增分类</button>
                 </div>
                 <div class="card list-card">
+                  <div class="catalog-list-head catalog-list-head--category" aria-hidden="true"><span>序号</span><span>分类信息</span><span>操作</span></div>
                   <div id="news-cat-list" class="item-list"></div>
                 </div>
               </div>
