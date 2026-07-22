@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css?v=20260722i">
+  <link rel="stylesheet" href="./admin.css?v=20260722j">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
@@ -126,11 +126,10 @@
           </div>
           <div class="editor-stack">
             <div id="page-home-form" class="page-form-root"></div>
-            <div class="form-actions docked-actions">
-              <p class="form-actions-hint" data-save-status="home">所有更改均已保存 · 保存会更新首页全部区块</p>
+            <div class="form-actions inline-save-actions hidden" data-save-actions="home">
+              <p class="form-actions-hint" data-save-status="home">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
               <div class="toolbar">
-                <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener">预览修改位置</a>
-                <button type="button" class="btn btn-accent save-page-btn" id="save-page-home">保存首页</button>
+                <button type="button" class="btn btn-accent save-page-btn" id="save-page-home">保存并发布</button>
               </div>
             </div>
           </div>
@@ -148,11 +147,10 @@
           </div>
           <div class="editor-stack">
             <div id="page-about-form" class="page-form-root"></div>
-            <div class="form-actions docked-actions">
-              <p class="form-actions-hint" data-save-status="about">所有更改均已保存 · 保存会更新“关于我们”全部区块</p>
+            <div class="form-actions inline-save-actions hidden" data-save-actions="about">
+              <p class="form-actions-hint" data-save-status="about">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
               <div class="toolbar">
-                <a class="btn btn-ghost btn-sm" href="/about.html" target="_blank" rel="noopener">预览修改位置</a>
-                <button type="button" class="btn btn-accent save-page-btn" id="save-page-about">保存关于我们</button>
+                <button type="button" class="btn btn-accent save-page-btn" id="save-page-about">保存并发布</button>
               </div>
             </div>
           </div>
@@ -422,11 +420,10 @@
           </div>
           <div class="editor-stack">
             <div id="page-contact-form" class="page-form-root"></div>
-            <div class="form-actions docked-actions">
-              <p class="form-actions-hint" data-save-status="contact">所有更改均已保存 · 保存会更新“联系我们”全部区块</p>
+            <div class="form-actions inline-save-actions hidden" data-save-actions="contact">
+              <p class="form-actions-hint" data-save-status="contact">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
               <div class="toolbar">
-                <a class="btn btn-ghost btn-sm" href="/contact.html" target="_blank" rel="noopener">预览修改位置</a>
-                <button type="button" class="btn btn-accent save-page-btn" id="save-page-contact">保存联系我们</button>
+                <button type="button" class="btn btn-accent save-page-btn" id="save-page-contact">保存并发布</button>
               </div>
             </div>
           </div>

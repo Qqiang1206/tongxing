@@ -93,6 +93,28 @@
     return document.querySelector('[data-save-status="' + key + '"]');
   }
 
+  var INLINE_SAVE_PAGES = { home: true, about: true, contact: true };
+
+  function pageSaveBarElement(key) {
+    return document.querySelector('[data-save-actions="' + key + '"]');
+  }
+
+  function showInlineSaveBar(key, visible) {
+    if (!INLINE_SAVE_PAGES[key]) return;
+    var bar = pageSaveBarElement(key);
+    if (bar) bar.classList.toggle('hidden', !visible);
+  }
+
+  function flashInlineSaveBar(key) {
+    if (!INLINE_SAVE_PAGES[key]) return;
+    showInlineSaveBar(key, true);
+    if (!state.saveBarTimers) state.saveBarTimers = {};
+    clearTimeout(state.saveBarTimers[key]);
+    state.saveBarTimers[key] = setTimeout(function () {
+      if (!state.dirtyPages || !state.dirtyPages[key]) showInlineSaveBar(key, false);
+    }, 3500);
+  }
+
   function setPageStatus(key, text, mode) {
     var el = pageStatusElement(key);
     if (!el) return;
@@ -100,6 +122,7 @@
     el.classList.toggle('is-dirty', mode === 'dirty');
     el.classList.toggle('is-saving', mode === 'saving');
     el.classList.toggle('is-error', mode === 'error');
+    if (INLINE_SAVE_PAGES[key] && (mode === 'saving' || mode === 'error')) showInlineSaveBar(key, true);
   }
 
   function setPageDirty(key, dirty) {
@@ -112,8 +135,10 @@
       });
     }
     if (dirty) {
-      setPageStatus(key, '有尚未保存的更改', 'dirty');
+      setPageStatus(key, '有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步', 'dirty');
+      showInlineSaveBar(key, true);
     } else {
+      if (INLINE_SAVE_PAGES[key]) showInlineSaveBar(key, false);
       var status = pageStatusElement(key);
       if (status && (status.classList.contains('is-dirty') || status.classList.contains('is-error'))) {
         setPageStatus(key, '所有更改均已保存', 'saved');
@@ -3308,6 +3333,7 @@
       var now = new Date();
       var savedAt = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
       setPageStatus(key, '已保存于 ' + savedAt + ' · 英文和俄文版本等待同步', 'saved');
+      flashInlineSaveBar(key);
       toast('“' + (PAGE_LABELS[key] || '页面') + '”已保存');
     } catch (err) {
       state.dirtyPages[key] = true;
