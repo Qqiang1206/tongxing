@@ -539,12 +539,7 @@
     if (!sections.some(function (s) { return s.key === remembered; })) remembered = defaultKey;
     if (!state.sectionTabs) state.sectionTabs = {};
     state.sectionTabs[formRootId] = remembered;
-    var currentSection = sections.filter(function (s) { return s.key === remembered; })[0] || sections[0] || {};
     var tabsHtml =
-      '<div class="section-map-guide">' +
-        '<div><span class="section-map-eyebrow">前台页面区块</span><strong>按前台从上到下排列</strong></div>' +
-        '<span class="section-current">当前修改：<b data-section-current-label>' + escapeHtml(currentSection.label || '') + '</b></span>' +
-      '</div>' +
       '<div class="hub-tabs section-tabs" data-section-root="' + escapeAttr(formRootId) + '" role="tablist">' +
       sections.map(function (s, index) {
         var order = String(index + 1).padStart(2, '0');
@@ -577,8 +572,6 @@
         t.classList.toggle('is-active', active);
         t.setAttribute('aria-selected', active ? 'true' : 'false');
       });
-      var currentLabel = root.querySelector('[data-section-current-label]');
-      if (currentLabel) currentLabel.textContent = btn.textContent.replace(/^\d+\s*/, '').trim();
       root.querySelectorAll(':scope > .section-panel').forEach(function (p) {
         var show = p.getAttribute('data-section-panel') === key;
         p.classList.toggle('hidden', !show);

@@ -1220,13 +1220,8 @@ body {
   margin-bottom: 22px;
 }
 
-.page-head--mapped {
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--border);
-}
-
 .page-head h2 {
-  margin-top: 5px;
+  margin: 0;
   font-size: clamp(26px, 3vw, 34px);
   font-weight: 900;
   letter-spacing: -0.045em;
@@ -1239,91 +1234,12 @@ body {
   line-height: 1.7;
 }
 
-.page-kicker {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--txam-orange);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-}
-
-.page-route {
-  color: var(--muted);
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
 .page-head-actions {
   display: flex;
   align-items: center;
   gap: 9px;
   flex-wrap: wrap;
 }
-
-.mapping-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 34px;
-  padding: 7px 10px;
-  border: 1px solid #FFD7BA;
-  border-radius: 8px;
-  background: #FFF8F2;
-  color: #A94800;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.mapping-badge::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--txam-orange);
-}
-
-.section-map-guide {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 0 0 10px;
-  padding: 13px 15px;
-  border: 1px solid #FFE0C8;
-  border-radius: 12px;
-  background: linear-gradient(90deg, #FFF8F2, #FFFFFF);
-}
-
-.section-map-guide > div {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-width: 0;
-}
-
-.section-map-eyebrow {
-  color: var(--txam-orange);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .08em;
-}
-
-.section-map-guide strong {
-  color: var(--txam-dark);
-  font-size: 13px;
-}
-
-.section-current {
-  flex-shrink: 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.section-current b { color: var(--txam-dark); }
 
 .section-tabs {
   position: sticky;
@@ -1561,8 +1477,6 @@ body {
   .main { padding: 24px 20px 56px; }
   .page-head { align-items: flex-start; }
   .page-head-actions { width: 100%; }
-  .section-map-guide { align-items: flex-start; flex-direction: column; }
-  .section-current { flex-shrink: 1; }
 }
 
 @media (max-width: 640px) {
@@ -1570,8 +1484,6 @@ body {
   .topbar { padding: 0 14px; }
   .topbar-right .user-name { display: none; }
   .page-head h2 { font-size: 27px; }
-  .page-kicker { flex-wrap: wrap; }
-  .mapping-badge { display: none; }
   .card { padding: 17px; }
   .form-actions.sticky-actions { bottom: 8px; }
   .form-actions .toolbar,
