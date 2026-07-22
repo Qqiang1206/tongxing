@@ -1434,6 +1434,24 @@
     return rows;
   }
 
+  function updateListStatusCounts(kind, rows) {
+    var bar = document.querySelector('[data-list-status="' + kind + '"]');
+    if (!bar) return;
+    var all = rows.length;
+    var published = 0;
+    var draft = 0;
+    rows.forEach(function (r) {
+      if (r.published === false) draft += 1;
+      else published += 1;
+    });
+    var counts = { all: all, published: published, draft: draft };
+    bar.querySelectorAll('[data-status-count]').forEach(function (el) {
+      var key = el.getAttribute('data-status-count');
+      var n = counts[key] || 0;
+      el.textContent = n ? String(n) : '0';
+    });
+  }
+
   function paginateRows(rows, page, pageSize) {
     var total = rows.length;
     var totalPages = Math.max(1, Math.ceil(total / pageSize) || 1);
@@ -1556,6 +1574,7 @@
     var list = $('product-list');
     if (!list) return;
     var rows = filterItems(state.products, $('product-search').value, ['id', 'name', 'model', 'category']);
+    updateListStatusCounts('products', rows);
     rows = applyListStatusFilter(rows, state.listStatus.products || 'all');
     var pageInfo = paginateRows(rows, state.listPages.products, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.products) state.listPages.products = pageInfo.page;
@@ -2086,6 +2105,7 @@
     var list = $('news-list');
     if (!list) return;
     var rows = filterItems(state.news, $('news-search').value, ['id', 'title', 'category']);
+    updateListStatusCounts('news', rows);
     rows = applyListStatusFilter(rows, state.listStatus.news || 'all');
     var pageInfo = paginateRows(rows, state.listPages.news, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.news) state.listPages.news = pageInfo.page;
@@ -2245,6 +2265,7 @@
     var list = $('solution-list');
     if (!list) return;
     var rows = filterItems(state.solutions, $('solution-search').value, ['id', 'name', 'category']);
+    updateListStatusCounts('solutions', rows);
     rows = applyListStatusFilter(rows, state.listStatus.solutions || 'all');
     var pageInfo = paginateRows(rows, state.listPages.solutions, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.solutions) state.listPages.solutions = pageInfo.page;
