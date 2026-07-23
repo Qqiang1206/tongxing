@@ -115,9 +115,10 @@ function getAllProducts(lang) {
        FROM products p
        JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
        WHERE p.published = 1
+         AND (? = 'zh' OR i.translation_status != 'missing')
        ORDER BY p.sort_order, CAST(p.id AS INTEGER)`
     )
-    .all(lang);
+    .all(lang, lang);
   return toCatalogMap(
     rows.map((r) =>
       productApiFromRows(r, {
@@ -137,9 +138,10 @@ function getProductById(id, lang) {
       `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json
        FROM products p
        JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
-       WHERE p.id = ? AND p.published = 1`
+       WHERE p.id = ? AND p.published = 1
+         AND (? = 'zh' OR i.translation_status != 'missing')`
     )
-    .get(lang, String(id));
+    .get(lang, String(id), lang);
   if (!r) return null;
   return productApiFromRows(r, {
     name: r.name,
@@ -157,9 +159,10 @@ function getAllSolutions(lang) {
        FROM solutions s
        JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = ?
        WHERE s.published = 1
+         AND (? = 'zh' OR i.translation_status != 'missing')
        ORDER BY s.sort_order, CAST(s.id AS INTEGER)`
     )
-    .all(lang);
+    .all(lang, lang);
   return toCatalogMap(
     rows.map((r) =>
       solutionApiFromRows(r, {
@@ -181,9 +184,10 @@ function getSolutionById(id, lang) {
       `SELECT s.*, i.name, i.summary, i.content_html, i.specs_json, i.pain_points_json, i.process_json
        FROM solutions s
        JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = ?
-       WHERE s.id = ? AND s.published = 1`
+       WHERE s.id = ? AND s.published = 1
+         AND (? = 'zh' OR i.translation_status != 'missing')`
     )
-    .get(lang, String(id));
+    .get(lang, String(id), lang);
   if (!r) return null;
   return solutionApiFromRows(r, {
     name: r.name,
@@ -203,9 +207,10 @@ function getAllNews(lang) {
        FROM news n
        JOIN news_i18n i ON i.news_id = n.id AND i.lang = ?
        WHERE n.published = 1
+         AND (? = 'zh' OR i.translation_status != 'missing')
        ORDER BY n.sort_order, n.published_at DESC, CAST(n.id AS INTEGER)`
     )
-    .all(lang);
+    .all(lang, lang);
   return toCatalogMap(
     rows.map((r) =>
       newsApiFromRows(r, {
@@ -225,9 +230,10 @@ function getNewsById(id, lang) {
       `SELECT n.*, i.category, i.title, i.content_html, i.date_display
        FROM news n
        JOIN news_i18n i ON i.news_id = n.id AND i.lang = ?
-       WHERE n.id = ? AND n.published = 1`
+       WHERE n.id = ? AND n.published = 1
+         AND (? = 'zh' OR i.translation_status != 'missing')`
     )
-    .get(lang, String(id));
+    .get(lang, String(id), lang);
   if (!r) return null;
   return newsApiFromRows(r, {
     category: r.category,
@@ -299,6 +305,7 @@ function rowToProductRaw(p, i) {
     filterKey: p.filter_key || '',
     filterKeyEn: p.filter_key_en || '',
     slug: p.slug || '',
+    updatedAt: p.updated_at || '',
   };
 }
 
@@ -317,6 +324,7 @@ function rowToSolutionRaw(s, i) {
     homeSlot: s.home_slot === 'hero' || s.home_slot === 'category' ? s.home_slot : '',
     filterKey: s.filter_key || '',
     filterKeyEn: s.filter_key_en || '',
+    updatedAt: s.updated_at || '',
   };
   const pain = parseJson(i?.pain_points_json, null);
   const process = parseJson(i?.process_json, null);
@@ -337,6 +345,7 @@ function rowToNewsRaw(n, i) {
     sortOrder: Number(n.sort_order) || 0,
     slug: n.slug || '',
     homeFeatured: !!Number(n.home_featured),
+    updatedAt: n.updated_at || '',
   };
 }
 
@@ -413,9 +422,10 @@ export function readCatalogJson(kind, lang = 'zh') {
       .prepare(
         `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json
          FROM products p
-         JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?`
+         JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
+         WHERE (? = 'zh' OR i.translation_status != 'missing')`
       )
-      .all(lang);
+      .all(lang, lang);
     for (const r of rows) {
       out[r.id] = rowToProductRaw(r, {
         name: r.name,
@@ -429,9 +439,10 @@ export function readCatalogJson(kind, lang = 'zh') {
       .prepare(
         `SELECT s.*, i.name, i.summary, i.content_html, i.specs_json, i.pain_points_json, i.process_json
          FROM solutions s
-         JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = ?`
+         JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = ?
+         WHERE (? = 'zh' OR i.translation_status != 'missing')`
       )
-      .all(lang);
+      .all(lang, lang);
     for (const r of rows) {
       out[r.id] = rowToSolutionRaw(r, {
         name: r.name,
@@ -447,9 +458,10 @@ export function readCatalogJson(kind, lang = 'zh') {
       .prepare(
         `SELECT n.*, i.category, i.title, i.content_html, i.date_display
          FROM news n
-         JOIN news_i18n i ON i.news_id = n.id AND i.lang = ?`
+         JOIN news_i18n i ON i.news_id = n.id AND i.lang = ?
+         WHERE (? = 'zh' OR i.translation_status != 'missing')`
       )
-      .all(lang);
+      .all(lang, lang);
     for (const r of rows) {
       out[r.id] = rowToNewsRaw(r, {
         category: r.category,

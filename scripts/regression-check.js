@@ -208,8 +208,9 @@ async function main() {
 
     if (products.status === 200 && pc > 0) pass('API products', pc + ' items');
     else fail('API products');
-    if (solutions.status === 200 && sc === 11) pass('API solutions', sc + ' items');
-    else fail('API solutions', 'count=' + sc);
+    if (solutions.status === 200 && sc > 0 && Object.values(solutions.json || {}).every((item) => item.published !== false)) {
+      pass('API solutions（仅公开项）', sc + ' items');
+    } else fail('API solutions', 'count=' + sc);
     if (news.status === 200 && nc > 0) pass('API news', nc + ' items');
     else fail('API news');
     if (home.status === 200 && home.json && home.json.hero) pass('API pages/home');
@@ -261,9 +262,15 @@ async function main() {
       fail('Admin 登录', 'status=' + login.status + ' ' + login.text.slice(0, 100));
     } else {
       pass('Admin 登录');
+      if (login.json.token !== adminPassword && login.json.expiresAt) pass('Admin 随机会话令牌');
+      else fail('Admin 随机会话令牌');
       const token = login.json.token;
       const auth = { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' };
 
+      const backups = await fetch('/api/v1/admin/backups', { headers: auth });
+      if (backups.status === 200 && backups.json && Array.isArray(backups.json.items)) {
+        pass('Admin GET backups', backups.json.items.length + ' backups');
+      } else fail('Admin GET backups');
       const list = await fetch('/api/v1/admin/products', { headers: auth });
       if (list.status === 200) pass('Admin GET products');
       else fail('Admin GET products', String(list.status));

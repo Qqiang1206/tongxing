@@ -193,17 +193,17 @@ Catalog extras on public payloads:
 
 ## 7. Admin API
 
-Set `ADMIN_PASSWORD` in the environment to enable.
+Set `ADMIN_PASSWORD` in the environment to enable. Login returns a random in-memory session token (8 hours by default; set `ADMIN_SESSION_HOURS` to adjust).
 
 ```
-POST /api/v1/admin/login          { "password": "..." } → { "token": "..." }
+POST /api/v1/admin/login          { "password": "..." } → { "token": "...", "expiresAt": "..." }
 GET  /api/v1/admin/pages/:key     Authorization: Bearer <token>  (zh only)
 PUT  /api/v1/admin/pages/:key     Authorization: Bearer <token>  (zh body only)
 ```
 
 Allowed page keys: `contact`, `home`, `about`, plus list landing keys used by the UI. PUT regenerates `data/pages/{key}/zh.js` for file:// preview.
 
-Admin UI: `http://localhost:3000/admin/` — products, news, solutions（含首页坑位与下架）, pages, site, media, translation, audit log.
+Admin UI: `http://localhost:3000/admin/` — products, news, solutions（含首页坑位与下架）, pages, site, media, translation, complete backup/restore, audit log.
 
 ```
 GET|POST /api/v1/admin/products
@@ -226,6 +226,9 @@ GET  /api/v1/admin/translation-jobs
 POST /api/v1/admin/translation-jobs  { "resource" } | { "enqueueStale": true }
 POST /api/v1/admin/translation-jobs/:id/run
 POST /api/v1/admin/translation-jobs/:id/apply
+
+GET|POST /api/v1/admin/backups
+POST /api/v1/admin/backups/:id/restore
 ```
 
 **409 冲突（首页坑位）**
@@ -273,7 +276,7 @@ Root helpers:
 ```bash
 npm run sync-catalog-i18n   # fill missing en/ru catalog ids from zh (JSON tooling)
 npm run generate-data-js
-npm run backup-data
+npm run backup-data        # SQLite + static fallback data + uploaded images
 ```
 
 Test:

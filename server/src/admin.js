@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import {
   readPageJson,
   listCatalogItemsRaw,
@@ -16,7 +17,7 @@ import {
   markStale,
   markCurrent,
 } from './services/translationStatus.js';
-import { getAnalyticsSummary } from './services/analytics.js';
+import { getAnalyticsSummary, getAnalyticsReport } from './services/analytics.js';
 import {
   listTranslationJobs,
   createTranslationJob,
@@ -43,8 +44,40 @@ import {
   resolveSolutionCategoryFields,
 } from './services/categories.js';
 import { getHomeSlotsStatus } from './services/homeSlots.js';
+import { createBackup, ensureAutoBackup, listBackups, restoreBackup } from './services/backup.js';
+import { generateSitemap } from './services/sitemap.js';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
+const ADMIN_SESSION_TTL_MS = Math.max(
+  30 * 60 * 1000,
+  Number(process.env.ADMIN_SESSION_HOURS || 8) * 60 * 60 * 1000
+);
+const adminSessions = new Map();
+
+function passwordMatches(candidate) {
+  const expected = Buffer.from(ADMIN_PASSWORD);
+  const actual = Buffer.from(String(candidate || ''));
+  return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
+}
+
+function createAdminSession(actor) {
+  const token = crypto.randomBytes(32).toString('base64url');
+  const expiresAt = Date.now() + ADMIN_SESSION_TTL_MS;
+  adminSessions.set(token, { actor: actor || '管理员', expiresAt });
+  return { token, expiresAt: new Date(expiresAt).toISOString() };
+}
+
+function bearerToken(req) {
+  const header = req.headers.authorization || '';
+  return header.startsWith('Bearer ') ? header.slice(7) : '';
+}
+
+function cleanExpiredSessions() {
+  const now = Date.now();
+  for (const [token, session] of adminSessions) {
+    if (!session || session.expiresAt <= now) adminSessions.delete(token);
+  }
+}
 
 function catalogNoun(kind) {
   return kind === 'products' ? '产品' : kind === 'news' ? '新闻' : '方案';
@@ -86,9 +119,10 @@ function readBody(req) {
 
 function authOk(req) {
   if (!ADMIN_PASSWORD) return false;
-  const header = req.headers.authorization || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : '';
-  return token === ADMIN_PASSWORD;
+  cleanExpiredSessions();
+  const token = bearerToken(req);
+  const session = adminSessions.get(token);
+  return !!session && session.expiresAt > Date.now();
 }
 
 export function writePageJson(pageKey, lang, data) {
@@ -148,8 +182,9 @@ function adminErrorStatus(message) {
   ) {
     return 400;
   }
-  if (message === 'not_found') return 404;
-  if (message === 'home_slot_full' || message === 'unpublish_needs_replace' || message === 'protected_media') return 409;
+  if (message === 'not_found' || message === 'backup_not_found') return 404;
+  if (message === 'invalid_backup_id') return 400;
+  if (message === 'backup_in_progress' || message === 'home_slot_full' || message === 'unpublish_needs_replace' || message === 'protected_media') return 409;
   return 500;
 }
 
@@ -229,6 +264,7 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
         defaultSolution();
       const item = createCatalogItemRaw(kind, normalizeCatalogBody(kind, { ...defaults, ...body }));
       regenerateCatalogJs(kind, 'zh');
+      generateSitemap();
       markStale(kind);
       writeAudit({
         req,
@@ -268,6 +304,7 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
       const body = await readBody(req);
       const item = updateCatalogItemRaw(kind, id, normalizeCatalogBody(kind, body));
       regenerateCatalogJs(kind, 'zh');
+      generateSitemap();
       markStale(kind);
       writeAudit({
         req,
@@ -299,6 +336,7 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
       const replaceId = u.searchParams.get('replaceId') || null;
       deleteCatalogItemRaw(kind, id, { replaceId });
       regenerateCatalogJs(kind, 'zh');
+      generateSitemap();
       markStale(kind);
       writeAudit({
         req,
@@ -337,7 +375,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     try {
       const body = await readBody(req);
       const actor = body.actor || body.operator || body.name || '';
-      if (body.password !== ADMIN_PASSWORD) {
+      if (!passwordMatches(body.password)) {
         writeAudit({
           req,
           actor,
@@ -357,10 +395,16 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         resource: 'auth',
         summary: safeActor ? `${safeActor} 登录成功` : '登录成功',
       });
+      const session = createAdminSession(safeActor);
       sendJson(
         res,
         200,
-        { token: ADMIN_PASSWORD, sourceLang: 'zh', actor: safeActor || '管理员' },
+        {
+          token: session.token,
+          expiresAt: session.expiresAt,
+          sourceLang: 'zh',
+          actor: safeActor || '管理员',
+        },
         origin
       );
     } catch (err) {
@@ -377,6 +421,76 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     return true;
   }
 
+  if (pathname === '/api/v1/admin/logout' && req.method === 'POST') {
+    const token = bearerToken(req);
+    if (token) adminSessions.delete(token);
+    sendJson(res, 200, { ok: true }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/backups' && req.method === 'GET') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    const items = listBackups();
+    sendJson(res, 200, { count: items.length, latest: items[0] || null, items }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/backups' && req.method === 'POST') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    try {
+      const backup = createBackup({ reason: 'manual' });
+      writeAudit({
+        req,
+        action: 'backup.create',
+        resource: 'backup',
+        resourceId: backup.id,
+        summary: '创建完整备份',
+        detail: { files: backup.files, bytes: backup.bytes },
+      });
+      sendJson(res, 201, { ok: true, backup }, origin);
+    } catch (err) {
+      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+    }
+    return true;
+  }
+
+  const restoreMatch = pathname.match(/^\/api\/v1\/admin\/backups\/([^/]+)\/restore$/);
+  if (restoreMatch && req.method === 'POST') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    try {
+      const result = restoreBackup(decodeURIComponent(restoreMatch[1]));
+      writeAudit({
+        req,
+        action: 'backup.restore',
+        resource: 'backup',
+        resourceId: result.backup.id,
+        summary: '恢复完整备份',
+        detail: { safetyBackupId: result.safetyBackup.id },
+      });
+      sendJson(res, 200, { ok: true, ...result }, origin);
+    } catch (err) {
+      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+    }
+    return true;
+  }
+
+  if (['POST', 'PUT', 'DELETE'].includes(req.method) && authOk(req)) {
+    try {
+      ensureAutoBackup();
+    } catch (err) {
+      sendJson(res, 500, { error: 'auto_backup_failed', message: err.message }, origin);
+      return true;
+    }
+  }
   if (pathname === '/api/v1/admin/audit-logs' && req.method === 'GET') {
     if (!authOk(req)) {
       sendJson(res, 401, { error: 'unauthorized' }, origin);
@@ -998,6 +1112,22 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       return true;
     }
     sendJson(res, 200, getAnalyticsSummary(), origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/analytics/report' && req.method === 'GET') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    const url = new URL(req.url || '/', 'http://localhost');
+    sendJson(res, 200, getAnalyticsReport({
+      from: url.searchParams.get('from'),
+      to: url.searchParams.get('to'),
+      lang: url.searchParams.get('lang'),
+      page: url.searchParams.get('page'),
+      pageSize: url.searchParams.get('pageSize'),
+    }), origin);
     return true;
   }
 

@@ -315,6 +315,17 @@
     el.setAttribute('content', content);
   }
 
+  function ensureCanonical(href) {
+    if (!href) return;
+    var link = document.querySelector('link[rel="canonical"]');
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      document.head.appendChild(link);
+    }
+    link.setAttribute('href', href);
+  }
+
   /** Update document title + description / Open Graph tags for SEO. */
   function applySeo(seo) {
     seo = seo || {};
@@ -331,7 +342,15 @@
       }
       ensureMeta('property', 'og:image', img);
     }
-    ensureMeta('property', 'og:type', seo.type || 'website');
+ensureMeta('property', 'og:type', seo.type || 'website');
+    var canonical = seo.canonical || '';
+    if (!canonical && typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) {
+      canonical = location.origin + location.pathname + location.search;
+    }
+    if (canonical) {
+      ensureCanonical(canonical);
+      ensureMeta('property', 'og:url', canonical);
+    }
   }
 
   global.TXAM = global.TXAM || {};

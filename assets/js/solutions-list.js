@@ -20,6 +20,14 @@
     '41': 'robot',
   };
 
+  var STATIC_SLUGS = Object.keys(ID_TO_SLUG).map(function (id) { return ID_TO_SLUG[id]; });
+
+  function solutionHref(item, pathPrefix) {
+    var slug = item.slug || ID_TO_SLUG[String(item.id)] || '';
+    if (STATIC_SLUGS.indexOf(slug) !== -1) return pathPrefix + slug + '-solution.html';
+    return pathPrefix + 'solutions-detail.html?id=' + encodeURIComponent(item.id);
+  }
+
   var UI = {
     zh: { view: '查看详情', label: 'SOLUTION', kpi: '关键指标' },
     en: { view: 'View details', label: 'SOLUTION', kpi: 'Key metric' },
@@ -90,8 +98,7 @@
 
   function buildTextBlock(item, index, lang, pathPrefix) {
     var ui = UI[lang] || UI.zh;
-    var slug = item.slug || ID_TO_SLUG[String(item.id)];
-    var href = pathPrefix + slug + '-solution.html';
+    var href = solutionHref(item, pathPrefix);
     var num = String(index + 1).padStart(2, '0');
     var odd = index % 2 === 0;
     var textOrder = odd ? '' : ' order-1 lg:order-2';
@@ -155,8 +162,7 @@
   }
 
   function buildRow(item, index, lang, pathPrefix) {
-    var slug = item.slug || ID_TO_SLUG[String(item.id)];
-    if (!slug) return '';
+    if (item.id == null) return '';
     var odd = index % 2 === 0;
     var wrapClass = odd
       ? 'w-full border-t border-[#E5E5EA] py-32'
@@ -229,7 +235,7 @@
           return data[id];
         })
         .filter(function (row) {
-          return row && row.published !== false && (row.slug || ID_TO_SLUG[String(row.id)]);
+          return row && row.published !== false && row.id != null;
         })
         .sort(function (a, b) {
           var sa = a.sortOrder || 0;
@@ -240,7 +246,6 @@
 
       root.innerHTML = items
         .map(function (item, index) {
-          if (!item.slug) item.slug = ID_TO_SLUG[String(item.id)];
           return buildRow(item, index, lang, pathPrefix);
         })
         .join('');

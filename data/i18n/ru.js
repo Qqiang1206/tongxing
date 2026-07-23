@@ -31,6 +31,7 @@ window.__TXAM_SITE_RU={
   "footer": {
     "tagline": "Превосходное качество, доверие в каждой поставке.",
     "wechatAlt": "WeChat",
+    "wechatImage": "assets/images/brand/wechat-service.png",
     "copyright": "© 2007-2026 Guangdong Tongxing High-Tech Intelligent Equipment Co., Ltd.",
     "icp": "粤ICP备16101583号-1",
     "icpUrl": "https://beian.miit.gov.cn/"

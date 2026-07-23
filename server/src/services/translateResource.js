@@ -43,6 +43,7 @@ const SKIP_KEYS = new Set([
   'website',
   'mime',
   'path',
+  'wechatImage',
 ]);
 
 const CATALOG_KINDS = new Set(['products', 'news', 'solutions']);

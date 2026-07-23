@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css?v=20260723j">
-  <link rel="stylesheet" href="./admin-design-system.css?v=20260723j">
-  <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
+  <link rel="icon" type="image/png" href="/assets/images/brand/favicon.png">
+  <link rel="stylesheet" href="./admin.css?v=20260723n">
+  <link rel="stylesheet" href="./admin-design-system.css?v=20260723n">
+  <script src="./vendor/tinymce/tinymce.min.js"></script>
 </head>
 <body>
   <div id="login-view" class="login-page">
@@ -116,6 +117,7 @@
             <div class="card dash-traffic-card">
               <div class="card-head">
                 <h3 class="card-title">访问概况</h3>
+                <button type="button" class="btn btn-ghost btn-sm" id="dash-traffic-all" data-jump="system" data-hub-tab="analytics">查看全部</button>
               </div>
               <div id="dash-traffic"></div>
             </div>
@@ -166,54 +168,24 @@
             </div>
           </div>
           <div class="hub-tabs hub-mode-nav" data-hub="solutions" role="tablist" aria-label="解决方案管理方式">
-            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
-              <span class="hub-mode-icon" aria-hidden="true">页</span>
-              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、价值说明与搜索信息</small></span>
-            </button>
             <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab" aria-selected="true">
               <span class="hub-mode-icon" aria-hidden="true">案</span>
               <span class="hub-mode-copy"><strong>方案管理 <span class="hub-tab-count" id="hub-count-solutions"></span></strong><small>新增、编辑和发布具体方案</small></span>
             </button>
-            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab" aria-selected="false">
-              <span class="hub-mode-icon" aria-hidden="true">类</span>
-              <span class="hub-mode-copy"><strong>分类管理</strong><small>维护前台筛选与内容分类</small></span>
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">页</span>
+              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、分类、价值说明与搜索信息</small></span>
             </button>
-          </div>
-          <div class="hub-panel hidden hub-panel--editor" data-hub="solutions" data-hub-panel="page">
-            <div class="editor-stack">
-              <div id="page-solutions-form" class="page-form-root"></div>
-              <div class="form-actions inline-save-actions hidden" data-save-actions="solutions">
-                <p class="form-actions-hint" data-save-status="solutions">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
-                <div class="toolbar">
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存并发布</button>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="hub-panel" data-hub="solutions" data-hub-panel="items">
             <div class="section-workspace section-workspace--outline">
               <aside class="section-outline">
-                <div class="section-outline-head"><strong>内容筛选</strong><span>按发布状态查看</span></div>
-                <div class="section-tabs section-outline-tabs" data-list-status="solutions" role="tablist">
-                  <button type="button" class="hub-tab is-active" data-status="all" role="tab" aria-selected="true">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>全部方案 <span class="hub-tab-count" data-status-count="all"></span></strong><small>查看所有方案条目</small></span>
-                  </button>
-                  <button type="button" class="hub-tab" data-status="published" role="tab" aria-selected="false">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>已上架 <span class="hub-tab-count" data-status-count="published"></span></strong><small>前台可见的已发布方案</small></span>
-                  </button>
-                  <button type="button" class="hub-tab" data-status="draft" role="tab" aria-selected="false">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>未上架 <span class="hub-tab-count" data-status-count="draft"></span></strong><small>尚未发布或已下架方案</small></span>
-                  </button>
-                </div>
+                <div class="section-outline-head"><strong>内容筛选</strong><span>按分类查看</span></div>
+                <div class="section-tabs section-outline-tabs" data-list-category="solutions" role="tablist"></div>
               </aside>
               <div class="catalog-workspace-main">
-                <p class="page-hint">首页标杆和精选方案在方案详情中设置；列表页标题请进入「页面设置」。</p>
                 <div class="filter-bar">
-                  <input class="search" id="solution-search" type="search" placeholder="搜索名称 / 分类">
-                  <button type="button" class="btn btn-primary btn-sm" id="solution-search-btn">搜索</button>
+                  <input class="search" id="solution-search" type="search" placeholder="搜索名称">
                   <button type="button" class="btn btn-accent btn-sm" id="create-solution">+ 新建方案</button>
                 </div>
                 <div class="card list-card">
@@ -227,25 +199,13 @@
               </div>
             </div>
           </div>
-          <div class="hub-panel hidden" data-hub="solutions" data-hub-panel="categories">
-            <div class="section-workspace section-workspace--outline">
-              <aside class="section-outline">
-                <div class="section-outline-head"><strong>分类管理</strong><span>维护前台筛选分类</span></div>
-                <div class="section-tabs section-outline-tabs" role="tablist">
-                  <button type="button" class="hub-tab is-active" role="tab" aria-selected="true">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>全部分类</strong><small>查看并维护所有分类</small></span>
-                  </button>
-                </div>
-              </aside>
-              <div class="catalog-workspace-main">
-                <p class="page-hint">修改分类名称后，方案筛选和方案编辑表单会自动同步。</p>
-                <div class="filter-bar filter-bar--actions">
-                  <button type="button" class="btn btn-accent btn-sm" id="add-solution-cat">+ 新增分类</button>
-                </div>
-                <div class="card list-card">
-                  <div class="catalog-list-head catalog-list-head--category" aria-hidden="true"><span>序号</span><span>分类信息</span><span>操作</span></div>
-                  <div id="solution-cat-list" class="item-list"></div>
+          <div class="hub-panel hidden hub-panel--editor" data-hub="solutions" data-hub-panel="page">
+            <div class="editor-stack">
+              <div id="page-solutions-form" class="page-form-root"></div>
+              <div class="form-actions inline-save-actions hidden" data-save-actions="solutions">
+                <p class="form-actions-hint" data-save-status="solutions">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
+                <div class="toolbar">
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存并发布</button>
                 </div>
               </div>
             </div>
@@ -260,53 +220,24 @@
             </div>
           </div>
           <div class="hub-tabs hub-mode-nav" data-hub="products" role="tablist" aria-label="产品中心管理方式">
-            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
-              <span class="hub-mode-icon" aria-hidden="true">页</span>
-              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、筛选文案与搜索信息</small></span>
-            </button>
             <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab" aria-selected="true">
               <span class="hub-mode-icon" aria-hidden="true">品</span>
               <span class="hub-mode-copy"><strong>产品管理 <span class="hub-tab-count" id="hub-count-products"></span></strong><small>新增、编辑和发布具体产品</small></span>
             </button>
-            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab" aria-selected="false">
-              <span class="hub-mode-icon" aria-hidden="true">类</span>
-              <span class="hub-mode-copy"><strong>分类管理</strong><small>维护前台筛选与内容分类</small></span>
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">页</span>
+              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、分类、筛选文案与搜索信息</small></span>
             </button>
-          </div>
-          <div class="hub-panel hidden hub-panel--editor" data-hub="products" data-hub-panel="page">
-            <div class="editor-stack">
-              <div id="page-products-form" class="page-form-root"></div>
-              <div class="form-actions inline-save-actions hidden" data-save-actions="products">
-                <p class="form-actions-hint" data-save-status="products">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
-                <div class="toolbar">
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存并发布</button>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="hub-panel" data-hub="products" data-hub-panel="items">
             <div class="section-workspace section-workspace--outline">
               <aside class="section-outline">
-                <div class="section-outline-head"><strong>内容筛选</strong><span>按发布状态查看</span></div>
-                <div class="section-tabs section-outline-tabs" data-list-status="products" role="tablist">
-                  <button type="button" class="hub-tab is-active" data-status="all" role="tab" aria-selected="true">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>全部产品 <span class="hub-tab-count" data-status-count="all"></span></strong><small>查看所有产品条目</small></span>
-                  </button>
-                  <button type="button" class="hub-tab" data-status="published" role="tab" aria-selected="false">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>已上架 <span class="hub-tab-count" data-status-count="published"></span></strong><small>前台可见的已发布产品</small></span>
-                  </button>
-                  <button type="button" class="hub-tab" data-status="draft" role="tab" aria-selected="false">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>未上架 <span class="hub-tab-count" data-status-count="draft"></span></strong><small>尚未发布或已下架产品</small></span>
-                  </button>
-                </div>
+                <div class="section-outline-head"><strong>内容筛选</strong><span>按分类查看</span></div>
+                <div class="section-tabs section-outline-tabs" data-list-category="products" role="tablist"></div>
               </aside>
               <div class="catalog-workspace-main">
                 <div class="filter-bar">
-                  <input class="search" id="product-search" type="search" placeholder="搜索名称 / 型号 / 分类">
-                  <button type="button" class="btn btn-primary btn-sm" id="product-search-btn">搜索</button>
+                  <input class="search" id="product-search" type="search" placeholder="搜索名称">
                   <button type="button" class="btn btn-accent btn-sm" id="create-product">+ 新建产品</button>
                 </div>
                 <div class="card list-card">
@@ -320,25 +251,13 @@
               </div>
             </div>
           </div>
-          <div class="hub-panel hidden" data-hub="products" data-hub-panel="categories">
-            <div class="section-workspace section-workspace--outline">
-              <aside class="section-outline">
-                <div class="section-outline-head"><strong>分类管理</strong><span>维护前台筛选分类</span></div>
-                <div class="section-tabs section-outline-tabs" role="tablist">
-                  <button type="button" class="hub-tab is-active" role="tab" aria-selected="true">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>全部分类</strong><small>查看并维护所有分类</small></span>
-                  </button>
-                </div>
-              </aside>
-              <div class="catalog-workspace-main">
-                <p class="page-hint">修改分类名称后，产品筛选和产品编辑表单会自动同步。</p>
-                <div class="filter-bar filter-bar--actions">
-                  <button type="button" class="btn btn-accent btn-sm" id="add-product-cat">+ 新增分类</button>
-                </div>
-                <div class="card list-card">
-                  <div class="catalog-list-head catalog-list-head--category" aria-hidden="true"><span>序号</span><span>分类信息</span><span>操作</span></div>
-                  <div id="product-cat-list" class="item-list"></div>
+          <div class="hub-panel hidden hub-panel--editor" data-hub="products" data-hub-panel="page">
+            <div class="editor-stack">
+              <div id="page-products-form" class="page-form-root"></div>
+              <div class="form-actions inline-save-actions hidden" data-save-actions="products">
+                <p class="form-actions-hint" data-save-status="products">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
+                <div class="toolbar">
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存并发布</button>
                 </div>
               </div>
             </div>
@@ -353,54 +272,24 @@
             </div>
           </div>
           <div class="hub-tabs hub-mode-nav" data-hub="news" role="tablist" aria-label="新闻中心管理方式">
-            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
-              <span class="hub-mode-icon" aria-hidden="true">页</span>
-              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、筛选文案与搜索信息</small></span>
-            </button>
             <button type="button" class="hub-tab is-active" data-hub-tab="items" role="tab" aria-selected="true">
               <span class="hub-mode-icon" aria-hidden="true">闻</span>
               <span class="hub-mode-copy"><strong>新闻管理 <span class="hub-tab-count" id="hub-count-news"></span></strong><small>新增、编辑和发布新闻文章</small></span>
             </button>
-            <button type="button" class="hub-tab" data-hub-tab="categories" role="tab" aria-selected="false">
-              <span class="hub-mode-icon" aria-hidden="true">类</span>
-              <span class="hub-mode-copy"><strong>分类管理</strong><small>维护前台筛选与新闻分类</small></span>
+            <button type="button" class="hub-tab" data-hub-tab="page" role="tab" aria-selected="false">
+              <span class="hub-mode-icon" aria-hidden="true">页</span>
+              <span class="hub-mode-copy"><strong>页面设置</strong><small>首屏、分类、筛选文案与搜索信息</small></span>
             </button>
-          </div>
-          <div class="hub-panel hidden hub-panel--editor" data-hub="news" data-hub-panel="page">
-            <div class="editor-stack">
-              <div id="page-news-form" class="page-form-root"></div>
-              <div class="form-actions inline-save-actions hidden" data-save-actions="news">
-                <p class="form-actions-hint" data-save-status="news">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
-                <div class="toolbar">
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存并发布</button>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="hub-panel" data-hub="news" data-hub-panel="items">
             <div class="section-workspace section-workspace--outline">
               <aside class="section-outline">
-                <div class="section-outline-head"><strong>内容筛选</strong><span>按发布状态查看</span></div>
-                <div class="section-tabs section-outline-tabs" data-list-status="news" role="tablist">
-                  <button type="button" class="hub-tab is-active" data-status="all" role="tab" aria-selected="true">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>全部新闻 <span class="hub-tab-count" data-status-count="all"></span></strong><small>查看所有新闻文章</small></span>
-                  </button>
-                  <button type="button" class="hub-tab" data-status="published" role="tab" aria-selected="false">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>已上架 <span class="hub-tab-count" data-status-count="published"></span></strong><small>前台可见的已发布新闻</small></span>
-                  </button>
-                  <button type="button" class="hub-tab" data-status="draft" role="tab" aria-selected="false">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>未上架 <span class="hub-tab-count" data-status-count="draft"></span></strong><small>尚未发布或已下架新闻</small></span>
-                  </button>
-                </div>
+                <div class="section-outline-head"><strong>内容筛选</strong><span>按分类查看</span></div>
+                <div class="section-tabs section-outline-tabs" data-list-category="news" role="tablist"></div>
               </aside>
               <div class="catalog-workspace-main">
-                <p class="page-hint">首页精选新闻在新闻详情中设置；列表页标题请进入「页面设置」。</p>
                 <div class="filter-bar">
-                  <input class="search" id="news-search" type="search" placeholder="搜索标题 / 分类">
-                  <button type="button" class="btn btn-primary btn-sm" id="news-search-btn">搜索</button>
+                  <input class="search" id="news-search" type="search" placeholder="搜索标题">
                   <button type="button" class="btn btn-accent btn-sm" id="create-news">+ 新建新闻</button>
                 </div>
                 <div class="card list-card">
@@ -414,25 +303,13 @@
               </div>
             </div>
           </div>
-          <div class="hub-panel hidden" data-hub="news" data-hub-panel="categories">
-            <div class="section-workspace section-workspace--outline">
-              <aside class="section-outline">
-                <div class="section-outline-head"><strong>分类管理</strong><span>维护前台筛选分类</span></div>
-                <div class="section-tabs section-outline-tabs" role="tablist">
-                  <button type="button" class="hub-tab is-active" role="tab" aria-selected="true">
-                    <span class="section-marker" aria-hidden="true"></span>
-                    <span class="section-nav-copy"><strong>全部分类</strong><small>查看并维护所有分类</small></span>
-                  </button>
-                </div>
-              </aside>
-              <div class="catalog-workspace-main">
-                <p class="page-hint">修改分类名称后，新闻筛选和新闻编辑表单会自动同步。</p>
-                <div class="filter-bar filter-bar--actions">
-                  <button type="button" class="btn btn-accent btn-sm" id="add-news-cat">+ 新增分类</button>
-                </div>
-                <div class="card list-card">
-                  <div class="catalog-list-head catalog-list-head--category" aria-hidden="true"><span>序号</span><span>分类信息</span><span>操作</span></div>
-                  <div id="news-cat-list" class="item-list"></div>
+          <div class="hub-panel hidden hub-panel--editor" data-hub="news" data-hub-panel="page">
+            <div class="editor-stack">
+              <div id="page-news-form" class="page-form-root"></div>
+              <div class="form-actions inline-save-actions hidden" data-save-actions="news">
+                <p class="form-actions-hint" data-save-status="news">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
+                <div class="toolbar">
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存并发布</button>
                 </div>
               </div>
             </div>
@@ -481,13 +358,6 @@
               <h2>素材库</h2>
               <p class="page-sub">统一管理网站现有图片和运营上传素材，找图、改名、选用都在这里完成。</p>
             </div>
-            <div class="toolbar">
-              <label class="btn btn-accent media-upload-button" id="media-upload-label">
-                <span id="media-upload-text">+ 上传图片</span>
-                <input id="media-file" type="file" accept="image/*" multiple hidden>
-              </label>
-              <button type="button" class="btn btn-ghost btn-sm" id="refresh-media">刷新</button>
-            </div>
           </div>
           <div class="resource-toolbar card media-library-toolbar">
             <div class="resource-toolbar-copy">
@@ -500,7 +370,13 @@
                 <button type="button" class="media-filter-tab" data-media-filter="upload" role="tab" aria-selected="false">运营上传 <span id="media-filter-upload-count">0</span></button>
                 <button type="button" class="media-filter-tab" data-media-filter="site" role="tab" aria-selected="false">网站素材 <span id="media-filter-site-count">0</span></button>
               </div>
-              <input class="search" id="media-search" type="search" placeholder="搜索图片名称">
+              <div class="media-toolbar-actions">
+                <input class="search" id="media-search" type="search" placeholder="搜索图片名称">
+                <label class="btn btn-accent media-upload-button" id="media-upload-label">
+                  <span id="media-upload-text">+ 上传图片</span>
+                  <input id="media-file" type="file" accept="image/*" multiple hidden>
+                </label>
+              </div>
             </div>
           </div>
           <div class="card resource-grid-card media-library-card">
@@ -516,23 +392,24 @@
           <div class="page-head">
             <div>
               <h2>系统管理</h2>
-              <p class="page-sub">按后台任务定位多语言同步与操作记录，系统功能集中但不混杂。</p>
-            </div>
-            <div class="toolbar hub-actions" data-hub="system">
-              <button type="button" class="btn btn-ghost btn-sm hub-action" data-hub-action="translation" id="refresh-translation">刷新</button>
-              <button type="button" class="btn btn-accent btn-sm hub-action" data-hub-action="translation" id="sync-all-stale">立即同步</button>
-              <button type="button" class="btn btn-ghost btn-sm hub-action hidden" data-hub-action="audit" id="refresh-audit">刷新</button>
+              <p class="page-sub">多语言、访问概况、操作记录和备份集中管理；日常维护只需关注提示状态。</p>
             </div>
           </div>
           <div class="section-workspace section-workspace--outline system-task-workspace">
             <aside class="section-outline">
-              <div class="section-outline-head"><strong>系统任务</strong><span>按管理员工作定位 · 共 2 项</span></div>
+              <div class="section-outline-head"><strong>系统任务</strong><span>按管理员工作定位 · 共 4 项</span></div>
               <div class="section-tabs section-outline-tabs hub-tabs" data-hub="system" role="tablist">
                 <button type="button" class="hub-tab is-active" data-hub-tab="translation" role="tab" aria-selected="true">
                   <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>多语言同步</strong><small>处理英、俄文内容更新</small></span>
                 </button>
+                <button type="button" class="hub-tab" data-hub-tab="analytics" role="tab" aria-selected="false">
+                  <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>访问概况</strong><small>查看页面访问量与热门排行</small></span>
+                </button>
                 <button type="button" class="hub-tab" data-hub-tab="audit" role="tab" aria-selected="false">
                   <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>操作记录</strong><small>查询登录和内容修改记录</small></span>
+                </button>
+                <button type="button" class="hub-tab" data-hub-tab="backup" role="tab" aria-selected="false">
+                  <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>备份与恢复</strong><small>保护网站内容和上传图片</small></span>
                 </button>
               </div>
             </aside>
@@ -557,6 +434,67 @@
               <div class="card"><div class="table-wrap" id="translation-table"></div></div>
             </details>
           </div>
+          <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="analytics">
+            <p class="page-hint">按日汇总前台页面访问量（PV）。可按日期与语言站筛选，查看趋势和页面排行。</p>
+            <div class="filter-bar analytics-filter-bar">
+              <div class="analytics-range-presets" role="group" aria-label="日期范围">
+                <button type="button" class="btn btn-ghost btn-sm" data-analytics-range="today">今天</button>
+                <button type="button" class="btn btn-ghost btn-sm is-active" data-analytics-range="7d">近7天</button>
+                <button type="button" class="btn btn-ghost btn-sm" data-analytics-range="30d">近30天</button>
+              </div>
+              <input type="date" id="analytics-from" class="select analytics-date" title="开始日期">
+              <span class="analytics-date-sep">至</span>
+              <input type="date" id="analytics-to" class="select analytics-date" title="结束日期">
+              <select id="analytics-lang" class="select" title="语言站">
+                <option value="">全部语言</option>
+                <option value="zh">中文站</option>
+                <option value="en">英文站</option>
+                <option value="ru">俄文站</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" id="analytics-filter-btn">查询</button>
+            </div>
+            <div id="analytics-summary" class="analytics-summary"></div>
+            <div class="analytics-grid">
+              <div class="card analytics-chart-card">
+                <div class="card-head"><h3 class="card-title">访问趋势</h3></div>
+                <div id="analytics-daily" class="analytics-daily"></div>
+              </div>
+              <div class="card analytics-sections-card">
+                <div class="card-head"><h3 class="card-title">栏目占比</h3></div>
+                <div id="analytics-sections" class="analytics-sections"></div>
+              </div>
+            </div>
+            <div class="card table-card analytics-pages-card">
+              <div class="card-head">
+                <h3 class="card-title">页面排行</h3>
+              </div>
+              <div class="table-wrap">
+                <table class="data data-table analytics-table" id="analytics-table">
+                  <colgroup>
+                    <col class="col-rank">
+                    <col class="col-name">
+                    <col class="col-lang">
+                    <col class="col-hits">
+                    <col class="col-share">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>页面</th>
+                      <th>语言</th>
+                      <th>访问量</th>
+                      <th>占比</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="table-foot">
+                <span id="analytics-table-foot"></span>
+                <div class="pagination" id="analytics-pagination"></div>
+              </div>
+            </div>
+          </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="audit">
             <p class="page-hint">记录谁在何时改了什么（写操作与登录；默认保留 90 天）。</p>
             <div class="filter-bar">
@@ -571,6 +509,7 @@
                 <option value="categories">分类</option>
                 <option value="media">媒体</option>
                 <option value="translation">翻译</option>
+                <option value="backup">备份</option>
               </select>
               <select id="audit-action" class="select" title="动作类型">
                 <option value="">全部动作</option>
@@ -619,6 +558,29 @@
                 <span id="audit-table-foot"></span>
                 <div class="pagination" id="audit-pagination"></div>
               </div>
+            </div>
+          </div>
+          <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="backup">
+            <div class="backup-hero card">
+              <div>
+                <span class="backup-kicker">网站安全网</span>
+                <h3>完整备份与恢复</h3>
+                <p>每次开始修改前，系统最多每 15 分钟自动备份一次。备份包含网站内容、数据库和运营上传的图片。</p>
+              </div>
+              <div class="toolbar backup-actions">
+                <button type="button" class="btn btn-ghost" id="backup-restore-latest" disabled>恢复最近备份</button>
+                <button type="button" class="btn btn-accent" id="backup-create">立即完整备份</button>
+              </div>
+            </div>
+            <div id="backup-overview" class="backup-overview" aria-live="polite"></div>
+            <div class="card table-card backup-list-card">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">最近备份</h3>
+                  <p class="field-help">恢复会先自动保存当前状态，再恢复所选版本，避免误操作无法返回。</p>
+                </div>
+              </div>
+              <div class="table-wrap" id="backup-list"></div>
             </div>
           </div>
             </div>
@@ -720,6 +682,6 @@
     </div>
   </div>
 
-  <script src="./admin.js?v=20260723j"></script>
+  <script src="./admin.js?v=20260723s"></script>
 </body>
 </html>

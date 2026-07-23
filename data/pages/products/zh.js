@@ -1,23 +1,2 @@
-/* auto-generated from zh.json — do not edit */
-window.__TXAM_PAGE_PRODUCTS_ZH={
-  "pageKey": "products",
-  "lang": "zh",
-  "hero": {
-    "title": "核心智造矩阵",
-    "lead": "从高精度单机柔性单元到整厂无人化产线输出。<br class=\"hidden md:block\">覆盖电子制造全链条的自动化装备。"
-  },
-  "filters": {
-    "all": "全部产品",
-    "dispensing": "点胶装配",
-    "flip": "翻转检测",
-    "screw": "锁付组装",
-    "optical": "光学元件组装",
-    "transfer": "搬运移载",
-    "packaging": "后段包装",
-    "robot": "机器人集成"
-  },
-  "seo": {
-    "title": "产品中心 | 同兴高科 TXAM - 中国领先的自动化品牌供应商",
-    "description": "同兴高科产品中心-点胶装配、翻转检测、锁付组装、光学元件、搬运移载、后段包装等6大类产品"
-  }
-};
+/* auto-generated from sqlite — do not edit */
+window.__TXAM_PAGE_PRODUCTS_ZH={"pageKey":"products","lang":"zh","hero":{"title":"核心智造矩阵","lead":"从高精度单机柔性单元到整厂无人化产线输出。<br class=\"hidden md:block\">覆盖电子制造全链条的自动化装备。"},"filters":{"all":"全部产品","optical":"光学元件组装","dispensing":"点胶装配","flip":"翻转检测","screw":"锁付组装","transfer":"搬运移载","packaging":"后段包装","robot":"机器人集成","line":"整线交付"},"seo":{"title":"产品中心 | 同兴高科 TXAM - 中国领先的自动化品牌供应商","description":"同兴高科产品中心-点胶装配、翻转检测、锁付组装、光学元件、搬运移载、后段包装等6大类产品"}};

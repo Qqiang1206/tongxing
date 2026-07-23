@@ -54,7 +54,13 @@ export function resolveActor(entry = {}) {
   const req = entry.req;
   if (req && req.headers) {
     const h = req.headers['x-admin-actor'] || req.headers['x-actor'];
-    if (h) return sanitizeActor(h);
+if (h) {
+      try {
+        return sanitizeActor(decodeURIComponent(String(h)));
+      } catch {
+        return sanitizeActor(h);
+      }
+    }
   }
   return DEFAULT_ACTOR;
 }

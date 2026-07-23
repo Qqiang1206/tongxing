@@ -353,7 +353,7 @@
   },
   "35": {
     "id": "35",
-    "category": "新能源汽车行业",
+    "category": "储能行业",
     "name": "电容器生产线解决方案",
     "image": "assets/images/solutions/capacitor-production-line.webp",
     "specs": [
@@ -368,8 +368,8 @@
     "slug": "capacitor",
     "sortOrder": 35,
     "homeSlot": "",
-    "filterKey": "capacitor",
-    "filterKeyEn": "capacitor",
+    "filterKey": "packaging",
+    "filterKeyEn": "packaging",
     "painPoints": [
       {
         "title": "卷绕精度要求高",
@@ -398,44 +398,44 @@
     ],
     "process": [
       {
-        "step": "01",
         "title": "卷绕工序",
-        "desc": "高速精密卷绕机完成铝箔、纸介质的精密卷绕"
+        "desc": "高速精密卷绕机完成铝箔、纸介质的精密卷绕",
+        "step": "01"
       },
       {
-        "step": "02",
         "title": "组装工序",
-        "desc": "自动化组装系统完成引线、端子等部件组装"
+        "desc": "自动化组装系统完成引线、端子等部件组装",
+        "step": "02"
       },
       {
-        "step": "03",
         "title": "浸渍处理",
-        "desc": "真空浸渍设备完成绝缘油浸渍处理"
+        "desc": "真空浸渍设备完成绝缘油浸渍处理",
+        "step": "03"
       },
       {
-        "step": "04",
         "title": "密封工序",
-        "desc": "自动化密封系统确保密封性能一致"
+        "desc": "自动化密封系统确保密封性能一致",
+        "step": "04"
       },
       {
-        "step": "05",
         "title": "老化测试",
-        "desc": "智能化老化测试系统实现批量测试"
+        "desc": "智能化老化测试系统实现批量测试",
+        "step": "05"
       },
       {
-        "step": "06",
         "title": "外观检测",
-        "desc": "视觉检测系统自动识别外观缺陷"
+        "desc": "视觉检测系统自动识别外观缺陷",
+        "step": "06"
       },
       {
-        "step": "07",
         "title": "性能测试",
-        "desc": "全自动测试系统完成电气性能测试"
+        "desc": "全自动测试系统完成电气性能测试",
+        "step": "07"
       },
       {
-        "step": "08",
         "title": "自动包装",
-        "desc": "防潮包装系统确保产品储存安全"
+        "desc": "防潮包装系统确保产品储存安全",
+        "step": "08"
       }
     ]
   },

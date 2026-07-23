@@ -353,7 +353,7 @@
   },
   "35": {
     "id": "35",
-    "category": "新能源汽车行业",
+    "category": "储能行业",
     "name": "Capacitor production line solution",
     "image": "assets/images/solutions/capacitor-production-line.webp",
     "specs": [
@@ -368,8 +368,8 @@
     "slug": "capacitor",
     "sortOrder": 35,
     "homeSlot": "",
-    "filterKey": "capacitor",
-    "filterKeyEn": "capacitor",
+    "filterKey": "packaging",
+    "filterKeyEn": "packaging",
     "painPoints": [
       {
         "title": "High winding accuracy requirements",

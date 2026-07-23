@@ -6,9 +6,15 @@
 
 (function (global) {
 
+  var CATEGORY_KEY_BY_NAME = {};
+
   function categoryKey(category) {
 
     if (!category) return 'company';
+
+    var mapped = CATEGORY_KEY_BY_NAME[String(category).trim().toLowerCase()];
+
+    if (mapped) return mapped;
 
     if (/行业|industry|洞察|insight/i.test(category)) return 'industry';
 
@@ -262,10 +268,20 @@
             if (hl && page.hero.lead) hl.innerHTML = page.hero.lead;
           }
           if (page && page.filters) {
+            CATEGORY_KEY_BY_NAME = {};
             Object.keys(page.filters).forEach(function (key) {
-              var btn = document.querySelector('.filter-btn[data-filter="' + key + '"]');
-              if (btn) btn.textContent = page.filters[key];
+              CATEGORY_KEY_BY_NAME[String(page.filters[key] || '').trim().toLowerCase()] = key;
             });
+            var current = document.querySelector('.filter-btn');
+            var filterRoot = current && current.parentElement;
+            if (filterRoot) {
+              var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
+              filterRoot.innerHTML = Object.keys(page.filters).map(function (key) {
+                var active = key === 'all';
+                return '<button class="' + normalClass + (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') +
+                  '" data-filter="' + escapeHtml(key) + '">' + escapeHtml(page.filters[key]) + '</button>';
+              }).join('');
+            }
           }
         } catch (_) {}
       }

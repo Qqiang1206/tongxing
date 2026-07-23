@@ -58,7 +58,7 @@
       '<div class="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">' +
       '<h2 class="text-2xl md:text-[2.5rem] font-black text-white tracking-tighter leading-tight text-center md:text-left">' +
       tagline + '</h2>' +
-      '<div><img src="' + prefix + 'assets/images/brand/wechat-service.png" alt="' +
+      '<div><img src="' + prefix + (footer.wechatImage || 'assets/images/brand/wechat-service.png') + '" alt="' +
       (footer.wechatAlt || 'WeChat') + '" class="max-h-[140px] md:max-h-[200px] w-auto rounded-lg object-cover"></div>' +
       '</div></div>' +
       '<div class="relative z-10 mt-8 md:mt-0 md:absolute md:bottom-[25px] md:left-6 md:right-6 lg:left-24 lg:right-24 max-w-[1600px] md:mx-auto flex flex-col sm:flex-row flex-wrap items-center justify-center md:justify-start text-center md:text-left text-sm font-light tracking-wide text-[#666] gap-2 md:gap-4">' +

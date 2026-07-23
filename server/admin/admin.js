@@ -27,11 +27,17 @@
     mediaPageSize: 18,
     selectedMediaId: null,
     mediaUploading: false,
+    backups: [],
+    latestBackup: null,
     auditActors: [],
     auditItems: [],
     auditTotal: 0,
     auditPage: 1,
     auditPageSize: 5,
+    analyticsPage: 1,
+    analyticsPageSize: 20,
+    analyticsRange: '7d',
+    analyticsReport: null,
     hubTabs: {
       products: 'items',
       news: 'items',
@@ -40,7 +46,7 @@
     },
     sectionTabs: {},
     dirtyPages: {},
-    listStatus: { products: 'all', news: 'all', solutions: 'all' },
+    listCategory: { products: 'all', news: 'all', solutions: 'all' },
     listPages: { products: 1, news: 1, solutions: 1 },
     txSync: {
       active: false,
@@ -126,8 +132,23 @@
     if (bar) bar.classList.toggle('hidden', !visible);
   }
 
+  function isOnCategoriesSection(key) {
+    var formId = PAGE_FORM_IDS[key];
+    return !!(formId && state.sectionTabs && state.sectionTabs[formId] === 'categories');
+  }
+
+  function syncListPageSaveBar(key) {
+    if (!INLINE_SAVE_PAGES[key]) return;
+    if (isOnCategoriesSection(key)) {
+      showInlineSaveBar(key, false);
+      return;
+    }
+    showInlineSaveBar(key, !!(state.dirtyPages && state.dirtyPages[key]));
+  }
+
   function flashInlineSaveBar(key) {
     if (!INLINE_SAVE_PAGES[key]) return;
+    if (isOnCategoriesSection(key)) return;
     showInlineSaveBar(key, true);
     if (!state.saveBarTimers) state.saveBarTimers = {};
     clearTimeout(state.saveBarTimers[key]);
@@ -143,7 +164,9 @@
     el.classList.toggle('is-dirty', mode === 'dirty');
     el.classList.toggle('is-saving', mode === 'saving');
     el.classList.toggle('is-error', mode === 'error');
-    if (INLINE_SAVE_PAGES[key] && (mode === 'saving' || mode === 'error')) showInlineSaveBar(key, true);
+    if (INLINE_SAVE_PAGES[key] && (mode === 'saving' || mode === 'error') && !isOnCategoriesSection(key)) {
+      showInlineSaveBar(key, true);
+    }
   }
 
   function setPageDirty(key, dirty) {
@@ -157,7 +180,7 @@
     }
     if (dirty) {
       setPageStatus(key, '有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步', 'dirty');
-      showInlineSaveBar(key, true);
+      if (!isOnCategoriesSection(key)) showInlineSaveBar(key, true);
     } else {
       if (INLINE_SAVE_PAGES[key]) showInlineSaveBar(key, false);
       var status = pageStatusElement(key);
@@ -241,11 +264,28 @@
   async function api(path, options) {
     options = options || {};
     var headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
-    if (token) headers.Authorization = 'Bearer ' + token;
-    if (actorName) headers['X-Admin-Actor'] = actorName;
+    var requestToken = token;
+    if (requestToken) headers.Authorization = 'Bearer ' + requestToken;
+    if (actorName) headers['X-Admin-Actor'] = encodeURIComponent(actorName);
     var res = await fetch(API + path, Object.assign({}, options, { headers: headers }));
     var data = await res.json().catch(function () { return {}; });
     if (!res.ok) {
+      if (res.status === 401 && path !== '/admin/login' && requestToken && token === requestToken) {
+        token = '';
+        actorName = '';
+        sessionStorage.removeItem('txam_admin_token');
+        sessionStorage.removeItem('txam_admin_actor');
+        updateUserChip();
+        showLogin(true);
+        if ($('login-msg')) {
+          $('login-msg').className = 'msg err';
+          $('login-msg').textContent = '登录状态已失效，请重新登录';
+        }
+        var authError = new Error('登录状态已失效，请重新登录');
+        authError.status = res.status;
+        authError.data = data;
+        throw authError;
+      }
       var err = new Error(data.message || data.error || ('HTTP ' + res.status));
       err.status = res.status;
       err.data = data;
@@ -302,6 +342,8 @@
     'translation.apply': '应用翻译结果',
     'translation.enqueue_stale': '入队待翻译项',
     'translation.create_job': '创建翻译任务',
+    'backup.create': '创建完整备份',
+    'backup.restore': '恢复完整备份',
   };
 
   var AUDIT_RESOURCE_LABELS = {
@@ -313,6 +355,7 @@
     site: '导航/页脚',
     media: '媒体',
     translation: '翻译',
+    backup: '备份',
     categories: '分类',
   };
 
@@ -466,12 +509,14 @@
     categories: 'page-products',
     translation: 'system',
     audit: 'system',
+    backup: 'system',
   };
   var LEGACY_HUB_TAB = {
     site: 'site',
     categories: 'categories',
     translation: 'translation',
     audit: 'audit',
+    backup: 'backup',
   };
 
   function applyHubTab(hub, tab) {
@@ -482,6 +527,12 @@
       system: 'translation',
     };
     var current = state.hubTabs[hub] || defaults[hub] || 'items';
+    if ((hub === 'products' || hub === 'news' || hub === 'solutions') && current === 'categories') {
+      current = 'page';
+      state.hubTabs[hub] = 'page';
+      if (!state.sectionTabs) state.sectionTabs = {};
+      state.sectionTabs['page-' + hub + '-form'] = 'categories';
+    }
     document.querySelectorAll('.hub-tabs[data-hub="' + hub + '"] .hub-tab').forEach(function (btn) {
       var active = btn.getAttribute('data-hub-tab') === current;
       btn.classList.toggle('is-active', active);
@@ -524,9 +575,32 @@
     } else if (hub === 'solutions') {
       await Promise.all([loadPageForm('solutions'), loadSolutions(), loadCategories()]);
     } else if (hub === 'system') {
-      await Promise.all([loadTranslation(), loadAudit()]);
+      await Promise.all([loadTranslation(), loadAnalytics(), loadAudit(), loadBackups()]);
     }
     updateHubCount(hub);
+  }
+
+  function openCatalogCategories(pageKey) {
+    if (!state.sectionTabs) state.sectionTabs = {};
+    state.sectionTabs['page-' + pageKey + '-form'] = 'categories';
+    return setView('page-' + pageKey, { hubTab: 'page', sectionTab: 'categories' });
+  }
+
+  function normalizeCatalogHubTab(viewName, preferredTab, opts) {
+    var pageKey =
+      viewName === 'page-products' ? 'products' :
+      viewName === 'page-news' ? 'news' :
+      viewName === 'page-solutions' ? 'solutions' : null;
+    if (!pageKey) return preferredTab;
+    if (!state.sectionTabs) state.sectionTabs = {};
+    if (preferredTab === 'categories' || (opts && opts.sectionTab === 'categories')) {
+      state.sectionTabs['page-' + pageKey + '-form'] = 'categories';
+      return 'page';
+    }
+    if (opts && opts.sectionTab) {
+      state.sectionTabs['page-' + pageKey + '-form'] = opts.sectionTab;
+    }
+    return preferredTab;
   }
 
   function setView(name, opts) {
@@ -539,6 +613,7 @@
       }
       name = VIEW_BY_LEGACY[name];
     }
+    preferredTab = normalizeCatalogHubTab(name, preferredTab, opts);
     var leavingPageKey = PAGE_KEY_BY_VIEW[state.view];
     if (leavingPageKey && state.dirtyPages[leavingPageKey] && name !== state.view) {
       if (!confirm('“' + PAGE_LABELS[leavingPageKey] + '”有尚未保存的更改，确定离开并放弃修改吗？')) {
@@ -582,17 +657,19 @@
     if (/首页/.test(q)) return setView('page-home');
     if (/关于|公司介绍|企业文化|发展历程|资质|客户/.test(q)) return setView('page-about');
     if (/联系|地址|电话|邮箱|地图/.test(q)) return setView('page-contact');
+    if (/方案.*分类|分类.*方案/.test(q)) return openCatalogCategories('solutions');
+    if (/产品.*分类|分类.*产品/.test(q)) return openCatalogCategories('products');
+    if (/(新闻|资讯).*分类|分类.*(新闻|资讯)/.test(q)) return openCatalogCategories('news');
     if (/解决方案|方案/.test(q)) return setView('page-solutions', { hubTab: wantsPageContent ? 'page' : 'items' });
-    if (/方案.*分类|分类.*方案/.test(q)) return setView('page-solutions', { hubTab: 'categories' });
-    if (/产品.*分类|分类.*产品/.test(q)) return setView('page-products', { hubTab: 'categories' });
-    if (/(新闻|资讯).*分类|分类.*(新闻|资讯)/.test(q)) return setView('page-news', { hubTab: 'categories' });
     if (/产品/.test(q)) return setView('page-products', { hubTab: wantsPageContent ? 'page' : 'items' });
     if (/新闻|资讯|文章/.test(q)) return setView('page-news', { hubTab: wantsPageContent ? 'page' : 'items' });
     if (/导航|页脚|全站设置|公共内容/.test(q)) return setView('sitewide');
-    if (/分类/.test(q)) return setView('page-products', { hubTab: 'categories' });
+    if (/分类/.test(q)) return openCatalogCategories('products');
     if (/素材|图片|媒体/.test(q)) return setView('media');
+    if (/访问|流量|热门页面|浏览量/.test(q)) return setView('system', { hubTab: 'analytics' });
     if (/翻译|同步/.test(q)) return setView('system', { hubTab: 'translation' });
-    if (/日志|记录/.test(q)) return setView('system', { hubTab: 'audit' });
+    if (/日志|记录|审计/.test(q)) return setView('system', { hubTab: 'audit' });
+    if (/备份|恢复|还原/.test(q)) return setView('system', { hubTab: 'backup' });
     toast('没有找到对应页面，可尝试搜索“关于我们”“产品”或“素材库”', true);
     return Promise.resolve(false);
   }
@@ -651,7 +728,7 @@
         descriptions: {
           nav: '前台顶部六项菜单名称',
           common: '详情按钮、返回列表等共用文案',
-          footer: '页脚标语、版权与备案内容',
+          footer: '页脚标语、版权、备案与微信客服二维码',
         },
       },
       'page-home-form': {
@@ -683,7 +760,9 @@
     };
     var commonDescriptions = {
       hero: '标题、导语与首屏展示', pillars: '核心价值与优势说明',
-      filters: '前台筛选按钮文案', seo: '浏览器标题、关键词与描述',
+      filters: '「全部」等筛选按钮文案',
+      categories: '前台筛选标签与条目可选分类，修改后立即生效',
+      seo: '浏览器标题、关键词与描述',
     };
     var currentMeta = outlineMeta[formRootId] || { title: '页面结构', descriptions: {} };
     var sectionDescriptions = Object.assign({}, commonDescriptions, currentMeta.descriptions || {});
@@ -752,6 +831,11 @@
           autosizeTextareasIn(p);
         }
       });
+      var pageKey =
+        formRootId === 'page-products-form' ? 'products' :
+        formRootId === 'page-news-form' ? 'news' :
+        formRootId === 'page-solutions-form' ? 'solutions' : null;
+      if (pageKey) syncListPageSaveBar(pageKey);
     });
     var activePanel = root.querySelector('.section-panels-scroll > .section-panel:not(.hidden)');
     if (activePanel) autosizeTextareasIn(activePanel);
@@ -1010,7 +1094,7 @@
       selector: '#' + id,
       license_key: 'gpl',
       language: 'zh_CN',
-      language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n@25.1.1/langs7/zh_CN.js',
+      language_url: './vendor/tinymce/langs/zh_CN.js',
       menubar: false,
       branding: false,
       promotion: false,
@@ -1243,9 +1327,9 @@
     var visitHint = '昨日 ' + analytics.yesterday + ' · 近7日 ' + analytics.week;
     $('dash-stats').innerHTML =
       stat('今日访问', todayVisits, visitHint, false, 'visit') +
-      stat('产品数量', state.products.length, '已发布 ' + pubProducts + ' 条') +
-      stat('解决方案', state.solutions.length, '已发布 ' + pubSolutions + ' 条') +
-      stat('新闻文章', state.news.length, '已发布 ' + pubNews + ' 条') +
+      stat('产品数量', state.products.length, '已上架 ' + pubProducts + ' 条') +
+      stat('解决方案', state.solutions.length, '已上架 ' + pubSolutions + ' 条') +
+      stat('新闻文章', state.news.length, '已上架 ' + pubNews + ' 条') +
       stat('待同步翻译', stale, stale ? '请到「系统 → 翻译同步」处理' : 'en / ru 均已最新', stale > 0);
     if ($('dash-traffic')) {
       $('dash-traffic').innerHTML =
@@ -1360,13 +1444,13 @@
       return Promise.resolve(setView('media'));
     }
     if (action.indexOf('categories.product.') === 0) {
-      return Promise.resolve(setView('page-products', { hubTab: 'categories' }));
+      return Promise.resolve(openCatalogCategories('products'));
     }
     if (action.indexOf('categories.solution.') === 0) {
-      return Promise.resolve(setView('page-solutions', { hubTab: 'categories' }));
+      return Promise.resolve(openCatalogCategories('solutions'));
     }
     if (action.indexOf('categories.news.') === 0) {
-      return Promise.resolve(setView('page-news', { hubTab: 'categories' }));
+      return Promise.resolve(openCatalogCategories('news'));
     }
     return Promise.resolve();
   }
@@ -1381,25 +1465,34 @@
       return;
     }
     box.innerHTML =
-      '<ul class="recent-list">' +
+      '<div class="table-wrap recent-table-wrap">' +
+      '<table class="data data-table recent-table">' +
+      '<colgroup>' +
+      '<col class="col-time">' +
+      '<col class="col-type">' +
+      '<col class="col-summary">' +
+      '<col class="col-actor">' +
+      '<col class="col-go">' +
+      '</colgroup>' +
+      '<tbody>' +
       items.map(function (row, index) {
         var deleted = recentUpdateDeleted(row);
         var typeLabel = recentUpdateTypeLabel(row);
         var actionLabel = recentUpdateActionLabel(row);
         var summary = row.summary || auditActionLabel(row.action);
-        return '<li class="recent-item' + (deleted ? ' is-deleted' : '') + (deleted ? '' : ' is-clickable') + '"' +
+        return '<tr class="' + (deleted ? 'is-deleted' : 'is-clickable') + '"' +
           (deleted ? '' : ' data-recent-idx="' + index + '"') + '>' +
-          '<span class="recent-time">' + escapeHtml(formatDashTime(row.createdAt)) + '</span>' +
-          '<span class="recent-type">' + escapeHtml(typeLabel) + '</span>' +
-          '<span class="recent-body">' +
+          '<td class="cell-time">' + escapeHtml(formatDashTime(row.createdAt)) + '</td>' +
+          '<td class="cell-type"><span class="audit-type-tag">' + escapeHtml(typeLabel) + '</span></td>' +
+          '<td class="cell-summary recent-body-cell">' +
           '<span class="recent-action">' + escapeHtml(actionLabel) + '</span>' +
-          '<span class="recent-summary">' + escapeHtml(summary) + '</span>' +
-          '</span>' +
-          '<span class="recent-actor">' + escapeHtml(row.actor || '—') + '</span>' +
-          (deleted ? '' : '<span class="recent-go" aria-hidden="true">›</span>') +
-          '</li>';
+          '<span class="recent-summary" title="' + escapeAttr(summary) + '">' + escapeHtml(summary) + '</span>' +
+          '</td>' +
+          '<td class="cell-actor">' + escapeHtml(row.actor || '—') + '</td>' +
+          '<td class="cell-go">' + (deleted ? '' : '<span class="recent-go" aria-hidden="true">›</span>') + '</td>' +
+          '</tr>';
       }).join('') +
-      '</ul>';
+      '</tbody></table></div>';
     box.querySelectorAll('[data-recent-idx]').forEach(function (el) {
       el.addEventListener('click', function () {
         var idx = Number(el.getAttribute('data-recent-idx'));
@@ -1455,8 +1548,8 @@
 
   function statusBadge(published) {
     return published !== false
-      ? '<span class="badge badge-ok">已发布</span>'
-      : '<span class="badge badge-draft">未发布</span>';
+      ? '<span class="badge badge-ok">已上架</span>'
+      : '<span class="badge badge-draft">已下架</span>';
   }
 
   function thumbHtml(src, alt) {
@@ -1475,7 +1568,7 @@
     drawer.classList.toggle('drawer--catalog', kind === 'product' || kind === 'news' || kind === 'solution');
 
     if ($('drawer-eyebrow')) {
-      $('drawer-eyebrow').textContent = opts.eyebrow || (kind === 'category' ? '分类管理' : '编辑内容');
+      $('drawer-eyebrow').textContent = opts.eyebrow || (kind === 'category' ? '前台分类' : '编辑内容');
     }
     if ($('drawer-title')) $('drawer-title').textContent = title || '编辑';
     if ($('drawer-context')) {
@@ -1688,28 +1781,81 @@
   /* Generic catalog list helpers */
   var CATALOG_PAGE_SIZE = 5;
 
-  function applyListStatusFilter(rows, status) {
-    if (status === 'published') return rows.filter(function (r) { return r.published !== false; });
-    if (status === 'draft') return rows.filter(function (r) { return r.published === false; });
-    return rows;
+  function catalogCategories(kind) {
+    if (kind === 'products') return state.productCategories || [];
+    if (kind === 'solutions') return state.solutionCategories || [];
+    return state.newsCategories || [];
   }
 
-  function updateListStatusCounts(kind, rows) {
-    var bar = document.querySelector('[data-list-status="' + kind + '"]');
+  function catalogAllLabel(kind) {
+    if (kind === 'products') return '全部产品';
+    if (kind === 'solutions') return '全部方案';
+    return '全部新闻';
+  }
+
+  function itemMatchesCategory(kind, item, catKey) {
+    if (!catKey || catKey === 'all') return true;
+    var cats = catalogCategories(kind);
+    var cat = cats.find(function (c) { return c.key === catKey; });
+    if (!cat) return false;
+    if (kind === 'news') return item.category === cat.name;
+    if (item.filterKey && item.filterKey === cat.key) return true;
+    return item.category === cat.name;
+  }
+
+  function applyListCategoryFilter(kind, rows, catKey) {
+    if (!catKey || catKey === 'all') return rows;
+    return rows.filter(function (r) { return itemMatchesCategory(kind, r, catKey); });
+  }
+
+  function catalogUpdatedTs(row) {
+    var raw = row && row.updatedAt ? String(row.updatedAt).replace(' ', 'T') : '';
+    if (raw && !/[zZ]|[+-]\d{2}:?\d{2}$/.test(raw)) raw += 'Z';
+    var t = raw ? Date.parse(raw) : NaN;
+    return isNaN(t) ? 0 : t;
+  }
+
+  /** Admin list only: on-shelf newest-first, then off-shelf oldest-first (newest off-shelf last). */
+  function sortAdminCatalogRows(rows) {
+    return rows.slice().sort(function (a, b) {
+      var aOn = a.published !== false;
+      var bOn = b.published !== false;
+      if (aOn !== bOn) return aOn ? -1 : 1;
+      var aTs = catalogUpdatedTs(a);
+      var bTs = catalogUpdatedTs(b);
+      if (aOn) return bTs - aTs;
+      return aTs - bTs;
+    });
+  }
+
+  function renderListCategoryTabs(kind) {
+    var bar = document.querySelector('[data-list-category="' + kind + '"]');
     if (!bar) return;
-    var all = rows.length;
-    var published = 0;
-    var draft = 0;
-    rows.forEach(function (r) {
-      if (r.published === false) draft += 1;
-      else published += 1;
+    var selected = (state.listCategory && state.listCategory[kind]) || 'all';
+    var cats = catalogCategories(kind);
+    if (selected !== 'all' && !cats.some(function (c) { return c.key === selected; })) {
+      selected = 'all';
+      state.listCategory[kind] = 'all';
+    }
+    var items = state[kind] || [];
+    var allCount = items.length;
+    var html =
+      '<button type="button" class="hub-tab' + (selected === 'all' ? ' is-active' : '') +
+      '" data-category="all" role="tab" aria-selected="' + (selected === 'all' ? 'true' : 'false') + '">' +
+      '<span class="section-marker" aria-hidden="true"></span>' +
+      '<span class="section-nav-copy"><strong>' + escapeHtml(catalogAllLabel(kind)) +
+      ' <span class="hub-tab-count">' + allCount + '</span></strong><small>查看全部内容</small></span></button>';
+    cats.forEach(function (cat) {
+      var count = items.filter(function (row) { return itemMatchesCategory(kind, row, cat.key); }).length;
+      var active = selected === cat.key;
+      html +=
+        '<button type="button" class="hub-tab' + (active ? ' is-active' : '') +
+        '" data-category="' + escapeAttr(cat.key) + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '">' +
+        '<span class="section-marker" aria-hidden="true"></span>' +
+        '<span class="section-nav-copy"><strong>' + escapeHtml(cat.name) +
+        ' <span class="hub-tab-count">' + count + '</span></strong><small>按分类筛选</small></span></button>';
     });
-    var counts = { all: all, published: published, draft: draft };
-    bar.querySelectorAll('[data-status-count]').forEach(function (el) {
-      var key = el.getAttribute('data-status-count');
-      var n = counts[key] || 0;
-      el.textContent = n ? String(n) : '0';
-    });
+    bar.innerHTML = html;
   }
 
   function paginateRows(rows, page, pageSize) {
@@ -1766,19 +1912,19 @@
     });
   }
 
-  function bindListStatusTabs() {
-    document.querySelectorAll('[data-list-status]').forEach(function (bar) {
+  function bindListCategoryTabs() {
+    document.querySelectorAll('[data-list-category]').forEach(function (bar) {
       if (bar._bound) return;
       bar._bound = true;
-      var kind = bar.getAttribute('data-list-status');
+      var kind = bar.getAttribute('data-list-category');
       bar.addEventListener('click', function (e) {
-        var btn = e.target.closest('[data-status]');
+        var btn = e.target.closest('[data-category]');
         if (!btn || !bar.contains(btn)) return;
-        var status = btn.getAttribute('data-status');
-        state.listStatus[kind] = status;
+        var cat = btn.getAttribute('data-category') || 'all';
+        state.listCategory[kind] = cat;
         state.listPages[kind] = 1;
-        bar.querySelectorAll('[data-status]').forEach(function (tab) {
-          var active = tab.getAttribute('data-status') === status;
+        bar.querySelectorAll('[data-category]').forEach(function (tab) {
+          var active = tab.getAttribute('data-category') === cat;
           tab.classList.toggle('is-active', active);
           tab.setAttribute('aria-selected', active ? 'true' : 'false');
         });
@@ -1833,9 +1979,10 @@
   function renderProductTable() {
     var list = $('product-list');
     if (!list) return;
-    var rows = filterItems(state.products, $('product-search').value, ['id', 'name', 'model', 'category']);
-    updateListStatusCounts('products', rows);
-    rows = applyListStatusFilter(rows, state.listStatus.products || 'all');
+    renderListCategoryTabs('products');
+    var rows = filterItems(state.products, $('product-search').value, ['name']);
+    rows = applyListCategoryFilter('products', rows, state.listCategory.products || 'all');
+    rows = sortAdminCatalogRows(rows);
     var pageInfo = paginateRows(rows, state.listPages.products, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.products) state.listPages.products = pageInfo.page;
     list.innerHTML = pageInfo.rows.map(function (p) {
@@ -1867,7 +2014,7 @@
       '<select id="f-categoryKey">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「产品中心 → 分类管理」中维护可选分类</p></div>';
+      '<p class="field-help">在「产品中心 → 页面设置 → 前台分类」中维护可选分类</p></div>';
   }
 
   function solutionCategorySelect(item) {
@@ -1884,7 +2031,7 @@
       '<select id="f-categoryKey">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「解决方案 → 分类管理」中维护可选分类</p></div>';
+      '<p class="field-help">在「解决方案 → 页面设置 → 前台分类」中维护可选分类</p></div>';
   }
 
   function newsCategorySelect(item) {
@@ -1897,7 +2044,7 @@
       '<select id="f-category">' +
       '<option value="">请选择分类</option>' + opts +
       '</select>' +
-      '<p class="field-help">在「新闻中心 → 分类管理」中维护可选分类</p></div>';
+      '<p class="field-help">在「新闻中心 → 页面设置 → 前台分类」中维护可选分类</p></div>';
   }
 
   async function ensureCategoriesLoaded() {
@@ -1916,6 +2063,9 @@
     renderProductCatList();
     renderNewsCatList();
     renderSolutionCatList();
+    renderListCategoryTabs('products');
+    renderListCategoryTabs('news');
+    renderListCategoryTabs('solutions');
   }
 
   function renderProductCatList() {
@@ -2042,7 +2192,7 @@
     openDrawer('category', (isNew ? '新增' : '编辑') + meta.label);
     $('category-editor').innerHTML =
       '<div class="category-editor-intro">' +
-        '<span class="category-editor-context">' + meta.hub + ' · 分类管理</span>' +
+        '<span class="category-editor-context">' + meta.hub + ' · 前台分类</span>' +
         '<h4>' + (isNew ? '创建一个新的' : '修改当前') + meta.label + '</h4>' +
         '<p>这里只维护访客看得见的分类名称；系统关联和多语言标识会自动处理。</p>' +
       '</div>' +
@@ -2342,9 +2492,10 @@
   function renderNewsTable() {
     var list = $('news-list');
     if (!list) return;
-    var rows = filterItems(state.news, $('news-search').value, ['id', 'title', 'category']);
-    updateListStatusCounts('news', rows);
-    rows = applyListStatusFilter(rows, state.listStatus.news || 'all');
+    renderListCategoryTabs('news');
+    var rows = filterItems(state.news, $('news-search').value, ['title']);
+    rows = applyListCategoryFilter('news', rows, state.listCategory.news || 'all');
+    rows = sortAdminCatalogRows(rows);
     var pageInfo = paginateRows(rows, state.listPages.news, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.news) state.listPages.news = pageInfo.page;
     list.innerHTML = pageInfo.rows.map(function (n) {
@@ -2521,9 +2672,10 @@
   function renderSolutionTable() {
     var list = $('solution-list');
     if (!list) return;
-    var rows = filterItems(state.solutions, $('solution-search').value, ['id', 'name', 'category']);
-    updateListStatusCounts('solutions', rows);
-    rows = applyListStatusFilter(rows, state.listStatus.solutions || 'all');
+    renderListCategoryTabs('solutions');
+    var rows = filterItems(state.solutions, $('solution-search').value, ['name']);
+    rows = applyListCategoryFilter('solutions', rows, state.listCategory.solutions || 'all');
+    rows = sortAdminCatalogRows(rows);
     var pageInfo = paginateRows(rows, state.listPages.solutions, CATALOG_PAGE_SIZE);
     if (pageInfo.page !== state.listPages.solutions) state.listPages.solutions = pageInfo.page;
     list.innerHTML = pageInfo.rows.map(function (s) {
@@ -2561,19 +2713,17 @@
   }
 
   function solutionSlugSelect(item) {
-    var slugOpts = ['tv-display','refrigerator','packaging','washer','capacitor','ac','microwave','coffee','tablet','headlight','robot'];
-    var slugLabels = {
-      'tv-display': 'TV / 商显', refrigerator: '冰箱', packaging: '包装', washer: '洗衣机',
-      capacitor: '电容', ac: '空调', microwave: '微波炉', coffee: '咖啡机',
-      tablet: '平板', headlight: '车灯', robot: '机器人',
-    };
-    return '<div class="field"><label>详情页面类型</label><select id="f-slug">' +
-      '<option value="">通用方案详情页</option>' +
-      slugOpts.map(function (s) {
-        return '<option value="' + s + '"' + (item.slug === s ? ' selected' : '') + '>' +
-          escapeHtml(slugLabels[s] || s) + '</option>';
-      }).join('') +
-      '</select><p class="field-help">按业务名称选择即可，系统会自动关联正确页面。</p></div>';
+    // Existing fixed landing pages keep their mapping; new entries use the generic detail page.
+    return '<input type="hidden" id="f-slug" value="' + escapeAttr(item.slug || '') + '">';
+  }
+
+  function solutionPreviewHref(item) {
+    if (!item || item.id == null) return '';
+    var staticSlugs = ['tv-display','refrigerator','packaging','washer','capacitor','ac','microwave','coffee','tablet','headlight','robot'];
+    if (staticSlugs.indexOf(item.slug) !== -1) {
+      return '/' + encodeURIComponent(item.slug) + '-solution.html';
+    }
+    return '/solutions-detail.html?id=' + encodeURIComponent(item.id);
   }
   function solutionHomeSlotBlock(item, isNew) {
     var cur = item.homeSlot || '';
@@ -2614,7 +2764,7 @@
       ],
     });
 
-    var previewHref = !isNew && item.slug ? '/' + encodeURIComponent(item.slug) + '-solution.html' : '';
+    var previewHref = !isNew ? solutionPreviewHref(item) : '';
     var basicHtml =
       '<div class="form-grid">' +
       field('name', '方案名称', item.name, 'full') +
@@ -3650,9 +3800,36 @@
       locations: collectLocations(prev.locations || []),
     };
   }
+  function catalogCategoriesSectionHtml(key) {
+    var addId = key === 'products' ? 'add-product-cat' : key === 'solutions' ? 'add-solution-cat' : 'add-news-cat';
+    var listId = key === 'products' ? 'product-cat-list' : key === 'solutions' ? 'solution-cat-list' : 'news-cat-list';
+    return '<div class="card catalog-categories-panel">' +
+      '<h3 class="card-title">前台分类</h3>' +
+      '<p class="field-help">维护筛选标签与条目可选分类。新增或编辑后立即生效，不必点「保存并发布」。</p>' +
+      '<div class="filter-bar filter-bar--actions">' +
+      '<button type="button" class="btn btn-accent btn-sm" id="' + addId + '">+ 新增分类</button></div>' +
+      '<div class="card list-card catalog-categories-list">' +
+      '<div class="catalog-list-head catalog-list-head--category" aria-hidden="true"><span>序号</span><span>分类信息</span><span>操作</span></div>' +
+      '<div id="' + listId + '" class="item-list"></div></div></div>';
+  }
+
+  function bindCatalogCategoryAdd(key) {
+    if (key === 'products') {
+      var p = $('add-product-cat');
+      if (p) p.onclick = function () { editProductCategory(null); };
+    } else if (key === 'solutions') {
+      var s = $('add-solution-cat');
+      if (s) s.onclick = function () { editSolutionCategory(null); };
+    } else if (key === 'news') {
+      var n = $('add-news-cat');
+      if (n) n.onclick = function () { editNewsCategory(null); };
+    }
+  }
+
   function renderListPageForm(key, page) {
     var formId = 'page-' + key + '-form';
     var filters = page.filters || {};
+    var filtersHelp = '分类按钮文案由本页「前台分类」维护，修改后立即同步到前台筛选。';
     var extraSection;
     if (key === 'solutions') {
       extraSection = {
@@ -3666,7 +3843,7 @@
         label: '筛选文案',
         html: cardBlock('筛选文案',
           field('filters-all', '「全部」按钮文案', filters.all || (key === 'news' ? '全部资讯' : '全部产品'), 'full') +
-          '<div class="field full"><p class="field-help">分类按钮文案由当前栏目的「分类管理」维护，保存后会自动同步到当前页面。</p></div>'),
+          '<div class="field full"><p class="field-help">' + filtersHelp + '</p></div>'),
       };
     }
     var filterSection = key === 'solutions'
@@ -3675,7 +3852,7 @@
         label: '筛选文案',
         html: cardBlock('筛选文案',
           field('filters-all', '「全部」按钮文案', filters.all || '全部方案', 'full') +
-          '<div class="field full"><p class="field-help">分类按钮文案由当前栏目的「分类管理」维护，保存后会自动同步到当前页面。</p></div>'),
+          '<div class="field full"><p class="field-help">' + filtersHelp + '</p></div>'),
       }
       : null;
     var sections = [
@@ -3689,10 +3866,20 @@
     ];
     if (filterSection) sections.push(filterSection);
     sections.push(extraSection);
+    sections.push({
+      key: 'categories',
+      label: '前台分类',
+      html: catalogCategoriesSectionHtml(key),
+    });
     $(formId).innerHTML = buildSectionTabs(formId, sections, 'hero');
     bindSectionTabs(formId);
     bindPageDirty(formId, key);
     bindImageFields($(formId));
+    bindCatalogCategoryAdd(key);
+    if (key === 'products') renderProductCatList();
+    else if (key === 'news') renderNewsCatList();
+    else if (key === 'solutions') renderSolutionCatList();
+    syncListPageSaveBar(key);
     if (key === 'solutions') {
       bindGenericRepeater('rep-pillars', PILLAR_BLANK);
       bindLeafRepeaterRemove('rep-pillars');
@@ -3779,20 +3966,26 @@
     techAdvantages: '技术优势',
   };
   var SITE_FOOTER_LABELS = {
-    tagline: '页脚标语', copyright: '版权文案', icp: '备案号',
+    tagline: '页脚标语', copyright: '版权文案', icp: '备案号', wechatAlt: '二维码说明',
   };
+  var DEFAULT_WECHAT_IMAGE = 'assets/images/brand/wechat-service.png';
 
   async function loadSiteForm() {
     var site = await api('/admin/site');
     state.siteCache = site;
+    var footer = site.footer || {};
+    var footerHtml = siteKvFields('footer', footer, SITE_FOOTER_LABELS) +
+      imageField('footer-wechatImage', '微信客服二维码', footer.wechatImage || DEFAULT_WECHAT_IMAGE) +
+      '<div class="field full"><p class="field-help">用于网站底部展示。可从素材库选择，或上传新的二维码图片后保存。</p></div>';
     var sections = [
       { key: 'nav', label: '网站顶部', html: cardBlock('顶部导航名称', siteKvFields('nav', site.nav, SITE_NAV_LABELS)) },
       { key: 'common', label: '通用文案', html: cardBlock('全站通用文案', siteKvFields('common', site.common, SITE_COMMON_LABELS)) },
-      { key: 'footer', label: '网站底部', html: cardBlock('网站底部可见内容', siteKvFields('footer', site.footer, SITE_FOOTER_LABELS)) },
+      { key: 'footer', label: '网站底部', html: cardBlock('网站底部可见内容', footerHtml) },
     ];
     $('site-form').innerHTML = buildSectionTabs('site-form', sections, 'nav');
     bindSectionTabs('site-form');
     bindPageDirty('site-form', 'site');
+    bindImageFields($('site-form'));
   }
   async function saveSite() {
     var saveButton = $('save-site');
@@ -3808,7 +4001,9 @@
         nav: Object.assign({}, prev.nav || {}, collectSiteKv('nav', SITE_NAV_LABELS)),
         lang: Object.assign({ zh: 'ZH', en: 'EN', ru: 'RU' }, prev.lang || {}),
         common: Object.assign({}, prev.common || {}, collectSiteKv('common', SITE_COMMON_LABELS)),
-        footer: Object.assign({}, prev.footer || {}, collectSiteKv('footer', SITE_FOOTER_LABELS)),
+        footer: Object.assign({}, prev.footer || {}, collectSiteKv('footer', SITE_FOOTER_LABELS), {
+          wechatImage: (val('f-footer-wechatImage') || '').trim() || DEFAULT_WECHAT_IMAGE,
+        }),
       };
       await api('/admin/site', { method: 'PUT', body: JSON.stringify(body) });
       state.siteCache = body;
@@ -3887,7 +4082,7 @@
     }
     renderMediaPagination(pageInfo);
     if (!allItems.length) {
-      grid.innerHTML = '<div class="media-empty-state"><strong>还没有图片素材</strong><p>点击右上角“上传图片”，可一次选择多张图片。</p></div>';
+      grid.innerHTML = '<div class="media-empty-state"><strong>还没有图片素材</strong><p>点击右侧“上传图片”，可一次选择多张图片。</p></div>';
       return;
     }
     if (!filtered.length) {
@@ -4090,17 +4285,12 @@
 
   function setTxSyncLock(on) {
     document.body.classList.toggle('tx-syncing', !!on);
-    var syncBtn = $('sync-all-stale');
-    if (syncBtn) {
-      syncBtn.disabled = !!on;
-      syncBtn.textContent = on ? '同步中…' : '立即同步';
-    }
     var inline = $('tx-sync-inline');
     if (inline) {
       inline.disabled = !!on;
       inline.textContent = on ? '同步中…' : '立即同步';
     }
-    ['enqueue-stale-jobs', 'refresh-jobs', 'refresh-translation'].forEach(function (id) {
+    ['enqueue-stale-jobs', 'refresh-jobs'].forEach(function (id) {
       if ($(id)) $(id).disabled = !!on;
     });
     document.querySelectorAll('[data-sync-one], [data-run], [data-apply], [data-job-res], [data-res]').forEach(function (el) {
@@ -4396,7 +4586,7 @@
         ? '有 ' + staleItems.length + ' 项内容待同步到英文 / 俄文'
         : '英文 / 俄文均已与中文同步';
       var sub = staleItems.length
-        ? '共 ' + staleLangCount + ' 个语言版本需要更新。改完中文后点右上角「立即同步」即可。'
+        ? '共 ' + staleLangCount + ' 个语言版本需要更新。改完中文后点「立即同步」即可。'
         : '继续改中文并保存后，这里会出现待同步项。';
       overview.innerHTML =
         '<div class="tx-hero' + (staleItems.length ? ' is-pending' : ' is-ok') + '">' +
@@ -4414,7 +4604,9 @@
       var inline = $('tx-sync-inline');
       if (inline) {
         inline.addEventListener('click', function () {
-          if ($('sync-all-stale')) $('sync-all-stale').click();
+          syncAllStaleTranslations().catch(function (e) {
+            toast(e.message || '同步失败', true);
+          });
         });
       }
     }
@@ -4559,6 +4751,180 @@
     });
   }
 
+  function localDayString(date) {
+    var d = date || new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function addLocalDays(date, delta) {
+    var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    d.setDate(d.getDate() + delta);
+    return d;
+  }
+
+  function analyticsLangLabel(lang) {
+    if (lang === 'en') return '英文';
+    if (lang === 'ru') return '俄文';
+    return '中文';
+  }
+
+  function setAnalyticsRangePreset(range) {
+    state.analyticsRange = range || 'custom';
+    document.querySelectorAll('[data-analytics-range]').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-analytics-range') === state.analyticsRange);
+    });
+    var to = new Date();
+    var from = new Date();
+    if (range === 'today') {
+      from = to;
+    } else if (range === '7d') {
+      from = addLocalDays(to, -6);
+    } else if (range === '30d') {
+      from = addLocalDays(to, -29);
+    } else {
+      return;
+    }
+    if ($('analytics-from')) $('analytics-from').value = localDayString(from);
+    if ($('analytics-to')) $('analytics-to').value = localDayString(to);
+  }
+
+  function ensureAnalyticsDates() {
+    if (!$('analytics-from') || !$('analytics-to')) return;
+    if (!$('analytics-from').value || !$('analytics-to').value) {
+      setAnalyticsRangePreset(state.analyticsRange || '7d');
+    }
+  }
+
+  function renderAnalyticsSummary(report) {
+    var box = $('analytics-summary');
+    if (!box) return;
+    report = report || {};
+    box.innerHTML =
+      '<div class="traffic-summary analytics-summary-grid">' +
+      '<div class="traffic-stat"><span class="traffic-label">总访问</span><strong>' + escapeHtml(String(report.total || 0)) + '</strong></div>' +
+      '<div class="traffic-stat"><span class="traffic-label">日均</span><strong>' + escapeHtml(String(report.avgDaily || 0)) + '</strong></div>' +
+      '<div class="traffic-stat"><span class="traffic-label">有访问页面</span><strong>' + escapeHtml(String(report.pageCount || 0)) + '</strong></div>' +
+      '</div>';
+  }
+
+  function renderAnalyticsDaily(daily) {
+    var box = $('analytics-daily');
+    if (!box) return;
+    daily = daily || [];
+    if (!daily.length) {
+      box.innerHTML = '<p class="help">所选日期内暂无访问数据。</p>';
+      return;
+    }
+    var max = Math.max.apply(null, daily.map(function (row) { return Number(row.hits) || 0; }).concat([1]));
+    box.innerHTML = '<div class="analytics-bars">' + daily.map(function (row) {
+      var hits = Number(row.hits) || 0;
+      var pct = Math.max(hits ? 4 : 0, Math.round((hits / max) * 100));
+      var label = String(row.day || '').slice(5);
+      return '<div class="analytics-bar-row">' +
+        '<span class="analytics-bar-day">' + escapeHtml(label) + '</span>' +
+        '<div class="analytics-bar-track" title="' + escapeAttr(row.day + ' · ' + hits) + '">' +
+        '<span style="width:' + pct + '%"></span></div>' +
+        '<span class="analytics-bar-val">' + escapeHtml(String(hits)) + '</span></div>';
+    }).join('') + '</div>';
+  }
+
+  function renderAnalyticsSections(sections) {
+    var box = $('analytics-sections');
+    if (!box) return;
+    sections = sections || [];
+    if (!sections.length) {
+      box.innerHTML = '<p class="help">暂无栏目数据。</p>';
+      return;
+    }
+    var max = Math.max.apply(null, sections.map(function (row) { return Number(row.hits) || 0; }).concat([1]));
+    box.innerHTML = '<div class="analytics-bars analytics-bars--sections">' + sections.map(function (row) {
+      var hits = Number(row.hits) || 0;
+      var pct = Math.max(hits ? 4 : 0, Math.round((hits / max) * 100));
+      return '<div class="analytics-bar-row">' +
+        '<span class="analytics-bar-day">' + escapeHtml(row.label || row.key) + '</span>' +
+        '<div class="analytics-bar-track"><span style="width:' + pct + '%"></span></div>' +
+        '<span class="analytics-bar-val">' + escapeHtml(String(hits)) +
+        (row.share != null ? '<small>' + escapeHtml(String(row.share)) + '%</small>' : '') +
+        '</span></div>';
+    }).join('') + '</div>';
+  }
+
+  function renderAnalyticsPagination(report) {
+    var root = $('analytics-pagination');
+    if (!root) return;
+    var page = report.page || 1;
+    var totalPages = report.totalPages || 1;
+    if (totalPages <= 1) {
+      root.innerHTML = '';
+      return;
+    }
+    root.innerHTML =
+      '<button type="button" class="btn btn-ghost btn-sm" data-analytics-page="prev"' + (page <= 1 ? ' disabled' : '') + '>上一页</button>' +
+      '<span class="page-indicator">' + page + ' / ' + totalPages + '</span>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-analytics-page="next"' + (page >= totalPages ? ' disabled' : '') + '>下一页</button>';
+    root.querySelectorAll('[data-analytics-page]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        if (btn.getAttribute('data-analytics-page') === 'prev') state.analyticsPage -= 1;
+        else state.analyticsPage += 1;
+        loadAnalytics().catch(function (e) { toast(e.message, true); });
+      });
+    });
+  }
+
+  function renderAnalyticsTable(report) {
+    var tbody = $('analytics-table') && $('analytics-table').querySelector('tbody');
+    if (!tbody) return;
+    var rows = report.pages || [];
+    var page = report.page || 1;
+    var pageSize = report.pageSize || 20;
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">所选范围内暂无页面访问记录</td></tr>';
+    } else {
+      tbody.innerHTML = rows.map(function (row, index) {
+        var rank = (page - 1) * pageSize + index + 1;
+        return '<tr>' +
+          '<td class="cell-id">' + escapeHtml(String(rank)) + '</td>' +
+          '<td class="cell-name"><strong title="' + escapeAttr(row.path || '') + '">' +
+          escapeHtml(row.label || row.path || '—') + '</strong>' +
+          '<div class="cell-sub">' + escapeHtml(row.path || '') + '</div></td>' +
+          '<td class="cell-lang">' + escapeHtml(analyticsLangLabel(row.lang)) + '</td>' +
+          '<td class="cell-hits">' + escapeHtml(String(row.hits || 0)) + '</td>' +
+          '<td class="cell-share">' + escapeHtml(String(row.share != null ? row.share : 0)) + '%</td>' +
+          '</tr>';
+      }).join('');
+    }
+    if ($('analytics-table-foot')) {
+      $('analytics-table-foot').textContent = report.totalRows
+        ? ('共 ' + report.totalRows + ' 个页面 · 第 ' + (report.page || 1) + ' / ' + (report.totalPages || 1) + ' 页')
+        : '暂无匹配页面';
+    }
+    renderAnalyticsPagination(report);
+  }
+
+  async function loadAnalytics() {
+    if (!$('analytics-summary')) return;
+    ensureAnalyticsDates();
+    var from = ($('analytics-from') && $('analytics-from').value) || '';
+    var to = ($('analytics-to') && $('analytics-to').value) || '';
+    var lang = ($('analytics-lang') && $('analytics-lang').value) || '';
+    var qs = '?page=' + encodeURIComponent(state.analyticsPage || 1) +
+      '&pageSize=' + encodeURIComponent(state.analyticsPageSize || 20);
+    if (from) qs += '&from=' + encodeURIComponent(from);
+    if (to) qs += '&to=' + encodeURIComponent(to);
+    if (lang) qs += '&lang=' + encodeURIComponent(lang);
+    var report = await api('/admin/analytics/report' + qs);
+    state.analyticsReport = report;
+    state.analyticsPage = report.page || 1;
+    renderAnalyticsSummary(report);
+    renderAnalyticsDaily(report.daily);
+    renderAnalyticsSections(report.sections);
+    renderAnalyticsTable(report);
+  }
+
   async function loadAudit() {
     var action = ($('audit-action') && $('audit-action').value) || '';
     var resource = ($('audit-resource') && $('audit-resource').value) || '';
@@ -4689,6 +5055,114 @@
     return s.length > 28 ? s.slice(0, 28) + '…' : s;
   }
 
+  function formatBackupBytes(bytes) {
+    var value = Number(bytes || 0);
+    if (value < 1024) return value + ' B';
+    if (value < 1024 * 1024) return (value / 1024).toFixed(1) + ' KB';
+    return (value / 1024 / 1024).toFixed(1) + ' MB';
+  }
+
+  function formatBackupTime(value) {
+    if (!value) return '—';
+    var date = new Date(value);
+    if (isNaN(date.getTime())) return String(value);
+    return date.toLocaleString('zh-CN', {
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+    });
+  }
+
+  function backupReasonLabel(reason) {
+    return reason === 'auto' ? '修改前自动备份' :
+      reason === 'pre-restore' ? '恢复前安全备份' : '手动完整备份';
+  }
+
+  function renderBackups() {
+    var items = state.backups || [];
+    var latest = state.latestBackup || items[0] || null;
+    var overview = $('backup-overview');
+    var restoreLatest = $('backup-restore-latest');
+    if (restoreLatest) {
+      restoreLatest.disabled = !latest;
+      restoreLatest.setAttribute('data-backup-id', latest ? latest.id : '');
+    }
+    if (overview) {
+      overview.innerHTML = latest
+        ? '<div class="backup-stat"><span>最近一次备份</span><strong>' + escapeHtml(formatBackupTime(latest.createdAt)) + '</strong><small>' + escapeHtml(backupReasonLabel(latest.reason)) + '</small></div>' +
+          '<div class="backup-stat"><span>备份内容</span><strong>' + escapeHtml(formatBackupBytes(latest.bytes)) + '</strong><small>' + latest.files + ' 个文件 · 数据库、内容和上传图片</small></div>' +
+          '<div class="backup-stat is-safe"><span>自动保护</span><strong>已开启</strong><small>开始修改前自动创建，15 分钟内不重复</small></div>'
+        : '<div class="backup-empty">还没有完整备份。建议先点击“立即完整备份”建立第一个安全版本。</div>';
+    }
+    var list = $('backup-list');
+    if (!list) return;
+    if (!items.length) {
+      list.innerHTML = '<p class="empty">暂无备份记录</p>';
+      return;
+    }
+    list.innerHTML = '<table class="data data-table backup-table"><thead><tr><th>备份时间</th><th>类型</th><th>大小</th><th>包含内容</th><th class="cell-actions">操作</th></tr></thead><tbody>' +
+      items.slice(0, 20).map(function (item) {
+        var coverage = item.hasUploads ? '数据库、内容、上传图片' : '数据库和内容';
+        return '<tr><td>' + escapeHtml(formatBackupTime(item.createdAt)) + '</td>' +
+          '<td><span class="backup-type">' + escapeHtml(backupReasonLabel(item.reason)) + '</span></td>' +
+          '<td>' + escapeHtml(formatBackupBytes(item.bytes)) + '</td>' +
+          '<td>' + escapeHtml(coverage) + '</td>' +
+          '<td class="cell-actions"><button type="button" class="btn btn-ghost btn-sm" data-restore-backup="' + escapeAttr(item.id) + '">恢复此版本</button></td></tr>';
+      }).join('') + '</tbody></table>';
+    list.querySelectorAll('[data-restore-backup]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        restoreBackupVersion(button.getAttribute('data-restore-backup'));
+      });
+    });
+  }
+
+  async function loadBackups() {
+    var data = await api('/admin/backups');
+    state.backups = data.items || [];
+    state.latestBackup = data.latest || state.backups[0] || null;
+    renderBackups();
+  }
+
+  async function createManualBackup() {
+    var button = $('backup-create');
+    if (button) {
+      button.disabled = true;
+      button.textContent = '正在备份…';
+    }
+    try {
+      var data = await api('/admin/backups', { method: 'POST', body: '{}' });
+      toast('完整备份已创建');
+      await loadBackups();
+      return data.backup;
+    } catch (error) {
+      toast(error.message || '备份失败', true);
+      return null;
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = '立即完整备份';
+      }
+    }
+  }
+
+  async function restoreBackupVersion(id) {
+    if (!id) return;
+    var item = (state.backups || []).find(function (row) { return row.id === id; });
+    var when = item ? formatBackupTime(item.createdAt) : id;
+    if (!confirm('确定恢复到“' + when + '”的版本吗？\n\n当前状态会先自动备份，然后再恢复网站内容和上传图片。')) return;
+    var buttons = document.querySelectorAll('[data-restore-backup], #backup-restore-latest');
+    buttons.forEach(function (button) { button.disabled = true; });
+    try {
+      await api('/admin/backups/' + encodeURIComponent(id) + '/restore', { method: 'POST', body: '{}' });
+      toast('恢复完成，网站内容已回到所选版本');
+      state.pageCache = {};
+      state.siteCache = null;
+      await loadBackups();
+    } catch (error) {
+      toast(error.message || '恢复失败', true);
+    } finally {
+      renderBackups();
+    }
+  }
   /* Bind */
   $('login-btn').addEventListener('click', async function () {
     try {
@@ -4730,6 +5204,7 @@
   }
   $('password').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('login-btn').click(); });
   function logout() {
+    if (token) api('/admin/logout', { method: 'POST', body: '{}' }).catch(function () {});
     token = '';
     sessionStorage.removeItem('txam_admin_token');
     sessionStorage.removeItem('txam_admin_actor');
@@ -4771,11 +5246,11 @@
         if (key === 'solutions') loadSolutions().catch(function (e) { toast(e.message, true); });
       } else if (tab === 'page') {
         loadPageForm(key).catch(function (e) { toast(e.message, true); });
-      } else if (tab === 'categories' && (key === 'products' || key === 'news' || key === 'solutions')) {
-        loadCategories().catch(function (e) { toast(e.message, true); });
       } else if (key === 'system') {
         if (tab === 'translation') loadTranslation().catch(function (e) { toast(e.message, true); });
+        if (tab === 'analytics') loadAnalytics().catch(function (e) { toast(e.message, true); });
         if (tab === 'audit') loadAudit().catch(function (e) { toast(e.message, true); });
+        if (tab === 'backup') loadBackups().catch(function (e) { toast(e.message, true); });
       }
     });
   });
@@ -4787,8 +5262,13 @@
     });
   });
 
-  if ($('refresh-translation')) {
-    $('refresh-translation').addEventListener('click', function () { loadTranslation().catch(function (e) { toast(e.message, true); }); });
+  if ($('backup-create')) {
+    $('backup-create').addEventListener('click', createManualBackup);
+  }
+  if ($('backup-restore-latest')) {
+    $('backup-restore-latest').addEventListener('click', function () {
+      restoreBackupVersion($('backup-restore-latest').getAttribute('data-backup-id'));
+    });
   }
   if ($('refresh-jobs')) {
     $('refresh-jobs').addEventListener('click', function () { loadTranslationJobs().catch(function (e) { toast(e.message, true); }); });
@@ -4805,16 +5285,6 @@
       } catch (err) { toast(err.message, true); }
     });
   }
-  if ($('sync-all-stale')) {
-    $('sync-all-stale').addEventListener('click', function () {
-      syncAllStaleTranslations().catch(function (e) {
-        toast(e.message || '同步失败', true);
-      });
-    });
-  }
-  $('refresh-media').addEventListener('click', function () {
-    loadMedia().then(function () { toast('素材库已刷新'); }).catch(function (e) { toast(mediaErrorMessage(e), true); });
-  });
   if ($('media-search')) {
     $('media-search').addEventListener('input', function () { state.mediaPage = 1; renderMediaGrid(); });
   }
@@ -4825,9 +5295,39 @@
       renderMediaGrid();
     });
   });
-  if ($('refresh-audit')) {
-    $('refresh-audit').addEventListener('click', function () { loadAudit().catch(function (e) { toast(e.message, true); }); });
+  if ($('analytics-filter-btn')) {
+    $('analytics-filter-btn').addEventListener('click', function () {
+      state.analyticsPage = 1;
+      state.analyticsRange = 'custom';
+      document.querySelectorAll('[data-analytics-range]').forEach(function (btn) {
+        btn.classList.remove('is-active');
+      });
+      loadAnalytics().catch(function (e) { toast(e.message, true); });
+    });
   }
+  document.querySelectorAll('[data-analytics-range]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setAnalyticsRangePreset(btn.getAttribute('data-analytics-range'));
+      state.analyticsPage = 1;
+      loadAnalytics().catch(function (e) { toast(e.message, true); });
+    });
+  });
+  if ($('analytics-lang')) {
+    $('analytics-lang').addEventListener('change', function () {
+      state.analyticsPage = 1;
+      loadAnalytics().catch(function (e) { toast(e.message, true); });
+    });
+  }
+  ['analytics-from', 'analytics-to'].forEach(function (id) {
+    if ($(id)) {
+      $(id).addEventListener('change', function () {
+        state.analyticsRange = 'custom';
+        document.querySelectorAll('[data-analytics-range]').forEach(function (btn) {
+          btn.classList.remove('is-active');
+        });
+      });
+    }
+  });
   if ($('audit-filter-btn')) {
     $('audit-filter-btn').addEventListener('click', function () { loadAudit().catch(function (e) { toast(e.message, true); }); });
   }
@@ -4882,24 +5382,6 @@
     state.listPages.solutions = 1;
     renderSolutionTable();
   });
-  if ($('product-search-btn')) {
-    $('product-search-btn').addEventListener('click', function () {
-      state.listPages.products = 1;
-      renderProductTable();
-    });
-  }
-  if ($('news-search-btn')) {
-    $('news-search-btn').addEventListener('click', function () {
-      state.listPages.news = 1;
-      renderNewsTable();
-    });
-  }
-  if ($('solution-search-btn')) {
-    $('solution-search-btn').addEventListener('click', function () {
-      state.listPages.solutions = 1;
-      renderSolutionTable();
-    });
-  }
 
   if ($('drawer-close')) $('drawer-close').addEventListener('click', closeDrawer);
   if ($('drawer-backdrop')) $('drawer-backdrop').addEventListener('click', closeDrawer);
@@ -4916,15 +5398,6 @@
     try { createSolution(); } catch (e) { toast(e.message, true); }
   });
 
-  if ($('add-product-cat')) {
-    $('add-product-cat').addEventListener('click', function () { editProductCategory(null); });
-  }
-  if ($('add-solution-cat')) {
-    $('add-solution-cat').addEventListener('click', function () { editSolutionCategory(null); });
-  }
-  if ($('add-news-cat')) {
-    $('add-news-cat').addEventListener('click', function () { editNewsCategory(null); });
-  }
   $('save-page-home').addEventListener('click', function () { savePage('home'); });
   $('save-page-about').addEventListener('click', function () { savePage('about'); });
   $('save-page-contact').addEventListener('click', function () { savePage('contact'); });
@@ -4940,7 +5413,7 @@
   });
 
   bindDashboardScrollSync();
-  bindListStatusTabs();
+  bindListCategoryTabs();
 
   if (token) {
     updateUserChip();

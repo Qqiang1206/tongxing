@@ -7,13 +7,14 @@
   },
   "filters": {
     "all": "全部产品",
+    "optical": "光学元件组装",
     "dispensing": "点胶装配",
     "flip": "翻转检测",
     "screw": "锁付组装",
-    "optical": "光学元件组装",
     "transfer": "搬运移载",
     "packaging": "后段包装",
-    "robot": "机器人集成"
+    "robot": "机器人集成",
+    "line": "整线交付"
   },
   "seo": {
     "title": "产品中心 | 同兴高科 TXAM - 中国领先的自动化品牌供应商",

@@ -80,7 +80,7 @@ npm run generate-data-js
 # 按产品/新闻/方案目录重写 sitemap.xml（SITEMAP_BASE 可改域名）
 npm run generate-sitemap
 
-# 备份 data/
+# 完整备份 SQLite、静态回退数据和运营上传图片
 npm run backup-data
 ```
 
@@ -111,7 +111,7 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 | Admin 密码 | 强密码，仅环境变量 |
 | 上传目录 | `assets/images/uploads/` 可写但勿执行脚本 |
 | CORS | 生产改为具体站点 Origin，勿长期 `*` |
-| 备份 | 定期跑 `backup-data`，备份目录勿暴露 Web |
+| 备份 | 后台写入前每 15 分钟自动备份；也可跑 `backup-data`。备份含 SQLite、静态数据和上传图片，`_backups` 勿暴露 Web |
 | 操作日志 | 写操作与登录写入 `admin_audit_log`；默认保留 90 天（`AUDIT_RETENTION_DAYS`）；不含密码与上传二进制 |
 
 ---
