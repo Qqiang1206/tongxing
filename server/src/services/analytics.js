@@ -252,8 +252,9 @@ export function getAnalyticsSummary() {
     today: sumHits(db, today, today),
     yesterday: sumHits(db, yesterday, yesterday),
     week: sumHits(db, weekStart, today),
+    dailyLast7: dailyHits(db, weekStart, today),
     topToday: topPaths(db, today, today, 8),
-    topWeek: topPaths(db, weekStart, today, 8),
+    topWeek: topPaths(db, weekStart, today, 5),
   };
 }
 

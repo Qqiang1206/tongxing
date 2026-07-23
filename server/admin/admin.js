@@ -1338,8 +1338,8 @@
         '<div class="traffic-stat"><span class="traffic-label">昨日</span><strong>' + analytics.yesterday + '</strong></div>' +
         '<div class="traffic-stat"><span class="traffic-label">近7日</span><strong>' + analytics.week + '</strong></div>' +
         '</div>' +
-        renderTrafficList('今日热门页面', analytics.topToday) +
-        renderTrafficList('近7日热门页面', analytics.topWeek);
+        renderDashTrafficTrend(analytics.dailyLast7) +
+        renderDashTrafficTops(analytics.topWeek);
     }
     renderRecentUpdates(state.dashboardRecent);
     syncDashboardScrollAreas();
@@ -1526,6 +1526,49 @@
     if (language === 'en') return '英文站 · ' + pageLabel;
     if (language === 'ru') return '俄文站 · ' + pageLabel;
     return pageLabel;
+  }
+
+  function renderDashTrafficTrend(daily) {
+    daily = daily || [];
+    if (!daily.length) {
+      return '<div class="traffic-block"><div class="traffic-block-title">近7日趋势</div>' +
+        '<p class="help">暂无访问数据</p></div>';
+    }
+    var max = Math.max.apply(null, daily.map(function (row) { return Number(row.hits) || 0; }).concat([1]));
+    var cols = daily.map(function (row) {
+      var hits = Number(row.hits) || 0;
+      var pct = Math.max(hits ? 8 : 0, Math.round((hits / max) * 100));
+      var label = String(row.day || '').slice(5);
+      return '<div class="dash-traffic-col" title="' + escapeAttr((row.day || '') + ' · ' + hits) + '">' +
+        '<span class="dash-traffic-col-val">' + escapeHtml(String(hits)) + '</span>' +
+        '<div class="dash-traffic-col-bar"><span style="height:' + pct + '%"></span></div>' +
+        '<span class="dash-traffic-col-day">' + escapeHtml(label) + '</span></div>';
+    }).join('');
+    return '<div class="traffic-block dash-traffic-trend">' +
+      '<div class="traffic-block-title">近7日趋势</div>' +
+      '<div class="dash-traffic-cols">' + cols + '</div></div>';
+  }
+
+  function renderDashTrafficTops(rows) {
+    var list = rows && rows.length ? rows.slice(0, 5) : [];
+    if (!list.length) {
+      return '<div class="traffic-block"><div class="traffic-block-title">近7日热门页面</div>' +
+        '<p class="help">暂无访问记录</p></div>';
+    }
+    var max = Math.max.apply(null, list.map(function (row) { return Number(row.hits) || 0; }).concat([1]));
+    var body = list.map(function (row) {
+      var hits = Number(row.hits) || 0;
+      var pct = Math.max(hits ? 6 : 0, Math.round((hits / max) * 100));
+      var pagePath = row.path || '';
+      return '<div class="dash-traffic-top-row">' +
+        '<span class="dash-traffic-top-page"' + (pagePath ? ' title="' + escapeAttr(pagePath) + '"' : '') + '>' +
+        escapeHtml(trafficPageLabel(row)) + '</span>' +
+        '<div class="dash-traffic-top-track"><span style="width:' + pct + '%"></span></div>' +
+        '<span class="dash-traffic-top-hits">' + escapeHtml(String(hits)) + '</span></div>';
+    }).join('');
+    return '<div class="traffic-block dash-traffic-tops">' +
+      '<div class="traffic-block-title">近7日热门页面</div>' +
+      '<div class="dash-traffic-top-list">' + body + '</div></div>';
   }
 
   function renderTrafficList(title, rows) {
