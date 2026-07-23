@@ -51,10 +51,10 @@
     if (/\.webp$/i.test(cover)) {
       return (
         '<picture><source srcset="' + escapeHtml(resolved) + '" type="image/webp">' +
-        '<img loading="lazy" src="' + escapeHtml(resolved) + '" alt="' + altText + '" class="img-zoom"></picture>'
+        '<img loading="lazy" decoding="async" src="' + escapeHtml(resolved) + '" alt="' + altText + '" class="img-zoom"></picture>'
       );
     }
-    return '<img loading="lazy" src="' + escapeHtml(resolved) + '" alt="' + altText + '" class="img-zoom">';
+    return '<img loading="lazy" decoding="async" src="' + escapeHtml(resolved) + '" alt="' + altText + '" class="img-zoom">';
   }
 
   function buildCard(item, lang, detailPrefix) {

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { REPO_ROOT } from '../config.js';
 import { getDb } from '../db.js';
+import { clearPublicCache } from './publicCache.js';
 
 const BACKUP_ROOT = path.join(REPO_ROOT, '_backups');
 const DATA_DIR = path.join(REPO_ROOT, 'data');
@@ -239,5 +240,6 @@ export function restoreBackup(id) {
   restoreDatabaseContents(getDb(), dbSource);
   if (fs.existsSync(dataSource)) replaceTree(dataSource, DATA_DIR);
   if (fs.existsSync(uploadsSource)) replaceTree(uploadsSource, UPLOAD_DIR);
+  clearPublicCache();
   return { restored: true, backup: describeBackup(source), safetyBackup };
 }

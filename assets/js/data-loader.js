@@ -68,59 +68,32 @@
 
 
 
-  async function fetchJson(url) {
+  var jsonRequestCache = Object.create(null);
 
-    var res = await fetch(url);
-
-    if (!res.ok) throw new Error('Failed to load ' + url + ' (' + res.status + ')');
-
-    return res.json();
-
+  function fetchJson(url) {
+    if (jsonRequestCache[url]) return jsonRequestCache[url];
+    var request = fetch(url, { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('Failed to load ' + url + ' (' + res.status + ')');
+        return res.json();
+      })
+      .catch(function (err) {
+        delete jsonRequestCache[url];
+        throw err;
+      });
+    jsonRequestCache[url] = request;
+    return request;
   }
 
   /**
-   * Resolve API base once:
-   * - Explicit window.__TXAM_API_BASE (string) wins
-   * - false disables API
-   * - else probe same-origin /api/v1/health (http/https only)
+   * Public pages are static-data first. An explicit window.__TXAM_API_BASE
+   * enables API mode when needed; omitting it avoids a blocking health probe.
    */
-  var apiProbePromise = null;
-
   async function ensureApiBase() {
     if (global.__TXAM_API_BASE === false) return '';
     if (typeof global.__TXAM_API_BASE === 'string') return global.__TXAM_API_BASE;
-    if (apiProbePromise) return apiProbePromise;
-
-    apiProbePromise = (async function () {
-      try {
-        if (typeof location === 'undefined' || !/^https?:$/i.test(location.protocol)) {
-          global.__TXAM_API_BASE = '';
-          return '';
-        }
-        var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
-        var timer = setTimeout(function () {
-          if (ctrl) ctrl.abort();
-        }, 800);
-        var res = await fetch('/api/v1/health', {
-          method: 'GET',
-          credentials: 'same-origin',
-          signal: ctrl ? ctrl.signal : undefined,
-        });
-        clearTimeout(timer);
-        if (res.ok) {
-          global.__TXAM_API_BASE = '/api/v1';
-          return '/api/v1';
-        }
-      } catch (err) {
-        /* static fallback */
-      }
-      global.__TXAM_API_BASE = '';
-      return '';
-    })();
-
-    return apiProbePromise;
+    return '';
   }
-
   /**
 
    * Load catalog data for detail pages.
@@ -134,6 +107,16 @@
    */
 
   async function loadData(kind, lang) {
+    var map = {
+      products: '__TXAM_PRODUCTS_',
+      solutions: '__TXAM_SOLUTIONS_',
+      news: '__TXAM_NEWS_',
+    };
+    var key = (map[kind] || '') + String(lang).toUpperCase();
+    if (global[key] && typeof global[key] === 'object') {
+      return global[key];
+    }
+
     var apiBase = await ensureApiBase();
     if (apiBase) {
       try {
@@ -144,19 +127,9 @@
       }
     }
 
-    var map = {
-      products: '__TXAM_PRODUCTS_',
-      solutions: '__TXAM_SOLUTIONS_',
-      news: '__TXAM_NEWS_',
-    };
-    var key = (map[kind] || '') + String(lang).toUpperCase();
-    if (global[key] && typeof global[key] === 'object') {
-      return global[key];
-    }
     var prefix = inLangDir() ? '../' : '';
     return fetchJson(prefix + 'data/' + kind + '/' + lang + '.json');
   }
-
 
 
   /**
@@ -168,6 +141,11 @@
    */
 
   async function loadSite(lang) {
+    var siteKey = '__TXAM_SITE_' + String(lang).toUpperCase();
+    if (global[siteKey] && typeof global[siteKey] === 'object') {
+      return global[siteKey];
+    }
+
     var apiBase = await ensureApiBase();
     if (apiBase) {
       try {
@@ -179,18 +157,16 @@
     }
 
     var prefix = inLangDir() ? '../' : '';
-
-    var siteKey = '__TXAM_SITE_' + String(lang).toUpperCase();
-    if (global[siteKey] && typeof global[siteKey] === 'object') {
-      return global[siteKey];
-    }
-
     return fetchJson(prefix + 'data/i18n/' + lang + '.json');
   }
-
   var PAGE_GLOBAL_PREFIX = '__TXAM_PAGE_';
 
   async function loadPage(pageKey, lang) {
+    var key = PAGE_GLOBAL_PREFIX + String(pageKey).toUpperCase().replace(/-/g, '_') + '_' + String(lang).toUpperCase();
+    if (global[key] && typeof global[key] === 'object') {
+      return global[key];
+    }
+
     var apiBase = await ensureApiBase();
     if (apiBase) {
       try {
@@ -202,12 +178,25 @@
         console.warn('[TXAM] API page load failed, falling back to static data', pageKey, err);
       }
     }
-    var key = PAGE_GLOBAL_PREFIX + String(pageKey).toUpperCase().replace(/-/g, '_') + '_' + String(lang).toUpperCase();
-    if (global[key] && typeof global[key] === 'object') {
-      return global[key];
-    }
+
     var prefix = inLangDir() ? '../' : '';
     return fetchJson(prefix + 'data/pages/' + pageKey + '/' + lang + '.json');
+  }
+
+  /**
+   * Homepage aggregate (API mode): page + slotted solutions/news in one request.
+   * Returns null when API is disabled so callers can fall back to parallel loads.
+   */
+  async function loadHome(lang) {
+    var apiBase = await ensureApiBase();
+    if (!apiBase) return null;
+    try {
+      var base = String(apiBase).replace(/\/$/, '');
+      return await fetchJson(base + '/home?lang=' + encodeURIComponent(lang));
+    } catch (err) {
+      console.warn('[TXAM] API home load failed, falling back to parallel loads', err);
+      return null;
+    }
   }
 
   var SOLUTION_SLUG_TO_ID = {
@@ -225,22 +214,10 @@
   };
 
   async function loadSolutionBySlug(slug, lang) {
-    var apiBase = await ensureApiBase();
-    if (apiBase) {
-      try {
-        var base = String(apiBase).replace(/\/$/, '');
-        return await fetchJson(
-          base + '/solutions/by-slug/' + encodeURIComponent(slug) + '?lang=' + encodeURIComponent(lang)
-        );
-      } catch (err) {
-        console.warn('[TXAM] API solution-by-slug failed, falling back to static data', slug, err);
-      }
-    }
     var all = await loadData('solutions', lang);
     var id = SOLUTION_SLUG_TO_ID[slug];
-    return id ? all[id] : null;
+    return id && all ? all[id] || null : null;
   }
-
   function revealFadeUps() {
 
     var page = document.querySelector('.detail-page');
@@ -362,6 +339,7 @@ ensureMeta('property', 'og:type', seo.type || 'website');
   global.TXAM.loadData = loadData;
   global.TXAM.loadSite = loadSite;
   global.TXAM.loadPage = loadPage;
+  global.TXAM.loadHome = loadHome;
   global.TXAM.loadSolutionBySlug = loadSolutionBySlug;
   global.TXAM.detectLang = detectLang;
   global.TXAM.applySeo = applySeo;

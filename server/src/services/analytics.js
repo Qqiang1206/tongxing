@@ -23,6 +23,12 @@ const SECTION_LABELS = {
   other: '其他页面',
 };
 
+const FLUSH_MS = 5000;
+const pendingHits = new Map();
+let flushTimer = null;
+let flushHooksBound = false;
+let legacyMerged = false;
+
 function pathLabel(pagePath) {
   const languageMatch = pagePath.match(/^\/(en|ru)(?=\/|$)/);
   const language = languageMatch?.[1];
@@ -52,6 +58,9 @@ function pathSection(pagePath) {
 }
 
 function mergeLegacyPageViewPaths(db) {
+  if (legacyMerged) return;
+  legacyMerged = true;
+
   const legacy = db.prepare(`
     SELECT day, path, hits
     FROM page_view_daily
@@ -73,11 +82,19 @@ function mergeLegacyPageViewPaths(db) {
   `);
   const del = db.prepare('DELETE FROM page_view_daily WHERE day = ? AND path = ?');
 
-  for (const row of legacy) {
-    const canonical = normalizePagePath(row.path);
-    if (!canonical || canonical === row.path) continue;
-    bump.run(row.day, canonical, row.hits);
-    del.run(row.day, row.path);
+  db.exec('BEGIN');
+  try {
+    for (const row of legacy) {
+      const canonical = normalizePagePath(row.path);
+      if (!canonical || canonical === row.path) continue;
+      bump.run(row.day, canonical, row.hits);
+      del.run(row.day, row.path);
+    }
+    db.exec('COMMIT');
+  } catch (err) {
+    try { db.exec('ROLLBACK'); } catch (_) { /* ignore */ }
+    legacyMerged = false;
+    throw err;
   }
 }
 
@@ -115,6 +132,69 @@ function ensureAnalyticsTable(db) {
   `);
 }
 
+function bindFlushHooks() {
+  if (flushHooksBound) return;
+  flushHooksBound = true;
+  const flush = () => {
+    try { flushPendingPageViews(); } catch (_) { /* ignore shutdown flush errors */ }
+  };
+  process.once('beforeExit', flush);
+  process.once('SIGINT', () => { flush(); });
+  process.once('SIGTERM', () => { flush(); });
+}
+
+export function flushPendingPageViews() {
+  if (flushTimer) {
+    clearTimeout(flushTimer);
+    flushTimer = null;
+  }
+  if (!pendingHits.size) return;
+
+  const batch = [...pendingHits.entries()];
+  pendingHits.clear();
+
+  const db = getDb();
+  ensureAnalyticsTable(db);
+  const bump = db.prepare(`
+    INSERT INTO page_view_daily (day, path, hits, updated_at)
+    VALUES (?, ?, ?, datetime('now'))
+    ON CONFLICT(day, path) DO UPDATE SET
+      hits = hits + excluded.hits,
+      updated_at = datetime('now')
+  `);
+
+  db.exec('BEGIN');
+  try {
+    for (const [key, hits] of batch) {
+      const sep = key.indexOf('\0');
+      const day = key.slice(0, sep);
+      const pagePath = key.slice(sep + 1);
+      bump.run(day, pagePath, hits);
+    }
+    db.exec('COMMIT');
+  } catch (err) {
+    try { db.exec('ROLLBACK'); } catch (_) { /* ignore */ }
+    for (const [key, hits] of batch) {
+      pendingHits.set(key, (pendingHits.get(key) || 0) + hits);
+    }
+    throw err;
+  }
+}
+
+function scheduleFlush() {
+  bindFlushHooks();
+  if (flushTimer) return;
+  flushTimer = setTimeout(() => {
+    flushTimer = null;
+    try {
+      flushPendingPageViews();
+    } catch (err) {
+      console.error('[analytics] flush failed:', err.message || err);
+    }
+  }, FLUSH_MS);
+  if (typeof flushTimer.unref === 'function') flushTimer.unref();
+}
+
 export function normalizePagePath(pathname) {
   let p = String(pathname || '/').split('?')[0].split('#')[0];
   if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1);
@@ -142,19 +222,13 @@ export function recordPageView(pathname) {
   if (!shouldTrackPageView(pathname)) return;
   const pagePath = normalizePagePath(pathname);
   const day = localDayString();
-  const db = getDb();
-  ensureAnalyticsTable(db);
-  db.prepare(`
-    INSERT INTO page_view_daily (day, path, hits, updated_at)
-    VALUES (?, ?, 1, datetime('now'))
-    ON CONFLICT(day, path) DO UPDATE SET
-      hits = hits + 1,
-      updated_at = datetime('now')
-  `).run(day, pagePath);
-  mergeLegacyPageViewPaths(db);
+  const key = `${day}\0${pagePath}`;
+  pendingHits.set(key, (pendingHits.get(key) || 0) + 1);
+  scheduleFlush();
 }
 
 function sumHits(db, fromDay, toDay, lang) {
+  flushPendingPageViews();
   mergeLegacyPageViewPaths(db);
   const rows = db.prepare(`
     SELECT path, SUM(hits) AS hits
@@ -173,6 +247,7 @@ function sumHits(db, fromDay, toDay, lang) {
 }
 
 function topPaths(db, fromDay, toDay, limit, lang) {
+  flushPendingPageViews();
   mergeLegacyPageViewPaths(db);
   const rows = db.prepare(`
     SELECT path, SUM(hits) AS hits
@@ -201,6 +276,7 @@ function topPaths(db, fromDay, toDay, limit, lang) {
 }
 
 function dailyHits(db, fromDay, toDay, lang) {
+  flushPendingPageViews();
   mergeLegacyPageViewPaths(db);
   const rows = db.prepare(`
     SELECT day, path, hits

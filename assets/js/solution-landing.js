@@ -101,7 +101,7 @@
         return (
           '<a href="' + itemSlug + '-solution.html" class="apple-card block p-6 group">' +
           '<div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
-          '<img loading="lazy" src="' + global.TXAM.assetUrl(item.image) + '" alt="' + item.name + '" class="img-zoom w-full h-full object-cover">' +
+          '<img loading="lazy" decoding="async" src="' + global.TXAM.assetUrl(item.image) + '" alt="' + item.name + '" class="img-zoom w-full h-full object-cover">' +
           '</div>' +
           '<h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">' + item.name + '</h4>' +
           '<p class="text-sm text-[#86868B] line-clamp-2">' + (item.summary || item.desc || '') + '</p></a>'

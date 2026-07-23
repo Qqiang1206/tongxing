@@ -9,6 +9,7 @@ import { catalog } from './services/catalog.js';
 import { handleAdmin } from './admin.js';
 import { getDb, dbPathForHealth } from './db.js';
 import { recordPageView } from './services/analytics.js';
+import { cachedPublic } from './services/publicCache.js';
 
 // Open SQLite on boot
 getDb();
@@ -46,7 +47,7 @@ function parseQuery(url) {
   return q;
 }
 
-function serveRepoFile(res, rootDir, relPath, origin) {
+function serveRepoFile(res, rootDir, relPath, origin, cacheControl = 'no-cache') {
   const root = path.resolve(rootDir);
   const filePath = path.resolve(root, relPath);
   if (!filePath.startsWith(root + path.sep) && filePath !== root) {
@@ -68,12 +69,15 @@ function serveRepoFile(res, rootDir, relPath, origin) {
     '.gif': 'image/gif',
     '.svg': 'image/svg+xml',
     '.ico': 'image/x-icon',
+    '.woff': 'font/woff',
+    '.woff2': 'font/woff2',
   };
   const data = fs.readFileSync(filePath);
   res.writeHead(200, {
     'Content-Type': types[ext] || 'application/octet-stream',
     'Access-Control-Allow-Origin': origin,
-    'Cache-Control': 'public, max-age=60',
+    'Cache-Control': cacheControl,
+    'X-Content-Type-Options': 'nosniff',
   });
   res.end(data);
   return true;
@@ -87,7 +91,7 @@ function serveAdminStatic(res, pathname, origin) {
     sendJson(res, 403, { error: 'forbidden' }, origin);
     return true;
   }
-  return serveRepoFile(res, ADMIN_DIR, rel, origin);
+  return serveRepoFile(res, ADMIN_DIR, rel, origin, 'no-store');
 }
 
 function serveSiteAsset(res, pathname, origin) {
@@ -97,7 +101,12 @@ function serveSiteAsset(res, pathname, origin) {
     sendJson(res, 403, { error: 'forbidden' }, origin);
     return true;
   }
-  return serveRepoFile(res, ASSETS_DIR, rel, origin);
+  const cacheControl = rel.startsWith('fonts/')
+    ? 'public, max-age=31536000, immutable'
+    : rel.startsWith('images/')
+      ? 'public, max-age=2592000'
+      : 'public, max-age=604800';
+  return serveRepoFile(res, ASSETS_DIR, rel, origin, cacheControl);
 }
 
 function serveDataPublic(res, pathname, origin) {
@@ -112,7 +121,7 @@ function serveDataPublic(res, pathname, origin) {
     sendJson(res, 403, { error: 'forbidden' }, origin);
     return true;
   }
-  return serveRepoFile(res, DATA_PUBLIC_DIR, rel, origin);
+  return serveRepoFile(res, DATA_PUBLIC_DIR, rel, origin, 'no-cache');
 }
 
 function isBlockedSitePath(rel) {
@@ -128,9 +137,12 @@ function serveSiteStatic(res, pathname, origin) {
     sendJson(res, 403, { error: 'forbidden' }, origin);
     return true;
   }
-  // Prefer exact file; if missing and no extension, try .html
-  if (!serveRepoFile(res, REPO_ROOT, rel, origin)) {
-    if (!path.extname(rel) && serveRepoFile(res, REPO_ROOT, `${rel}.html`, origin)) {
+  // Prefer exact file; if missing and no extension, try .html.
+  const cacheControl = path.extname(rel).toLowerCase() === '.html'
+    ? 'no-cache'
+    : 'public, max-age=60';
+  if (!serveRepoFile(res, REPO_ROOT, rel, origin, cacheControl)) {
+    if (!path.extname(rel) && serveRepoFile(res, REPO_ROOT, ${rel}.html, origin, 'no-cache')) {
       return true;
     }
     return false;
@@ -150,27 +162,44 @@ const routes = [
     }),
   },
   {
+    match: (p) => p === '/api/v1/home',
+    handler: (q) => {
+      const lang = catalog.parseLang(q.lang);
+      const body = cachedPublic(`home:${lang}`, () => catalog.getHomeBundle(lang));
+      if (!body) return { status: 404, body: { error: 'not_found' } };
+      return { body };
+    },
+  },
+  {
     match: (p) => p === '/api/v1/products',
-    handler: (q) => catalog.getAllProducts(catalog.parseLang(q.lang)),
+    handler: (q) => {
+      const lang = catalog.parseLang(q.lang);
+      return cachedPublic(`products:${lang}`, () => catalog.getAllProducts(lang));
+    },
   },
   {
     match: (p) => /^\/api\/v1\/products\/[^/]+$/.test(p),
     handler: (q, p) => {
       const id = p.split('/').pop();
-      const item = catalog.getProductById(id, catalog.parseLang(q.lang));
+      const lang = catalog.parseLang(q.lang);
+      const item = cachedPublic(`product:${lang}:${id}`, () => catalog.getProductById(id, lang));
       if (!item) return { status: 404, body: { error: 'not_found' } };
       return { body: item };
     },
   },
   {
     match: (p) => p === '/api/v1/solutions',
-    handler: (q) => catalog.getAllSolutions(catalog.parseLang(q.lang)),
+    handler: (q) => {
+      const lang = catalog.parseLang(q.lang);
+      return cachedPublic(`solutions:${lang}`, () => catalog.getAllSolutions(lang));
+    },
   },
   {
     match: (p) => /^\/api\/v1\/solutions\/by-slug\/[^/]+$/.test(p),
     handler: (q, p) => {
       const slug = p.split('/').pop();
-      const item = catalog.getSolutionBySlug(slug, catalog.parseLang(q.lang));
+      const lang = catalog.parseLang(q.lang);
+      const item = cachedPublic(`solution-slug:${lang}:${slug}`, () => catalog.getSolutionBySlug(slug, lang));
       if (!item) return { status: 404, body: { error: 'not_found' } };
       return { body: item };
     },
@@ -179,33 +208,42 @@ const routes = [
     match: (p) => /^\/api\/v1\/solutions\/[^/]+$/.test(p) && !p.includes('/by-slug/'),
     handler: (q, p) => {
       const id = p.split('/').pop();
-      const item = catalog.getSolutionById(id, catalog.parseLang(q.lang));
+      const lang = catalog.parseLang(q.lang);
+      const item = cachedPublic(`solution:${lang}:${id}`, () => catalog.getSolutionById(id, lang));
       if (!item) return { status: 404, body: { error: 'not_found' } };
       return { body: item };
     },
   },
   {
     match: (p) => p === '/api/v1/site',
-    handler: (q) => catalog.loadSiteSettings(catalog.parseLang(q.lang)),
+    handler: (q) => {
+      const lang = catalog.parseLang(q.lang);
+      return cachedPublic(`site:${lang}`, () => catalog.loadSiteSettings(lang));
+    },
   },
   {
     match: (p) => /^\/api\/v1\/pages\/[^/]+$/.test(p),
     handler: (q, p) => {
       const pageKey = p.split('/').pop();
-      const item = catalog.loadPage(pageKey, catalog.parseLang(q.lang));
+      const lang = catalog.parseLang(q.lang);
+      const item = cachedPublic(`page:${lang}:${pageKey}`, () => catalog.loadPage(pageKey, lang));
       if (!item) return { status: 404, body: { error: 'not_found' } };
       return { body: item };
     },
   },
   {
     match: (p) => p === '/api/v1/news',
-    handler: (q) => catalog.getAllNews(catalog.parseLang(q.lang)),
+    handler: (q) => {
+      const lang = catalog.parseLang(q.lang);
+      return cachedPublic(`news:${lang}`, () => catalog.getAllNews(lang));
+    },
   },
   {
     match: (p) => /^\/api\/v1\/news\/[^/]+$/.test(p),
     handler: (q, p) => {
       const id = p.split('/').pop();
-      const item = catalog.getNewsById(id, catalog.parseLang(q.lang));
+      const lang = catalog.parseLang(q.lang);
+      const item = cachedPublic(`news-item:${lang}:${id}`, () => catalog.getNewsById(id, lang));
       if (!item) return { status: 404, body: { error: 'not_found' } };
       return { body: item };
     },

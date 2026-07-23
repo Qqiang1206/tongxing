@@ -69,10 +69,10 @@
     if (/\.webp$/i.test(image || '')) {
       return (
         '<picture><source srcset="' + resolved + '" type="image/webp">' +
-        '<img loading="lazy" src="' + resolved + '" alt="' + altEsc + '" class="w-full h-full object-cover img-zoom"></picture>'
+        '<img loading="lazy" decoding="async" src="' + resolved + '" alt="' + altEsc + '" class="w-full h-full object-cover img-zoom"></picture>'
       );
     }
-    return '<img loading="lazy" src="' + resolved + '" alt="' + altEsc + '" class="w-full h-full object-cover img-zoom">';
+    return '<img loading="lazy" decoding="async" src="' + resolved + '" alt="' + altEsc + '" class="w-full h-full object-cover img-zoom">';
   }
 
   function solutionToCategoryCard(sol) {
@@ -326,13 +326,22 @@
     if (!global.TXAM || !global.TXAM.loadPage) return;
 
     try {
-      var page = await global.TXAM.loadPage('home', lang);
-      var solutionsMap = null;
-      var newsMap = null;
-      if (global.TXAM.loadData) {
-        solutionsMap = await global.TXAM.loadData('solutions', lang);
-        newsMap = await global.TXAM.loadData('news', lang);
+      if (global.TXAM.loadHome) {
+        var bundle = await global.TXAM.loadHome(lang);
+        if (bundle && bundle.page) {
+          renderHome(bundle.page, bundle.solutions, bundle.news);
+          return;
+        }
       }
+
+      var loaded = await Promise.all([
+        global.TXAM.loadPage('home', lang),
+        global.TXAM.loadData ? global.TXAM.loadData('solutions', lang) : Promise.resolve(null),
+        global.TXAM.loadData ? global.TXAM.loadData('news', lang) : Promise.resolve(null),
+      ]);
+      var page = loaded[0];
+      var solutionsMap = loaded[1];
+      var newsMap = loaded[2];
       if (page) renderHome(page, solutionsMap, newsMap);
     } catch (err) {
       console.error(err);

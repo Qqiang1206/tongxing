@@ -46,7 +46,7 @@
     var resolved = global.TXAM.assetUrl(cover);
     var altText = escapeHtml(alt);
     var img =
-      '<img loading="lazy" alt="' + altText + '" class="img-zoom" src="' + escapeHtml(resolved) + '">';
+      '<img loading="lazy" decoding="async" alt="' + altText + '" class="img-zoom" src="' + escapeHtml(resolved) + '">';
     if (/\.webp$/i.test(cover || '')) {
       return (
         '<picture class="media-hero-picture">' +

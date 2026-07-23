@@ -33,6 +33,10 @@
 PORT=3000
 ADMIN_PASSWORD=换成足够长的随机密码
 CORS_ORIGIN=https://www.sztxgk.com
+# 生产环境 Node 只监听本机，由 Nginx 反代
+HOST=127.0.0.1
+# 公开内容 API 内存缓存毫秒（后台写入会立即清除）
+PUBLIC_CACHE_TTL_MS=45000
 ```
 
 - **切勿**把真实 `ADMIN_PASSWORD` 提交进 Git。
@@ -52,6 +56,9 @@ CORS_ORIGIN=https://www.sztxgk.com
 ```
 
 关键片段已写入仓库根 `nginx.conf`：`/` 静态，`/api/` 与 `/admin/` 反代到 `127.0.0.1:3000`。
+文件顶部有 HTTPS + HTTP/2 + 80→443 注释模板；证书就绪后启用，并把 location 块挂到 443。
+
+访问统计在内存攒批约 5 秒再写 SQLite；生产用单个 Node 进程（勿 PM2 cluster），backup-data 产物请再同步到 OSS。
 
 ---
 

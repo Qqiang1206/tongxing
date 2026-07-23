@@ -12,7 +12,11 @@ window.__TXAM_PAGE_ABOUT_RU={
     "nextLabel": "Следующая база",
     "slides": [
       {
-        "image": "assets/images/hero/szgc1.png",
+        "image": "assets/images/hero/szgc1.webp",
+        "imageSrcset": "assets/images/hero/szgc1-960.webp 960w, assets/images/hero/szgc1.webp 1600w",
+        "sizes": "(max-width: 768px) 100vw, min(1200px, 92vw)",
+        "width": 1600,
+        "height": 873,
         "imageAlt": "Завод штаб-квартиры TXAM в Шэньчжэне",
         "fetchpriority": "high",
         "tag": "Shenzhen HQ",
@@ -22,7 +26,11 @@ window.__TXAM_PAGE_ABOUT_RU={
         "dotAria": "Шэньчжэнь"
       },
       {
-        "image": "assets/images/hero/hzgc2.jpg",
+        "image": "assets/images/hero/hzgc2.webp",
+        "imageSrcset": "assets/images/hero/hzgc2-960.webp 960w, assets/images/hero/hzgc2-1440.webp 1440w, assets/images/hero/hzgc2.webp 1920w",
+        "sizes": "(max-width: 768px) 100vw, min(1200px, 92vw)",
+        "width": 1920,
+        "height": 1200,
         "imageAlt": "База умного производства TXAM в Хуэйчжоу",
         "tag": "Huizhou Base",
         "title": "База умного производства, Хуэйчжоу",

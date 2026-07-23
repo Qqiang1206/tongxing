@@ -8,6 +8,7 @@ import { DATA_DIR, REPO_ROOT, LANGS, parseLang } from '../config.js';
 import { mapProduct, mapSolution, mapNews, toCatalogMap } from '../mappers/toApi.js';
 import { getDb } from '../db.js';
 import { assertSolutionHomeSlot, assertNewsHomeFeatured, reconcileHomeSlots, guardRequiredSlotVacate } from './homeSlots.js';
+import { clearPublicCache } from './publicCache.js';
 
 export const SOLUTION_SLUG_BY_ID = {
   '31': 'tv-display',
@@ -59,7 +60,7 @@ function publishedInt(v) {
 
 /* ——— Public API shape (published only) ——— */
 
-function productApiFromRows(row, i18n) {
+function productApiFromRows(row, i18n, opts = {}) {
   return mapProduct(
     {
       id: row.id,
@@ -72,11 +73,12 @@ function productApiFromRows(row, i18n) {
       filter_key: row.filter_key,
       filter_key_en: row.filter_key_en,
     },
-    i18n
+    i18n,
+    opts
   );
 }
 
-function solutionApiFromRows(row, i18n) {
+function solutionApiFromRows(row, i18n, opts = {}) {
   return mapSolution(
     {
       id: row.id,
@@ -89,11 +91,12 @@ function solutionApiFromRows(row, i18n) {
       filter_key: row.filter_key,
       filter_key_en: row.filter_key_en,
     },
-    i18n
+    i18n,
+    opts
   );
 }
 
-function newsApiFromRows(row, i18n) {
+function newsApiFromRows(row, i18n, opts = {}) {
   return mapNews(
     {
       id: row.id,
@@ -103,7 +106,8 @@ function newsApiFromRows(row, i18n) {
       sort_order: row.sort_order,
       home_featured: row.home_featured,
     },
-    i18n
+    i18n,
+    opts
   );
 }
 
@@ -111,7 +115,7 @@ function getAllProducts(lang) {
   const db = getDb();
   const rows = db
     .prepare(
-      `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json
+      `SELECT p.*, i.name, i.summary, i.specs_json
        FROM products p
        JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
        WHERE p.published = 1
@@ -121,12 +125,15 @@ function getAllProducts(lang) {
     .all(lang, lang);
   return toCatalogMap(
     rows.map((r) =>
-      productApiFromRows(r, {
-        name: r.name,
-        summary: r.summary,
-        content_html: r.content_html,
-        specs_json: r.specs_json,
-      })
+      productApiFromRows(
+        r,
+        {
+          name: r.name,
+          summary: r.summary,
+          specs_json: r.specs_json,
+        },
+        { slim: true }
+      )
     )
   );
 }
@@ -155,7 +162,7 @@ function getAllSolutions(lang) {
   const db = getDb();
   const rows = db
     .prepare(
-      `SELECT s.*, i.name, i.summary, i.content_html, i.specs_json, i.pain_points_json, i.process_json
+      `SELECT s.*, i.name, i.summary, i.specs_json
        FROM solutions s
        JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = ?
        WHERE s.published = 1
@@ -165,14 +172,15 @@ function getAllSolutions(lang) {
     .all(lang, lang);
   return toCatalogMap(
     rows.map((r) =>
-      solutionApiFromRows(r, {
-        name: r.name,
-        summary: r.summary,
-        content_html: r.content_html,
-        specs_json: r.specs_json,
-        pain_points_json: r.pain_points_json,
-        process_json: r.process_json,
-      })
+      solutionApiFromRows(
+        r,
+        {
+          name: r.name,
+          summary: r.summary,
+          specs_json: r.specs_json,
+        },
+        { slim: true }
+      )
     )
   );
 }
@@ -213,12 +221,16 @@ function getAllNews(lang) {
     .all(lang, lang);
   return toCatalogMap(
     rows.map((r) =>
-      newsApiFromRows(r, {
-        category: r.category,
-        title: r.title,
-        content_html: r.content_html,
-        date_display: r.date_display,
-      })
+      newsApiFromRows(
+        r,
+        {
+          category: r.category,
+          title: r.title,
+          content_html: r.content_html,
+          date_display: r.date_display,
+        },
+        { slim: true }
+      )
     )
   );
 }
@@ -241,6 +253,28 @@ function getNewsById(id, lang) {
     content_html: r.content_html,
     date_display: r.date_display,
   });
+}
+
+/** Homepage aggregate: page copy + only slotted solutions/news (list-slim). */
+function getHomeBundle(lang) {
+  const page = readPageJson('home', lang);
+  if (!page) return null;
+
+  const allSolutions = getAllSolutions(lang);
+  const allNews = getAllNews(lang);
+  const solutions = {};
+  const news = {};
+
+  for (const [id, item] of Object.entries(allSolutions)) {
+    if (item.homeSlot === 'hero' || item.homeSlot === 'category') {
+      solutions[id] = item;
+    }
+  }
+  for (const [id, item] of Object.entries(allNews)) {
+    if (item.homeFeatured) news[id] = item;
+  }
+
+  return { page, solutions, news, lang };
 }
 
 export function loadSiteSettings(lang) {
@@ -272,6 +306,7 @@ export const catalog = {
   loadPage(pageKey, lang) {
     return readPageJson(pageKey, lang);
   },
+  getHomeBundle,
   getProductById,
   getAllProducts,
   getSolutionById,
@@ -642,6 +677,7 @@ export function createCatalogItemRaw(kind, item) {
   else throw new Error('invalid_catalog_kind');
   ensureDerivedCatalogRow(kind, id, row);
   exportCatalogLang(kind, 'zh');
+  clearPublicCache();
   return getCatalogItemRaw(kind, id);
 }
 
@@ -665,6 +701,7 @@ export function updateCatalogItemRaw(kind, id, patch) {
   else throw new Error('invalid_catalog_kind');
   ensureDerivedCatalogRow(kind, key, row);
   exportCatalogLang(kind, 'zh');
+  clearPublicCache();
   return getCatalogItemRaw(kind, key);
 }
 
@@ -687,6 +724,7 @@ export function deleteCatalogItemRaw(kind, id, opts = {}) {
   else if (kind === 'news') db.prepare('DELETE FROM news WHERE id = ?').run(key);
   else throw new Error('invalid_catalog_kind');
   for (const lang of LANGS) exportCatalogLang(kind, lang);
+  clearPublicCache();
   return true;
 }
 
@@ -759,6 +797,7 @@ export function writeCatalogJsonAny(kind, lang, data) {
     reconcileHomeSlots();
   }
   exportCatalogLang(kind, lang);
+  clearPublicCache();
   return true;
 }
 
@@ -784,6 +823,7 @@ export function writeSiteSettingsAny(lang, data) {
        updated_at=datetime('now')`
   ).run(lang, JSON.stringify(data), lang === 'zh' ? 'source' : 'current');
   exportSiteLang(lang);
+  clearPublicCache();
   return true;
 }
 
@@ -808,6 +848,7 @@ export function writePageJsonAny(pageKey, lang, data) {
     lang === 'zh' ? 'source' : 'current'
   );
   exportPageLang(pageKey, lang);
+  clearPublicCache();
   return true;
 }
 

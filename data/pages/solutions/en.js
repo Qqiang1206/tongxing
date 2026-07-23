@@ -1,2 +1,38 @@
-/* auto-generated from sqlite — do not edit */
-window.__TXAM_PAGE_SOLUTIONS_EN={"pageKey":"solutions","lang":"en","hero":{"title":"Redefining the Rules of Intelligent Manufacturing","lead":"We don't just provide cold machinery; we deliver exceptional overall productivity.<br class=\"hidden md:block\">TXAM deeply deconstructs non-standard processes, offering turnkey engineering from blueprint to mass production."},"pillars":[{"title":"100% Flexible Customization","body":"Modular matrix design easily handles frequent product changeovers and process iterations."},{"title":"Deep Integration of Software and Hardware","body":"Equipped with self-developed WMS/WCS and underlying vision algorithms, eliminating all information silos."},{"title":"Rapid Delivery Cadence","body":"Based on the super throughput of a 100,000㎡ dual-base facility, ensuring large-scale production lines are delivered on schedule."}],"filters":{"all":"All Solutions","tv-display":"Home Appliance Industry","refrigerator":"Logistics Industry","packaging":"Energy Storage Industry","washer":"Warehousing Industry","capacitor":"New Energy Vehicle Industry","ac":"TV/Commercial Display Industry","coffee":"3C/Digital Products Industry","robot":"Robotics"},"seo":{"title":"Solutions | TXAM","description":"TXAM industry-wide turnkey solutions: displays, home appliances, packaging, capacitors, robotics, etc."}};
+/* auto-generated from en.json — do not edit */
+window.__TXAM_PAGE_SOLUTIONS_EN={
+  "pageKey": "solutions",
+  "lang": "en",
+  "hero": {
+    "title": "Redefining the Rules of Intelligent Manufacturing",
+    "lead": "We don't just provide cold machinery; we deliver exceptional overall productivity.<br class=\"hidden md:block\">TXAM deeply deconstructs non-standard processes, offering turnkey engineering from blueprint to mass production."
+  },
+  "pillars": [
+    {
+      "title": "100% Flexible Customization",
+      "body": "Modular matrix design easily handles frequent product changeovers and process iterations."
+    },
+    {
+      "title": "Deep Integration of Software and Hardware",
+      "body": "Equipped with self-developed WMS/WCS and underlying vision algorithms, eliminating all information silos."
+    },
+    {
+      "title": "Rapid Delivery Cadence",
+      "body": "Based on the super throughput of a 100,000㎡ dual-base facility, ensuring large-scale production lines are delivered on schedule."
+    }
+  ],
+  "filters": {
+    "all": "All Solutions",
+    "tv-display": "Home Appliance Industry",
+    "refrigerator": "Logistics Industry",
+    "packaging": "Energy Storage Industry",
+    "washer": "Warehousing Industry",
+    "capacitor": "New Energy Vehicle Industry",
+    "ac": "TV/Commercial Display Industry",
+    "coffee": "3C/Digital Products Industry",
+    "robot": "Robotics"
+  },
+  "seo": {
+    "title": "Solutions | TXAM",
+    "description": "TXAM industry-wide turnkey solutions: displays, home appliances, packaging, capacitors, robotics, etc."
+  }
+};

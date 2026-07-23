@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <!-- 🌐 顶部导航 -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:px-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <a href="index.html" class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" src="assets/images/brand/logo.png" alt="TXAM 同兴高科 官网logo" class="h-8 md:h-10"></picture>
+            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/brand/logo.png" alt="TXAM 同兴高科 官网logo" class="h-8 md:h-10"></picture>
         </a>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">

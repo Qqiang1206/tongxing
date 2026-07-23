@@ -226,6 +226,30 @@ async function main() {
       pass('API solutions/by-slug/tv-display', 'id=' + bySlug.json.id);
     } else fail('API by-slug');
 
+    const homeAgg = await fetch('/api/v1/home?lang=zh');
+    if (
+      homeAgg.status === 200 &&
+      homeAgg.json &&
+      homeAgg.json.page &&
+      homeAgg.json.page.hero &&
+      homeAgg.json.solutions &&
+      homeAgg.json.news
+    ) {
+      pass('API home aggregate', Object.keys(homeAgg.json.solutions).length + ' sols / ' + Object.keys(homeAgg.json.news).length + ' news');
+    } else fail('API home aggregate');
+
+    const listSample = Object.values(products.json || {})[0];
+    const firstProductId = listSample && listSample.id != null ? String(listSample.id) : '';
+    const detailSample = firstProductId
+      ? await fetch('/api/v1/products/' + encodeURIComponent(firstProductId) + '?lang=zh')
+      : null;
+    if (listSample && listSample.contentHtml == null) pass('API list omits contentHtml');
+    else fail('API list omits contentHtml');
+    if (detailSample && detailSample.status === 200 && typeof detailSample.json.contentHtml === 'string') {
+      pass('API detail keeps contentHtml');
+    } else if (detailSample) fail('API detail keeps contentHtml');
+    else fail('API detail keeps contentHtml', 'no list sample');
+
     if (products.json && products.json['3']) {
       pass('API 含产品 id=3', products.json['3'].name);
     } else {

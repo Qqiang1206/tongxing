@@ -48,7 +48,17 @@
 
     slidesRoot.innerHTML = carousel.slides.map(function (slide, i) {
       var active = i === 0;
-      var imgAttrs = 'src="' + assetUrl(slide.image) + '" alt="' + (slide.imageAlt || slide.title || '') + '"';
+      var imgAttrs = 'src="' + assetUrl(slide.image) + '" alt="' + (slide.imageAlt || slide.title || '') + '" decoding="async"';
+      if (slide.width) imgAttrs += ' width="' + slide.width + '"';
+      if (slide.height) imgAttrs += ' height="' + slide.height + '"';
+      if (slide.imageSrcset) {
+        imgAttrs += ' srcset="' + String(slide.imageSrcset).split(',').map(function (part) {
+          var bits = part.trim().split(/\s+/);
+          bits[0] = assetUrl(bits[0]);
+          return bits.join(' ');
+        }).join(', ') + '"';
+      }
+      if (slide.sizes) imgAttrs += ' sizes="' + slide.sizes + '"';
       if (slide.fetchpriority) imgAttrs += ' fetchpriority="' + slide.fetchpriority + '"';
       else if (i > 0) imgAttrs += ' loading="lazy"';
 
@@ -195,8 +205,8 @@
           var src = assetUrl(item.image);
           var alt = item.imageAlt || group.title || '';
           var media = /\.webp$/i.test(item.image)
-            ? '<picture><source srcset="' + src + '" type="image/webp"><img loading="lazy" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain"></picture>'
-            : '<img loading="lazy" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain">';
+            ? '<picture><source srcset="' + src + '" type="image/webp"><img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain"></picture>'
+            : '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain">';
           return (
             '<div class="patent-card apple-card p-4 flex flex-col items-center">' +
               '<div class="patent-card__media">' + media + '</div>' +
@@ -217,8 +227,8 @@
         var src = assetUrl(item.image);
         var alt = item.imageAlt || group.title || '';
         var media = /\.webp$/i.test(item.image)
-          ? '<picture><source srcset="' + src + '" type="image/webp"><img loading="lazy" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain"></picture>'
-          : '<img loading="lazy" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain">';
+          ? '<picture><source srcset="' + src + '" type="image/webp"><img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain"></picture>'
+          : '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain">';
         return (
           '<div class="apple-card p-3 flex flex-col items-center">' +
             '<div class="w-full bg-white radius-sm overflow-hidden">' + media + '</div>' +
@@ -251,7 +261,7 @@
       var alt = item.imageAlt || '';
       return (
         '<div class="client-card h-28 bg-white border border-[#E5E5EA] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">' +
-          '<img loading="lazy" src="' + src + '" alt="' + alt + '" class="max-h-full max-w-full client-logo" onerror="this.parentElement.style.display=\'none\'">' +
+          '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="max-h-full max-w-full client-logo" onerror="this.parentElement.style.display=\'none\'">' +
         '</div>'
       );
     }).join('');

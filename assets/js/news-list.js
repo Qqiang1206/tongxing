@@ -56,10 +56,10 @@
     if (/\.webp$/i.test(cover)) {
       return (
         '<picture><source srcset="' + escapeHtml(resolved) + '" type="image/webp">' +
-        '<img loading="lazy" src="' + escapeHtml(resolved) + '" alt="' + alt + '" class="img-zoom"></picture>'
+        '<img loading="lazy" decoding="async" src="' + escapeHtml(resolved) + '" alt="' + alt + '" class="img-zoom"></picture>'
       );
     }
-    return '<img loading="lazy" src="' + escapeHtml(resolved) + '" alt="' + alt + '" class="img-zoom">';
+    return '<img loading="lazy" decoding="async" src="' + escapeHtml(resolved) + '" alt="' + alt + '" class="img-zoom">';
   }
 
   function buildCard(item, featured, detailPrefix) {
@@ -100,7 +100,7 @@
 
     var cover = item.cover || '';
 
-    var excerpt = stripHtml(item.contentHtml || item.content || item.summary || '');
+    var excerpt = item.excerpt || stripHtml(item.contentHtml || item.content || item.summary || '');
 
     if (excerpt.length > 160) excerpt = excerpt.slice(0, 157) + '…';
 
