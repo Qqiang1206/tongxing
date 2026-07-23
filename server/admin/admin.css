@@ -1850,13 +1850,17 @@ body {
   border-radius: 8px;
   background: #FBFBFD;
   color: #86868B;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .02em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
 }
 
-.nav-ico--word { font-size: 12px; }
-.nav-ico--symbol { font-size: 8px; }
+.nav-ico svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
 
 .nav-item.is-active .nav-ico {
   border-color: var(--txam-orange);
