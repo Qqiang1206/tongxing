@@ -1,23 +1,2 @@
-/* auto-generated from en.json — do not edit */
-window.__TXAM_PAGE_PRODUCTS_EN={
-  "pageKey": "products",
-  "lang": "en",
-  "hero": {
-    "title": "Core Manufacturing Matrix",
-    "lead": "From high-precision single flexible units to complete unmanned factory lines.<br class=\"hidden md:block\">Full-spectrum automation equipment for electronic manufacturing."
-  },
-  "filters": {
-    "all": "All Products",
-    "single": "Single Machines",
-    "dispensing": "Dispensing",
-    "optical": "Optical Assembly",
-    "flip": "Flip Detection",
-    "logistics": "Logistics",
-    "packaging": "Packaging",
-    "robot": "Robot Integration"
-  },
-  "seo": {
-    "title": "Products | TXAM Tongxing",
-    "description": "TXAM product center — dispensing, flip inspection, screw fastening, optical assembly, transfer, packaging and robot integration."
-  }
-};
+/* auto-generated from sqlite — do not edit */
+window.__TXAM_PAGE_PRODUCTS_EN={"pageKey":"products","lang":"en","hero":{"title":"Core Intelligent Manufacturing Matrix","lead":"From high-precision single-machine flexible units to fully unmanned factory production lines.<br class=\"hidden md:block\">Automation equipment covering the entire chain of electronics manufacturing."},"filters":{"all":"All Products","optical":"Optical Component Assembly","dispensing":"Dispensing & Assembly","flip":"Flip Inspection","screw":"Fastening Assembly","transfer":"Handling & Transfer","packaging":"Post-Packaging","robot":"Robot Integration","line":"Full Line Delivery"},"seo":{"title":"Product Center | TXAM - China's Leading Automation Brand Supplier","description":"TXAM Product Center - 6 major product categories including Dispensing & Assembly, Flip Inspection, Fastening Assembly, Optical Components, Handling & Transfer, and Post-Packaging"}};
