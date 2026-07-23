@@ -402,16 +402,19 @@
     }
   }
 
-  async function unpublishCatalog(kind, id) {
-    if (!confirm('确认下架？下架后官网前台将不再展示该内容。')) return;
+  async function setCatalogPublished(kind, id, published) {
+    var kindLabels = { products: '产品', solutions: '方案', news: '新闻' };
+    var label = kindLabels[kind] || '内容';
+    if (!published && !confirm('确认下架该' + label + '？下架后官网前台将不再展示。')) return;
     var item = await api('/admin/' + kind + '/' + encodeURIComponent(id));
-    if (item.published === false) {
-      toast('已是下架状态');
+    if (!!item.published === !!published) {
+      toast(published ? '当前已经上架' : '当前已经下架');
       return;
     }
-    var body = Object.assign({}, item, { published: false });
+    var body = Object.assign({}, item, { published: !!published });
+    if (kind === 'products' && published) body.showInList = true;
     await saveWithSlotRetry('/admin/' + kind + '/' + encodeURIComponent(id), body, 'PUT');
-    toast('已下架');
+    toast(published ? '已重新上架' : '已下架');
     if (kind === 'products') {
       await loadProducts();
       await openProduct(id);
@@ -709,10 +712,6 @@
     });
   }
 
-  function publishedCheck(id, checked) {
-    return '<div class="field check-row"><input type="checkbox" id="' + id + '"' + (checked ? ' checked' : '') + '>' +
-      '<label for="' + id + '" style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--txam-dark)">已发布</label></div>';
-  }
 
   function previewLink(href, label) {
     return '<a class="btn btn-ghost btn-sm" href="' + escapeAttr(href) + '" target="_blank" rel="noopener">' +
@@ -1399,25 +1398,54 @@
   function catalogSaveBar(kind, label, isNew) {
     return '<div class="catalog-savebar">' +
       '<p class="catalog-save-state" id="' + escapeAttr(kind) + '-save-state"><span></span>' +
-      (isNew ? '填写完成后保存即可创建' : '所有更改均已保存') + '</p>' +
+      (isNew ? '确认后将立即在官网对应栏目显示' : '所有更改均已保存') + '</p>' +
       '<div class="toolbar"><button type="button" class="btn btn-ghost" id="cancel-' + escapeAttr(kind) + '">取消</button>' +
       '<button type="button" class="btn btn-accent" id="save-' + escapeAttr(kind) + '">' +
-      (isNew ? '创建' : '保存') + escapeHtml(label) + '</button></div></div>';
+      (isNew ? '确认创建并上架' : '保存修改') + '</button></div></div>';
+  }
+
+  function catalogPublishStatus(kind, label, item, isNew) {
+    if (isNew) {
+      return '<div class="catalog-status-card is-create"><div class="catalog-status-main">' +
+        '<span class="catalog-status-dot" aria-hidden="true"></span><div><strong>创建后将立即上架</strong>' +
+        '<p>确认创建后，该' + escapeHtml(label) + '会立即显示在官网对应栏目。</p></div></div></div>';
+    }
+    var published = item.published !== false;
+    return '<div class="catalog-status-card ' + (published ? 'is-online' : 'is-offline') + '">' +
+      '<div class="catalog-status-main"><span class="catalog-status-dot" aria-hidden="true"></span><div><strong>' +
+      (published ? '已上架' : '已下架') + '</strong><p>' +
+      (published ? '当前' + escapeHtml(label) + '正在官网正常显示。' : '当前' + escapeHtml(label) + '不会在官网显示。') +
+      '</p></div></div><button type="button" class="btn btn-ghost btn-sm ' +
+      (published ? 'btn-danger-text' : 'btn-accent-soft') + '" id="' +
+      (published ? 'unpublish-' : 'publish-') + escapeAttr(kind) + '">' +
+      (published ? '下架' : '重新上架') + '</button></div>';
+  }
+
+  function catalogSortSetting(value) {
+    return '<div class="catalog-setting-block"><div class="catalog-setting-head"><div><strong>列表显示顺序</strong>' +
+      '<p>控制内容在对应栏目中的前后位置。</p></div></div>' +
+      '<div class="catalog-sort-control"><label for="f-sortOrder">排序数字</label>' +
+      '<input id="f-sortOrder" type="number" step="1" value="' + escapeAttr(value != null ? value : 0) + '">' +
+      '<span>数字越小越靠前</span></div></div>';
   }
 
   function catalogActionZone(kind, label, item, isNew, previewHref) {
-    if (isNew) {
-      return '<div class="catalog-new-note"><strong>创建后再进行预览和下架操作</strong>' +
-        '<p>新建内容默认不会自动发布，可以先保存为未发布内容。</p></div>';
-    }
-    return '<div class="catalog-action-zone"><div><strong>内容操作</strong>' +
-      '<p>预览不会保存当前修改；删除操作不可撤销。</p></div><div class="toolbar">' +
-      (previewHref ? previewLink(previewHref, '预览详情页') : '') +
-      '<button type="button" class="btn btn-ghost btn-sm" id="reload-' + escapeAttr(kind) + '">重新加载</button>' +
-      (item.published ? '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" id="unpublish-' +
-        escapeAttr(kind) + '">下架</button>' : '') +
+    if (isNew) return '';
+    var preview = item.published !== false && previewHref
+      ? previewLink(previewHref, '预览官网')
+      : '<button type="button" class="btn btn-ghost btn-sm" disabled title="重新上架后才能预览官网">预览官网</button>';
+    return '<div class="catalog-action-zone"><div><strong>预览</strong>' +
+      '<p>' + (item.published !== false ? '打开官网当前已保存的内容。' : '该内容已下架，重新上架后才能在官网预览。') +
+      '</p></div><div class="toolbar">' + preview + '</div></div>' +
+      '<div class="catalog-danger-zone"><div><strong>危险操作</strong><p>删除后无法恢复，请谨慎操作。</p></div>' +
       '<button type="button" class="btn btn-ghost btn-sm btn-danger-text" id="delete-' +
-        escapeAttr(kind) + '">删除' + escapeHtml(label) + '</button></div></div>';
+      escapeAttr(kind) + '">删除' + escapeHtml(label) + '</button></div>';
+  }
+
+  function catalogPublishedValue(kind, isNew) {
+    if (isNew) return true;
+    var root = $(kind + '-editor');
+    return !root || root.getAttribute('data-published') !== 'false';
   }
 
   function setCatalogSaveState(kind, text, mode) {
@@ -2063,21 +2091,21 @@
   function blankProduct() {
     return {
       name: '', model: '', category: '', filterKey: '', image: '', specs: [], summary: '',
-      contentHtml: '', published: false, showInList: true,
+      contentHtml: '', published: true, showInList: true,
       sortOrder: 0, filterKeyEn: '',
     };
   }
 
   function fillProductForm(item, isNew) {
     var title = item.name || '未命名产品';
-    var context = isNew ? '填写产品信息后保存' : (item.model || item.category || '产品内容');
+    var context = isNew ? '填写完成后确认创建并上架' : (item.model || item.category || '产品内容');
     openDrawer('product', title, {
       eyebrow: isNew ? '新增产品' : '编辑产品',
       context: context,
       sections: [
         { key: 'basic', label: '基本信息' },
         { key: 'content', label: '展示内容' },
-        { key: 'publish', label: '发布设置' },
+        { key: 'publish', label: isNew ? '创建并上架' : '上线与展示' },
       ],
     });
 
@@ -2098,23 +2126,20 @@
       richTextField('contentHtml', '产品详情', item.contentHtml, '用工具栏排版即可，不必手写代码') +
       '</div>';
     var publishHtml =
-      '<div class="form-grid catalog-publish-grid">' +
-      publishedCheck('p-published', !!item.published) +
-      '<div class="field full"><p class="field-help">新建默认未发布；取消发布后，官网将不再展示该产品。</p></div>' +
-      '<div class="field full"><label class="check"><input type="checkbox" id="p-showInList"' +
-      (item.showInList !== false ? ' checked' : '') + '> 在产品中心列表显示</label></div>' +
-      field('sortOrder', '列表排序（数字越小越靠前）', item.sortOrder != null ? item.sortOrder : 0, 'full') +
-      '</div>' +
+      catalogPublishStatus('product', '产品', item, isNew) +
+      catalogSortSetting(item.sortOrder) +
       catalogActionZone('product', '产品', item, isNew, previewHref);
 
     $('product-editor').innerHTML =
       '<div class="catalog-editor-content">' +
-      (isNew ? '<p class="catalog-create-tip">填写基本信息后即可先保存，详情内容可以稍后继续完善。</p>' : '') +
+      (isNew ? '<p class="catalog-create-tip">填写完成后点击「确认创建并上架」，产品会立即显示在产品中心。</p>' : '') +
       editorSection('basic', '基本信息', '对应前台产品卡片与详情页首屏', basicHtml) +
       editorSection('content', '展示内容', '封面、规格和产品详情', contentHtml) +
-      editorSection('publish', '发布设置', '控制官网展示状态与列表顺序', publishHtml) +
+      editorSection('publish', isNew ? '创建并上架' : '上线与展示', isNew ? '确认后直接显示在产品中心' : '管理官网状态与列表顺序', publishHtml) +
       '</div>' +
       catalogSaveBar('product', '产品', isNew);
+
+    $('product-editor').setAttribute('data-published', item.published !== false ? 'true' : 'false');
 
     bindImageFields($('product-editor'));
     initRichEditors(['f-contentHtml']);
@@ -2126,10 +2151,14 @@
     $('cancel-product').onclick = closeDrawer;
 
     if (!isNew) {
-      $('reload-product').onclick = function () { openProduct(item.id); };
       if ($('unpublish-product')) {
         $('unpublish-product').onclick = function () {
-          unpublishCatalog('products', item.id).catch(function (e) { toast(e.message, true); });
+          setCatalogPublished('products', item.id, false).catch(function (e) { toast(e.message, true); });
+        };
+      }
+      if ($('publish-product')) {
+        $('publish-product').onclick = function () {
+          setCatalogPublished('products', item.id, true).catch(function (e) { toast(e.message, true); });
         };
       }
       $('delete-product').onclick = function () { deleteCatalog('products', item.id, item.name); };
@@ -2150,8 +2179,8 @@
       name: name, model: val('f-model'), categoryKey: categoryKey, image: val('f-image'),
       specs: val('f-specs').split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
       summary: val('f-summary'), contentHtml: getRichHtml('contentHtml'),
-      published: $('p-published').checked,
-      showInList: $('p-showInList').checked,
+      published: catalogPublishedValue('product', state.isNewProduct),
+      showInList: true,
       sortOrder: Number(val('f-sortOrder')) || 0,
     };
     if (state.isNewProduct) {
@@ -2227,20 +2256,33 @@
       String(d.getDate()).padStart(2, '0');
     return {
       title: '', category: '', date: date, cover: '',
-      contentHtml: '', published: false, sortOrder: 0, homeFeatured: false,
+      contentHtml: '', published: true, sortOrder: 0, homeFeatured: false,
     };
+  }
+
+  function newsHomeFeaturedBlock(item, isNew) {
+    var enabled = isNew || item.published !== false;
+    return '<div class="catalog-setting-block catalog-home-setting"><div class="catalog-setting-head"><div>' +
+      '<strong>首页展示（可选）</strong><p>勾选后，该新闻除新闻中心外，还会显示在首页精选新闻区域。</p></div></div>' +
+      '<label class="slot-choice slot-choice--check' + (item.homeFeatured ? ' is-selected' : '') +
+      (!enabled ? ' is-disabled' : '') + '"><input type="checkbox" id="n-home-featured"' +
+      (item.homeFeatured ? ' checked' : '') + (!enabled ? ' disabled' : '') + '>' +
+      '<span class="slot-choice-body"><strong>精选新闻</strong>' +
+      '<span class="help">未勾选时，只在新闻中心正常展示。</span></span></label>' +
+      (!enabled ? '<p class="catalog-setting-note">当前新闻已下架，请重新上架后再设置首页精选。</p>' : '') +
+      '</div>';
   }
 
   function fillNewsForm(item, isNew) {
     var title = item.title || '未命名新闻';
-    var context = isNew ? '填写新闻内容后保存' : (item.date || item.category || '新闻内容');
+    var context = isNew ? '填写完成后确认创建并上架' : (item.date || item.category || '新闻内容');
     openDrawer('news', title, {
       eyebrow: isNew ? '新增新闻' : '编辑新闻',
       context: context,
       sections: [
         { key: 'basic', label: '基本信息' },
         { key: 'content', label: '正文内容' },
-        { key: 'publish', label: '发布设置' },
+        { key: 'publish', label: isNew ? '创建并上架' : '上线与展示' },
       ],
     });
 
@@ -2259,39 +2301,47 @@
       richTextField('contentHtml', '新闻正文', item.contentHtml, '用工具栏排版即可，不必手写代码') +
       '</div>';
     var publishHtml =
-      '<div class="form-grid catalog-publish-grid">' +
-      publishedCheck('n-published', !!item.published) +
-      '<div class="field full check-row"><input type="checkbox" id="n-home-featured"' +
-      (item.homeFeatured ? ' checked' : '') + '>' +
-      '<label for="n-home-featured" style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--txam-dark)">在首页展示为精选新闻</label></div>' +
-      '<div class="field full"><p class="field-help">首页精选需要始终保留内容；取消精选或下架时，可能需要指定另一条已发布新闻替代。</p></div>' +
-      field('sortOrder', '列表排序（数字越小越靠前）', item.sortOrder != null ? item.sortOrder : 0, 'full') +
-      '</div>' +
+      catalogPublishStatus('news', '新闻', item, isNew) +
+      newsHomeFeaturedBlock(item, isNew) +
+      catalogSortSetting(item.sortOrder) +
       catalogActionZone('news', '新闻', item, isNew, previewHref);
 
     $('news-editor').innerHTML =
       '<div class="catalog-editor-content">' +
-      (isNew ? '<p class="catalog-create-tip">先填写标题与分类即可保存，正文和发布设置可以随后继续完善。</p>' : '') +
+      (isNew ? '<p class="catalog-create-tip">填写完成后点击「确认创建并上架」，新闻会立即显示在新闻中心。</p>' : '') +
       editorSection('basic', '基本信息', '对应新闻列表卡片与详情页首屏', basicHtml) +
       editorSection('content', '正文内容', '新闻封面与正文排版', contentHtml) +
-      editorSection('publish', '发布设置', '控制官网状态、首页精选与列表顺序', publishHtml) +
+      editorSection('publish', isNew ? '创建并上架' : '上线与展示', isNew ? '确认后直接显示在新闻中心' : '管理官网状态、首页精选与列表顺序', publishHtml) +
       '</div>' +
       catalogSaveBar('news', '新闻', isNew);
+
+    $('news-editor').setAttribute('data-published', item.published !== false ? 'true' : 'false');
 
     bindImageFields($('news-editor'));
     initRichEditors(['f-contentHtml']);
     bindCatalogEditorState('news-editor', 'news');
     bindDrawerSectionNav('news-editor');
+    var featuredInput = $('n-home-featured');
+    if (featuredInput) {
+      featuredInput.addEventListener('change', function () {
+        var choice = featuredInput.closest('.slot-choice');
+        if (choice) choice.classList.toggle('is-selected', featuredInput.checked);
+      });
+    }
     $('save-news').onclick = function () {
       runCatalogSave('news', '新闻', saveNews);
     };
     $('cancel-news').onclick = closeDrawer;
 
     if (!isNew) {
-      $('reload-news').onclick = function () { openNews(item.id); };
       if ($('unpublish-news')) {
         $('unpublish-news').onclick = function () {
-          unpublishCatalog('news', item.id).catch(function (e) { toast(e.message, true); });
+          setCatalogPublished('news', item.id, false).catch(function (e) { toast(e.message, true); });
+        };
+      }
+      if ($('publish-news')) {
+        $('publish-news').onclick = function () {
+          setCatalogPublished('news', item.id, true).catch(function (e) { toast(e.message, true); });
         };
       }
       $('delete-news').onclick = function () { deleteCatalog('news', item.id, item.title); };
@@ -2310,7 +2360,7 @@
     }
     var body = {
       title: title, category: category, date: val('f-date'), cover: val('f-cover'),
-      contentHtml: getRichHtml('contentHtml'), published: $('n-published').checked,
+      contentHtml: getRichHtml('contentHtml'), published: catalogPublishedValue('news', state.isNewNews),
       sortOrder: Number(val('f-sortOrder')) || 0,
       homeFeatured: $('n-home-featured').checked,
     };
@@ -2382,7 +2432,7 @@
   function blankSolution() {
     return {
       name: '', category: '', filterKey: '', image: '', specs: [], summary: '',
-      contentHtml: '', published: false, painPoints: [], process: [], slug: '', sortOrder: 0,
+      contentHtml: '', published: true, painPoints: [], process: [], slug: '', sortOrder: 0,
       homeSlot: '',
     };
   }
@@ -2402,39 +2452,42 @@
       }).join('') +
       '</select><p class="field-help">按业务名称选择即可，系统会自动关联正确页面。</p></div>';
   }
-  function solutionHomeSlotBlock(item) {
+  function solutionHomeSlotBlock(item, isNew) {
     var cur = item.homeSlot || '';
+    var enabled = isNew || item.published !== false;
     function opt(value, title, desc) {
       var checked = cur === value ? ' checked' : '';
-      return '<label class="slot-choice' + (cur === value ? ' is-selected' : '') + '">' +
-        '<input type="radio" name="homeSlot" value="' + escapeAttr(value) + '"' + checked + '>' +
+      return '<label class="slot-choice' + (cur === value ? ' is-selected' : '') +
+        (!enabled ? ' is-disabled' : '') + '">' +
+        '<input type="radio" name="homeSlot" value="' + escapeAttr(value) + '"' + checked +
+        (!enabled ? ' disabled' : '') + '>' +
         '<span class="slot-choice-body"><strong>' + escapeHtml(title) + '</strong>' +
         '<span class="help">' + escapeHtml(desc) + '</span></span></label>';
     }
-    return '<div class="home-slot-card">' +
-      '<h3 class="card-title">首页展示位置（可选）</h3>' +
-      '<p class="field-help">新建内容默认不在首页展示，只出现在对应页面或内容列表。需要时再选择下面其中一个推荐位置（不可同时选择）。首页标杆与精选位置需要始终保留内容，取消或下架时须指定替代内容。</p>' +
+    return '<div class="catalog-setting-block catalog-home-setting home-slot-card">' +
+      '<div class="catalog-setting-head"><div><strong>首页展示（可选）</strong>' +
+      '<p>未选择时，方案仍会正常上架到解决方案栏目，只是不在首页推荐。</p></div></div>' +
       '<div class="slot-choice-list" id="solution-home-slot">' +
-      opt('hero', '标杆方案', '首页首屏大图，全站 1 个') +
-      opt('category', '精选方案', '首页「三大核心类目」方案卡，最多 2 个（另有固定单元设备卡）') +
+      opt('hero', '标杆方案', '首页标杆方案区域，全站 1 个') +
+      opt('category', '精选方案', '首页三大核心类目方案卡，最多 2 个') +
       '</div>' +
-      (cur
-        ? '<button type="button" class="btn btn-ghost btn-sm" id="clear-home-slot" style="margin-top:8px">取消首页展示</button>'
+      (cur && enabled
+        ? '<button type="button" class="btn btn-ghost btn-sm clear-home-slot" id="clear-home-slot">取消首页展示</button>'
         : '') +
-      publishedCheck('s-published', !!item.published) +
+      (!enabled ? '<p class="catalog-setting-note">当前方案已下架，请重新上架后再设置首页展示。</p>' : '') +
       '</div>';
   }
 
   function fillSolutionForm(item, isNew) {
     var title = item.name || '未命名方案';
-    var context = isNew ? '填写方案内容后保存 · 默认不在首页展示' : (item.category || '方案内容');
+    var context = isNew ? '填写完成后确认创建并上架 · 首页展示可选' : (item.category || '方案内容');
     openDrawer('solution', title, {
       eyebrow: isNew ? '新增方案' : '编辑方案',
       context: context,
       sections: [
         { key: 'basic', label: '基本信息' },
         { key: 'content', label: '方案内容' },
-        { key: 'publish', label: '发布设置' },
+        { key: 'publish', label: isNew ? '创建并上架' : '上线与展示' },
       ],
     });
 
@@ -2459,20 +2512,21 @@
       '<p>按实际执行顺序写清每一步“做什么”</p></div>' +
       processRowsHtml(item.process || []) + '</div>';
     var publishHtml =
-      solutionHomeSlotBlock(item) +
-      '<div class="form-grid catalog-publish-grid">' +
-      field('sortOrder', '列表排序（数字越小越靠前）', item.sortOrder != null ? item.sortOrder : 0, 'full') +
-      '</div>' +
+      catalogPublishStatus('solution', '方案', item, isNew) +
+      solutionHomeSlotBlock(item, isNew) +
+      catalogSortSetting(item.sortOrder) +
       catalogActionZone('solution', '方案', item, isNew, previewHref);
 
     $('solution-editor').innerHTML =
       '<div class="catalog-editor-content">' +
-      (isNew ? '<p class="catalog-create-tip">先保存基本信息，再完善痛点、流程和首页展示位置。</p>' : '') +
+      (isNew ? '<p class="catalog-create-tip">填写完成后点击「确认创建并上架」，方案会立即显示在解决方案栏目；首页展示可按需选择。</p>' : '') +
       editorSection('basic', '基本信息', '对应方案列表卡片与详情页首屏', basicHtml) +
       editorSection('content', '方案内容', '封面、亮点、详情、客户痛点与工艺流程', contentHtml) +
-      editorSection('publish', '发布设置', '控制官网状态、首页推荐与列表顺序', publishHtml) +
+      editorSection('publish', isNew ? '创建并上架' : '上线与展示', isNew ? '确认后直接显示在解决方案栏目' : '管理官网状态、首页推荐与列表顺序', publishHtml) +
       '</div>' +
       catalogSaveBar('solution', '方案', isNew);
+
+    $('solution-editor').setAttribute('data-published', item.published !== false ? 'true' : 'false');
 
     bindImageFields($('solution-editor'));
     bindPairRepeater('pain');
@@ -2505,10 +2559,14 @@
     $('cancel-solution').onclick = closeDrawer;
 
     if (!isNew) {
-      $('reload-solution').onclick = function () { openSolution(item.id); };
       if ($('unpublish-solution')) {
         $('unpublish-solution').onclick = function () {
-          unpublishCatalog('solutions', item.id).catch(function (e) { toast(e.message, true); });
+          setCatalogPublished('solutions', item.id, false).catch(function (e) { toast(e.message, true); });
+        };
+      }
+      if ($('publish-solution')) {
+        $('publish-solution').onclick = function () {
+          setCatalogPublished('solutions', item.id, true).catch(function (e) { toast(e.message, true); });
         };
       }
       $('delete-solution').onclick = function () { deleteCatalog('solutions', item.id, item.name); };
@@ -2534,7 +2592,7 @@
       summary: val('f-summary'), contentHtml: getRichHtml('contentHtml'),
       painPoints: collectPairRepeater('pain'),
       process: collectProcessRepeater(),
-      published: $('s-published').checked,
+      published: catalogPublishedValue('solution', state.isNewSolution),
       homeSlot: slotEl ? (slotEl.value || '') : '',
     };
     if (state.isNewSolution) {
