@@ -684,7 +684,6 @@ textarea:focus-visible,
 
 table.data {
   width: 100%;
-  min-width: 940px;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
@@ -693,7 +692,7 @@ table.data {
 
 .main table.data th {
   height: 48px;
-  padding: 0 16px;
+  padding: 0 12px;
   border-bottom: 1px solid var(--border);
   background: #f8f9fb;
   color: var(--muted);
@@ -703,8 +702,9 @@ table.data {
 }
 
 .main table.data td {
-  height: 60px;
-  padding: 10px 16px;
+  min-height: 52px;
+  height: auto;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border);
   color: #344054;
   vertical-align: middle;
@@ -713,16 +713,20 @@ table.data {
 .main table.data tbody tr:last-child td { border-bottom: 0; }
 .main table.data tbody tr:hover { background: #f9fafb; }
 
-.audit-table { min-width: 1120px; }
-.audit-table th:nth-child(1) { width: 150px; }
-.audit-table th:nth-child(2) { width: 132px; }
-.audit-table th:nth-child(3) { width: 190px; }
-.audit-table th:nth-child(4) { width: 130px; }
-.audit-table th:nth-child(5) { width: auto; }
-.audit-table th:nth-child(6) { width: 88px; text-align: center; }
-.audit-table th:nth-child(7) { width: 150px; }
-.audit-table td:nth-child(6) { text-align: center; }
-.audit-table td:nth-child(5) {
+/* 时间 · 操作人 · 类型 · 结果 · 来源 · 摘要 */
+.audit-table th:nth-child(1),
+.audit-table td:nth-child(1) { width: 9.5rem; }
+.audit-table th:nth-child(2),
+.audit-table td:nth-child(2) { width: 5rem; }
+.audit-table th:nth-child(3),
+.audit-table td:nth-child(3) { width: 4.5rem; }
+.audit-table th:nth-child(4),
+.audit-table td:nth-child(4) { width: 4.25rem; }
+.audit-table th:nth-child(5),
+.audit-table td:nth-child(5) { width: 6.5rem; }
+.audit-table th:nth-child(6),
+.audit-table td:nth-child(6) {
+  width: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

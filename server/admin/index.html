@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css?v=20260723d">
-  <link rel="stylesheet" href="./admin-design-system.css?v=20260723d">
+  <link rel="stylesheet" href="./admin.css?v=20260723f">
+  <link rel="stylesheet" href="./admin-design-system.css?v=20260723f">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
@@ -596,28 +596,38 @@
               <select id="audit-actor" class="select" title="操作人">
                 <option value="">全部操作人</option>
               </select>
-              <input class="search" id="audit-q" type="search" placeholder="搜索摘要 / IP / 对象 ID">
+              <input class="search" id="audit-q" type="search" placeholder="搜索摘要 / IP / 操作人">
               <button type="button" class="btn btn-primary btn-sm" id="audit-filter-btn">筛选</button>
               <button type="button" class="btn btn-ghost btn-sm" id="audit-filter-reset">重置</button>
             </div>
             <div class="card table-card">
               <div class="table-wrap">
-                <table class="data audit-table" id="audit-table">
+                <table class="data data-table audit-table" id="audit-table">
+                  <colgroup>
+                    <col class="col-time">
+                    <col class="col-actor">
+                    <col class="col-type">
+                    <col class="col-result">
+                    <col class="col-source">
+                    <col class="col-summary">
+                  </colgroup>
                   <thead>
                     <tr>
                       <th>时间</th>
                       <th>操作人</th>
-                      <th>动作</th>
-                      <th>资源</th>
-                      <th>摘要</th>
+                      <th>类型</th>
                       <th>结果</th>
                       <th>来源</th>
+                      <th>摘要</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
                 </table>
               </div>
-              <div class="table-foot" id="audit-table-foot"></div>
+              <div class="table-foot">
+                <span id="audit-table-foot"></span>
+                <div class="pagination" id="audit-pagination"></div>
+              </div>
             </div>
           </div>
             </div>
@@ -719,6 +729,6 @@
     </div>
   </div>
 
-  <script src="./admin.js?v=20260723d"></script>
+  <script src="./admin.js?v=20260723f"></script>
 </body>
 </html>

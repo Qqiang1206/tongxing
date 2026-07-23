@@ -816,33 +816,125 @@ a { color: inherit; text-decoration: none; }
 }
 .search:focus, .select:focus { outline: 2px solid rgba(255,107,0,0.2); border-color: var(--txam-orange); }
 
-.audit-table .audit-time {
+/* Fixed-layout data tables: short cols first, flex text last */
+.data-table {
+  table-layout: fixed;
+  width: 100%;
+}
+.main table.data.data-table th,
+.main table.data.data-table td {
+  padding: 12px 12px;
+  vertical-align: middle;
+}
+.data-table .col-time { width: 9.5rem; }
+.data-table .col-actor { width: 5rem; }
+.data-table .col-type { width: 4.5rem; }
+.data-table .col-result { width: 4.25rem; }
+.data-table .col-source { width: 6.5rem; }
+.data-table .col-summary { width: auto; }
+.data-table .col-id { width: 3.25rem; }
+.data-table .col-lang { width: 5rem; }
+.data-table .col-name { width: auto; }
+.data-table .col-note { width: auto; }
+.data-table .col-actions { width: 5.5rem; }
+.data-table .col-actions-wide { width: 8.5rem; }
+
+.tx-jobs-table .col-lang { width: 6rem; }
+.tx-jobs-table .col-result { width: 4.5rem; }
+.tx-status-table .col-lang { width: 5rem; }
+.tx-status-table .col-actions-wide { width: 8.5rem; }
+
+.data-table .cell-time {
   white-space: nowrap;
   font-size: 12px;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
-.audit-actor {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.data-table .cell-actor {
   font-weight: 700;
   color: var(--txam-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.audit-actor-avatar {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: var(--txam-orange-soft); color: var(--txam-orange);
-  display: grid; place-items: center;
-  font-size: 12px; font-weight: 800; flex-shrink: 0;
+.data-table .cell-id {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: 12px;
 }
-.audit-summary { max-width: 280px; line-height: 1.45; }
-.audit-ua { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.audit-table code {
-  font-size: 11px;
+.data-table .cell-type,
+.data-table .cell-result,
+.data-table .cell-lang {
+  white-space: nowrap;
+}
+.data-table .cell-source {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.data-table .cell-summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--txam-dark);
+}
+.data-table .cell-name {
+  min-width: 0;
+}
+.data-table .cell-name > strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.data-table .cell-name .cell-sub,
+.data-table .cell-note {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.data-table .cell-actions.toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+.data-table .cell-actions .btn {
+  width: 100%;
+  justify-content: center;
+  min-height: 32px;
+  padding: 5px 8px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.tx-jobs-table .cell-actions {
+  width: 5.5rem;
+}
+.tx-status-table .cell-actions {
+  width: 8.5rem;
+}
+.audit-type-tag {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 8px;
+  border-radius: 6px;
   background: #F5F5F7;
-  padding: 1px 6px;
-  border-radius: 4px;
-  color: #6B7280;
+  color: #4B5563;
+  font-size: 12px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .table-card { padding: 0; overflow: hidden; }

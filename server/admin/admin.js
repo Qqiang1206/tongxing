@@ -4422,18 +4422,25 @@
 
     var rows = Object.keys(status.resources || {}).sort().map(function (resource) {
       var langs = status.resources[resource];
-      return '<tr><td><strong>' + escapeHtml(resourceLabel(resource)) + '</strong><br><code class="tx-code">' +
-        escapeHtml(resource) + '</code></td>' +
-        '<td><span class="badge badge-' + escapeHtml(langs.en) + '">' + escapeHtml(statusLabel(langs.en)) + '</span></td>' +
-        '<td><span class="badge badge-' + escapeHtml(langs.ru) + '">' + escapeHtml(statusLabel(langs.ru)) + '</span></td>' +
-        '<td class="toolbar">' +
-        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeAttr(resource) + '" data-lang="en">标英文已同步</button>' +
-        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeAttr(resource) + '" data-lang="ru">标俄文已同步</button>' +
+      var label = resourceLabel(resource);
+      return '<tr>' +
+        '<td class="cell-lang"><span class="badge badge-' + escapeHtml(langs.en) + '">' + escapeHtml(statusLabel(langs.en)) + '</span></td>' +
+        '<td class="cell-lang"><span class="badge badge-' + escapeHtml(langs.ru) + '">' + escapeHtml(statusLabel(langs.ru)) + '</span></td>' +
+        '<td class="cell-name" title="' + escapeAttr(label + ' · ' + resource) + '">' +
+          '<strong>' + escapeHtml(label) + '</strong>' +
+          '<div class="cell-sub"><code class="tx-code">' + escapeHtml(resource) + '</code></div></td>' +
+        '<td class="cell-actions toolbar">' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeAttr(resource) + '" data-lang="en">标英文同步</button>' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-res="' + escapeAttr(resource) + '" data-lang="ru">标俄文同步</button>' +
         '<button type="button" class="btn btn-ghost btn-sm" data-job-res="' + escapeAttr(resource) + '">建任务</button></td></tr>';
     }).join('');
     if ($('translation-table')) {
       $('translation-table').innerHTML =
-        '<table class="data"><thead><tr><th>内容</th><th>英文</th><th>俄文</th><th>手动操作</th></tr></thead><tbody>' +
+        '<table class="data data-table tx-status-table">' +
+        '<colgroup>' +
+        '<col class="col-lang"><col class="col-lang"><col class="col-name"><col class="col-actions-wide">' +
+        '</colgroup>' +
+        '<thead><tr><th>英文</th><th>俄文</th><th>内容</th><th>操作</th></tr></thead><tbody>' +
         rows + '</tbody></table>';
       $('translation-table').querySelectorAll('button[data-res]').forEach(function (btn) {
         btn.addEventListener('click', async function () {
@@ -4482,14 +4489,26 @@
         actions += '<button type="button" class="btn btn-ghost btn-sm" data-apply="' + job.id + '">应用</button>';
       }
       var msg = job.result && job.result.message ? job.result.message : (job.error || '—');
-      return '<tr><td>#' + job.id + '</td><td><strong>' + escapeHtml(resourceLabel(job.resource)) + '</strong></td>' +
-        '<td>' + escapeHtml(langs) + '</td>' +
-        '<td><span class="badge badge-' + escapeHtml(job.status) + '">' + escapeHtml(statusLabel(job.status)) + '</span></td>' +
-        '<td style="max-width:280px;font-size:12px;color:var(--muted)">' + escapeHtml(msg) + '</td>' +
-        '<td class="toolbar">' + actions + '</td></tr>';
+      var contentLabel = resourceLabel(job.resource);
+      var nameTip = contentLabel + (msg && msg !== '—' ? ' · ' + msg : '');
+      return '<tr>' +
+        '<td class="cell-id">#' + job.id + '</td>' +
+        '<td class="cell-lang">' + escapeHtml(langs) + '</td>' +
+        '<td class="cell-result"><span class="badge badge-' + escapeHtml(job.status) + '">' +
+          escapeHtml(statusLabel(job.status)) + '</span></td>' +
+        '<td class="cell-name" title="' + escapeAttr(nameTip) + '">' +
+          '<strong>' + escapeHtml(contentLabel) + '</strong>' +
+          (msg && msg !== '—' ? '<div class="cell-sub cell-note">' + escapeHtml(msg) + '</div>' : '') +
+          '</td>' +
+        '<td class="cell-actions toolbar">' + actions + '</td></tr>';
     }).join('');
     $('translation-jobs-table').innerHTML =
-      '<table class="data"><thead><tr><th>ID</th><th>内容</th><th>目标语言</th><th>状态</th><th>说明</th><th>操作</th></tr></thead><tbody>' +
+      '<table class="data data-table tx-jobs-table">' +
+      '<colgroup>' +
+      '<col class="col-id"><col class="col-lang"><col class="col-result">' +
+      '<col class="col-name"><col class="col-actions">' +
+      '</colgroup>' +
+      '<thead><tr><th>ID</th><th>目标语言</th><th>状态</th><th>内容</th><th>操作</th></tr></thead><tbody>' +
       rows + '</tbody></table>';
     $('translation-jobs-table').querySelectorAll('[data-run]').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -4522,6 +4541,7 @@
     var data = await api('/admin/audit-logs' + qs);
     var items = data.items || [];
     state.auditActors = data.actors || [];
+    state.auditTotal = data.total || 0;
     fillAuditActorSelect(actor);
 
     if (q) {
@@ -4534,48 +4554,86 @@
       });
     }
 
+    state.auditItems = items;
+    state.auditPage = 1;
+    renderAuditTable();
+  }
+
+  function renderAuditPagination(pageInfo) {
+    var root = $('audit-pagination');
+    if (!root) return;
+    if (pageInfo.totalPages <= 1) {
+      root.innerHTML = '';
+      return;
+    }
+    root.innerHTML =
+      '<button type="button" class="btn-page" data-audit-page="prev"' +
+      (pageInfo.page <= 1 ? ' disabled' : '') + '>上一页</button>' +
+      '<span class="page-indicator">' + pageInfo.page + ' / ' + pageInfo.totalPages + '</span>' +
+      '<button type="button" class="btn-page" data-audit-page="next"' +
+      (pageInfo.page >= pageInfo.totalPages ? ' disabled' : '') + '>下一页</button>';
+    root.querySelectorAll('[data-audit-page]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        if (btn.getAttribute('data-audit-page') === 'prev') state.auditPage -= 1;
+        else state.auditPage += 1;
+        renderAuditTable();
+      });
+    });
+  }
+
+  function renderAuditTable() {
     var tbody = $('audit-table') && $('audit-table').querySelector('tbody');
     if (!tbody) return;
+    var items = state.auditItems || [];
+    var pageInfo = paginateRows(items, state.auditPage, state.auditPageSize);
+    state.auditPage = pageInfo.page;
+    var q = ($('audit-q') && $('audit-q').value.trim()) || '';
+
     if (!items.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="empty">暂无匹配的日志</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">暂无匹配的日志</td></tr>';
     } else {
-      tbody.innerHTML = items.map(function (row) {
+      tbody.innerHTML = pageInfo.rows.map(function (row) {
         var badge = row.ok
           ? '<span class="badge badge-ok">成功</span>'
           : '<span class="badge badge-fail">失败</span>';
         var resLabel = auditResourceLabel(row.resource);
-        var detailBits = [];
+        var summary = row.summary || auditActionLabel(row.action) || '—';
+        var tipBits = [];
+        if (row.action) tipBits.push('动作：' + row.action);
+        if (row.resourceId) tipBits.push('对象：' + row.resourceId);
         if (row.detail && typeof row.detail === 'object') {
-          if (row.detail.userAgent) detailBits.push('浏览器：' + row.detail.userAgent);
-          if (row.detail.error) detailBits.push('错误：' + row.detail.error);
+          if (row.detail.userAgent) tipBits.push('浏览器：' + row.detail.userAgent);
+          if (row.detail.error) tipBits.push('错误：' + row.detail.error);
         }
-        var title = detailBits.length ? escapeAttr(detailBits.join('\n')) : (row.detail ? escapeAttr(JSON.stringify(row.detail)) : '');
-        var actorHtml = '<div class="audit-actor">' +
-          '<span class="audit-actor-avatar">' + escapeHtml((row.actor || '?').charAt(0)) + '</span>' +
-          '<span>' + escapeHtml(row.actor || '—') + '</span></div>';
-        var sourceHtml = '<div class="cell-sub">' + escapeHtml(row.ip || '—') + '</div>';
-        if (row.detail && row.detail.userAgent) {
-          sourceHtml += '<div class="cell-sub audit-ua" title="' + escapeAttr(row.detail.userAgent) + '">' +
-            escapeHtml(shortUa(row.detail.userAgent)) + '</div>';
-        }
+        var title = tipBits.length ? escapeAttr(tipBits.join('\n')) : '';
+        var sourceTitle = (row.detail && row.detail.userAgent)
+          ? escapeAttr(row.detail.userAgent)
+          : '';
         return '<tr' + (title ? ' title="' + title + '"' : '') + '>' +
-          '<td class="audit-time">' + escapeHtml(formatAuditTime(row.createdAt)) + '</td>' +
-          '<td>' + actorHtml + '</td>' +
-          '<td><div class="cell-title">' + escapeHtml(auditActionLabel(row.action)) + '</div>' +
-          '<div class="cell-sub"><code>' + escapeHtml(row.action || '') + '</code></div></td>' +
-          '<td><div class="cell-title">' + escapeHtml(resLabel) + '</div>' +
-          (row.resourceId ? '<div class="cell-sub">#' + escapeHtml(row.resourceId) + '</div>' : '') + '</td>' +
-          '<td class="audit-summary">' + escapeHtml(row.summary || '—') + '</td>' +
-          '<td>' + badge + '</td>' +
-          '<td>' + sourceHtml + '</td></tr>';
+          '<td class="cell-time">' + escapeHtml(formatAuditTime(row.createdAt)) + '</td>' +
+          '<td class="cell-actor">' + escapeHtml(row.actor || '—') + '</td>' +
+          '<td class="cell-type"><span class="audit-type-tag">' + escapeHtml(resLabel) + '</span></td>' +
+          '<td class="cell-result">' + badge + '</td>' +
+          '<td class="cell-source"' + (sourceTitle ? ' title="' + sourceTitle + '"' : '') + '>' +
+            escapeHtml(row.ip || '—') + '</td>' +
+          '<td class="cell-summary" title="' + escapeAttr(summary) + '">' + escapeHtml(summary) + '</td></tr>';
       }).join('');
     }
+
     if ($('audit-table-foot')) {
-      $('audit-table-foot').textContent =
-        '共 ' + (data.total || 0) + ' 条' +
-        (q ? ' · 当前筛选显示 ' + items.length + ' 条' : ' · 显示最近 ' + items.length + ' 条') +
-        ' · 悬停行可看浏览器等信息';
+      if (!pageInfo.total) {
+        $('audit-table-foot').textContent = '暂无匹配的日志';
+      } else if (q) {
+        $('audit-table-foot').textContent =
+          '筛选后 ' + pageInfo.total + ' 条 · 第 ' + pageInfo.page + ' / ' + pageInfo.totalPages + ' 页';
+      } else {
+        $('audit-table-foot').textContent =
+          '共 ' + (state.auditTotal || pageInfo.total) + ' 条 · 第 ' +
+          pageInfo.page + ' / ' + pageInfo.totalPages + ' 页';
+      }
     }
+    renderAuditPagination(pageInfo);
   }
 
   function fillAuditActorSelect(selected) {
