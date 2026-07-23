@@ -31,14 +31,32 @@ function xmlEscape(value) {
     .replace(/'/g, '&apos;');
 }
 
-function urlEntry(loc, changefreq, priority) {
+function urlEntry(loc, changefreq, priority, lastmod) {
   return [
     '  <url>',
     `    <loc>${xmlEscape(loc)}</loc>`,
+    lastmod ? `    <lastmod>${xmlEscape(lastmod)}</lastmod>` : '',
     `    <changefreq>${changefreq}</changefreq>`,
     priority ? `    <priority>${priority}</priority>` : '',
     '  </url>',
   ].filter(Boolean).join('\n');
+}
+
+function detailPath(kind, item, id) {
+  const slug = String(item.slug || '').trim();
+  if (slug) {
+    const page = kind === 'news' ? 'news-detail.html' : 'product-detail.html';
+    return `${page}?slug=${encodeURIComponent(slug)}`;
+  }
+  const page = kind === 'news' ? 'news-detail.html' : 'product-detail.html';
+  return `${page}?id=${encodeURIComponent(id)}`;
+}
+
+function lastmodFromItem(item) {
+  const raw = item?.updatedAt || item?.date || '';
+  if (!raw) return '';
+  const normalized = String(raw).trim().replace(/\./g, '-').slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(normalized) ? normalized : '';
 }
 
 function solutionPath(item, id) {
@@ -66,13 +84,23 @@ export function generateSitemap({ base = process.env.SITEMAP_BASE || DEFAULT_BAS
     for (const id of Object.keys(products)) {
       const item = products[id];
       if (!item || item.published === false || item.showInList === false) continue;
-      urls.push(urlEntry(`${siteBase}/${prefix}product-detail.html?id=${encodeURIComponent(id)}`, 'weekly', '0.6'));
+      urls.push(urlEntry(
+        `${siteBase}/${prefix}${detailPath('products', item, id)}`,
+        'weekly',
+        '0.6',
+        lastmodFromItem(item)
+      ));
     }
 
     for (const id of Object.keys(news)) {
       const item = news[id];
       if (!item || item.published === false) continue;
-      urls.push(urlEntry(`${siteBase}/${prefix}news-detail.html?id=${encodeURIComponent(id)}`, 'weekly', '0.5'));
+      urls.push(urlEntry(
+        `${siteBase}/${prefix}${detailPath('news', item, id)}`,
+        'weekly',
+        '0.5',
+        lastmodFromItem(item)
+      ));
     }
 
     for (const id of Object.keys(solutions)) {

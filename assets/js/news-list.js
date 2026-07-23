@@ -108,7 +108,7 @@
 
     return (
 
-      '<a href="' + detailPrefix + 'news-detail.html?id=' + escapeHtml(item.id) + '" ' +
+      '<a href="' + (global.TXAM.catalogDetailHref ? global.TXAM.catalogDetailHref('news', item, detailPrefix) : detailPrefix + 'news-detail.html?id=' + escapeHtml(item.id)) + '" ' +
 
       'class="news-card news-item fade-up ' + spanClass + '" data-category="' + catKey + '">' +
 

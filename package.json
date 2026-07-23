@@ -7,6 +7,7 @@
       "extract-data": "node scripts/extract-content-data.js",
       "restructure": "node scripts/restructure-site.js",
       "generate-data-js": "node scripts/generate-data-js.js",
+    "fill-catalog-slugs": "node scripts/fill-catalog-slugs.mjs",
     "validate": "node scripts/validate-data.js",
     "sync-product-i18n": "node scripts/sync-product-i18n.js",
     "sync-catalog-i18n": "node scripts/sync-catalog-i18n.js",

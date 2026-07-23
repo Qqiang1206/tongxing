@@ -18,7 +18,7 @@
     "sortOrder": 1,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "tx-ns-alm-01",
     "updatedAt": "2026-07-23 07:45:45"
   },
   "2": {
@@ -40,7 +40,7 @@
     "sortOrder": 2,
     "filterKey": "optical",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "oc-intelligent-lamination-system",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "4": {
@@ -62,7 +62,7 @@
     "sortOrder": 3,
     "filterKey": "dispensing",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "high-precision-robotic-dispensing-machine",
     "updatedAt": "2026-07-21 07:15:42"
   },
   "5": {
@@ -84,7 +84,7 @@
     "sortOrder": 15,
     "filterKey": "dispensing",
     "filterKeyEn": "dispensing",
-    "slug": "",
+    "slug": "automatic-spray-gluing-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "6": {
@@ -106,7 +106,7 @@
     "sortOrder": 16,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "automatic-light-bracket-placement-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "7": {
@@ -128,7 +128,7 @@
     "sortOrder": 17,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "automatic-light-bar-placement-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "8": {
@@ -150,7 +150,7 @@
     "sortOrder": 6,
     "filterKey": "screw",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "tx-ns-asbs-01",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "9": {
@@ -172,7 +172,7 @@
     "sortOrder": 5,
     "filterKey": "flip",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "180-degree-heavy-duty-flipper",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "10": {
@@ -194,7 +194,7 @@
     "sortOrder": 18,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "automatic-tempered-glass-frame-installation-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "11": {
@@ -216,7 +216,7 @@
     "sortOrder": 4,
     "filterKey": "robot",
     "filterKeyEn": "logistics",
-    "slug": "",
+    "slug": "six-axis-robot-intelligent-palletizing-system",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "12": {
@@ -238,7 +238,7 @@
     "sortOrder": 7,
     "filterKey": "robot",
     "filterKeyEn": "logistics",
-    "slug": "",
+    "slug": "end-of-line-upright-packaging-automatic-cartoning-system",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "13": {
@@ -260,7 +260,7 @@
     "sortOrder": 20,
     "filterKey": "robot",
     "filterKeyEn": "robot",
-    "slug": "",
+    "slug": "tx-ns-rip-001",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "14": {
@@ -282,7 +282,7 @@
     "sortOrder": 21,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "robot-uprighting-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "15": {
@@ -304,7 +304,7 @@
     "sortOrder": 19,
     "filterKey": "flip",
     "filterKeyEn": "flip",
-    "slug": "",
+    "slug": "auxiliary-vision-inspection-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "16": {
@@ -326,7 +326,7 @@
     "sortOrder": 16,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "automatic-pressure-holding-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "17": {
@@ -348,7 +348,7 @@
     "sortOrder": 17,
     "filterKey": "transfer",
     "filterKeyEn": "transfer",
-    "slug": "",
+    "slug": "industrial-brain-control-software-r-d",
     "updatedAt": "2026-07-22 07:50:37"
   },
   "18": {
@@ -370,7 +370,7 @@
     "sortOrder": 8,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "rotary-table",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "19": {
@@ -392,7 +392,7 @@
     "sortOrder": 9,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "lifting-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "20": {
@@ -414,7 +414,7 @@
     "sortOrder": 10,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "module-transfer-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "21": {
@@ -436,7 +436,7 @@
     "sortOrder": 11,
     "filterKey": "screw",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "automatic-clip-and-latch-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "22": {
@@ -458,7 +458,7 @@
     "sortOrder": 12,
     "filterKey": "packaging",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "auxiliary-bag-sealing-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "23": {
@@ -480,7 +480,7 @@
     "sortOrder": 13,
     "filterKey": "packaging",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "robot-offline-bagging",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "24": {
@@ -502,7 +502,7 @@
     "sortOrder": 14,
     "filterKey": "robot",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "automatic-backplane-placement-robot",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "26": {
@@ -524,7 +524,7 @@
     "sortOrder": 26,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "robot-cell-equipment",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "27": {
@@ -546,7 +546,7 @@
     "sortOrder": 22,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "auxiliary-loading-flip-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "28": {
@@ -568,7 +568,7 @@
     "sortOrder": 23,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "auxiliary-unloading-flip-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "29": {
@@ -590,7 +590,7 @@
     "sortOrder": 24,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "manual-assisted-bagging",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "30": {
@@ -612,205 +612,7 @@
     "sortOrder": 25,
     "filterKey": "robot",
     "filterKeyEn": "robot",
-    "slug": "",
+    "slug": "robot-automatic-overhead-conveyor-loading",
     "updatedAt": "2026-07-21 05:45:33"
-  },
-  "31": {
-    "id": "31",
-    "category": "解决方案",
-    "model": "TXAM-SOL-TV",
-    "name": "TV/Commercial Display Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Full Line Automation",
-      "Flexible Production",
-      "65-110 Inch Compatibility",
-      "Turnkey Project"
-    ],
-    "summary": "A full-line automation solution for TV and commercial display manufacturers, covering the entire process from assembly to packaging.",
-    "contentHtml": "<p>The TV/Commercial Display Production Line Solution is a turnkey project solution provided by TXAM for display manufacturers.</p>\n                    <h3>Solution Components</h3>\n                    <p>The full line covers dispensing, bracket placement, lamination, flip inspection, final packaging, and other processes, achieving fully automated production from raw materials to finished products.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>One-key compatibility with multiple sizes from 65 to 110 inches</li>\n                        <li>Full-process robot automation</li>\n                        <li>CAD import for one-key changeover, short debugging time</li>\n                        <li>High full-line yield and consistent product quality</li>\n                        <li>True turnkey project implementation</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>TXAM provides full-process support from solution design, equipment manufacturing, installation and debugging to after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 31,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:21"
-  },
-  "32": {
-    "id": "32",
-    "category": "解决方案",
-    "model": "TXAM-SOL-FR",
-    "name": "Refrigerator Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Full Line Automation",
-      "Flexible Production",
-      "Multi-Model Compatibility",
-      "Turnkey Project"
-    ],
-    "summary": "A full-line automation solution for refrigerator manufacturers, covering assembly, inspection, and packaging processes.",
-    "contentHtml": "<p>The Refrigerator Production Line Solution is a full-line automation solution provided by TXAM for home appliance manufacturers.</p>\n                    <h3>Solution Components</h3>\n                    <p>The full line covers compressor installation, panel assembly, pipeline connection, electrical wiring, and final inspection and packaging processes.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>High level of full-line automation</li>\n                        <li>Flexible production for multiple models</li>\n                        <li>Automated inspection ensures quality</li>\n                        <li>Efficient packaging system</li>\n                        <li>Turnkey project service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and debugging, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 32,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:28"
-  },
-  "33": {
-    "id": "33",
-    "category": "解决方案",
-    "model": "TXAM-SOL-AC",
-    "name": "Air Conditioner Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Full Line Automation",
-      "Flexible Production",
-      "Multi-Model Compatibility",
-      "Turnkey Project"
-    ],
-    "summary": "A full-line automation solution for air conditioner manufacturers, covering assembly, inspection, and packaging processes.",
-    "contentHtml": "<p>The Air Conditioner Production Line Solution is a full-line automation solution provided by TXAM for home appliance manufacturers.</p>\n                    <h3>Solution Components</h3>\n                    <p>The full line covers heat exchanger assembly, compressor installation, pipeline connection, vacuuming, refrigerant charging, electrical wiring, and final inspection and packaging processes.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>High level of full-line automation</li>\n                        <li>Flexible switching for multiple models</li>\n                        <li>Automated helium leak detection ensures sealing</li>\n                        <li>Efficient packaging system</li>\n                        <li>Turnkey project service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and debugging, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 33,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:34"
-  },
-  "34": {
-    "id": "34",
-    "category": "解决方案",
-    "model": "TXAM-SOL-WA",
-    "name": "Washing Machine Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Full Line Automation",
-      "Flexible Production",
-      "Multi-Model Compatibility",
-      "Turnkey Project"
-    ],
-    "summary": "A complete line automation solution for washing machine manufacturers, covering the entire process of assembly, inspection, and packaging.",
-    "contentHtml": "<p>The washing machine production line solution is a complete line automation solution provided by TXAM for home appliance manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including inner drum assembly, outer shell assembly, shock absorber system installation, electrical wiring, and final inspection and packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>High degree of line automation</li>\n                        <li>Multi-model flexible production</li>\n                        <li>Automated inspection ensures quality</li>\n                        <li>Efficient packaging system</li>\n                        <li>Turnkey project service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 34,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:41"
-  },
-  "35": {
-    "id": "35",
-    "category": "解决方案",
-    "model": "TXAM-SOL-MW",
-    "name": "Microwave Oven Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Complete Line Automation",
-      "Flexible Production",
-      "Multi-Model Compatibility",
-      "Turnkey Project"
-    ],
-    "summary": "A complete line automation solution for microwave oven manufacturers, covering the entire process of cavity assembly, door assembly, electrical wiring, and final inspection and packaging.",
-    "contentHtml": "<p>The microwave oven production line solution is a complete line automation solution provided by TXAM for home appliance manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including cavity assembly, door assembly, microwave generator installation, magnetron installation, electrical wiring, and final inspection and packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>High degree of line automation</li>\n                        <li>Multi-model flexible production</li>\n                        <li>Automated inspection ensures quality and safety</li>\n                        <li>Efficient packaging system</li>\n                        <li>Turnkey project service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 35,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:48"
-  },
-  "36": {
-    "id": "36",
-    "category": "解决方案",
-    "model": "TXAM-SOL-TB",
-    "name": "Tablet PC Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Precision Assembly",
-      "Vision Inspection",
-      "Flexible Production",
-      "Turnkey Project"
-    ],
-    "summary": "A complete line automation solution for tablet PC manufacturers, covering display assembly, battery installation, motherboard assembly, shell lamination, and final inspection and packaging.",
-    "contentHtml": "<p>The tablet PC production line solution is a complete line automation solution provided by TXAM for consumer electronics manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including touch screen assembly, battery installation, motherboard assembly, camera installation, shell lamination, and final inspection and packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>Precision assembly ensures product quality</li>\n                        <li>Automated vision inspection improves accuracy</li>\n                        <li>Multi-model flexible switching</li>\n                        <li>Efficient packaging system</li>\n                        <li>Turnkey project service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 36,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:53"
-  },
-  "37": {
-    "id": "37",
-    "category": "解决方案",
-    "model": "TXAM-SOL-AL",
-    "name": "Car Light Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Precision Assembly",
-      "Seal Inspection",
-      "Flexible Production",
-      "Turnkey Project"
-    ],
-    "summary": "A complete line automation solution for automotive lighting manufacturers, covering lens assembly, reflector installation, LED module assembly, seal inspection, and final packaging.",
-    "contentHtml": "<p>The car light production line solution is a complete line automation solution provided by TXAM for automotive parts manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including lens assembly, reflector installation, LED module assembly, circuit connection, seal inspection, and final packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>Precision assembly ensures optical performance</li>\n                        <li>Automated helium leak detection ensures sealing</li>\n                        <li>Multi-model flexible production</li>\n                        <li>Complies with automotive industry standards</li>\n                        <li>Turnkey project service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 37,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:59"
-  },
-  "38": {
-    "id": "38",
-    "category": "解决方案",
-    "model": "TXAM-SOL-CP",
-    "name": "Capacitor Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "High-Speed Winding",
-      "Liquid Injection and Sealing",
-      "Automated Inspection",
-      "Turnkey Project"
-    ],
-    "summary": "A complete line automation solution for capacitor manufacturers, covering winding, assembly, liquid injection, aging, and final inspection and packaging.",
-    "contentHtml": "<p>The capacitor production line solution is a complete automated line solution provided by TXAM for electronic component manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including metallized film winding, core assembly, liquid injection, welding, aging testing, and final inspection and packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>High-speed winding to increase production capacity</li>\n                        <li>Automated liquid injection to ensure sealing</li>\n                        <li>Aging testing to ensure product reliability</li>\n                        <li>Full-process automation</li>\n                        <li>Turnkey engineering service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 38,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 04:00:05"
-  },
-  "39": {
-    "id": "39",
-    "category": "解决方案",
-    "model": "TXAM-SOL-CM",
-    "name": "Coffee Machine Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "Precision Assembly",
-      "Functional Testing",
-      "Flexible Production",
-      "Turnkey Engineering"
-    ],
-    "summary": "A complete automated line solution for coffee machine manufacturers, covering heating element assembly, water pump installation, circuit board assembly, housing assembly, and final inspection and packaging.",
-    "contentHtml": "<p>The coffee machine production line solution is a complete automated line solution provided by TXAM for small appliance manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including heating element assembly, water pump installation, circuit board assembly, pipe connection, housing assembly, and final inspection and packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>Precision assembly to ensure product quality</li>\n                        <li>Automated functional testing to ensure safety</li>\n                        <li>Multi-model flexible production</li>\n                        <li>Efficient packaging system</li>\n                        <li>Turnkey engineering service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 39,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 04:00:11"
   }
 }

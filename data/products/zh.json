@@ -18,7 +18,7 @@
     "sortOrder": 1,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "tx-ns-alm-01",
     "updatedAt": "2026-07-23 07:45:45"
   },
   "2": {
@@ -40,7 +40,7 @@
     "sortOrder": 2,
     "filterKey": "optical",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "oc-intelligent-lamination-system",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "4": {
@@ -62,7 +62,7 @@
     "sortOrder": 3,
     "filterKey": "dispensing",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "high-precision-robotic-dispensing-machine",
     "updatedAt": "2026-07-21 07:15:42"
   },
   "5": {
@@ -84,7 +84,7 @@
     "sortOrder": 15,
     "filterKey": "dispensing",
     "filterKeyEn": "dispensing",
-    "slug": "",
+    "slug": "automatic-spray-gluing-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "6": {
@@ -106,7 +106,7 @@
     "sortOrder": 16,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "automatic-light-bracket-placement-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "7": {
@@ -128,7 +128,7 @@
     "sortOrder": 17,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "automatic-light-bar-placement-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "8": {
@@ -150,7 +150,7 @@
     "sortOrder": 6,
     "filterKey": "screw",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "tx-ns-asbs-01",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "9": {
@@ -172,7 +172,7 @@
     "sortOrder": 5,
     "filterKey": "flip",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "180-degree-heavy-duty-flipper",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "10": {
@@ -194,7 +194,7 @@
     "sortOrder": 18,
     "filterKey": "optical",
     "filterKeyEn": "optical",
-    "slug": "",
+    "slug": "automatic-tempered-glass-frame-installation-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "11": {
@@ -216,7 +216,7 @@
     "sortOrder": 4,
     "filterKey": "robot",
     "filterKeyEn": "logistics",
-    "slug": "",
+    "slug": "six-axis-robot-intelligent-palletizing-system",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "12": {
@@ -238,7 +238,7 @@
     "sortOrder": 7,
     "filterKey": "robot",
     "filterKeyEn": "logistics",
-    "slug": "",
+    "slug": "end-of-line-upright-packaging-automatic-cartoning-system",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "13": {
@@ -260,7 +260,7 @@
     "sortOrder": 20,
     "filterKey": "robot",
     "filterKeyEn": "robot",
-    "slug": "",
+    "slug": "tx-ns-rip-001",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "14": {
@@ -282,7 +282,7 @@
     "sortOrder": 21,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "robot-uprighting-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "15": {
@@ -304,7 +304,7 @@
     "sortOrder": 19,
     "filterKey": "flip",
     "filterKeyEn": "flip",
-    "slug": "",
+    "slug": "auxiliary-vision-inspection-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "16": {
@@ -326,7 +326,7 @@
     "sortOrder": 16,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "automatic-pressure-holding-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "17": {
@@ -348,7 +348,7 @@
     "sortOrder": 17,
     "filterKey": "transfer",
     "filterKeyEn": "transfer",
-    "slug": "",
+    "slug": "industrial-brain-control-software-r-d",
     "updatedAt": "2026-07-22 07:50:37"
   },
   "18": {
@@ -370,7 +370,7 @@
     "sortOrder": 8,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "rotary-table",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "19": {
@@ -392,7 +392,7 @@
     "sortOrder": 9,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "lifting-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "20": {
@@ -414,7 +414,7 @@
     "sortOrder": 10,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "module-transfer-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "21": {
@@ -436,7 +436,7 @@
     "sortOrder": 11,
     "filterKey": "screw",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "automatic-clip-and-latch-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "22": {
@@ -458,7 +458,7 @@
     "sortOrder": 12,
     "filterKey": "packaging",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "auxiliary-bag-sealing-machine",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "23": {
@@ -480,7 +480,7 @@
     "sortOrder": 13,
     "filterKey": "packaging",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "robot-offline-bagging",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "24": {
@@ -502,7 +502,7 @@
     "sortOrder": 14,
     "filterKey": "robot",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "automatic-backplane-placement-robot",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "26": {
@@ -524,7 +524,7 @@
     "sortOrder": 26,
     "filterKey": "transfer",
     "filterKeyEn": "single",
-    "slug": "",
+    "slug": "robot-cell-equipment",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "27": {
@@ -546,7 +546,7 @@
     "sortOrder": 22,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "auxiliary-loading-flip-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "28": {
@@ -568,7 +568,7 @@
     "sortOrder": 23,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "auxiliary-unloading-flip-unit",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "29": {
@@ -590,7 +590,7 @@
     "sortOrder": 24,
     "filterKey": "packaging",
     "filterKeyEn": "packaging",
-    "slug": "",
+    "slug": "manual-assisted-bagging",
     "updatedAt": "2026-07-21 05:45:33"
   },
   "30": {
@@ -612,205 +612,7 @@
     "sortOrder": 25,
     "filterKey": "robot",
     "filterKeyEn": "robot",
-    "slug": "",
+    "slug": "robot-automatic-overhead-conveyor-loading",
     "updatedAt": "2026-07-21 05:45:33"
-  },
-  "31": {
-    "id": "31",
-    "category": "解决方案",
-    "model": "TXAM-SOL-TV",
-    "name": "TV/商业显示器生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "整线自动化",
-      "柔性生产",
-      "65-110寸兼容",
-      "交钥匙工程"
-    ],
-    "summary": "面向TV和商业显示器制造商的整线自动化解决方案，从组装到包装全流程覆盖。",
-    "contentHtml": "<p>TV/商业显示器生产线解决方案是同兴高科为显示屏制造商提供的交钥匙工程解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖点胶、支架放置、贴合、翻转检测、最终包装等全流程，实现从原材料到成品的全自动化生产。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>一键兼容65~110寸多尺寸产品</li>\n                        <li>全流程机器人自动化作业</li>\n                        <li>CAD导入一键换型，调试时间短</li>\n                        <li>整线良率高，产品一致性好</li>\n                        <li>真正实现交钥匙工程</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>同兴高科提供从方案设计、设备制造、安装调试到售后服务的全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 31,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:21"
-  },
-  "32": {
-    "id": "32",
-    "category": "解决方案",
-    "model": "TXAM-SOL-FR",
-    "name": "冰箱生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "整线自动化",
-      "柔性生产",
-      "多型号兼容",
-      "交钥匙工程"
-    ],
-    "summary": "面向冰箱制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。",
-    "contentHtml": "<p>冰箱生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖压缩机安装、面板组装、管路连接、电气接线和最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>整线自动化程度高</li>\n                        <li>多型号柔性生产</li>\n                        <li>自动化检测确保质量</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 32,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:28"
-  },
-  "33": {
-    "id": "33",
-    "category": "解决方案",
-    "model": "TXAM-SOL-AC",
-    "name": "空调生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "整线自动化",
-      "柔性生产",
-      "多型号兼容",
-      "交钥匙工程"
-    ],
-    "summary": "面向空调制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。",
-    "contentHtml": "<p>空调生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖换热器组装、压缩机安装、管道连接、抽真空、充注制冷剂、电气接线及最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>整线自动化程度高</li>\n                        <li>多型号柔性切换</li>\n                        <li>自动化氦检漏确保密封性</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 33,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:34"
-  },
-  "34": {
-    "id": "34",
-    "category": "解决方案",
-    "model": "TXAM-SOL-WA",
-    "name": "洗衣机生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "整线自动化",
-      "柔性生产",
-      "多型号兼容",
-      "交钥匙工程"
-    ],
-    "summary": "面向洗衣机制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。",
-    "contentHtml": "<p>洗衣机生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖内筒组装、外壳装配、减震系统安装、电气接线及最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>整线自动化程度高</li>\n                        <li>多型号柔性生产</li>\n                        <li>自动化检测确保质量</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 34,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:41"
-  },
-  "35": {
-    "id": "35",
-    "category": "解决方案",
-    "model": "TXAM-SOL-MW",
-    "name": "微波炉生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "整线自动化",
-      "柔性生产",
-      "多型号兼容",
-      "交钥匙工程"
-    ],
-    "summary": "面向微波炉制造商的整线自动化解决方案，覆盖腔体组装、门体装配、电气接线及最终检测包装全流程。",
-    "contentHtml": "<p>微波炉生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖腔体组装、门体装配、微波发生器安装、磁控管安装、电气接线和最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>整线自动化程度高</li>\n                        <li>多型号柔性生产</li>\n                        <li>自动化检测确保质量安全</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 35,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:48"
-  },
-  "36": {
-    "id": "36",
-    "category": "解决方案",
-    "model": "TXAM-SOL-TB",
-    "name": "平板电脑生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "精密装配",
-      "视觉检测",
-      "柔性生产",
-      "交钥匙工程"
-    ],
-    "summary": "面向平板电脑制造商的整线自动化解决方案，覆盖显示屏组装、电池安装、主板装配、外壳贴合及最终检测包装。",
-    "contentHtml": "<p>平板电脑生产线解决方案是同兴高科为消费电子制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖触摸屏组装、电池安装、主板装配、摄像头安装、外壳贴合及最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>精密装配确保产品质量</li>\n                        <li>自动化视觉检测提高准确性</li>\n                        <li>多型号柔性切换</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 36,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:53"
-  },
-  "37": {
-    "id": "37",
-    "category": "解决方案",
-    "model": "TXAM-SOL-AL",
-    "name": "车灯生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "精密装配",
-      "密封检测",
-      "柔性生产",
-      "交钥匙工程"
-    ],
-    "summary": "面向汽车灯具制造商的整线自动化解决方案，覆盖透镜组装、反光碗安装、LED模块装配、密封检测及最终包装。",
-    "contentHtml": "<p>车灯生产线解决方案是同兴高科为汽车零部件制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖透镜组装、反光碗安装、LED模块装配、线路连接、密封检测及最终包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>精密装配确保光学性能</li>\n                        <li>自动化氦检漏确保密封性</li>\n                        <li>多型号柔性生产</li>\n                        <li>符合汽车行业标准</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 37,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 03:59:59"
-  },
-  "38": {
-    "id": "38",
-    "category": "解决方案",
-    "model": "TXAM-SOL-CP",
-    "name": "电容器生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "高速卷绕",
-      "注液密封",
-      "自动化检测",
-      "交钥匙工程"
-    ],
-    "summary": "面向电容器制造商的整线自动化解决方案，覆盖卷绕、装配、注液、老化和最终检测包装全流程。",
-    "contentHtml": "<p>电容器生产线解决方案是同兴高科为电子元器件制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖金属化薄膜卷绕、芯子组装、注液、焊接、老化测试和最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>高速卷绕提高产能</li>\n                        <li>自动化注液确保密封性</li>\n                        <li>老化测试确保产品可靠性</li>\n                        <li>全流程自动化</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 38,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 04:00:05"
-  },
-  "39": {
-    "id": "39",
-    "category": "解决方案",
-    "model": "TXAM-SOL-CM",
-    "name": "咖啡机生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.webp",
-    "specs": [
-      "精密装配",
-      "功能检测",
-      "柔性生产",
-      "交钥匙工程"
-    ],
-    "summary": "面向咖啡机制造商的整线自动化解决方案，覆盖加热元件组装、水泵安装、电路板装配、外壳装配及最终检测包装。",
-    "contentHtml": "<p>咖啡机生产线解决方案是同兴高科为小家电制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖加热元件组装、水泵安装、电路板装配、管路连接、外壳装配及最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>精密装配确保产品质量</li>\n                        <li>自动化功能检测确保安全</li>\n                        <li>多型号柔性生产</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
-    "published": false,
-    "showInList": false,
-    "sortOrder": 39,
-    "filterKey": "",
-    "filterKeyEn": "",
-    "slug": "",
-    "updatedAt": "2026-07-23 04:00:11"
   }
 }

@@ -69,7 +69,7 @@
       .join('');
 
     return (
-      '<a href="' + detailPrefix + 'product-detail.html?id=' + escapeHtml(item.id) + '" ' +
+      '<a href="' + (global.TXAM.catalogDetailHref ? global.TXAM.catalogDetailHref('products', item, detailPrefix) : detailPrefix + 'product-detail.html?id=' + escapeHtml(item.id)) + '" ' +
       'class="product-card product-item fade-up" data-category="' + catKey + '">' +
       '<div class="img-container">' + buildProductImage(cover, item.name) + '</div>' +
       '<div class="p-8 flex-grow flex flex-col">' +

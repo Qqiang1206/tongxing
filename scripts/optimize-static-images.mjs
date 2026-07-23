@@ -11,6 +11,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dirs = [
   path.join(root, 'assets/images/hero'),
   path.join(root, 'assets/images/solutions'),
+  path.join(root, 'assets/images/certifications'),
 ];
 
 const MAX_WIDTH = 1920;
@@ -23,16 +24,32 @@ function sleep(ms) {
 
 async function replaceFileSafe(target, tmp) {
   const backup = target + '.bak';
-  for (let attempt = 0; attempt < 8; attempt++) {
+  for (let attempt = 0; attempt < 10; attempt++) {
     try {
       if (fs.existsSync(backup)) fs.unlinkSync(backup);
       if (fs.existsSync(target)) fs.renameSync(target, backup);
-      fs.renameSync(tmp, target);
+      try {
+        fs.renameSync(tmp, target);
+      } catch (renameErr) {
+        if (renameErr.code === 'EBUSY' || renameErr.code === 'EPERM') {
+          fs.copyFileSync(tmp, target);
+          fs.unlinkSync(tmp);
+        } else {
+          throw renameErr;
+        }
+      }
       if (fs.existsSync(backup)) fs.unlinkSync(backup);
       return;
     } catch (err) {
-      if ((err.code === 'EBUSY' || err.code === 'EPERM') && attempt < 7) {
-        await sleep(80 * (attempt + 1));
+      if (fs.existsSync(backup) && !fs.existsSync(target)) {
+        try {
+          fs.renameSync(backup, target);
+        } catch (_) {
+          /* keep backup for manual recovery */
+        }
+      }
+      if ((err.code === 'EBUSY' || err.code === 'EPERM') && attempt < 9) {
+        await sleep(100 * (attempt + 1));
         continue;
       }
       throw err;
@@ -43,7 +60,7 @@ async function replaceFileSafe(target, tmp) {
 async function recompress(file) {
   const before = fs.statSync(file).size;
   if (before < MIN_BYTES) return null;
-  const tmp = file.replace(/\.webp$/i, '.opt.tmp.webp');
+  const tmp = `${file}.recompress.tmp`;
   let quality = 78;
   let meta;
   for (let i = 0; i < 8; i++) {
@@ -67,14 +84,24 @@ async function recompress(file) {
   return { file, before, after, width: meta?.width, quality };
 }
 
+function collectCandidates(dir, out) {
+  if (!fs.existsSync(dir)) return;
+  for (const name of fs.readdirSync(dir)) {
+    const file = path.join(dir, name);
+    const st = fs.statSync(file);
+    if (st.isDirectory()) {
+      collectCandidates(file, out);
+      continue;
+    }
+    if (!/\.webp$/i.test(name)) continue;
+    if (/\.(bak|recompress\.tmp)$/i.test(name)) continue;
+    if (st.size >= MIN_BYTES) out.push(file);
+  }
+}
+
 const candidates = [];
 for (const dir of dirs) {
-  if (!fs.existsSync(dir)) continue;
-  for (const name of fs.readdirSync(dir)) {
-    if (!/\.webp$/i.test(name)) continue;
-    const file = path.join(dir, name);
-    if (fs.statSync(file).size >= MIN_BYTES) candidates.push(file);
-  }
+  collectCandidates(dir, candidates);
 }
 
 console.log('optimizing', candidates.length, 'files...');
@@ -84,7 +111,7 @@ for (const file of candidates.sort()) {
     const result = await recompress(file);
     if (!result) continue;
     if (result.skipped) {
-      console.log('skip', rel, kb(file), '(no gain)');
+      console.log('skip', rel, Math.round(fs.statSync(file).size / 1024) + 'KB', '(no gain)');
       continue;
     }
     console.log(

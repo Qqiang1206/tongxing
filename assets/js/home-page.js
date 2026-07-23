@@ -222,7 +222,7 @@
       var summary = item._homeSummary || item.summary || excerptFromHtml(item.contentHtml, 72);
 
       return (
-        '<a href="news-detail.html?id=' + encodeURIComponent(item.id) + '" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">' +
+        '<a href="' + (global.TXAM.catalogDetailHref ? global.TXAM.catalogDetailHref('news', item, '') : 'news-detail.html?id=' + encodeURIComponent(item.id)) + '" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">' +
           '<div class="flex flex-col">' +
             '<span class="' + catClass + '">' + escapeHtml(item.category) + '</span>' +
             '<h3 class="text-h3 text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">' + escapeHtml(item.title) + '</h3>' +

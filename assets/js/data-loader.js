@@ -252,6 +252,29 @@
     var all = await loadData('solutions', lang);
     return all ? all[id] || null : null;
   }
+
+  async function resolveCatalogId(kind, lang, params) {
+    params = params || new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
+    var id = params.get('id');
+    if (id) return id;
+    var slug = params.get('slug');
+    if (!slug) return null;
+    var data = await loadData(kind, lang);
+    if (!data) return null;
+    for (var key of Object.keys(data)) {
+      if (data[key] && data[key].slug === slug) return key;
+    }
+    return null;
+  }
+
+  function catalogDetailHref(kind, item, prefix) {
+    prefix = prefix || '';
+    var page = kind === 'news' ? 'news-detail.html' : 'product-detail.html';
+    if (item && item.slug) {
+      return prefix + page + '?slug=' + encodeURIComponent(item.slug);
+    }
+    return prefix + page + '?id=' + encodeURIComponent(item && item.id ? item.id : '');
+  }
   function revealFadeUps() {
 
     var page = document.querySelector('.detail-page');
@@ -376,6 +399,8 @@ ensureMeta('property', 'og:type', seo.type || 'website');
   global.TXAM.loadPage = loadPage;
   global.TXAM.loadHome = loadHome;
   global.TXAM.loadSolutionBySlug = loadSolutionBySlug;
+  global.TXAM.resolveCatalogId = resolveCatalogId;
+  global.TXAM.catalogDetailHref = catalogDetailHref;
   global.TXAM.detectLang = detectLang;
   global.TXAM.applySeo = applySeo;
 

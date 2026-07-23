@@ -110,6 +110,7 @@
     <div data-footer-placeholder></div>
 
     <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/site-seo.js"></script>
   <script src="assets/js/site-common.js"></script>
   <script src="assets/js/site-nav.js"></script>
     <script src="data/news/zh.js"></script>
@@ -126,7 +127,7 @@
             }
 
             var params = new URLSearchParams(window.location.search);
-            var id = params.get('id') || '1';
+            var id = (await TXAM.resolveCatalogId('news', 'zh', params)) || params.get('id') || '1';
             var news = await TXAM.loadCatalogItem('news', id, 'zh');
             if (!news) news = newsData[id] || newsData['1'];
             if (!news) {
@@ -160,7 +161,7 @@
                     .map(function (nid) {
                         var item = newsData[nid];
                         return (
-                            '<a href="news-detail.html?id=' + nid + '" class="detail-related-card apple-card block p-6 group">' +
+                            '<a href="' + TXAM.catalogDetailHref('news', item, '') + '" class="detail-related-card apple-card block p-6 group">' +
                             '<div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
                             '<img loading="lazy" decoding="async" src="' + TXAM.assetUrl(item.cover) + '" alt="' + item.title + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">' +
                             '</div>' +
