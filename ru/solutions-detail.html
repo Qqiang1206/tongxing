@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">
 <head>
-    <script src="../assets/js/lang-detect.js"></script>
     <meta charset="UTF-8">
+    <script defer src="../assets/js/lang-detect.js"></script>
     <link rel="preload" as="image" href="../assets/images/solutions/tv-flex-line.webp">
     <meta name="description" content="Отраслевые автоматические производственные линии TXAM - услуги под ключ">
     <meta property="og:title" content="Детали решений | TXAM">
@@ -17,7 +17,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="../assets/images/brand/logo.png" alt="Тунсин Гаотек" class="h-8 md:h-10"></picture>
+            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="../assets/images/brand/logo.png" alt="Тунсин Гаотек" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md: flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -85,7 +85,7 @@
             <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="w-full media-h-detail w-full media-hero bg-gray-100">
-                        <picture><source srcset="../assets/images/solutions/tv-flex-line.webp" type="image/webp"><img loading="lazy" decoding="async" id="solution-image" alt="Изображение решения" class="img-zoom" src="../assets/images/solutions/tv-flex-line.webp"></picture>
+                        <picture><source srcset="../assets/images/solutions/tv-flex-line.webp" type="image/webp"><img decoding="async" fetchpriority="high" id="solution-image" alt="Изображение решения" class="img-zoom" src="../assets/images/solutions/tv-flex-line.webp"></picture>
                     </div>
                 </div>
                 <div class="fade-up">
@@ -252,9 +252,10 @@
             return new URLSearchParams(window.location.search).get(name);
         }
 
-        function loadSolution(solutionData) {
+        async function loadSolution(solutionData) {
             var solutionId = getUrlParameter('id') || '31';
-            var data = solutionData[solutionId];
+            var data = await TXAM.loadCatalogItem('solutions', solutionId, 'ru');
+            if (!data) data = solutionData[solutionId];
             if (!data) {
                 console.error('Solution not found:', solutionId);
                 return;
@@ -347,7 +348,7 @@
                 TXAM.bindMobileMenu();
                 return;
             }
-            loadSolution(solutionData);
+            await loadSolution(solutionData);
             TXAM.revealFadeUps();
             TXAM.bindMobileMenu();
         });

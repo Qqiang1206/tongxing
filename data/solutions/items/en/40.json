@@ -1,0 +1,89 @@
+{
+  "id": "40",
+  "category": "新能源汽车行业",
+  "name": "Headlight Production Line Solutions",
+  "image": "assets/images/solutions/headlight-production-line.webp",
+  "specs": [
+    "Precision Positioning",
+    "Seal Detection",
+    "Multi-Model Compatibility",
+    "Quality Assurance"
+  ],
+  "summary": "A complete line automation solution for automotive headlamp manufacturers, covering lens assembly, reflector installation, LED module assembly, and final packaging.",
+  "contentHtml": "<p>The headlamp production line solution is a complete line automation solution provided by TXAM for automotive headlamp manufacturers.</p>\n<h3>Solution Components</h3>\n<p>The complete line covers the entire process including lens assembly, reflector installation, LED module assembly, light distribution testing, sealing adhesive application, air tightness testing, appearance inspection, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision optical assembly ensures lighting performance</li>\n<li>Precise positioning of LED modules ensures accurate and consistent light patterns</li>\n<li>Sealing adhesive system ensures reliable sealing performance</li>\n<li>Sensitive air tightness testing ensures no leakage</li>\n<li>Automated light distribution testing ensures high performance compliance rate</li>\n<li>Quick changeover for multiple models adapts to market demands</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "headlight",
+  "sortOrder": 40,
+  "homeSlot": "",
+  "filterKey": "capacitor",
+  "filterKeyEn": "capacitor",
+  "updatedAt": "2026-07-22 08:29:17",
+  "painPoints": [
+    {
+      "title": "High optical precision requirements",
+      "desc": "Strict optical performance requirements for headlamps; assembly precision affects lighting performance"
+    },
+    {
+      "title": "Critical sealing performance",
+      "desc": "Headlamp sealing directly affects service life and safety"
+    },
+    {
+      "title": "Complex LED installation",
+      "desc": "High precision required for LED module installation, affecting light pattern"
+    },
+    {
+      "title": "Frequent model changeovers",
+      "desc": "Numerous automotive models lead to frequent headlamp model changeovers"
+    },
+    {
+      "title": "Strict air tightness testing",
+      "desc": "Headlamp air tightness testing requires strict standards with no leakage allowed"
+    },
+    {
+      "title": "High appearance requirements",
+      "desc": "Headlamp appearance directly impacts overall vehicle aesthetics"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Lens assembly",
+      "desc": "Precision lens assembly system ensures optical performance"
+    },
+    {
+      "step": "02",
+      "title": "Reflector installation",
+      "desc": "Automated reflector installation ensures reflection efficiency"
+    },
+    {
+      "step": "03",
+      "title": "LED module assembly",
+      "desc": "Precision LED module installation ensures accurate light patterns"
+    },
+    {
+      "step": "04",
+      "title": "Light distribution testing",
+      "desc": "Automated light distribution testing system ensures optical performance compliance"
+    },
+    {
+      "step": "05",
+      "title": "Sealing adhesive application",
+      "desc": "Precision sealing adhesive system ensures sealing performance"
+    },
+    {
+      "step": "06",
+      "title": "Air tightness testing",
+      "desc": "Air tightness testing system ensures product sealing reliability"
+    },
+    {
+      "step": "07",
+      "title": "Appearance inspection",
+      "desc": "Visual appearance inspection system ensures product aesthetics"
+    },
+    {
+      "step": "08",
+      "title": "Automatic packaging",
+      "desc": "Automated packaging system ensures safe outbound packaging"
+    }
+  ]
+}

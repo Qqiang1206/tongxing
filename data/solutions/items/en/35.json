@@ -1,0 +1,89 @@
+{
+  "id": "35",
+  "category": "储能行业",
+  "name": "Capacitor Production Line Solutions",
+  "image": "assets/images/solutions/capacitor-production-line.webp",
+  "specs": [
+    "Precision Winding",
+    "Automated Assembly",
+    "Aging Testing",
+    "Quality Assurance"
+  ],
+  "summary": "Turnkey automation solutions for capacitor manufacturers, covering winding, assembly, sealing, aging, and final inspection and packaging.",
+  "contentHtml": "<p>The capacitor production line solution is a turnkey automation solution provided by TXAM for capacitor manufacturers.</p>\n<h3>Solution Components</h3>\n<p>The entire line covers the full process including winding, assembly, impregnation, sealing, aging testing, visual inspection, performance testing, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High-speed precision winding, achieving industry-leading winding accuracy</li>\n<li>Automated assembly, reducing manual intervention and improving consistency</li>\n<li>Vacuum impregnation system, ensuring stable insulation performance</li>\n<li>Intelligent aging testing, significantly improving testing efficiency</li>\n<li>Visual inspection system, high defect recognition accuracy</li>\n<li>Moisture-proof packaging system, ensuring product storage life</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "capacitor",
+  "sortOrder": 35,
+  "homeSlot": "",
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "updatedAt": "2026-07-23 02:28:26",
+  "painPoints": [
+    {
+      "title": "High Winding Accuracy Requirements",
+      "desc": "Capacitor winding requires extremely high precision, which is difficult to guarantee with manual operation"
+    },
+    {
+      "title": "Complex Assembly Process",
+      "desc": "Capacitor assembly involves multiple precision processes"
+    },
+    {
+      "title": "Difficult to Control Sealing Performance",
+      "desc": "Sealing process requires strict standards, manual operation has poor consistency"
+    },
+    {
+      "title": "Cumbersome Aging Testing",
+      "desc": "Aging testing is time-consuming, manual operation has low efficiency"
+    },
+    {
+      "title": "Difficult Visual Inspection",
+      "desc": "Minor defects are hard to detect with the naked eye"
+    },
+    {
+      "title": "Stringent Packaging Requirements",
+      "desc": "Capacitors have strict requirements for moisture-proof packaging, etc."
+    }
+  ],
+  "process": [
+    {
+      "title": "Winding Process",
+      "desc": "High-speed precision winding machine completes precision winding of aluminum foil and paper dielectric",
+      "step": "01"
+    },
+    {
+      "title": "Assembly Process",
+      "desc": "Automated assembly system completes assembly of leads, terminals, and other components",
+      "step": "02"
+    },
+    {
+      "title": "Impregnation Process",
+      "desc": "Vacuum impregnation equipment completes insulating oil impregnation treatment",
+      "step": "03"
+    },
+    {
+      "title": "Sealing Process",
+      "desc": "Automated sealing system ensures consistent sealing performance",
+      "step": "04"
+    },
+    {
+      "title": "Aging Testing",
+      "desc": "Intelligent aging testing system enables batch testing",
+      "step": "05"
+    },
+    {
+      "title": "Visual Inspection",
+      "desc": "Visual inspection system automatically identifies appearance defects",
+      "step": "06"
+    },
+    {
+      "title": "Performance Testing",
+      "desc": "Fully automatic testing system completes electrical performance testing",
+      "step": "07"
+    },
+    {
+      "title": "Automatic Packaging",
+      "desc": "Moisture-proof packaging system ensures product storage safety",
+      "step": "08"
+    }
+  ]
+}

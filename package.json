@@ -18,6 +18,9 @@
     "build": "node scripts/generate-data-js.js && node scripts/generate-sitemap.js && node scripts/build.js",
     "server:import": "npm run import --prefix server",
     "server:dev": "npm run dev --prefix server",
-    "regression": "node scripts/regression-check.js"
+    "regression": "node scripts/regression-check.js",
+    "patch-front-perf": "node scripts/patch-front-performance.mjs",
+    "patch-list-page-meta": "node scripts/patch-list-page-meta.js",
+    "optimize-static-images": "node scripts/optimize-static-images.mjs"
   }
 }

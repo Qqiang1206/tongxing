@@ -125,9 +125,14 @@
     if (global.TXAM.loadSolutionBySlug) {
       return global.TXAM.loadSolutionBySlug(slug, lang);
     }
-    var all = await global.TXAM.loadData('solutions', lang);
     var id = SLUG_TO_ID[slug];
-    return id ? all[id] : null;
+    if (!id) return null;
+    if (global.TXAM.loadCatalogItem) {
+      var item = await global.TXAM.loadCatalogItem('solutions', id, lang);
+      if (item) return item;
+    }
+    var all = await global.TXAM.loadData('solutions', lang);
+    return all ? all[id] : null;
   }
 
   async function initSolutionLanding(options) {

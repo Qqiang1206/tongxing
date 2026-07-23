@@ -423,12 +423,12 @@ async function main() {
     } else fail('/admin/');
   }
 
-  // 13. data-loader auto API note (static check)
+  // 13. data-loader static-first (no blocking health probe)
   {
     const r = await fetch('/assets/js/data-loader.js');
-    if (r.status === 200 && r.text.includes('ensureApiBase') && r.text.includes('/api/v1/health')) {
-      pass('data-loader 同源 API 自动探测代码存在');
-    } else fail('data-loader ensureApiBase');
+    if (r.status === 200 && r.text.includes('ensureApiBase') && !r.text.includes("fetch(base + '/health'")) {
+      pass('data-loader 静态优先（无 health 探测）');
+    } else fail('data-loader static-first');
   }
 
   // 14. products-list uses CMS showInList (no hardcoded LISTED_IDS)

@@ -1,5 +1,11 @@
 /* TXAM Admin — mockup-aligned (orange / light dashboard) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap');
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/assets/fonts/noto-sans-sc-site.woff2') format('woff2');
+}
 
 :root {
   --txam-orange: #FF6B00;

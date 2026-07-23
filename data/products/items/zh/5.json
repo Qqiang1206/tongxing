@@ -1,0 +1,22 @@
+{
+  "id": "5",
+  "category": "点胶装配",
+  "model": "TX-NS-ASM 系列",
+  "name": "自动喷胶机",
+  "image": "assets/images/products/auto-dispenser.webp",
+  "specs": [
+    "0.6-0.8m/s 喷速",
+    "75\"-全兼容",
+    "胶块熔炉",
+    "多型号选择"
+  ],
+  "summary": "将胶水均匀喷涂于目标物体，适用于更大尺寸面板。喷涂效率高，兼容性强，从75\"到全尺寸兼容。",
+  "contentHtml": "<p>自动喷胶机是同兴高科为大型面板喷胶需求而研发的自动化设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备采用胶块熔炉供料方式，将固体胶块加热熔化后，通过喷头均匀涂覆于产品表面。喷涂速度快，涂覆均匀。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>喷涂速度0.6-0.8m/s，行业领先效率</li>\n                        <li>兼容尺寸从75\"到全尺寸，应用范围广</li>\n                        <li>多种型号TX-NS-ASM-01/02/03可选</li>\n                        <li>可配合视觉或机械定位</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 15,
+  "filterKey": "dispensing",
+  "filterKeyEn": "dispensing",
+  "slug": "",
+  "updatedAt": "2026-07-21 05:45:33"
+}

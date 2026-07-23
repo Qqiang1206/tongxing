@@ -1,0 +1,89 @@
+{
+  "id": "38",
+  "category": "家电行业",
+  "name": "Coffee Machine Production Line Solution",
+  "image": "assets/images/solutions/coffee-production-line.webp",
+  "specs": [
+    "Precision Assembly",
+    "Functional Testing",
+    "Multi-model Compatibility",
+    "Quality Assurance"
+  ],
+  "summary": "Turnkey automation solutions for coffee machine manufacturers, covering heating component assembly, water pump installation, and final testing and packaging.",
+  "contentHtml": "<p>The coffee machine production line solution is a turnkey automation solution provided by TXAM for coffee machine manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The entire line covers heating component assembly, water pump installation, water circuit sealing, temperature control system installation, appearance finishing, functional testing, air tightness testing, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision assembly of heating components ensures heating efficiency</li>\n<li>Automated water pump installation ensures precise and reliable positioning</li>\n<li>Water circuit sealing system ensures no leakage</li>\n<li>High temperature control accuracy with excellent temperature consistency</li>\n<li>Comprehensive functional testing ensures product quality</li>\n<li>Automated appearance finishing ensures high consistency</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "coffee",
+  "sortOrder": 38,
+  "homeSlot": "",
+  "filterKey": "tv-display",
+  "filterKeyEn": "tv-display",
+  "updatedAt": "2026-07-22 08:29:04",
+  "painPoints": [
+    {
+      "title": "Precision Heating Component Assembly",
+      "desc": "Coffee machine heating components require precision assembly with high accuracy requirements"
+    },
+    {
+      "title": "Difficult Water Pump Installation",
+      "desc": "Water pump installation in compact spaces makes manual installation challenging"
+    },
+    {
+      "title": "Strict Sealing Requirements",
+      "desc": "Water circuit system requires strict sealing; leaks can cause malfunctions"
+    },
+    {
+      "title": "High Temperature Control Accuracy",
+      "desc": "Temperature control system requires high precision, affecting coffee machine quality"
+    },
+    {
+      "title": "Complex Functional Testing",
+      "desc": "Coffee machine functional testing involves many items and complex processes"
+    },
+    {
+      "title": "High Appearance Requirements",
+      "desc": "Coffee machine appearance requires fine finishing; manual processing struggles to ensure consistency"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Heating Component Assembly",
+      "desc": "Precision assembly system completes assembly of heating tubes, temperature sensors, etc."
+    },
+    {
+      "step": "02",
+      "title": "Water Pump Installation",
+      "desc": "Automated water pump installation system ensures precise positioning"
+    },
+    {
+      "step": "03",
+      "title": "Water Circuit Sealing",
+      "desc": "Automated sealing system ensures reliable water circuit connections"
+    },
+    {
+      "step": "04",
+      "title": "Temperature Control System Installation",
+      "desc": "Precision temperature control system installation ensures temperature control accuracy"
+    },
+    {
+      "step": "05",
+      "title": "Appearance Finishing",
+      "desc": "Automated surface finishing system ensures consistent appearance"
+    },
+    {
+      "step": "06",
+      "title": "Functional Testing",
+      "desc": "Comprehensive functional testing system tests heating, pump pressure, etc."
+    },
+    {
+      "step": "07",
+      "title": "Air Tightness Testing",
+      "desc": "Air tightness testing system ensures product sealing performance"
+    },
+    {
+      "step": "08",
+      "title": "Automatic Packaging",
+      "desc": "Automated packaging system achieves exquisite factory packaging"
+    }
+  ]
+}

@@ -34,6 +34,29 @@ const CATALOG_JS_GLOBALS = {
   solutions: '__TXAM_SOLUTIONS',
 };
 
+const SLIM_OMIT = {
+  products: ['contentHtml', 'detail'],
+  solutions: ['contentHtml', 'detail', 'painPoints', 'process'],
+  news: ['contentHtml', 'content'],
+};
+
+function slimCatalogItem(kind, item) {
+  const omit = new Set(SLIM_OMIT[kind] || []);
+  const out = {};
+  for (const [key, value] of Object.entries(item || {})) {
+    if (!omit.has(key)) out[key] = value;
+  }
+  return out;
+}
+
+function slimCatalogMap(kind, data) {
+  const out = {};
+  for (const [id, item] of Object.entries(data || {})) {
+    out[id] = slimCatalogItem(kind, item);
+  }
+  return out;
+}
+
 function syncJsonEnabled() {
   const v = process.env.SYNC_JSON_ON_WRITE;
   if (v == null || v === '') return true;
@@ -255,26 +278,69 @@ function getNewsById(id, lang) {
   });
 }
 
+function getSlottedSolutions(lang) {
+  const db = getDb();
+  const rows = db
+    .prepare(
+      `SELECT s.*, i.name, i.summary, i.specs_json
+       FROM solutions s
+       JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = ?
+       WHERE s.published = 1
+         AND s.home_slot IN ('hero', 'category')
+         AND (? = 'zh' OR i.translation_status != 'missing')
+       ORDER BY s.sort_order, CAST(s.id AS INTEGER)`
+    )
+    .all(lang, lang);
+  return toCatalogMap(
+    rows.map((r) =>
+      solutionApiFromRows(
+        r,
+        { name: r.name, summary: r.summary, specs_json: r.specs_json },
+        { slim: true }
+      )
+    )
+  );
+}
+
+function getFeaturedNews(lang) {
+  const db = getDb();
+  const rows = db
+    .prepare(
+      `SELECT n.*, i.category, i.title, i.content_html, i.date_display
+       FROM news n
+       JOIN news_i18n i ON i.news_id = n.id AND i.lang = ?
+       WHERE n.published = 1
+         AND n.home_featured = 1
+         AND (? = 'zh' OR i.translation_status != 'missing')
+       ORDER BY n.sort_order, n.published_at DESC, CAST(n.id AS INTEGER)`
+    )
+    .all(lang, lang);
+  return toCatalogMap(
+    rows.map((r) =>
+      newsApiFromRows(
+        r,
+        {
+          category: r.category,
+          title: r.title,
+          content_html: r.content_html,
+          date_display: r.date_display,
+        },
+        { slim: true }
+      )
+    )
+  );
+}
+
 /** Homepage aggregate: page copy + only slotted solutions/news (list-slim). */
 function getHomeBundle(lang) {
   const page = readPageJson('home', lang);
   if (!page) return null;
-
-  const allSolutions = getAllSolutions(lang);
-  const allNews = getAllNews(lang);
-  const solutions = {};
-  const news = {};
-
-  for (const [id, item] of Object.entries(allSolutions)) {
-    if (item.homeSlot === 'hero' || item.homeSlot === 'category') {
-      solutions[id] = item;
-    }
-  }
-  for (const [id, item] of Object.entries(allNews)) {
-    if (item.homeFeatured) news[id] = item;
-  }
-
-  return { page, solutions, news, lang };
+  return {
+    page,
+    solutions: getSlottedSolutions(lang),
+    news: getFeaturedNews(lang),
+    lang,
+  };
 }
 
 export function loadSiteSettings(lang) {
@@ -446,7 +512,69 @@ export function listCatalogItemsRaw(kind) {
 }
 
 export function getCatalogItemRaw(kind, id) {
-  return listCatalogItemsRaw(kind).find((x) => String(x.id) === String(id)) || null;
+  const db = getDb();
+  const key = String(id);
+  if (kind === 'products') {
+    const r = db
+      .prepare(
+        `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json
+         FROM products p
+         LEFT JOIN product_i18n i ON i.product_id = p.id AND i.lang = 'zh'
+         WHERE p.id = ?`
+      )
+      .get(key);
+    return r
+      ? rowToProductRaw(r, {
+          name: r.name,
+          summary: r.summary,
+          content_html: r.content_html,
+          specs_json: r.specs_json,
+        })
+      : null;
+  }
+  if (kind === 'solutions') {
+    const r = db
+      .prepare(
+        `SELECT s.*, i.name, i.summary, i.content_html, i.specs_json, i.pain_points_json, i.process_json
+         FROM solutions s
+         LEFT JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = 'zh'
+         WHERE s.id = ?`
+      )
+      .get(key);
+    return r
+      ? rowToSolutionRaw(r, {
+          name: r.name,
+          summary: r.summary,
+          content_html: r.content_html,
+          specs_json: r.specs_json,
+          pain_points_json: r.pain_points_json,
+          process_json: r.process_json,
+        })
+      : null;
+  }
+  if (kind === 'news') {
+    const r = db
+      .prepare(
+        `SELECT n.*, i.category, i.title, i.content_html, i.date_display
+         FROM news n
+         LEFT JOIN news_i18n i ON i.news_id = n.id AND i.lang = 'zh'
+         WHERE n.id = ?`
+      )
+      .get(key);
+    return r
+      ? rowToNewsRaw(r, {
+          category: r.category,
+          title: r.title,
+          content_html: r.content_html,
+          date_display: r.date_display,
+        })
+      : null;
+  }
+  throw new Error('invalid_catalog_kind');
+}
+
+export function listCatalogItemsRawSlim(kind) {
+  return listCatalogItemsRaw(kind).map((item) => slimCatalogItem(kind, item));
 }
 
 export function readCatalogJson(kind, lang = 'zh') {
@@ -875,9 +1003,15 @@ function exportCatalogLang(kind, lang) {
     });
   const raw = JSON.stringify(sorted, null, 2) + '\n';
   fs.writeFileSync(path.join(dir, `${lang}.json`), raw, 'utf8');
+  const itemsDir = path.join(dir, 'items', lang);
+  fs.mkdirSync(itemsDir, { recursive: true });
+  for (const [id, item] of Object.entries(sorted)) {
+    fs.writeFileSync(path.join(itemsDir, `${id}.json`), JSON.stringify(item, null, 2) + '\n', 'utf8');
+  }
+  const slim = slimCatalogMap(kind, sorted);
   fs.writeFileSync(
     path.join(dir, `${lang}.js`),
-    `/* auto-generated from sqlite — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${JSON.stringify(sorted)};\n`,
+    `/* auto-generated from sqlite (list-slim) — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${JSON.stringify(slim)};\n`,
     'utf8'
   );
   return path.join(dir, `${lang}.js`);

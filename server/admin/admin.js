@@ -1198,6 +1198,15 @@
     return Math.max(1, Math.round(size / 1024)) + ' KB';
   }
 
+  function mediaBytesLabel(item) {
+    var web = item.displayBytes != null ? item.displayBytes : item.bytes;
+    var label = mediaSizeLabel(web);
+    if (item.originalBytes && web && item.originalBytes > web * 1.15) {
+      label += '（原图 ' + mediaSizeLabel(item.originalBytes) + '）';
+    }
+    return label;
+  }
+
   function mediaMatches(item, query) {
     var q = String(query || '').trim().toLowerCase();
     if (!q) return true;
@@ -4136,7 +4145,7 @@
       var name = mediaItemName(item);
       var uploaded = mediaItemSource(item) === 'upload';
       var sourceLabel = uploaded ? '运营上传' : '网站素材';
-      var sizeLabel = mediaSizeLabel(item.bytes);
+      var sizeLabel = mediaBytesLabel(item);
       var meta = sourceLabel + (sizeLabel ? ' · ' + sizeLabel : '') + (uploaded ? ' · 可删除' : ' · 已保护');
       return '<article class="media-item">' +
         '<button type="button" class="media-item-preview" data-media-open="' + escapeAttr(item.filename) + '" aria-label="查看 ' + escapeAttr(name) + '">' +
@@ -4177,7 +4186,9 @@
     $('media-detail-badge').textContent = uploaded ? '运营上传' : '网站素材';
     $('media-detail-badge').className = 'media-source-badge ' + (uploaded ? 'is-upload' : 'is-site');
     $('media-detail-note').textContent = uploaded
-      ? '这张图片由运营人员上传，可以修改名称或删除。'
+      ? (item.originalBytes && item.displayBytes && item.originalBytes > item.displayBytes
+        ? '已自动生成 Web 版（' + mediaSizeLabel(item.displayBytes) + '），原图 ' + mediaSizeLabel(item.originalBytes) + ' 仅存档。'
+        : '这张图片由运营人员上传，可以修改名称或删除。')
       : '网站素材已启用删除保护，避免前端页面因误删出现缺图。';
     $('media-detail-delete').classList.toggle('hidden', !mediaItemDeletable(item));
     $('media-detail').classList.remove('hidden');
@@ -4186,6 +4197,11 @@
 
   function closeMediaDetail() {
     state.selectedMediaId = null;
+    var img = $('media-detail-image');
+    if (img) {
+      img.removeAttribute('src');
+      img.src = '';
+    }
     $('media-detail').classList.add('hidden');
   }
 
@@ -4221,6 +4237,11 @@
       return;
     }
     if (!confirm('确认删除“' + mediaItemName(item) + '”？删除后无法恢复。')) return;
+    var img = $('media-detail-image');
+    if (img) {
+      img.removeAttribute('src');
+      img.src = '';
+    }
     try {
       await api('/admin/media/' + encodeURIComponent(id), { method: 'DELETE' });
       closeMediaDetail();
@@ -4260,18 +4281,23 @@
     var label = $('media-upload-label');
     var text = $('media-upload-text');
     var errors = [];
+    var optimized = 0;
     if (input) input.disabled = true;
     if (label) label.classList.add('is-busy');
     try {
       for (var i = 0; i < files.length; i += 1) {
         if (text) text.textContent = '上传中 ' + (i + 1) + ' / ' + files.length;
-        try { await uploadMedia(files[i]); }
+        try {
+          var saved = await uploadMedia(files[i]);
+          if (saved && saved.optimized) optimized += 1;
+        }
         catch (err) { errors.push(files[i].name + '：' + mediaErrorMessage(err)); }
       }
       state.mediaFilter = 'upload';
       state.mediaPage = 1;
       await loadMedia();
       if (errors.length) toast('部分图片上传失败：' + errors[0], true);
+      else if (optimized) toast('已上传 ' + files.length + ' 张，并自动生成 Web 版');
       else toast('已上传 ' + files.length + ' 张图片');
     } finally {
       state.mediaUploading = false;

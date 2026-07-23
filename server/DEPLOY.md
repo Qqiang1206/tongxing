@@ -46,19 +46,21 @@ PUBLIC_CACHE_TTL_MS=45000
 
 ## 3. Nginx（同域）
 
-同域部署后，前台在 http(s) 下会自动探测 `/api/v1/health`；成功则用 `/api/v1`，失败回退 `data/*.js` / JSON（file:// 与纯静态仍可用）。
+前台默认**静态数据优先**；需要 API 时可显式设置 `window.__TXAM_API_BASE='/api/v1'`。
 
-也可显式控制：
-
-```html
-<script>window.__TXAM_API_BASE = '/api/v1';</script>
-<!-- 或强制静态：window.__TXAM_API_BASE = false -->
-```
-
-关键片段已写入仓库根 `nginx.conf`：`/` 静态，`/api/` 与 `/admin/` 反代到 `127.0.0.1:3000`。
-文件顶部有 HTTPS + HTTP/2 + 80→443 注释模板；证书就绪后启用，并把 location 块挂到 443。
+关键片段：`nginx.conf` + `nginx/txam-locations.conf`（部署时复制到 `/etc/nginx/conf.d/`）。`/` 静态，`/api/` 与 `/admin/` 反代到 `127.0.0.1:3000`。
+已包含 `/_backups/`、`/server/`、`/assets/images/uploads/_originals/` 等 **deny** 规则，以及基础安全响应头。
+证书就绪后：注释掉 HTTP server，启用文件内 HTTPS 模板（含 HSTS）。
 
 访问统计在内存攒批约 5 秒再写 SQLite；生产用单个 Node 进程（勿 PM2 cluster），backup-data 产物请再同步到 OSS。
+
+### 图片上传（运营素材）
+
+- 后台上传 ≤8MB 的 PNG/JPG/WebP 会自动生成 **display WebP（≤1920px）** 与 **thumb WebP**；前台只引用 display 路径。
+- 原图归档在 `assets/images/uploads/_originals/`（Nginx/Node 均不可公开访问）。
+- 已有旧上传：`cd server && npm run migrate:uploads`
+- 列表页数据：`npm run generate-data-js` 会生成 slim 列表 JS + `data/*/items/{lang}/{id}.json` 详情分文件。
+- 公开 API 500 在生产环境不返回内部错误详情；`/api/v1/analytics/hit` 默认每 IP 120 次/分钟（`ANALYTICS_MAX_HITS_PER_MIN`）。
 
 ---
 
@@ -89,6 +91,10 @@ npm run generate-sitemap
 
 # 完整备份 SQLite、静态回退数据和运营上传图片
 npm run backup-data
+
+# 可选：将 _backups/ 同步到阿里云 OSS（示例，需安装 ossutil 并配置 AK）
+# ossutil cp -r _backups/ oss://your-bucket/txam-backups/ --update
+# 建议 cron：每日 03:00 backup-data + ossutil sync；保留 OSS 生命周期 30 天。
 ```
 
 翻译：后台「翻译状态 / 任务」

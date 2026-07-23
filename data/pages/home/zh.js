@@ -51,7 +51,7 @@ window.__TXAM_PAGE_HOME_ZH={
     "subtitle": "从单机设备到整厂柔性自动化，提供全方位智造矩阵。",
     "unitCard": {
       "eyebrow": "Single Machines",
-      "title": "单元设备",
+      "title": "单机设备",
       "summary": "解决特定工艺瓶颈的高柔性系统。如：高精度机器人点胶机（±0.2mm）、180度翻转单元、以及采用 UVW 平台的 OC 卡合机组。支持 CAD 导图一键换型。",
       "tags": [
         "高精度点胶",
@@ -60,7 +60,7 @@ window.__TXAM_PAGE_HOME_ZH={
       ],
       "href": "products.html",
       "image": "assets/images/hero/robot-unit.webp",
-      "imageAlt": "工业机器人单机设备"
+      "imageAlt": "单机设备"
     }
   },
   "serviceSection": {
@@ -116,6 +116,7 @@ window.__TXAM_PAGE_HOME_ZH={
   },
   "seo": {
     "title": "同兴高科 TXAM - 中国领先的自动化品牌供应商",
-    "description": "同兴高科 - 19年非标自动化、智能制造、工业机器人集成。为TCL、创维、美的等世界一流企业提供智能装备一站式服务。"
+    "description": "同兴高科 - 19年非标自动化、智能制造、工业机器人集成。为TCL、创维、美的等世界一流企业提供智能装备一站式服务。",
+    "image": ""
   }
 };

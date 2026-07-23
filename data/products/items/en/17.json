@@ -1,0 +1,22 @@
+{
+  "id": "17",
+  "category": "搬运移载",
+  "model": "软件系统",
+  "name": "Industrial Brain Control Software R&D",
+  "image": "assets/images/hero/control-system.webp",
+  "specs": [
+    "WMS/WCS",
+    "MES",
+    "TCP/IP Communication",
+    "Data Insights"
+  ],
+  "summary": "Deep integration of software and hardware, independently developed WMS, WCS, MES, and underlying TCP/IP vision communication components. Break down workshop information silos and achieve digital transparent management.",
+  "contentHtml": "<p>The Industrial Brain control software is a software system independently developed by TXAM for smart factory implementation.</p>\n<h3>System Components</h3>\n<p>The system includes WMS Warehouse Management System, WCS Warehouse Control System, MES Manufacturing Execution System, and underlying TCP/IP vision communication components.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Break down workshop information silos, achieving data interconnection</li>\n<li>Real-time monitoring of equipment status and production data</li>\n<li>Digital transparent management, improving management efficiency</li>\n<li>Supports TCP/IP communication, seamlessly connecting with various devices</li>\n</ul>\n<h3>Application Scenarios</h3>\n<p>Suitable for intelligent transformation and upgrade of various automated production lines, achieving true smart manufacturing.</p>",
+  "published": false,
+  "showInList": false,
+  "sortOrder": 17,
+  "filterKey": "transfer",
+  "filterKeyEn": "transfer",
+  "slug": "",
+  "updatedAt": "2026-07-22 07:50:37"
+}

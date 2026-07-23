@@ -1,0 +1,22 @@
+{
+  "id": "27",
+  "category": "后段包装",
+  "model": "TX-NS-AUFE 系列",
+  "name": "辅助上线翻转单元",
+  "image": "assets/images/products/upper-flip-unit.webp",
+  "specs": [
+    "自动翻转",
+    "上线辅助",
+    "高效协同",
+    "品质保障"
+  ],
+  "summary": "用于产品上线工位的辅助翻转设备，配合主设备实现自动化上下料。",
+  "contentHtml": "<p>辅助上线翻转单元是同兴高科为产线上线工位而研发的辅助翻转设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备配合主生产线，实现产品在上线工位的自动翻转和定位，为下一工序做准备。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>自动翻转，提高上线效率</li>\n                        <li>与主设备高效协同</li>\n                        <li>品质保障，减少产品损坏</li>\n                        <li>操作简便，维护成本低</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 22,
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "slug": "",
+  "updatedAt": "2026-07-21 05:45:33"
+}

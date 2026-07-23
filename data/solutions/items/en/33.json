@@ -1,0 +1,89 @@
+{
+  "id": "33",
+  "category": "物流行业",
+  "name": "Packaging and Logistics Automation Line",
+  "image": "assets/images/solutions/pkg-logistics-line.webp",
+  "specs": [
+    "Automated Packaging",
+    "Logistics Conveying",
+    "High-Efficiency Sorting",
+    "System Integration"
+  ],
+  "summary": "System integration solutions covering the entire process of post-production line packaging, conveying, and sorting for logistics automation.",
+  "contentHtml": "<p>The packaging and logistics automation line is a system integration solution provided by TXAM for post-production logistics.</p>\n<h3>Solution Components</h3>\n<p>The system covers the entire process including automatic case opening, packing, sealing, labeling, sorting, conveying, palletizing, and warehouse docking.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Full-process automation, significantly improving logistics efficiency</li>\n<li>High-speed sorting system with sorting accuracy above 99.9%</li>\n<li>Intelligent conveying scheduling, high equipment utilization</li>\n<li>Seamless integration with WMS system, transparent information</li>\n<li>Modular design, flexible scalability</li>\n<li>Full-line system integration, one-stop delivery</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, system integration, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "packaging",
+  "sortOrder": 33,
+  "homeSlot": "category",
+  "filterKey": "refrigerator",
+  "filterKeyEn": "refrigerator",
+  "updatedAt": "2026-07-22 08:28:34",
+  "painPoints": [
+    {
+      "title": "Packaging Efficiency Bottleneck",
+      "desc": "Manual packaging is slow and cannot meet the takt time requirements of high-speed production lines"
+    },
+    {
+      "title": "Insufficient Sorting Accuracy",
+      "desc": "Manual sorting has high error rates, reducing logistics efficiency"
+    },
+    {
+      "title": "Conveying Disconnection",
+      "desc": "Poor conveying between production line and warehouse, creating logistics bottlenecks"
+    },
+    {
+      "title": "Information System Fragmentation",
+      "desc": "Packaging, conveying, and sorting systems operate independently with no information sharing"
+    },
+    {
+      "title": "Low Space Utilization",
+      "desc": "Traditional logistics layouts occupy large spaces, reducing warehouse efficiency"
+    },
+    {
+      "title": "Poor Flexibility and Scalability",
+      "desc": "Difficulty adapting to capacity changes and business expansion needs"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Automatic Case Opening",
+      "desc": "Automatic case opener forms cardboard boxes automatically, improving efficiency"
+    },
+    {
+      "step": "02",
+      "title": "Automatic Packing",
+      "desc": "Robots automatically pick and place products into boxes with high precision"
+    },
+    {
+      "step": "03",
+      "title": "Automatic Sealing",
+      "desc": "Heat sealing or tape sealing ensures secure and aesthetically pleasing packaging"
+    },
+    {
+      "step": "04",
+      "title": "Automatic Labeling",
+      "desc": "Vision system positioning for precise labeling with traceable information"
+    },
+    {
+      "step": "05",
+      "title": "Intelligent Sorting",
+      "desc": "High-speed sorting system enables multi-directional automatic sorting"
+    },
+    {
+      "step": "06",
+      "title": "Automatic Conveying",
+      "desc": "Conveyor lines enable automatic product flow between processes"
+    },
+    {
+      "step": "07",
+      "title": "Automatic Palletizing",
+      "desc": "Robot palletizing system for neat and stable stacking"
+    },
+    {
+      "step": "08",
+      "title": "Warehouse Docking",
+      "desc": "Integration with WMS system for automatic inbound management"
+    }
+  ]
+}

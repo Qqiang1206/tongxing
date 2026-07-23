@@ -1,0 +1,22 @@
+{
+  "id": "7",
+  "category": "光学元件组装",
+  "model": "TX-NS-ALSI-01/02",
+  "name": "Automatic Light Bar Placement Machine",
+  "image": "assets/images/products/auto-light-strip.webp",
+  "specs": [
+    "±0.2mm Accuracy",
+    "7 pieces/batch",
+    "With Pressure Holding",
+    "Robot + Manual Collaboration"
+  ],
+  "summary": "Precisely and quickly places LED light bars at designated positions. Can pick multiple light bars at once, with pressure holding function to ensure assembly accuracy.",
+  "contentHtml": "<p>The automatic light bar placement machine uses a robotic unit to automate light bar placement.</p>\n                    <h3>Working Principle</h3>\n                    <p>It uses a robot with a vision system to precisely pick 7 light bars and place them at target positions in one go. The equipment has a pressure holding function to ensure the light bars are firmly fixed.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Assembly accuracy of ±0.2mm</li>\n                        <li>Can pick 7 light bars at once, high efficiency</li>\n                        <li>Pressure holding function ensures assembly quality</li>\n                        <li>Supports CAD import for quick changeover</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 17,
+  "filterKey": "optical",
+  "filterKeyEn": "optical",
+  "slug": "",
+  "updatedAt": "2026-07-21 05:45:33"
+}

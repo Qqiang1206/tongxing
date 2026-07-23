@@ -1,0 +1,89 @@
+{
+  "id": "34",
+  "category": "家电行业",
+  "name": "Washing Machine Production Line Solution",
+  "image": "assets/images/solutions/washer-production-line.webp",
+  "specs": [
+    "Full Line Automation",
+    "Flexible Production",
+    "Multi-Model Compatibility",
+    "Turnkey Project"
+  ],
+  "summary": "Full-line automation solution for washing machine manufacturers, covering the entire process from assembly to packaging.",
+  "contentHtml": "<p>The washing machine production line solution is a full-line automation solution provided by TXAM for washing machine manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process including component supply, inner drum assembly, shell assembly, electrical installation, vibration damping installation, online inspection, automatic packaging, and intelligent warehousing.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High degree of full-line automation, reducing manual intervention</li>\n<li>Multi-model flexible switching, short changeover time</li>\n<li>Online inspection system to ensure product quality</li>\n<li>Intelligent data collection for lean production</li>\n<li>Integration with MES system for full traceability</li>\n<li>Turnkey project, one-stop service</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "washer",
+  "sortOrder": 34,
+  "homeSlot": "",
+  "filterKey": "tv-display",
+  "filterKeyEn": "tv-display",
+  "updatedAt": "2026-07-22 08:28:41",
+  "painPoints": [
+    {
+      "title": "Complex Assembly Process",
+      "desc": "Washing machine assembly involves multiple components with complex processes, making manual assembly difficult"
+    },
+    {
+      "title": "Long Changeover Time",
+      "desc": "Multi-model production leads to long changeover and debugging times, affecting production capacity"
+    },
+    {
+      "title": "Numerous Inspection Items",
+      "desc": "Washing machines have many inspection items, and manual inspection is inefficient and prone to missed checks"
+    },
+    {
+      "title": "Slow Material Flow",
+      "desc": "Inter-process material flow relies on manual labor, making it difficult to coordinate cycle times"
+    },
+    {
+      "title": "High Quality Fluctuation",
+      "desc": "Inconsistent manual operations lead to unstable product quality"
+    },
+    {
+      "title": "Difficult Data Collection",
+      "desc": "Production data is recorded manually, lacking real-time capability and making analysis difficult"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Component Supply",
+      "desc": "Automated supply system for automatic component feeding"
+    },
+    {
+      "step": "02",
+      "title": "Inner Drum Assembly",
+      "desc": "Robots perform precise inner drum assembly to ensure dynamic balance"
+    },
+    {
+      "step": "03",
+      "title": "Shell Assembly",
+      "desc": "Automated assembly system for precise shell and inner drum assembly"
+    },
+    {
+      "step": "04",
+      "title": "Electrical Installation",
+      "desc": "Automated wiring system for motor, wiring, and other electrical installations"
+    },
+    {
+      "step": "05",
+      "title": "Vibration Damping Installation",
+      "desc": "Specialized equipment for precise vibration damping system installation"
+    },
+    {
+      "step": "06",
+      "title": "Online Inspection",
+      "desc": "Multi-functional inspection station for comprehensive performance, safety, and other checks"
+    },
+    {
+      "step": "07",
+      "title": "Automatic Packaging",
+      "desc": "Automated packaging system for efficient and standardized packaging"
+    },
+    {
+      "step": "08",
+      "title": "Intelligent Warehousing",
+      "desc": "Integration with MES system for full production data traceability"
+    }
+  ]
+}

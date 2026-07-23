@@ -1,0 +1,22 @@
+{
+  "id": "37",
+  "category": "解决方案",
+  "model": "TXAM-SOL-AL",
+  "name": "Car Light Production Line Solution",
+  "image": "assets/images/products/commercial-display-assembly.webp",
+  "specs": [
+    "Precision Assembly",
+    "Seal Inspection",
+    "Flexible Production",
+    "Turnkey Project"
+  ],
+  "summary": "A complete line automation solution for automotive lighting manufacturers, covering lens assembly, reflector installation, LED module assembly, seal inspection, and final packaging.",
+  "contentHtml": "<p>The car light production line solution is a complete line automation solution provided by TXAM for automotive parts manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including lens assembly, reflector installation, LED module assembly, circuit connection, seal inspection, and final packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>Precision assembly ensures optical performance</li>\n                        <li>Automated helium leak detection ensures sealing</li>\n                        <li>Multi-model flexible production</li>\n                        <li>Complies with automotive industry standards</li>\n                        <li>Turnkey project service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
+  "published": false,
+  "showInList": false,
+  "sortOrder": 37,
+  "filterKey": "",
+  "filterKeyEn": "",
+  "slug": "",
+  "updatedAt": "2026-07-23 03:59:59"
+}

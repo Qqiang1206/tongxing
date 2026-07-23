@@ -19,7 +19,7 @@
     "filterKey": "optical",
     "filterKeyEn": "optical",
     "slug": "",
-    "updatedAt": "2026-07-23 03:19:44"
+    "updatedAt": "2026-07-23 07:45:45"
   },
   "2": {
     "id": "2",
@@ -620,7 +620,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-TV",
     "name": "TV/Commercial Display Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Full Line Automation",
       "Flexible Production",
@@ -642,7 +642,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-FR",
     "name": "Refrigerator Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Full Line Automation",
       "Flexible Production",
@@ -664,7 +664,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-AC",
     "name": "Air Conditioner Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Full Line Automation",
       "Flexible Production",
@@ -686,7 +686,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-WA",
     "name": "Washing Machine Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Full Line Automation",
       "Flexible Production",
@@ -708,7 +708,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-MW",
     "name": "Microwave Oven Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Complete Line Automation",
       "Flexible Production",
@@ -730,7 +730,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-TB",
     "name": "Tablet PC Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Precision Assembly",
       "Vision Inspection",
@@ -752,7 +752,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-AL",
     "name": "Car Light Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Precision Assembly",
       "Seal Inspection",
@@ -774,7 +774,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-CP",
     "name": "Capacitor Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "High-Speed Winding",
       "Liquid Injection and Sealing",
@@ -796,7 +796,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-CM",
     "name": "Coffee Machine Production Line Solution",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Precision Assembly",
       "Functional Testing",

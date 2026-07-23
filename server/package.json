@@ -7,11 +7,15 @@
   "engines": {
     "node": ">=22.5.0"
   },
+  "dependencies": {
+    "sharp": "^0.34.5"
+  },
   "scripts": {
     "dev": "node src/index.js",
     "import": "node scripts/import-from-json.js",
     "import:reset": "node scripts/import-from-json.js --reset",
     "import:media": "node scripts/import-site-images-to-media.js",
+    "migrate:uploads": "node scripts/migrate-upload-variants.js",
     "setup": "node scripts/import-from-json.js"
   }
 }

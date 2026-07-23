@@ -19,7 +19,7 @@
     "filterKey": "optical",
     "filterKeyEn": "optical",
     "slug": "",
-    "updatedAt": "2026-07-23 03:19:44"
+    "updatedAt": "2026-07-23 07:45:45"
   },
   "2": {
     "id": "2",
@@ -620,7 +620,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-TV",
     "name": "TV/商业显示器生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "整线自动化",
       "柔性生产",
@@ -642,7 +642,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-FR",
     "name": "冰箱生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "整线自动化",
       "柔性生产",
@@ -664,7 +664,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-AC",
     "name": "空调生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "整线自动化",
       "柔性生产",
@@ -686,7 +686,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-WA",
     "name": "洗衣机生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "整线自动化",
       "柔性生产",
@@ -708,7 +708,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-MW",
     "name": "微波炉生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "整线自动化",
       "柔性生产",
@@ -730,7 +730,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-TB",
     "name": "平板电脑生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "精密装配",
       "视觉检测",
@@ -752,7 +752,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-AL",
     "name": "车灯生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "精密装配",
       "密封检测",
@@ -774,7 +774,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-CP",
     "name": "电容器生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "高速卷绕",
       "注液密封",
@@ -796,7 +796,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-CM",
     "name": "咖啡机生产线解决方案",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "精密装配",
       "功能检测",

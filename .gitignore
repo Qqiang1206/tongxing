@@ -1,4 +1,6 @@
 node_modules/
+server/node_modules/
+.playwright-cli/
 _unused-images/
 _backups/
 _deploy-package-*/
@@ -15,3 +17,4 @@ Thumbs.db
 # CMS uploads: keep folder, ignore generated/test files
 assets/images/uploads/*
 !assets/images/uploads/.gitkeep
+*.opt.tmp.webp

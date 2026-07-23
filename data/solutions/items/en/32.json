@@ -1,0 +1,89 @@
+{
+  "id": "32",
+  "category": "家电行业",
+  "name": "Refrigerator Production Line Solution",
+  "image": "assets/images/solutions/refrigerator-production-line.webp",
+  "specs": [
+    "Full Line Automation",
+    "Flexible Production",
+    "Multi-Model Compatibility",
+    "Turnkey Project"
+  ],
+  "summary": "Full-line automation solution for refrigerator manufacturers, covering the entire process from assembly to packaging.",
+  "contentHtml": "<p>The refrigerator production line solution is a full-line automation solution provided by TXAM for refrigerator manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process including component feeding, compressor installation, panel assembly, pipeline connection, electrical wiring, online inspection, vacuuming and refrigerant charging, automatic packaging, and intelligent palletizing.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High level of full-line automation, reducing reliance on manual labor</li>\n<li>Flexible switching between multiple models, improving equipment utilization</li>\n<li>Online inspection system to ensure product quality</li>\n<li>Automated material handling with matched process cycle times</li>\n<li>Intelligent data collection for lean production</li>\n<li>Turnkey project service for one-stop delivery</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "refrigerator",
+  "sortOrder": 32,
+  "homeSlot": "category",
+  "filterKey": "tv-display",
+  "filterKeyEn": "tv-display",
+  "updatedAt": "2026-07-22 08:28:25",
+  "painPoints": [
+    {
+      "title": "Numerous Assembly Processes",
+      "desc": "Refrigerator assembly involves multiple processes; manual assembly is inefficient and costly"
+    },
+    {
+      "title": "Difficulty in Model Changeover",
+      "desc": "Long changeover time during multi-model production, reducing equipment utilization"
+    },
+    {
+      "title": "Lack of Inspection Links",
+      "desc": "Traditional production lines lack online inspection, making quality assurance difficult"
+    },
+    {
+      "title": "Complex Material Handling",
+      "desc": "Material handling between production line processes relies on manual labor, making cycle time matching difficult"
+    },
+    {
+      "title": "Inconsistent Packaging Standards",
+      "desc": "Manual packaging has poor consistency, leading to uneven packaging quality"
+    },
+    {
+      "title": "Low Level of Informatization",
+      "desc": "Difficulties in collecting production data prevent fine management"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Component Feeding",
+      "desc": "Automated logistics system provides automatic component supply, reducing manual handling"
+    },
+    {
+      "step": "02",
+      "title": "Compressor Installation",
+      "desc": "Robots automatically install compressors with high precision and efficiency"
+    },
+    {
+      "step": "03",
+      "title": "Panel Assembly",
+      "desc": "Automated assembly system completes precision assembly of panels, pipelines, etc."
+    },
+    {
+      "step": "04",
+      "title": "Electrical Wiring",
+      "desc": "Automated wiring system ensures reliable electrical connections"
+    },
+    {
+      "step": "05",
+      "title": "Online Inspection",
+      "desc": "Multi-functional inspection equipment performs comprehensive testing of performance, safety, etc."
+    },
+    {
+      "step": "06",
+      "title": "Vacuuming and Refrigerant Charging",
+      "desc": "Automated vacuuming and refrigerant charging ensure sealing integrity"
+    },
+    {
+      "step": "07",
+      "title": "Automatic Packaging",
+      "desc": "Automated packaging system achieves efficient and standardized packaging"
+    },
+    {
+      "step": "08",
+      "title": "Intelligent Palletizing",
+      "desc": "Robot palletizing system automatically stacks finished products for storage"
+    }
+  ]
+}

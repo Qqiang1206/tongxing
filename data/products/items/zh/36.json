@@ -1,0 +1,22 @@
+{
+  "id": "36",
+  "category": "解决方案",
+  "model": "TXAM-SOL-TB",
+  "name": "平板电脑生产线解决方案",
+  "image": "assets/images/products/commercial-display-assembly.webp",
+  "specs": [
+    "精密装配",
+    "视觉检测",
+    "柔性生产",
+    "交钥匙工程"
+  ],
+  "summary": "面向平板电脑制造商的整线自动化解决方案，覆盖显示屏组装、电池安装、主板装配、外壳贴合及最终检测包装。",
+  "contentHtml": "<p>平板电脑生产线解决方案是同兴高科为消费电子制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖触摸屏组装、电池安装、主板装配、摄像头安装、外壳贴合及最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>精密装配确保产品质量</li>\n                        <li>自动化视觉检测提高准确性</li>\n                        <li>多型号柔性切换</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
+  "published": false,
+  "showInList": false,
+  "sortOrder": 36,
+  "filterKey": "",
+  "filterKeyEn": "",
+  "slug": "",
+  "updatedAt": "2026-07-23 03:59:53"
+}

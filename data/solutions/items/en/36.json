@@ -1,0 +1,89 @@
+{
+  "id": "36",
+  "category": "家电行业",
+  "name": "Air Conditioner Production Line Solutions",
+  "image": "assets/images/solutions/ac-production-line.webp",
+  "specs": [
+    "Full-line Automation",
+    "Flexible Production",
+    "Multi-model Compatibility",
+    "Turnkey Project"
+  ],
+  "summary": "Full-line automation solutions for air conditioner indoor and outdoor unit manufacturers, achieving high-takt, high-quality mass production goals.",
+  "contentHtml": "<p>The air conditioner production line solution is a full-line automation solution provided by TXAM for manufacturers of air conditioner indoor and outdoor units.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process including heat exchanger assembly, pipeline connection, vacuum evacuation, refrigerant charging, helium leak detection, electrical wiring, performance testing, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision heat exchanger assembly ensures heat exchange efficiency</li>\n<li>Automated pipeline system significantly reduces leakage rates</li>\n<li>High-precision charging system ensures accurate refrigerant charge</li>\n<li>Helium mass spectrometry leak detection offers high sensitivity for seal testing</li>\n<li>Fast multi-model changeover with short changeover time</li>\n<li>High level of full-line automation for high production capacity and efficiency</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "ac",
+  "sortOrder": 36,
+  "homeSlot": "",
+  "filterKey": "tv-display",
+  "filterKeyEn": "tv-display",
+  "updatedAt": "2026-07-22 08:28:54",
+  "painPoints": [
+    {
+      "title": "Heat exchanger assembly difficulty",
+      "desc": "High precision requirements for heat exchanger assembly, low efficiency with manual assembly"
+    },
+    {
+      "title": "Complex pipeline connection",
+      "desc": "Numerous air conditioner pipelines with complex connection processes, prone to leakage"
+    },
+    {
+      "title": "High precision in vacuum and charging",
+      "desc": "Strict precision requirements for vacuum extraction and refrigerant charging"
+    },
+    {
+      "title": "Strict helium leak detection requirements",
+      "desc": "Extremely high requirements for air conditioning system seal testing"
+    },
+    {
+      "title": "Slow multi-model changeover",
+      "desc": "Many indoor and outdoor unit models, long changeover and debugging time"
+    },
+    {
+      "title": "Complex electrical wiring",
+      "desc": "Complex electrical system wiring, prone to errors with manual wiring"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Heat exchanger assembly",
+      "desc": "Automated heat exchanger assembly system ensures precision assembly"
+    },
+    {
+      "step": "02",
+      "title": "Pipeline connection",
+      "desc": "Robots automatically complete pipe cutting, flaring, and connection"
+    },
+    {
+      "step": "03",
+      "title": "Vacuum evacuation",
+      "desc": "Automatic vacuum system ensures system vacuum level"
+    },
+    {
+      "step": "04",
+      "title": "Refrigerant charging",
+      "desc": "High-precision charging system ensures accurate refrigerant charge"
+    },
+    {
+      "step": "05",
+      "title": "Helium leak detection",
+      "desc": "Helium mass spectrometry leak detection system achieves high-precision seal testing"
+    },
+    {
+      "step": "06",
+      "title": "Electrical wiring",
+      "desc": "Standardized electrical wiring system ensures reliable connections"
+    },
+    {
+      "step": "07",
+      "title": "Performance testing",
+      "desc": "Comprehensive performance testing system completes full testing"
+    },
+    {
+      "step": "08",
+      "title": "Automatic packaging",
+      "desc": "Automated packaging system achieves efficient outbound packaging"
+    }
+  ]
+}

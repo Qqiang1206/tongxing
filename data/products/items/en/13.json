@@ -1,0 +1,22 @@
+{
+  "id": "13",
+  "category": "机器人集成",
+  "model": "TX-NS-RIP-001",
+  "name": "Integrated Robot Palletizing Solution",
+  "image": "assets/images/products/robot-palletizing-integrated.webp",
+  "specs": [
+    "Functional Integration",
+    "Master-Slave Pallet",
+    "Automatic Slip Sheet",
+    "Scanning Function"
+  ],
+  "summary": "A more powerful integrated palletizing solution, including master-slave pallet stacking, automatic slip sheet placement, scanning, and other special functions.",
+  "contentHtml": "<p>The Integrated Robot Palletizing Solution is a full-featured palletizing system developed by TXAM for high-end customers.</p>\n                    <h3>Working Principle</h3>\n                    <p>Based on standard palletizing functions, it integrates master-slave pallet stacking, automatic slip sheet placement, and scanning to automate the entire post-production logistics process.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Complete functionality covering the entire post-production logistics process</li>\n                        <li>Master-slave pallet stacking function for more application scenarios</li>\n                        <li>Automatic slip sheet placement reduces manual intervention</li>\n                        <li>Scanning function enables traceable logistics information</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 20,
+  "filterKey": "robot",
+  "filterKeyEn": "robot",
+  "slug": "",
+  "updatedAt": "2026-07-21 05:45:33"
+}

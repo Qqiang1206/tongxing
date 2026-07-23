@@ -1,0 +1,22 @@
+{
+  "id": "34",
+  "category": "解决方案",
+  "model": "TXAM-SOL-WA",
+  "name": "洗衣机生产线解决方案",
+  "image": "assets/images/products/commercial-display-assembly.webp",
+  "specs": [
+    "整线自动化",
+    "柔性生产",
+    "多型号兼容",
+    "交钥匙工程"
+  ],
+  "summary": "面向洗衣机制造商的整线自动化解决方案，覆盖装配、检测、包装全流程。",
+  "contentHtml": "<p>洗衣机生产线解决方案是同兴高科为家电制造商提供的整线自动化解决方案。</p>\n                    <h3>方案组成</h3>\n                    <p>整线覆盖内筒组装、外壳装配、减震系统安装、电气接线及最终检测包装等全流程。</p>\n                    <h3>方案优势</h3>\n                    <ul>\n                        <li>整线自动化程度高</li>\n                        <li>多型号柔性生产</li>\n                        <li>自动化检测确保质量</li>\n                        <li>高效包装系统</li>\n                        <li>交钥匙工程服务</li>\n                    </ul>\n                    <h3>服务内容</h3>\n                    <p>提供整线规划、设备制造、安装调试和售后服务全流程支持。</p>",
+  "published": false,
+  "showInList": false,
+  "sortOrder": 34,
+  "filterKey": "",
+  "filterKeyEn": "",
+  "slug": "",
+  "updatedAt": "2026-07-23 03:59:41"
+}

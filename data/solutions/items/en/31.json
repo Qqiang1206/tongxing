@@ -1,0 +1,89 @@
+{
+  "id": "31",
+  "category": "TV/商显行业",
+  "name": "TV/Commercial Display Production Line Solutions",
+  "image": "assets/images/solutions/tv-flex-line.webp",
+  "specs": [
+    "Full Line Automation",
+    "Flexible Production",
+    "65-110 Inch Compatibility",
+    "Turnkey Project"
+  ],
+  "summary": "Full line automation solutions for TV, commercial display, educational conference all-in-one, and digital signage manufacturers, covering the entire process of dispensing, laminating, flipping, inspection, bagging, and palletizing.",
+  "contentHtml": "<p>The TV/Commercial Display Flexible Assembly Line is a full line automation solution provided by TXAM for manufacturers of TV, commercial displays, educational conference all-in-one, and digital signage.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process from dispensing, bracket placement, laminating, flip inspection, to final bagging and palletizing, achieving fully automated production from raw materials to finished products.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>One-click compatibility with 65-110 inch multi-size products, solving large-size production challenges</li>\n<li>Full process robotic automation, significantly improving production efficiency</li>\n<li>CAD import for one-click model changeover, short debugging time, minimal capacity loss</li>\n<li>High overall line yield rate, consistent product quality</li>\n<li>Self-developed WMS/WCS system, breaking information silos</li>\n<li>True turnkey project, one-stop service</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full process support from solution design, equipment manufacturing, installation and commissioning to after-sales service, truly realizing a turnkey project.</p>",
+  "published": true,
+  "slug": "tv-display",
+  "sortOrder": 31,
+  "homeSlot": "hero",
+  "filterKey": "ac",
+  "filterKeyEn": "ac",
+  "updatedAt": "2026-07-22 08:28:16",
+  "painPoints": [
+    {
+      "title": "Difficulty in Large-Size Assembly",
+      "desc": "Manual assembly of large-size display devices over 65 inches is difficult, inefficient, and has a high breakage rate"
+    },
+    {
+      "title": "Complex Multi-Model Changeover",
+      "desc": "Long changeover time for multi-model production, high debugging costs, difficult to achieve flexible production"
+    },
+    {
+      "title": "High Risk in Manual Flipping",
+      "desc": "Flipping large-size products relies on manual labor, posing safety hazards and risk of product damage"
+    },
+    {
+      "title": "Insufficient Dispensing Accuracy",
+      "desc": "Traditional dispensing equipment has low precision, many bubbles, and cannot guarantee sealing performance"
+    },
+    {
+      "title": "Low Packaging Efficiency",
+      "desc": "Post-process packaging is cumbersome, with high manual bagging and palletizing costs and slow cycle times"
+    },
+    {
+      "title": "Severe Information Silos",
+      "desc": "Lack of information exchange between equipment, making digital management and quality traceability difficult"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Automatic Dispensing",
+      "desc": "High-precision robotic dispensing with ±0.2mm positioning accuracy, multi-nozzle matrix coordination"
+    },
+    {
+      "step": "02",
+      "title": "Precision Laminating",
+      "desc": "Constant pressure control laminating with ±0.15mm accuracy, no bubbles, no misalignment"
+    },
+    {
+      "step": "03",
+      "title": "Safe Flipping",
+      "desc": "180-degree heavy-duty flipping with one-button operation, solving large-size product flipping challenges"
+    },
+    {
+      "step": "04",
+      "title": "Visual Inspection",
+      "desc": "AI vision system for automatic inspection, online quality control, ensuring product consistency"
+    },
+    {
+      "step": "05",
+      "title": "Automatic Bagging",
+      "desc": "Robotic automatic bagging packaging, saving labor, improving packaging efficiency"
+    },
+    {
+      "step": "06",
+      "title": "Intelligent Palletizing",
+      "desc": "Six-axis robot intelligent palletizing with ±0.5mm accuracy, 12 seconds per piece for efficient palletizing"
+    },
+    {
+      "step": "07",
+      "title": "One-Click Model Changeover",
+      "desc": "CAD drawing import for quick product model switching, significantly reducing debugging time"
+    },
+    {
+      "step": "08",
+      "title": "Data Traceability",
+      "desc": "WMS/WCS system enables transparent production data, full quality traceability"
+    }
+  ]
+}

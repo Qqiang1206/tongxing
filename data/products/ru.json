@@ -19,7 +19,7 @@
     "filterKey": "optical",
     "filterKeyEn": "optical",
     "slug": "",
-    "updatedAt": "2026-07-23 03:19:44"
+    "updatedAt": "2026-07-23 07:45:45"
   },
   "2": {
     "id": "2",
@@ -620,7 +620,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-TV",
     "name": "Решение для производственной линии телевизоров и коммерческих дисплеев",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Полная автоматизация линии",
       "Гибкое производство",
@@ -642,7 +642,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-FR",
     "name": "Решение для производственной линии холодильников",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Полная автоматизация линии",
       "Гибкое производство",
@@ -664,7 +664,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-AC",
     "name": "Решение для производственной линии кондиционеров",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Полная автоматизация линии",
       "Гибкое производство",
@@ -686,7 +686,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-WA",
     "name": "Решение для производственной линии стиральных машин",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Полная автоматизация линии",
       "Гибкое производство",
@@ -708,7 +708,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-MW",
     "name": "Решение для линии по производству микроволновых печей",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Полностью автоматизированная линия",
       "Гибкое производство",
@@ -730,7 +730,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-TB",
     "name": "Решение для линии по производству планшетов",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Точная сборка",
       "Визуальный контроль",
@@ -752,7 +752,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-AL",
     "name": "Решение для линии по производству автомобильных фар",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Точная сборка",
       "Контроль герметичности",
@@ -774,7 +774,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-CP",
     "name": "Решение для линии по производству конденсаторов",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Высокоскоростная намотка",
       "Герметизация с заливкой",
@@ -796,7 +796,7 @@
     "category": "解决方案",
     "model": "TXAM-SOL-CM",
     "name": "Решение для линии производства кофемашин",
-    "image": "assets/images/products/commercial-display-assembly.jpg",
+    "image": "assets/images/products/commercial-display-assembly.webp",
     "specs": [
       "Точная сборка",
       "Функциональное тестирование",

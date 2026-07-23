@@ -67,6 +67,7 @@ export function getDb() {
   migrateSolutionColumns(db);
   migrateHomeSlotColumns(db);
   ensureAuditTableInline(db);
+  migrateMediaColumnsInline(db);
   ensurePageViewsTableInline(db);
   seedResourceStatus(db);
   dbInstance = db;
@@ -161,6 +162,23 @@ function ensurePageViewsTableInline(db) {
     );
     CREATE INDEX IF NOT EXISTS idx_page_view_day ON page_view_daily(day);
   `);
+}
+
+function migrateMediaColumnsInline(db) {
+  const cols = db.prepare('PRAGMA table_info(media)').all().map((c) => c.name);
+  const adds = [
+    ['thumb_path', 'TEXT'],
+    ['original_path', 'TEXT'],
+    ['width', 'INTEGER'],
+    ['height', 'INTEGER'],
+    ['original_bytes', 'INTEGER'],
+    ['display_bytes', 'INTEGER'],
+  ];
+  for (const [name, type] of adds) {
+    if (!cols.includes(name)) {
+      db.exec(`ALTER TABLE media ADD COLUMN ${name} ${type}`);
+    }
+  }
 }
 
 function ensureAuditTableInline(db) {

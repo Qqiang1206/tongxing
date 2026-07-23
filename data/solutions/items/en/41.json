@@ -1,0 +1,89 @@
+{
+  "id": "41",
+  "category": "机器人",
+  "name": "Robot cell equipment",
+  "image": "assets/images/solutions/robot-unit.webp",
+  "specs": [
+    "Modular design",
+    "Flexible configuration",
+    "Easy integration",
+    "Efficient and reliable"
+  ],
+  "summary": "Modular cell equipment centered around robots, flexibly configurable and integrable based on process requirements, adaptable to various automation scenarios.",
+  "contentHtml": "<p>In March 2026, TXAM's Huizhou Smart Manufacturing Base officially commenced full production, marking the formal establishment of the company's \"Shenzhen-Huizhou Dual-Base 100,000 sqm Smart Manufacturing Base\" strategic layout.</p>\n<h2>Dual-Core Drive, Production Leap</h2>\n<p>The Huizhou base covers an area of 60,000 sqm, featuring industry-leading smart production line designs with complete assembly, testing, and packaging systems. After production begins, the company's overall capacity will more than double, with annual output value expected to reach hundreds of millions of yuan.</p>\n<h2>Serving World-Class Global Customers</h2>\n<p>Leveraging expanded capacity and 19 years of technical expertise, TXAM is now capable of undertaking hundred-million-yuan orders from top global enterprises. The company will continue to deepen its focus on non-standard automation, providing higher-quality products and services to long-term partners such as TCL, Skyworth, Midea, Konka, and Changhong.</p>\n<p>Looking ahead, TXAM will continue to advance smart manufacturing upgrades, contributing more to China's smart manufacturing sector.</p>",
+  "published": false,
+  "slug": "robot",
+  "sortOrder": 4,
+  "homeSlot": "",
+  "filterKey": "robot",
+  "filterKeyEn": "robot",
+  "updatedAt": "2026-07-21 09:44:11",
+  "painPoints": [
+    {
+      "title": "Low Space Utilization",
+      "desc": "Traditional automation equipment occupies large spaces, making layout difficult"
+    },
+    {
+      "title": "Difficult Changeover",
+      "desc": "Long equipment modification cycles and high costs during product changeovers"
+    },
+    {
+      "title": "Integration Difficulty",
+      "desc": "Challenges in system integration between different devices"
+    },
+    {
+      "title": "Long Commissioning Period",
+      "desc": "Extended new production line commissioning times affecting delivery"
+    },
+    {
+      "title": "High Maintenance Costs",
+      "desc": "Equipment maintenance relies on original manufacturers, with slow response and high costs"
+    },
+    {
+      "title": "Poor Scalability",
+      "desc": "Difficulty in upgrading or modifying equipment for capacity expansion"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Requirement Analysis",
+      "desc": "In-depth analysis of customer process requirements to develop solutions"
+    },
+    {
+      "step": "02",
+      "title": "Solution Design",
+      "desc": "Modular solution design, determining robots and end-of-arm tooling"
+    },
+    {
+      "step": "03",
+      "title": "Unit Integration",
+      "desc": "Precise integration of robots with peripheral equipment"
+    },
+    {
+      "step": "04",
+      "title": "End-of-Arm Customization",
+      "desc": "Customized end-of-arm tooling based on process requirements"
+    },
+    {
+      "step": "05",
+      "title": "Control System",
+      "desc": "Supporting control systems for coordinated operation"
+    },
+    {
+      "step": "06",
+      "title": "Simulation Validation",
+      "desc": "Virtual simulation to validate solution feasibility"
+    },
+    {
+      "step": "07",
+      "title": "On-Site Commissioning",
+      "desc": "Rapid on-site commissioning to shorten delivery cycles"
+    },
+    {
+      "step": "08",
+      "title": "Training & Delivery",
+      "desc": "Comprehensive training system to ensure customer autonomous operation"
+    }
+  ]
+}

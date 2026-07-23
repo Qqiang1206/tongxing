@@ -1,0 +1,22 @@
+{
+  "id": "39",
+  "category": "解决方案",
+  "model": "TXAM-SOL-CM",
+  "name": "Coffee Machine Production Line Solution",
+  "image": "assets/images/products/commercial-display-assembly.webp",
+  "specs": [
+    "Precision Assembly",
+    "Functional Testing",
+    "Flexible Production",
+    "Turnkey Engineering"
+  ],
+  "summary": "A complete automated line solution for coffee machine manufacturers, covering heating element assembly, water pump installation, circuit board assembly, housing assembly, and final inspection and packaging.",
+  "contentHtml": "<p>The coffee machine production line solution is a complete automated line solution provided by TXAM for small appliance manufacturers.</p>\n                    <h3>Solution Composition</h3>\n                    <p>The entire line covers the full process including heating element assembly, water pump installation, circuit board assembly, pipe connection, housing assembly, and final inspection and packaging.</p>\n                    <h3>Solution Advantages</h3>\n                    <ul>\n                        <li>Precision assembly to ensure product quality</li>\n                        <li>Automated functional testing to ensure safety</li>\n                        <li>Multi-model flexible production</li>\n                        <li>Efficient packaging system</li>\n                        <li>Turnkey engineering service</li>\n                    </ul>\n                    <h3>Service Content</h3>\n                    <p>Provides full-process support including line planning, equipment manufacturing, installation and commissioning, and after-sales service.</p>",
+  "published": false,
+  "showInList": false,
+  "sortOrder": 39,
+  "filterKey": "",
+  "filterKeyEn": "",
+  "slug": "",
+  "updatedAt": "2026-07-23 04:00:11"
+}

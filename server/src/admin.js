@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import {
   readPageJson,
-  listCatalogItemsRaw,
+  listCatalogItemsRawSlim,
   getCatalogItemRaw,
   updateCatalogItemRaw,
   createCatalogItemRaw,
@@ -28,7 +28,7 @@ import {
 } from './services/translationJobs.js';
 import { getTranslationConfig } from './services/translateProvider.js';
 import { saveUploadedMedia, listUploadedMedia, deleteUploadedMedia, updateMediaAlt } from './services/media.js';
-import { writeAudit, listAuditLogs, getAuditLog, listRecentContentUpdates } from './services/audit.js';
+import { writeAudit, listAuditLogs, getAuditLog, listRecentContentUpdates, clientIp } from './services/audit.js';
 import {
   getCategoriesBundle,
   listProductCategories,
@@ -53,6 +53,13 @@ const ADMIN_SESSION_TTL_MS = Math.max(
   Number(process.env.ADMIN_SESSION_HOURS || 8) * 60 * 60 * 1000
 );
 const adminSessions = new Map();
+const MAX_BODY_BYTES = Math.max(
+  1024 * 1024,
+  Number(process.env.MAX_BODY_BYTES || 12 * 1024 * 1024)
+);
+const LOGIN_WINDOW_MS = 60 * 1000;
+const LOGIN_MAX_ATTEMPTS = Math.max(3, Number(process.env.ADMIN_LOGIN_MAX_ATTEMPTS || 8));
+const loginAttempts = new Map();
 
 function passwordMatches(candidate) {
   const expected = Buffer.from(ADMIN_PASSWORD);
@@ -105,7 +112,16 @@ export const SOLUTION_SLUG_OPTIONS = [
 function readBody(req) {
   return new Promise((resolve, reject) => {
     const chunks = [];
-    req.on('data', (c) => chunks.push(c));
+    let size = 0;
+    req.on('data', (c) => {
+      size += c.length;
+      if (size > MAX_BODY_BYTES) {
+        reject(new Error('body_too_large'));
+        req.destroy();
+        return;
+      }
+      chunks.push(c);
+    });
     req.on('end', () => {
       try {
         resolve(JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}'));
@@ -115,6 +131,33 @@ function readBody(req) {
     });
     req.on('error', reject);
   });
+}
+
+function loginRateLimited(req) {
+  const ip = clientIp(req) || 'unknown';
+  const now = Date.now();
+  let row = loginAttempts.get(ip);
+  if (!row || row.resetAt <= now) {
+    row = { count: 0, resetAt: now + LOGIN_WINDOW_MS };
+    loginAttempts.set(ip, row);
+  }
+  return row.count >= LOGIN_MAX_ATTEMPTS;
+}
+
+function recordLoginFailure(req) {
+  const ip = clientIp(req) || 'unknown';
+  const now = Date.now();
+  let row = loginAttempts.get(ip);
+  if (!row || row.resetAt <= now) {
+    row = { count: 0, resetAt: now + LOGIN_WINDOW_MS };
+  }
+  row.count += 1;
+  loginAttempts.set(ip, row);
+}
+
+function clearLoginFailures(req) {
+  const ip = clientIp(req) || 'unknown';
+  loginAttempts.delete(ip);
 }
 
 function authOk(req) {
@@ -157,6 +200,8 @@ function mergeAdminPagePayload(previous, incoming) {
   return merged;
 }
 function adminErrorStatus(message) {
+  if (message === 'body_too_large') return 413;
+  if (message === 'too_many_attempts') return 429;
   if (
     message === 'invalid_page_key' ||
     message === 'invalid_catalog_kind' ||
@@ -165,6 +210,7 @@ function adminErrorStatus(message) {
     message === 'missing_data' ||
     message === 'empty_file' ||
     message === 'file_too_large' ||
+    message === 'body_too_large' ||
     message === 'already_exists' ||
     message === 'admin_writes_zh_only' ||
     message === 'missing_resource' ||
@@ -250,7 +296,7 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
   }
 
   if (req.method === 'GET' && !id) {
-    const items = listCatalogItemsRaw(kind);
+    const items = listCatalogItemsRawSlim(kind);
     sendJson(res, 200, { kind, lang: 'zh', count: items.length, items }, origin);
     return true;
   }
@@ -373,9 +419,14 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   if (pathname === '/api/v1/admin/login' && req.method === 'POST') {
     try {
+      if (loginRateLimited(req)) {
+        sendJson(res, 429, { error: 'too_many_attempts' }, origin);
+        return true;
+      }
       const body = await readBody(req);
       const actor = body.actor || body.operator || body.name || '';
       if (!passwordMatches(body.password)) {
+        recordLoginFailure(req);
         writeAudit({
           req,
           actor,
@@ -387,6 +438,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         sendJson(res, 401, { error: 'unauthorized' }, origin);
         return true;
       }
+      clearLoginFailures(req);
       const safeActor = String(actor || '').trim().slice(0, 40) || undefined;
       writeAudit({
         req,
@@ -738,7 +790,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     }
     try {
       const body = await readBody(req);
-      const saved = saveUploadedMedia({
+      const saved = await saveUploadedMedia({
         filename: body.filename,
         dataBase64: body.data || body.dataBase64,
         mime: body.mime,
@@ -776,7 +828,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     const mediaId = decodeURIComponent(mediaItemMatch[1]);
     if (req.method === 'DELETE') {
       try {
-        const result = deleteUploadedMedia(mediaId);
+        const result = await deleteUploadedMedia(mediaId);
         writeAudit({
           req,
           action: 'media.delete',

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
-    <script src="assets/js/lang-detect.js"></script>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-sans-sc-site.woff2" crossorigin>
+    <script defer src="assets/js/lang-detect.js"></script>
     <meta name="description" content="TV/comm-display-flex-line - 同兴高科整线自动化解决方案，覆盖点胶、贴合、翻转、检测、套袋、码垛全流程">
     <meta property="og:title" content="TV/comm-display-flex-line | 同兴高科 TXAM">
     <meta property="og:type" content="website">
@@ -21,7 +22,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10" onclick="location.href='index.html'"></picture>
+            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10" onclick="location.href='index.html'"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -90,7 +91,7 @@
             <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="w-full media-h-detail w-full media-hero bg-gray-100">
-                        <picture><source srcset="assets/images/solutions/tv-flex-line.webp" type="image/webp"><img loading="lazy" decoding="async" alt="TV/comm-display-flex-line" class="img-zoom" src="assets/images/solutions/tv-flex-line.webp"></picture>
+                        <picture><source srcset="assets/images/solutions/tv-flex-line.webp" type="image/webp"><img decoding="async" fetchpriority="high" alt="TV/comm-display-flex-line" class="img-zoom" src="assets/images/solutions/tv-flex-line.webp"></picture>
                     </div>
                 </div>
                 <div class="fade-up">

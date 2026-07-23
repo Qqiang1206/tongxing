@@ -1,0 +1,89 @@
+{
+  "id": "39",
+  "category": "3C/数码行业",
+  "name": "Tablet PC Production Line Solutions",
+  "image": "assets/images/solutions/tablet-production-line.webp",
+  "specs": [
+    "Precision Assembly",
+    "Vision Inspection",
+    "Multi-model Compatibility",
+    "Quality Assurance"
+  ],
+  "summary": "Full-line automation solutions for tablet computer manufacturers, covering display assembly, battery installation, motherboard assembly, and final inspection and packaging.",
+  "contentHtml": "<p>The tablet computer production line solution is a full-line automation solution provided by TXAM for tablet computer manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process including display module assembly, battery installation, motherboard assembly, cable connection, visual inspection, functional testing, appearance inspection, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision lamination of display modules with accuracy of &plusmn;0.1mm</li>\n<li>Automated battery installation compliant with safety standards</li>\n<li>Precision motherboard assembly with high placement accuracy</li>\n<li>AOI visual inspection for accurate defect identification</li>\n<li>Full functional testing to ensure product quality</li>\n<li>Anti-static packaging to ensure product safety</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "tablet",
+  "sortOrder": 39,
+  "homeSlot": "",
+  "filterKey": "coffee",
+  "filterKeyEn": "coffee",
+  "updatedAt": "2026-07-22 08:30:09",
+  "painPoints": [
+    {
+      "title": "Precision Display Assembly",
+      "desc": "Tablet computer display module assembly requires extremely high precision"
+    },
+    {
+      "title": "Battery Installation Risks",
+      "desc": "Battery installation involves safety requirements, and manual operation poses risks"
+    },
+    {
+      "title": "Complex Motherboard Assembly",
+      "desc": "Motherboards have numerous components, making precision assembly challenging"
+    },
+    {
+      "title": "Many Small Components",
+      "desc": "Tablet computers have many small components, making manual placement difficult"
+    },
+    {
+      "title": "Visual Inspection Challenges",
+      "desc": "Minor defects are difficult to detect with the naked eye"
+    },
+    {
+      "title": "High Cleanliness Requirements",
+      "desc": "Tablet computer assembly requires high cleanliness standards"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Display Module Assembly",
+      "desc": "Precision display module assembly system ensures lamination accuracy"
+    },
+    {
+      "step": "02",
+      "title": "Battery Installation",
+      "desc": "Automated battery installation system ensures safety and reliability"
+    },
+    {
+      "step": "03",
+      "title": "Motherboard Assembly",
+      "desc": "Precision motherboard assembly system completes component placement"
+    },
+    {
+      "step": "04",
+      "title": "Cable Connection",
+      "desc": "Automated cable connection system ensures reliable connections"
+    },
+    {
+      "step": "05",
+      "title": "Visual Inspection",
+      "desc": "AOI visual inspection system automatically identifies defects"
+    },
+    {
+      "step": "06",
+      "title": "Functional Testing",
+      "desc": "Comprehensive functional testing system completes all functional tests"
+    },
+    {
+      "step": "07",
+      "title": "Appearance Inspection",
+      "desc": "Automated appearance inspection system ensures product aesthetics"
+    },
+    {
+      "step": "08",
+      "title": "Automatic Packaging",
+      "desc": "Automated packaging system achieves anti-static packaging for shipment"
+    }
+  ]
+}

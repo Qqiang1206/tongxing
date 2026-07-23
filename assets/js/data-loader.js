@@ -131,6 +131,37 @@
     return fetchJson(prefix + 'data/' + kind + '/' + lang + '.json');
   }
 
+  /**
+   * Load one catalog item with full detail fields (contentHtml, painPoints, etc.).
+   * List pages should use loadData(); detail/landing pages use this for the active item.
+   */
+  async function loadCatalogItem(kind, id, lang) {
+    if (!kind || id == null || id === '') return null;
+    lang = lang || detectLang();
+
+    var apiBase = await ensureApiBase();
+    if (apiBase) {
+      try {
+        var base = String(apiBase).replace(/\/$/, '');
+        return await fetchJson(
+          base + '/' + kind + '/' + encodeURIComponent(String(id)) + '?lang=' + encodeURIComponent(lang)
+        );
+      } catch (err) {
+        console.warn('[TXAM] API item load failed, falling back to static item', kind, id, err);
+      }
+    }
+
+    var prefix = inLangDir() ? '../' : '';
+    try {
+      return await fetchJson(
+        prefix + 'data/' + kind + '/items/' + lang + '/' + encodeURIComponent(String(id)) + '.json'
+      );
+    } catch (err) {
+      var catalog = await loadData(kind, lang);
+      return catalog && catalog[String(id)] ? catalog[String(id)] : null;
+    }
+  }
+
 
   /**
 
@@ -214,9 +245,12 @@
   };
 
   async function loadSolutionBySlug(slug, lang) {
-    var all = await loadData('solutions', lang);
     var id = SOLUTION_SLUG_TO_ID[slug];
-    return id && all ? all[id] || null : null;
+    if (!id) return null;
+    var item = await loadCatalogItem('solutions', id, lang);
+    if (item) return item;
+    var all = await loadData('solutions', lang);
+    return all ? all[id] || null : null;
   }
   function revealFadeUps() {
 
@@ -337,6 +371,7 @@ ensureMeta('property', 'og:type', seo.type || 'website');
   global.TXAM.setMedia = setMedia;
 
   global.TXAM.loadData = loadData;
+  global.TXAM.loadCatalogItem = loadCatalogItem;
   global.TXAM.loadSite = loadSite;
   global.TXAM.loadPage = loadPage;
   global.TXAM.loadHome = loadHome;

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
-    <script src="assets/js/lang-detect.js"></script>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-sans-sc-site.woff2" crossorigin>
+    <script defer src="assets/js/lang-detect.js"></script>
     <meta name="description" content="机器人单元设备 - 同兴高科以机器人为核心的模块化单元设备，可根据工艺需求灵活配置和集成">
     <meta property="og:title" content="机器人单元设备 | 同兴高科 TXAM">
     <meta property="og:type" content="website">
@@ -21,7 +22,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10" onclick="location.href='index.html'"></picture>
+            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10" onclick="location.href='index.html'"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -88,7 +89,7 @@
             <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="w-full media-h-detail w-full media-hero bg-gray-100">
-                        <picture><source srcset="assets/images/solutions/robot-unit.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/solutions/robot-unit.webp" alt="机器人单元设备" class="img-zoom"></picture>
+                        <picture><source srcset="assets/images/solutions/robot-unit.webp" type="image/webp"><img decoding="async" fetchpriority="high" src="assets/images/solutions/robot-unit.webp" alt="机器人单元设备" class="img-zoom"></picture>
                     </div>
                 </div>
                 <div class="fade-up">

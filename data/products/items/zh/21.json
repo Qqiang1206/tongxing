@@ -1,0 +1,22 @@
+{
+  "id": "21",
+  "category": "锁付组装",
+  "model": "TX-NS-ACT 系列",
+  "name": "自动卡扳机",
+  "image": "assets/images/products/auto-palletizer.webp",
+  "specs": [
+    "自动卡合",
+    "精密定位",
+    "高效率",
+    "适应多种尺寸"
+  ],
+  "summary": "用于自动安装卡扣或扳手的自动化设备，精密定位，快速完成卡合组装。",
+  "contentHtml": "<p>自动卡扳机是同兴高科为卡扣组装而研发的自动化设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备采用精密机械结构配合伺服驱动，实现卡扣或扳手的自动抓取、定位和安装。配备视觉检测系统，确保卡合质量。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>自动完成卡合组装，效率高</li>\n                        <li>精密定位，组装精度高</li>\n                        <li>配备视觉检测，质量有保障</li>\n                        <li>适应多种尺寸产品</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 11,
+  "filterKey": "screw",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-21 05:45:33"
+}

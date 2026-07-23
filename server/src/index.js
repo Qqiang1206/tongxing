@@ -10,9 +10,24 @@ import { handleAdmin } from './admin.js';
 import { getDb, dbPathForHealth } from './db.js';
 import { recordPageView } from './services/analytics.js';
 import { cachedPublic } from './services/publicCache.js';
+import { clientIp } from './services/audit.js';
+import { createRateLimiter } from './services/rateLimit.js';
 
 // Open SQLite on boot
 getDb();
+
+const isProduction = process.env.NODE_ENV === 'production' || process.env.HOST === '127.0.0.1';
+const analyticsRateLimit = createRateLimiter({
+  windowMs: 60 * 1000,
+  maxHits: Number(process.env.ANALYTICS_MAX_HITS_PER_MIN || 120),
+  label: 'analytics',
+});
+
+function publicErrorPayload(err) {
+  const payload = { error: 'internal_error' };
+  if (!isProduction && err && err.message) payload.message = err.message;
+  return payload;
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ADMIN_DIR = path.join(__dirname, '..', 'admin');
@@ -28,6 +43,7 @@ const BLOCKED_SITE_PREFIXES = [
   'scripts/',
   '.env',
   'package-lock.json',
+  'assets/images/uploads/_originals/',
 ];
 
 function sendJson(res, status, body, origin) {
@@ -142,7 +158,7 @@ function serveSiteStatic(res, pathname, origin) {
     ? 'no-cache'
     : 'public, max-age=60';
   if (!serveRepoFile(res, REPO_ROOT, rel, origin, cacheControl)) {
-    if (!path.extname(rel) && serveRepoFile(res, REPO_ROOT, ${rel}.html, origin, 'no-cache')) {
+    if (!path.extname(rel) && serveRepoFile(res, REPO_ROOT, `${rel}.html`, origin, 'no-cache')) {
       return true;
     }
     return false;
@@ -295,6 +311,12 @@ const server = http.createServer((req, res) => {
   }
 
   if (pathname === '/api/v1/analytics/hit' && (req.method === 'GET' || req.method === 'POST')) {
+    try {
+      analyticsRateLimit(clientIp(req));
+    } catch (err) {
+      sendJson(res, err.status || 429, { error: err.message || 'rate_limit_exceeded' }, origin);
+      return;
+    }
     recordPageView(query.path || rawPath || '/');
     sendJson(res, 204, {}, origin);
     return;
@@ -317,7 +339,7 @@ const server = http.createServer((req, res) => {
         return;
       } catch (err) {
         console.error(err);
-        sendJson(res, 500, { error: 'internal_error', message: err.message }, origin);
+        sendJson(res, 500, publicErrorPayload(err), origin);
         return;
       }
     }

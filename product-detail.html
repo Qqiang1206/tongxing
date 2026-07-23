@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
-    <script src="assets/js/lang-detect.js"></script>
     <meta charset="UTF-8">
-    <link rel="preload" as="image" href="assets/images/hero/robot-arm.webp" type="image/webp">
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-sans-sc-site.woff2" crossorigin>
+    <script defer src="assets/js/lang-detect.js"></script>
     <meta name="description" content="同兴高科自动化设备产品详情，技术参数、规格型号、应用场景详解">
     <meta property="og:title" content="产品详情 | 同兴高科 TXAM">
     <meta property="og:type" content="product">
@@ -20,7 +20,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10"></picture>
+            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -83,7 +83,7 @@
             <div class="detail-hero-grid grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
                 <div class="fade-up">
                     <div class="media-h-detail w-full media-hero bg-gray-100">
-                        <picture><source srcset="assets/images/hero/robot-arm.webp" type="image/webp"><img loading="lazy" decoding="async" id="product-image" src="assets/images/hero/robot-arm.webp" alt="产品图片" class="w-full h-full object-cover"></picture>
+                        <picture><source srcset="assets/images/hero/robot-arm.webp" type="image/webp"><img decoding="async" fetchpriority="high" id="product-image" src="assets/images/hero/robot-arm.webp" alt="产品图片" class="w-full h-full object-cover"></picture>
                     </div>
                 </div>
                 <div class="fade-up">
@@ -146,7 +146,8 @@
 
             var params = new URLSearchParams(window.location.search);
             var id = params.get('id') || '1';
-            var product = productData[id] || productData['1'];
+            var product = await TXAM.loadCatalogItem('products', id, 'zh');
+            if (!product) product = productData[id] || productData['1'];
             if (!product) {
                 console.error('Product not found', id);
                 TXAM.revealFadeUps();

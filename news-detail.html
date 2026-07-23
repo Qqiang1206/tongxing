@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 <head>
-    <script src="assets/js/lang-detect.js"></script>
     <meta charset="UTF-8">
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-sans-sc-site.woff2" crossorigin>
+    <script defer src="assets/js/lang-detect.js"></script>
     <meta name="description" content="同兴高科新闻详情">
     <meta property="og:title" content="新闻详情 | 同兴高科 TXAM">
     <meta property="og:type" content="article">
@@ -19,7 +20,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
         <div class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10"></picture>
+            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="同兴高科" class="h-8 md:h-10"></picture>
         </div>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
@@ -82,7 +83,7 @@
             </header>
 
             <div class="detail-cover w-full media-h-detail media-hero mb-12 fade-up">
-                <picture><source srcset="assets/images/hero/building-office.webp" type="image/webp"><img loading="lazy" decoding="async" id="news-cover" src="assets/images/hero/building-office.webp" alt="新闻封面" class="w-full h-full object-cover"></picture>
+                <picture><source srcset="assets/images/hero/building-office.webp" type="image/webp"><img decoding="async" fetchpriority="high" id="news-cover" src="assets/images/hero/building-office.webp" alt="新闻封面" class="w-full h-full object-cover"></picture>
             </div>
 
             <div id="news-content" class="detail-prose detail-prose--article fade-up">
@@ -126,7 +127,8 @@
 
             var params = new URLSearchParams(window.location.search);
             var id = params.get('id') || '1';
-            var news = newsData[id] || newsData['1'];
+            var news = await TXAM.loadCatalogItem('news', id, 'zh');
+            if (!news) news = newsData[id] || newsData['1'];
             if (!news) {
                 console.error('News not found', id);
                 TXAM.revealFadeUps();
