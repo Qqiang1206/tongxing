@@ -16,7 +16,7 @@ window.__TXAM_PAGE_HOME_RU={
   },
   "featured": {
     "eyebrow": "Флагманское решение",
-    "subtitle": "",
+    "subtitle": "Совместимость 65-110″ | Полностью автоматическая сборка",
     "cta": "Смотреть решение →"
   },
   "aboutSection": {
@@ -40,7 +40,7 @@ window.__TXAM_PAGE_HOME_RU={
       },
       {
         "value": "10",
-        "unit": "万㎡",
+        "unit": "тыс. м²",
         "label": "Два завода: Шэньчжэнь + Хуэйчжоу",
         "emphasis": "border"
       }

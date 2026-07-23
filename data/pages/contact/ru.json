@@ -58,14 +58,15 @@
       "address": "Шэньчжэнь, район Лунган, ул. Баолун, пос. Тундэ, дер. Сякэн, участок 1, д. 2 (корп. A–C)",
       "navLabel": "Навигация AMAP",
       "navUrl": "https://uri.amap.com/navigation?to=114.316297,22.726056,TXAM&callnative=1",
-      "dotColor": "#1D1D1F"
+      "dotColor": "#1D1D1F",
+      "badge": "Действует"
     },
     {
       "name": "База интеллектуального производства в Хуэйчжоу",
-      "address": "Хуэйчжоу (60 000㎡ база, полностью введена в эксплуатацию с 2026 г.).",
+      "address": "Хуэйчжоу (60 000㎡ база, ожидается полный ввод в эксплуатацию к концу 2026 г.).",
       "navLabel": "Навигация AMAP",
       "navUrl": "https://uri.amap.com/navigation?to=114.0,22.8,Huizhou Base&callnative=1",
-      "badge": "В эксплуатации",
+      "badge": "Строится",
       "dotColor": "#FF6B00"
     }
   ],

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.sztxgk.com/index.html</loc>
+    <loc>https://www.sztxgk.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -31,6 +31,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.sztxgk.com/solutions-detail.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=tx-ns-alm-01</loc>
     <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -38,13 +43,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=oc-intelligent-lamination-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=high-precision-robotic-dispensing-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -68,13 +73,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=tx-ns-asbs-01</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=180-degree-heavy-duty-flipper</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -86,13 +91,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=six-axis-robot-intelligent-palletizing-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=end-of-line-upright-packaging-automatic-cartoning-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -116,43 +121,43 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=rotary-table</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=lifting-unit</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=module-transfer-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=automatic-clip-and-latch-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=auxiliary-bag-sealing-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=robot-offline-bagging</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/product-detail.html?slug=automatic-backplane-placement-robot</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -261,7 +266,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.sztxgk.com/en/index.html</loc>
+    <loc>https://www.sztxgk.com/robot-solution.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sztxgk.com/en/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -291,6 +301,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.sztxgk.com/en/solutions-detail.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=tx-ns-alm-01</loc>
     <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -298,13 +313,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=oc-intelligent-lamination-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=high-precision-robotic-dispensing-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -328,13 +343,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=tx-ns-asbs-01</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=180-degree-heavy-duty-flipper</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -346,13 +361,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=six-axis-robot-intelligent-palletizing-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=end-of-line-upright-packaging-automatic-cartoning-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -376,43 +391,43 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=rotary-table</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=lifting-unit</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=module-transfer-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=automatic-clip-and-latch-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=auxiliary-bag-sealing-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=robot-offline-bagging</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/en/product-detail.html?slug=automatic-backplane-placement-robot</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -521,7 +536,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.sztxgk.com/ru/index.html</loc>
+    <loc>https://www.sztxgk.com/en/robot-solution.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sztxgk.com/ru/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -551,6 +571,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.sztxgk.com/ru/solutions-detail.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=tx-ns-alm-01</loc>
     <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -558,13 +583,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=oc-intelligent-lamination-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=high-precision-robotic-dispensing-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -588,13 +613,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=tx-ns-asbs-01</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=180-degree-heavy-duty-flipper</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -606,13 +631,13 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=six-axis-robot-intelligent-palletizing-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=end-of-line-upright-packaging-automatic-cartoning-system</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -636,43 +661,43 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=rotary-table</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=lifting-unit</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=module-transfer-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=automatic-clip-and-latch-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=auxiliary-bag-sealing-machine</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=robot-offline-bagging</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/product-detail.html?slug=automatic-backplane-placement-robot</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -777,6 +802,11 @@
   </url>
   <url>
     <loc>https://www.sztxgk.com/ru/headlight-solution.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sztxgk.com/ru/robot-solution.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

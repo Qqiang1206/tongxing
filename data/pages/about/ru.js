@@ -45,17 +45,17 @@ window.__TXAM_PAGE_ABOUT_RU={
     "items": [
       {
         "value": "19",
-        "unit": "",
+        "unit": "лет",
         "label": "Лет опыта в автоматизации"
       },
       {
         "value": "98",
-        "unit": "",
+        "unit": "пат.",
         "label": "Ключевых патентов"
       },
       {
         "value": "11",
-        "unit": "",
+        "unit": "линии",
         "label": "Ключевых отраслей"
       },
       {
@@ -65,7 +65,7 @@ window.__TXAM_PAGE_ABOUT_RU={
       },
       {
         "value": "10",
-        "unit": "万㎡",
+        "unit": "тыс. м²",
         "label": "Двойная заводская мощность",
         "emphasis": "accent"
       }

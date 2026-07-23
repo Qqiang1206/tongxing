@@ -45,17 +45,17 @@ window.__TXAM_PAGE_ABOUT_EN={
     "items": [
       {
         "value": "19",
-        "unit": "",
+        "unit": "Years",
         "label": "Years of Automation Manufacturing"
       },
       {
         "value": "98",
-        "unit": "",
+        "unit": "Patents",
         "label": "Core Inventions & Patents"
       },
       {
         "value": "11",
-        "unit": "",
+        "unit": "Lines",
         "label": "Key Industries Covered"
       },
       {
@@ -65,7 +65,7 @@ window.__TXAM_PAGE_ABOUT_EN={
       },
       {
         "value": "10",
-        "unit": "0k m²",
+        "unit": "100k m²",
         "label": "Shenzhen-Huizhou Dual Core Factory Capacity",
         "emphasis": "accent"
       }

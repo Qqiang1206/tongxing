@@ -14,8 +14,7 @@ window.__TXAM_PAGE_PRODUCTS_EN={
     "screw": "Fastening Assembly",
     "transfer": "Handling & Transfer",
     "packaging": "Post-Packaging",
-    "robot": "Robot Integration",
-    "line": "Full Line Delivery"
+    "robot": "Robot Integration"
   },
   "seo": {
     "title": "Product Center | TXAM - China's Leading Automation Brand Supplier",

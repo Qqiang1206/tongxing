@@ -34,15 +34,21 @@ function slimItem(kind, item) {
 function slimCatalog(kind, data) {
   const out = {};
   for (const [id, item] of Object.entries(data || {})) {
+    if (!isCatalogItemId(id)) continue;
     out[id] = slimItem(kind, item);
   }
   return out;
+}
+
+function isCatalogItemId(id) {
+  return /^\d+$/.test(String(id));
 }
 
 function writeItemFiles(kind, lang, data) {
   const dir = path.join(ROOT, 'data', kind, 'items', lang);
   fs.mkdirSync(dir, { recursive: true });
   for (const [id, item] of Object.entries(data || {})) {
+    if (!isCatalogItemId(id)) continue;
     const itemPath = path.join(dir, `${id}.json`);
     fs.writeFileSync(itemPath, JSON.stringify(item, null, 2) + '\n');
     console.log('wrote', path.relative(ROOT, itemPath));

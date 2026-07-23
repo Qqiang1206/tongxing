@@ -9,6 +9,7 @@ const STATIC_SOLUTION_SLUGS = new Set([
 ]);
 const STATIC_PAGES = [
   'index.html', 'about.html', 'products.html', 'solutions.html', 'news.html', 'contact.html',
+  'solutions-detail.html',
 ];
 const LANGS = ['zh', 'en', 'ru'];
 
@@ -20,6 +21,14 @@ function loadCatalog(kind) {
 
 function langPrefix(lang) {
   return lang === 'zh' ? '' : `${lang}/`;
+}
+
+function staticPageLoc(siteBase, lang, page) {
+  const prefix = langPrefix(lang);
+  if (page === 'index.html') {
+    return lang === 'zh' ? `${siteBase}/` : `${siteBase}/${lang}/`;
+  }
+  return `${siteBase}/${prefix}${page}`;
 }
 
 function xmlEscape(value) {
@@ -78,7 +87,7 @@ export function generateSitemap({ base = process.env.SITEMAP_BASE || DEFAULT_BAS
   for (const lang of LANGS) {
     const prefix = langPrefix(lang);
     for (const page of STATIC_PAGES) {
-      urls.push(urlEntry(`${siteBase}/${prefix}${page}`, 'weekly', page === 'index.html' ? '1.0' : '0.8'));
+      urls.push(urlEntry(staticPageLoc(siteBase, lang, page), 'weekly', page === 'index.html' ? '1.0' : '0.8'));
     }
 
     for (const id of Object.keys(products)) {
@@ -105,7 +114,13 @@ export function generateSitemap({ base = process.env.SITEMAP_BASE || DEFAULT_BAS
 
     for (const id of Object.keys(solutions)) {
       const item = solutions[id];
-      if (!item || item.published === false) continue;
+      if (!item) continue;
+      const slug = String(item.slug || '');
+      const staticFile = slug && STATIC_SOLUTION_SLUGS.has(slug)
+        ? path.join(REPO_ROOT, `${slug}-solution.html`)
+        : '';
+      const hasStaticLanding = staticFile && fs.existsSync(staticFile);
+      if (!hasStaticLanding && item.published === false) continue;
       urls.push(urlEntry(`${siteBase}/${prefix}${solutionPath(item, id)}`, 'monthly', '0.7'));
     }
   }

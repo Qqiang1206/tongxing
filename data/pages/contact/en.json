@@ -58,14 +58,15 @@
       "address": "No. 2, Zone 1, Xiakeng Village, Tande Community, Baolong Street, Longgang District, Shenzhen (Building A - Building C)",
       "navLabel": "AMAP Navigation",
       "navUrl": "https://uri.amap.com/navigation?to=114.316297,22.726056,TXAM&callnative=1",
-      "dotColor": "#1D1D1F"
+      "dotColor": "#1D1D1F",
+      "badge": "In Use"
     },
     {
       "name": "Huizhou Intelligent Manufacturing Base",
-      "address": "Huizhou (60,000㎡ intelligent manufacturing base, fully operational since 2026).",
+      "address": "Huizhou (60,000㎡ intelligent manufacturing base, expected to be fully operational by end of 2026).",
       "navLabel": "AMAP Navigation",
       "navUrl": "https://uri.amap.com/navigation?to=114.0,22.8,Huizhou Base&callnative=1",
-      "badge": "In Production",
+      "badge": "Under Construction",
       "dotColor": "#FF6B00"
     }
   ],

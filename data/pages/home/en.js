@@ -40,7 +40,7 @@ window.__TXAM_PAGE_HOME_EN={
       },
       {
         "value": "10",
-        "unit": "0k m²",
+        "unit": "100k m²",
         "label": "Shenzhen + Huizhou Dual Factories",
         "emphasis": "border"
       }
