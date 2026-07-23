@@ -783,14 +783,17 @@ table.data {
   padding: 24px clamp(18px, 2.4vw, 32px) 32px;
 }
 
-.page-editor-view .section-workspace--outline .section-panel > .card {
+.page-form-root .section-workspace--outline .section-panel > .card {
   width: min(100%, 980px);
-  margin-right: auto;
-  margin-left: auto;
-  padding: 24px;
+  margin: 0;
+  padding: 0 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.page-editor-view .section-workspace--outline .card-title {
+.page-form-root .section-workspace--outline .card-title {
   margin-bottom: 20px;
   font-size: 18px;
 }
@@ -1564,7 +1567,7 @@ table.data {
   }
   .form-grid { grid-template-columns: 1fr; }
   .field.full { grid-column: 1; }
-  .page-editor-view .section-workspace--outline .section-panel > .card { padding: 18px; }
+  .page-form-root .section-workspace--outline .section-panel > .card { padding: 0 0 8px; }
   .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .media-item .meta { padding: 10px; }
 }

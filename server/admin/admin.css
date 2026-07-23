@@ -2868,14 +2868,17 @@ body {
   padding: 22px clamp(18px, 2.4vw, 32px) 30px;
 }
 
-.page-editor-view .section-workspace--outline .section-panel > .card {
+.page-form-root .section-workspace--outline .section-panel > .card {
   width: min(100%, 1040px);
-  margin-right: auto;
-  margin-left: auto;
-  padding: clamp(20px, 2.4vw, 28px);
+  margin: 0;
+  padding: 0 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.page-editor-view .section-workspace--outline .card-title {
+.page-form-root .section-workspace--outline .card-title {
   margin-bottom: 18px;
   font-size: 18px;
 }
