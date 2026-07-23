@@ -268,6 +268,7 @@
             var solutionId = getUrlParameter('id') || '31';
             var data = await TXAM.loadCatalogItem('solutions', solutionId, 'zh');
             if (!data) data = solutionData[solutionId];
+            if (!TXAM.guardPublishedCatalogItem(data, 'solutions')) return;
             if (!data) {
                 console.error('Solution not found:', solutionId);
                 return;
@@ -321,7 +322,7 @@
             var relatedContainer = document.getElementById('related-solutions');
             if (relatedContainer) {
                 relatedContainer.innerHTML = '';
-                Object.keys(solutionData).filter(function (id) { return id !== solutionId; })
+                Object.keys(solutionData).filter(function (id) { return id !== solutionId && TXAM.isCatalogPublished(solutionData[id]); })
                     .sort(function () { return Math.random() - 0.5; })
                     .slice(0, 3)
                     .forEach(function (id) {

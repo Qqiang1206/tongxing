@@ -136,7 +136,8 @@
             var params = new URLSearchParams(window.location.search);
             var id = (await TXAM.resolveCatalogId('news', 'zh', params)) || params.get('id') || '1';
             var news = await TXAM.loadCatalogItem('news', id, 'zh');
-            if (!news) news = newsData[id] || newsData['1'];
+            if (!news) news = newsData[id];
+            news = TXAM.guardPublishedCatalogItem(news, 'news');
             if (!news) {
                 console.error('News not found', id);
                 TXAM.revealFadeUps();
@@ -164,6 +165,7 @@
             if (relatedContainer) {
                 relatedContainer.innerHTML = Object.keys(newsData)
                     .filter(function (nid) { return nid !== id; })
+                    .filter(function (nid) { return TXAM.isCatalogPublished(newsData[nid]); })
                     .slice(0, 3)
                     .map(function (nid) {
                         var item = newsData[nid];

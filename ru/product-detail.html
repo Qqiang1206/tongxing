@@ -151,7 +151,8 @@
             var params = new URLSearchParams(window.location.search);
             var id = (await TXAM.resolveCatalogId('products', 'ru', params)) || params.get('id') || '1';
             var product = await TXAM.loadCatalogItem('products', id, 'ru');
-            if (!product) product = productData[id] || productData['1'];
+            if (!product) product = productData[id];
+            product = TXAM.guardPublishedCatalogItem(product, 'products');
             if (!product) {
                 console.error('Product not found', id);
                 TXAM.revealFadeUps();
@@ -203,7 +204,7 @@
 
             var relatedHtml = Object.keys(productData)
                 .filter(function (pid) { return pid !== id; })
-                .filter(function (pid) { return productData[pid].category === product.category; })
+                .filter(function (pid) { return TXAM.isCatalogPublished(productData[pid]) && productData[pid].category === product.category; })
                 .slice(0, 3)
                 .map(function (pid) {
                     var p = productData[pid];

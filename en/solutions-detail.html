@@ -139,7 +139,8 @@
             var params = new URLSearchParams(window.location.search);
             var id = params.get('id') || '31';
             var solution = await TXAM.loadCatalogItem('solutions', id, 'en');
-            if (!solution) solution = solutionData[id] || solutionData['31'];
+            if (!solution) solution = solutionData[id];
+            solution = TXAM.guardPublishedCatalogItem(solution, 'solutions');
             if (!solution) {
                 console.error('Solution not found', id);
                 TXAM.revealFadeUps();
@@ -170,7 +171,7 @@
             }).join('');
 
             document.getElementById('related-products').innerHTML = Object.keys(solutionData)
-                .filter(function (sid) { return sid !== id; })
+                .filter(function (sid) { return sid !== id && TXAM.isCatalogPublished(solutionData[sid]); })
                 .slice(0, 3)
                 .map(function (sid) {
                     var s = solutionData[sid];

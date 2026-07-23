@@ -275,6 +275,29 @@
     }
     return prefix + page + '?id=' + encodeURIComponent(item && item.id ? item.id : '');
   }
+
+  function isCatalogPublished(item) {
+    return !item || item.published !== false;
+  }
+
+  function catalogListHref(kind) {
+    var prefix = inLangDir() ? '../' : '';
+    var pages = {
+      products: 'products.html',
+      news: 'news.html',
+      solutions: 'solutions.html',
+    };
+    return prefix + (pages[kind] || 'index.html');
+  }
+
+  /** Redirect to list page when item is unpublished (zh published flag is source of truth). */
+  function guardPublishedCatalogItem(item, kind) {
+    if (isCatalogPublished(item)) return item;
+    if (typeof location !== 'undefined') {
+      location.replace(catalogListHref(kind));
+    }
+    return null;
+  }
   function revealFadeUps() {
 
     var page = document.querySelector('.detail-page');
@@ -401,6 +424,9 @@ ensureMeta('property', 'og:type', seo.type || 'website');
   global.TXAM.loadSolutionBySlug = loadSolutionBySlug;
   global.TXAM.resolveCatalogId = resolveCatalogId;
   global.TXAM.catalogDetailHref = catalogDetailHref;
+  global.TXAM.isCatalogPublished = isCatalogPublished;
+  global.TXAM.catalogListHref = catalogListHref;
+  global.TXAM.guardPublishedCatalogItem = guardPublishedCatalogItem;
   global.TXAM.detectLang = detectLang;
   global.TXAM.applySeo = applySeo;
 

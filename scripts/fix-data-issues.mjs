@@ -47,8 +47,8 @@ rw(path.join(DATA_DIR, 'pages', 'about', 'en.json'), (d) => {
   const i = d.stats?.items; if (i) {
     if (i[0]?.unit === '') i[0].unit = 'Years';
     if (i[1]?.unit === '') i[1].unit = 'Patents';
-    if (i[2]?.unit === '') i[2].unit = 'Lines';
-    if (i[4]?.unit === '0k m²') i[4].unit = '100k m²';
+    if (i[2]?.unit === '') i[2].unit = 'Industries';
+    if (i[4]?.unit === '0k m²') { /* keep value+unit concat: 10 + 0k m² → 100k m² */ }
   }
   console.log('  Fixed about en');
 });
@@ -56,7 +56,8 @@ rw(path.join(DATA_DIR, 'pages', 'about', 'ru.json'), (d) => {
   const i = d.stats?.items; if (i) {
     if (i[0]?.unit === '') i[0].unit = 'лет';
     if (i[1]?.unit === '') i[1].unit = 'пат.';
-    if (i[2]?.unit === '') i[2].unit = 'линии';
+    if (i[2]?.unit === '') i[2].unit = 'отр.';
+    if (i[3]?.unit === 'стр.') i[3].unit = 'стран';
     if (i[4]?.unit === '万㎡') i[4].unit = 'тыс. м²';
   }
   console.log('  Fixed about ru');
@@ -66,7 +67,7 @@ rw(path.join(DATA_DIR, 'pages', 'about', 'ru.json'), (d) => {
 console.log('\n=== 4. Fix home page ===');
 rw(path.join(DATA_DIR, 'pages', 'home', 'en.json'), (d) => {
   const s = d.aboutSection?.stats;
-  if (s?.[3]?.unit === '0k m²') { s[3].unit = '100k m²'; console.log('  Fixed home en'); }
+  if (s?.[3]?.unit === '0k m²') { /* keep en area stat concat pattern */ }
 });
 rw(path.join(DATA_DIR, 'pages', 'home', 'ru.json'), (d) => {
   const s = d.aboutSection?.stats;

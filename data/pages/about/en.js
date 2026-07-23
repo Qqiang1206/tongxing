@@ -55,7 +55,7 @@ window.__TXAM_PAGE_ABOUT_EN={
       },
       {
         "value": "11",
-        "unit": "Lines",
+        "unit": "Industries",
         "label": "Key Industries Covered"
       },
       {
@@ -65,7 +65,7 @@ window.__TXAM_PAGE_ABOUT_EN={
       },
       {
         "value": "10",
-        "unit": "100k m²",
+        "unit": "0k m²",
         "label": "Shenzhen-Huizhou Dual Core Factory Capacity",
         "emphasis": "accent"
       }

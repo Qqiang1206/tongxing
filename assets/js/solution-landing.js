@@ -148,6 +148,7 @@
         console.error('Solution not found for slug:', slug);
         return;
       }
+      if (!global.TXAM.guardPublishedCatalogItem(data, 'solutions')) return;
       if (!data.slug) data.slug = slug;
       renderSolution(data, allData, slug);
     } catch (err) {
