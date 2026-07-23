@@ -22,9 +22,16 @@
 
   var STATIC_SLUGS = Object.keys(ID_TO_SLUG).map(function (id) { return ID_TO_SLUG[id]; });
 
+  function solutionFilterKey(item) {
+    return item.slug || item.filterKey || ID_TO_SLUG[String(item.id)] || '';
+  }
+
   function solutionHref(item, pathPrefix) {
     var slug = item.slug || ID_TO_SLUG[String(item.id)] || '';
     if (STATIC_SLUGS.indexOf(slug) !== -1) return pathPrefix + slug + '-solution.html';
+    if (slug) {
+      return pathPrefix + 'solutions-detail.html?slug=' + encodeURIComponent(slug);
+    }
     return pathPrefix + 'solutions-detail.html?id=' + encodeURIComponent(item.id);
   }
 
@@ -175,6 +182,8 @@
     return (
       '<div class="' +
       wrapClass +
+      ' solution-item" data-category="' +
+      escapeHtml(solutionFilterKey(item)) +
       '">' +
       '<div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">' +
       inner +
@@ -182,8 +191,11 @@
     );
   }
 
+  var fadeObserver = null;
+
   function observeFadeUps() {
-    var observer = new IntersectionObserver(
+    if (fadeObserver) fadeObserver.disconnect();
+    fadeObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -192,7 +204,61 @@
       { threshold: 0.1 }
     );
     document.querySelectorAll('.fade-up').forEach(function (el) {
-      observer.observe(el);
+      fadeObserver.observe(el);
+    });
+  }
+
+  function hydrateFilters(page) {
+    if (!page || !page.filters) return;
+    var bar = document.getElementById('solutions-filter-bar');
+    if (!bar) return;
+    var normalClass =
+      'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
+    bar.innerHTML = Object.keys(page.filters)
+      .map(function (key) {
+        var active = key === 'all';
+        return (
+          '<button type="button" id="solution-filter-' +
+          escapeHtml(key) +
+          '" class="' +
+          normalClass +
+          (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') +
+          '" data-filter="' +
+          escapeHtml(key) +
+          '">' +
+          escapeHtml(page.filters[key]) +
+          '</button>'
+        );
+      })
+      .join('');
+  }
+
+  function bindSolutionFilters() {
+    var filterBtns = document.querySelectorAll('#solutions-filter-bar .filter-btn');
+    if (!filterBtns.length) return;
+
+    function applyFilter(filterValue) {
+      var targetBtn = document.querySelector('#solutions-filter-bar [data-filter="' + filterValue + '"]');
+      if (!targetBtn) return;
+
+      filterBtns.forEach(function (b) {
+        b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+        b.classList.add('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+      });
+      targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+      targetBtn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+
+      document.querySelectorAll('.solution-item').forEach(function (row) {
+        var match =
+          filterValue === 'all' || row.getAttribute('data-category') === filterValue;
+        row.style.display = match ? '' : 'none';
+      });
+    }
+
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        applyFilter(btn.getAttribute('data-filter'));
+      });
     });
   }
 
@@ -204,9 +270,10 @@
     if (!root || !global.TXAM) return;
 
     try {
+      var page = null;
       if (global.TXAM.loadPage) {
         try {
-          var page = await global.TXAM.loadPage('solutions', lang);
+          page = await global.TXAM.loadPage('solutions', lang);
           if (page && page.seo && global.TXAM.applySeo) global.TXAM.applySeo(page.seo);
           if (page && page.hero) {
             var ht = document.getElementById('list-hero-title');
@@ -225,6 +292,7 @@
               if (b && p.body) b.textContent = p.body;
             });
           }
+          hydrateFilters(page);
         } catch (_) {}
       }
 
@@ -251,6 +319,7 @@
         .join('');
 
       observeFadeUps();
+      bindSolutionFilters();
     } catch (err) {
       console.error(err);
     }

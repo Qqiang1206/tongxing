@@ -15,8 +15,8 @@
   "slug": "packaging",
   "sortOrder": 33,
   "homeSlot": "category",
-  "filterKey": "refrigerator",
-  "filterKeyEn": "refrigerator",
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
   "painPoints": [
     {
       "title": "包装效率瓶颈",
@@ -84,5 +84,6 @@
       "title": "仓储对接",
       "desc": "与WMS系统对接，实现自动入库管理"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

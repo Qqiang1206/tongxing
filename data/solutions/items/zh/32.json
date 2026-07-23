@@ -15,8 +15,8 @@
   "slug": "refrigerator",
   "sortOrder": 32,
   "homeSlot": "category",
-  "filterKey": "tv-display",
-  "filterKeyEn": "tv-display",
+  "filterKey": "refrigerator",
+  "filterKeyEn": "refrigerator",
   "painPoints": [
     {
       "title": "组装工序繁多",
@@ -84,5 +84,6 @@
       "title": "智能码垛",
       "desc": "机器人-palletizing系统，实现成品自动码垛入库"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

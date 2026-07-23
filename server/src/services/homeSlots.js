@@ -367,6 +367,6 @@ export function seedHomeSlotsIfEmpty(db) {
   if (newsCount === 0) {
     const has = (id) => db.prepare('SELECT id FROM news WHERE id = ?').get(String(id));
     if (has('1')) db.prepare(`UPDATE news SET home_featured = 1 WHERE id = '1'`).run();
-    if (has('2')) db.prepare(`UPDATE news SET home_featured = 1 WHERE id = '2'`).run();
+    if (has('3')) db.prepare(`UPDATE news SET home_featured = 1 WHERE id = '3'`).run();
   }
 }

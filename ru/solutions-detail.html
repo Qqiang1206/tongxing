@@ -23,9 +23,7 @@
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <div class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="../assets/images/brand/logo.png" alt="Тунсин Гаотек" class="h-8 md:h-10"></picture>
-        </div>
+        <a href="index.html" class="flex items-center cursor-pointer relative z-50" aria-label="TXAM Home"><picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="../assets/images/brand/logo.png" alt="Тунсин Гаотек" class="h-8 md:h-10"></picture></a>
         
         <div class="hidden md: flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
             <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Главная</a>
@@ -44,7 +42,7 @@
         </div>
 
         <div class="md:hidden flex items-center relative z-50">
-            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -253,15 +251,13 @@
     <script src="../assets/js/data-loader.js"></script>
     <script src="../assets/js/site-seo.js"></script>
   <script src="../assets/js/site-common.js"></script>
+  <script src="../assets/js/site-chrome.js"></script>
   <script src="../assets/js/site-nav.js"></script>
     <script src="../data/solutions/ru.js"></script>
     <script>
-        function getUrlParameter(name) {
-            return new URLSearchParams(window.location.search).get(name);
-        }
-
-        async function loadSolution(solutionData) {
-            var solutionId = getUrlParameter('id') || '31';
+async function loadSolution(solutionData) {
+            var params = new URLSearchParams(window.location.search);
+            var solutionId = (await TXAM.resolveCatalogId('solutions', 'ru', params)) || params.get('id') || '31';
             var data = await TXAM.loadCatalogItem('solutions', solutionId, 'ru');
             if (!data) data = solutionData[solutionId];
             if (!TXAM.guardPublishedCatalogItem(data, 'solutions')) return;
@@ -296,8 +292,8 @@
                         '<div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">' +
                         '<svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
                         '</div>' +
-                        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + p.title + '</h4>' +
-                        '<p class="text-sm text-[#86868B]">' + p.desc + '</p></div>';
+                        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + TXAM.escapeHtml(p.title) + '</h4>' +
+                        '<p class="text-sm text-[#86868B]">' + TXAM.escapeHtml(p.desc) + '</p></div>';
                 }).join('');
             }
 
@@ -306,9 +302,9 @@
                 processContainer.innerHTML = data.process.map(function (p) {
                     return '<div class="apple-card p-6 text-center">' +
                         '<div class="w-16 h-16 bg-[#FF6B00] rounded-full flex items-center justify-center mx-auto mb-4">' +
-                        '<span class="text-white font-black text-xl mono-num">' + p.step + '</span></div>' +
-                        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + p.title + '</h4>' +
-                        '<p class="text-sm text-[#86868B]">' + p.desc + '</p></div>';
+                        '<span class="text-white font-black text-xl mono-num">' + TXAM.escapeHtml(p.step) + '</span></div>' +
+                        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + TXAM.escapeHtml(p.title) + '</h4>' +
+                        '<p class="text-sm text-[#86868B]">' + TXAM.escapeHtml(p.desc) + '</p></div>';
                 }).join('');
             }
 
@@ -318,9 +314,7 @@
             var relatedContainer = document.getElementById('related-solutions');
             if (relatedContainer) {
                 relatedContainer.innerHTML = '';
-                Object.keys(solutionData).filter(function (id) { return id !== solutionId && TXAM.isCatalogPublished(solutionData[id]); })
-                    .sort(function () { return Math.random() - 0.5; })
-                    .slice(0, 3)
+                TXAM.pickRandomKeys(Object.keys(solutionData).filter(function (id) { return id !== solutionId && TXAM.isCatalogPublished(solutionData[id]); }), 3, solutionId)
                     .forEach(function (id) {
                         var item = solutionData[id];
                         var card = document.createElement('a');
@@ -328,9 +322,9 @@
                         card.className = 'detail-related-card apple-card block p-6 group';
                         card.innerHTML =
                             '<div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
-                            '<img loading="lazy" decoding="async" src="' + TXAM.assetUrl(item.image) + '" alt="' + item.name + '" class="img-zoom w-full h-full object-cover"></div>' +
-                            '<h4 class="detail-related-card__title mb-2">' + item.name + '</h4>' +
-                            '<p class="detail-related-card__desc">' + (item.summary || item.desc || '') + '</p>';
+                            '<img loading="lazy" decoding="async" src="' + TXAM.assetUrl(item.image) + '" alt="' + TXAM.escapeHtml(item.name) + '" class="img-zoom w-full h-full object-cover"></div>' +
+                            '<h4 class="detail-related-card__title mb-2">' + TXAM.escapeHtml(item.name) + '</h4>' +
+                            '<p class="detail-related-card__desc">' + TXAM.escapeHtml(item.summary || item.desc || '') + '</p>';
                         relatedContainer.appendChild(card);
                     });
             }

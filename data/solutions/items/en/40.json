@@ -15,9 +15,9 @@
   "slug": "headlight",
   "sortOrder": 40,
   "homeSlot": "",
-  "filterKey": "capacitor",
-  "filterKeyEn": "capacitor",
-  "updatedAt": "2026-07-22 08:29:17",
+  "filterKey": "headlight",
+  "filterKeyEn": "headlight",
+  "updatedAt": "2026-07-23 12:18:16",
   "painPoints": [
     {
       "title": "High optical precision requirements",

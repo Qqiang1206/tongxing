@@ -15,8 +15,8 @@
   "slug": "tv-display",
   "sortOrder": 31,
   "homeSlot": "hero",
-  "filterKey": "ac",
-  "filterKeyEn": "ac",
+  "filterKey": "tv-display",
+  "filterKeyEn": "tv-display",
   "painPoints": [
     {
       "title": "大尺寸装配难度大",
@@ -84,5 +84,6 @@
       "title": "数据追溯",
       "desc": "WMS/WCS系统实现生产数据透明化，品质全程可追溯"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

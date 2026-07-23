@@ -8,7 +8,7 @@ import { config, REPO_ROOT } from './config.js';
 import { catalog } from './services/catalog.js';
 import { handleAdmin } from './admin.js';
 import { getDb, dbPathForHealth } from './db.js';
-import { recordPageView } from './services/analytics.js';
+import { recordPageView, shouldTrackPageView, normalizePagePath } from './services/analytics.js';
 import { cachedPublic } from './services/publicCache.js';
 import { clientIp } from './services/audit.js';
 import { createRateLimiter } from './services/rateLimit.js';
@@ -41,8 +41,14 @@ const BLOCKED_SITE_PREFIXES = [
   '_backups/',
   '_unused-images/',
   'scripts/',
+  'data/schema/',
   '.env',
+  'package.json',
   'package-lock.json',
+  'nginx.conf',
+  'web.config',
+  'README.md',
+  'DESIGN.md',
   'assets/images/uploads/_originals/',
 ];
 
@@ -87,6 +93,8 @@ function serveRepoFile(res, rootDir, relPath, origin, cacheControl = 'no-cache')
     '.ico': 'image/x-icon',
     '.woff': 'font/woff',
     '.woff2': 'font/woff2',
+    '.txt': 'text/plain; charset=utf-8',
+    '.xml': 'application/xml; charset=utf-8',
   };
   const data = fs.readFileSync(filePath);
   res.writeHead(200, {
@@ -305,7 +313,7 @@ const server = http.createServer((req, res) => {
       if (!handled) sendJson(res, 404, { error: 'not_found' }, origin);
     }).catch((err) => {
       console.error(err);
-      sendJson(res, 500, { error: 'internal_error', message: err.message }, origin);
+      sendJson(res, 500, publicErrorPayload(err), origin);
     });
     return;
   }
@@ -317,7 +325,10 @@ const server = http.createServer((req, res) => {
       sendJson(res, err.status || 429, { error: err.message || 'rate_limit_exceeded' }, origin);
       return;
     }
-    recordPageView(query.path || rawPath || '/');
+    const hitPath = query.path || rawPath || '/';
+    if (shouldTrackPageView(normalizePagePath(hitPath))) {
+      recordPageView(hitPath);
+    }
     sendJson(res, 204, {}, origin);
     return;
   }

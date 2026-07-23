@@ -15,8 +15,8 @@
   "slug": "washer",
   "sortOrder": 34,
   "homeSlot": "",
-  "filterKey": "tv-display",
-  "filterKeyEn": "tv-display",
+  "filterKey": "washer",
+  "filterKeyEn": "washer",
   "painPoints": [
     {
       "title": "装配工艺复杂",
@@ -84,5 +84,6 @@
       "title": "智能入库",
       "desc": "与MES系统对接，实现生产数据全程追溯"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

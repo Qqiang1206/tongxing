@@ -60,17 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
         el.outerHTML = headerHTML;
     });
 
-    // 导航栏滚动效果
-    const navbar = document.getElementById('navbar');
-    if (navbar) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('shadow-sm');
-            } else {
-                navbar.classList.remove('shadow-sm');
-            }
-        });
-    }
+    // Navbar scroll: site-chrome.js (throttled, null-safe)
 
     // 移动端菜单
     const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -81,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let isMenuOpen = false;
         mobileBtn.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
+            mobileBtn.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
             if (isMenuOpen) {
                 mobileMenu.classList.remove('menu-closed');
                 mobileMenu.classList.add('menu-open');

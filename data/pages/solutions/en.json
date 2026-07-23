@@ -21,14 +21,17 @@
   ],
   "filters": {
     "all": "All Solutions",
-    "tv-display": "Home Appliance Industry",
-    "refrigerator": "Logistics Industry",
-    "packaging": "Energy Storage Industry",
-    "washer": "Warehousing Industry",
-    "capacitor": "New Energy Vehicle Industry",
-    "ac": "TV/Commercial Display Industry",
-    "coffee": "3C/Digital Products Industry",
-    "robot": "Robotics"
+    "tv-display": "TV & Commercial Display",
+    "refrigerator": "Refrigerator",
+    "packaging": "Packaging",
+    "washer": "Washer",
+    "capacitor": "Capacitor",
+    "ac": "Air Conditioning",
+    "microwave": "Microwave",
+    "coffee": "Coffee Machine",
+    "tablet": "Tablet",
+    "headlight": "Headlight",
+    "robot": "Robot"
   },
   "seo": {
     "title": "Solutions | TXAM",

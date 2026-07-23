@@ -22,13 +22,16 @@ window.__TXAM_PAGE_SOLUTIONS_ZH={
   ],
   "filters": {
     "all": "全部方案",
-    "tv-display": "家电行业",
-    "refrigerator": "物流行业",
-    "packaging": "储能行业",
-    "washer": "立库行业",
-    "capacitor": "新能源汽车行业",
-    "ac": "TV/商显行业",
-    "coffee": "3C/数码行业",
+    "tv-display": "TV / 商显",
+    "refrigerator": "冰箱",
+    "packaging": "包装",
+    "washer": "洗衣机",
+    "capacitor": "电容",
+    "ac": "空调",
+    "microwave": "微波炉",
+    "coffee": "咖啡机",
+    "tablet": "平板",
+    "headlight": "车灯",
     "robot": "机器人"
   },
   "seo": {

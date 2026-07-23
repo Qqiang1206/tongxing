@@ -15,9 +15,9 @@
   "slug": "tv-display",
   "sortOrder": 31,
   "homeSlot": "hero",
-  "filterKey": "ac",
-  "filterKeyEn": "ac",
-  "updatedAt": "2026-07-22 08:28:16",
+  "filterKey": "tv-display",
+  "filterKeyEn": "tv-display",
+  "updatedAt": "2026-07-23 12:18:16",
   "painPoints": [
     {
       "title": "Difficulty in Large-Size Assembly",

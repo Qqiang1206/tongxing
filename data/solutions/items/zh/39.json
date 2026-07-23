@@ -15,8 +15,8 @@
   "slug": "tablet",
   "sortOrder": 39,
   "homeSlot": "",
-  "filterKey": "coffee",
-  "filterKeyEn": "coffee",
+  "filterKey": "tablet",
+  "filterKeyEn": "tablet",
   "painPoints": [
     {
       "title": "显示组装精密",
@@ -84,5 +84,6 @@
       "title": "自动包装",
       "desc": "自动化包装系统实现防静电出厂包装"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

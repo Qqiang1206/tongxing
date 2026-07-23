@@ -30,9 +30,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <!-- 🌐 顶部导航 (from solutions.html) -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <div class="flex items-center cursor-pointer relative z-50">
-            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10" loading="lazy"></picture>
-        </div>
+        <a href="index.html" class="flex items-center cursor-pointer relative z-50" aria-label="TXAM Home"><picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10" loading="lazy"></picture></a>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
             <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">首页</a>
@@ -51,7 +49,7 @@
         </div>
 
         <div class="md:hidden flex items-center relative z-50">
-            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]">
+            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -94,22 +92,27 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
             <div class="bg-gray-50 border border-gray-200 radius-lg p-8">
                 <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">1</div>
-                <h3 class="font-bold text-[#1D1D1F] mb-2">100% 柔性定制</h3>
+                <h2 class="font-bold text-[#1D1D1F] mb-2">100% 柔性定制</h2>
                 <p class="text-sm text-[#86868B] leading-relaxed">模块化矩阵设计，从容应对频繁的产品换型与工艺更迭。</p>
             </div>
             <div class="bg-gray-50 border border-gray-200 radius-lg p-8">
                 <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">2</div>
-                <h3 class="font-bold text-[#1D1D1F] mb-2">软硬深度融合</h3>
+                <h2 class="font-bold text-[#1D1D1F] mb-2">软硬深度融合</h2>
                 <p class="text-sm text-[#86868B] leading-relaxed">搭载自研 WMS/WCS 与底层视觉算法，消除所有信息孤岛。</p>
             </div>
             <div class="bg-gray-50 border border-gray-200 radius-lg p-8">
                 <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-[#1D1D1F] mb-4 shadow-sm">3</div>
-                <h3 class="font-bold text-[#1D1D1F] mb-2">极速交付节拍</h3>
+                <h2 class="font-bold text-[#1D1D1F] mb-2">极速交付节拍</h2>
                 <p class="text-sm text-[#86868B] leading-relaxed">基于 10万㎡ 双基地的超级吞吐量，保障大型产线如期落地。</p>
             </div>
         </div>
     </div>
-</header>
+</header>
+    <!-- Solution category filters -->
+    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[72px] md:top-[122px] z-40 bg-[#FBFBFD]/95 backdrop-blur-sm pt-4 left-0 right-0 border-b border-[#E5E5EA]/60">
+        <div class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center gap-2 pb-2" id="solutions-filter-bar"></div>
+    </section>
+
 
     <!-- P2. Solutions matrix (data-driven) -->
     <section class="py-20 bg-white">
@@ -123,17 +126,13 @@
     <script src="assets/js/data-loader.js"></script>
     <script src="assets/js/site-seo.js"></script>
   <script src="assets/js/site-common.js"></script>
+  <script src="assets/js/site-chrome.js"></script>
   <script src="assets/js/site-nav.js"></script>
     <script src="data/solutions/zh.js"></script>
     <script src="data/pages/solutions/zh.js"></script>
     <script src="assets/js/solutions-list.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const navbar = document.getElementById("navbar");
-            window.addEventListener("scroll", () => {
-                if (window.scrollY > 20) { navbar.classList.add("shadow-sm"); }
-                else { navbar.classList.remove("shadow-sm"); }
-            });
             TXAM.initSolutionsList({ lang: "zh" });
         });
     </script>

@@ -15,8 +15,8 @@
   "slug": "microwave",
   "sortOrder": 37,
   "homeSlot": "",
-  "filterKey": "tv-display",
-  "filterKeyEn": "tv-display",
+  "filterKey": "microwave",
+  "filterKeyEn": "microwave",
   "painPoints": [
     {
       "title": "腔体组装难",
@@ -84,5 +84,6 @@
       "title": "自动包装",
       "desc": "自动化包装系统实现高效出厂包装"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

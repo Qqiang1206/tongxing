@@ -247,7 +247,7 @@ function requireHomeSlots() {
     if (newsCount === 0) {
       const has = (id) => database.prepare('SELECT id FROM news WHERE id = ?').get(String(id));
       if (has('1')) database.prepare(`UPDATE news SET home_featured = 1 WHERE id = '1'`).run();
-      if (has('2')) database.prepare(`UPDATE news SET home_featured = 1 WHERE id = '2'`).run();
+      if (has('3')) database.prepare(`UPDATE news SET home_featured = 1 WHERE id = '3'`).run();
     }
   } };
 }

@@ -16,8 +16,8 @@
     "slug": "tv-display",
     "sortOrder": 31,
     "homeSlot": "hero",
-    "filterKey": "ac",
-    "filterKeyEn": "ac",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
     "painPoints": [
       {
         "title": "大尺寸装配难度大",
@@ -85,7 +85,8 @@
         "title": "数据追溯",
         "desc": "WMS/WCS系统实现生产数据透明化，品质全程可追溯"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "32": {
     "id": "32",
@@ -104,8 +105,8 @@
     "slug": "refrigerator",
     "sortOrder": 32,
     "homeSlot": "category",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
     "painPoints": [
       {
         "title": "组装工序繁多",
@@ -173,7 +174,8 @@
         "title": "智能码垛",
         "desc": "机器人-palletizing系统，实现成品自动码垛入库"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "33": {
     "id": "33",
@@ -192,8 +194,8 @@
     "slug": "packaging",
     "sortOrder": 33,
     "homeSlot": "category",
-    "filterKey": "refrigerator",
-    "filterKeyEn": "refrigerator",
+    "filterKey": "packaging",
+    "filterKeyEn": "packaging",
     "painPoints": [
       {
         "title": "包装效率瓶颈",
@@ -261,7 +263,8 @@
         "title": "仓储对接",
         "desc": "与WMS系统对接，实现自动入库管理"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "34": {
     "id": "34",
@@ -280,8 +283,8 @@
     "slug": "washer",
     "sortOrder": 34,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
+    "filterKey": "washer",
+    "filterKeyEn": "washer",
     "painPoints": [
       {
         "title": "装配工艺复杂",
@@ -349,7 +352,8 @@
         "title": "智能入库",
         "desc": "与MES系统对接，实现生产数据全程追溯"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "35": {
     "id": "35",
@@ -368,8 +372,8 @@
     "slug": "capacitor",
     "sortOrder": 35,
     "homeSlot": "",
-    "filterKey": "packaging",
-    "filterKeyEn": "packaging",
+    "filterKey": "capacitor",
+    "filterKeyEn": "capacitor",
     "painPoints": [
       {
         "title": "卷绕精度要求高",
@@ -437,7 +441,8 @@
         "desc": "防潮包装系统确保产品储存安全",
         "step": "08"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "36": {
     "id": "36",
@@ -456,8 +461,8 @@
     "slug": "ac",
     "sortOrder": 36,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
+    "filterKey": "ac",
+    "filterKeyEn": "ac",
     "painPoints": [
       {
         "title": "换热器组装难",
@@ -525,7 +530,8 @@
         "title": "自动包装",
         "desc": "自动化包装系统实现高效出厂包装"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "37": {
     "id": "37",
@@ -544,8 +550,8 @@
     "slug": "microwave",
     "sortOrder": 37,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
+    "filterKey": "microwave",
+    "filterKeyEn": "microwave",
     "painPoints": [
       {
         "title": "腔体组装难",
@@ -613,7 +619,8 @@
         "title": "自动包装",
         "desc": "自动化包装系统实现高效出厂包装"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "38": {
     "id": "38",
@@ -632,8 +639,8 @@
     "slug": "coffee",
     "sortOrder": 38,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
+    "filterKey": "coffee",
+    "filterKeyEn": "coffee",
     "painPoints": [
       {
         "title": "加热组件精密",
@@ -701,7 +708,8 @@
         "title": "自动包装",
         "desc": "自动化包装系统实现精美出厂包装"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "39": {
     "id": "39",
@@ -720,8 +728,8 @@
     "slug": "tablet",
     "sortOrder": 39,
     "homeSlot": "",
-    "filterKey": "coffee",
-    "filterKeyEn": "coffee",
+    "filterKey": "tablet",
+    "filterKeyEn": "tablet",
     "painPoints": [
       {
         "title": "显示组装精密",
@@ -789,7 +797,8 @@
         "title": "自动包装",
         "desc": "自动化包装系统实现防静电出厂包装"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "40": {
     "id": "40",
@@ -808,8 +817,8 @@
     "slug": "headlight",
     "sortOrder": 40,
     "homeSlot": "",
-    "filterKey": "capacitor",
-    "filterKeyEn": "capacitor",
+    "filterKey": "headlight",
+    "filterKeyEn": "headlight",
     "painPoints": [
       {
         "title": "光学精度要求高",
@@ -877,7 +886,8 @@
         "title": "自动包装",
         "desc": "自动化包装系统实现安全出厂包装"
       }
-    ]
+    ],
+    "updatedAt": "2026-07-23 12:18:16"
   },
   "41": {
     "id": "41",

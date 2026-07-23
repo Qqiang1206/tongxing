@@ -34,8 +34,8 @@
       },
       "image": {
         "type": "string",
-        "pattern": "^/assets/images/",
-        "description": "Absolute site path under /assets/images/"
+        "pattern": "^/?assets/images/",
+        "description": "Site path under assets/images/ (with or without leading slash)"
       },
       "specs": {
         "type": "array",

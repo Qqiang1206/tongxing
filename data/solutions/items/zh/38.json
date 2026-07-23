@@ -15,8 +15,8 @@
   "slug": "coffee",
   "sortOrder": 38,
   "homeSlot": "",
-  "filterKey": "tv-display",
-  "filterKeyEn": "tv-display",
+  "filterKey": "coffee",
+  "filterKeyEn": "coffee",
   "painPoints": [
     {
       "title": "加热组件精密",
@@ -84,5 +84,6 @@
       "title": "自动包装",
       "desc": "自动化包装系统实现精美出厂包装"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

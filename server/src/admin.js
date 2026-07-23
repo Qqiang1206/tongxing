@@ -239,7 +239,25 @@ function sendCatalogError(res, err, origin, sendJson) {
     sendJson(res, 409, err.payload, origin);
     return;
   }
-  sendJson(res, adminErrorStatus(err.message), { error: err.message, message: err.message }, origin);
+  const status = adminErrorStatus(err.message);
+  const safeCodes = new Set([
+    'not_found', 'invalid_body', 'unauthorized', 'forbidden', 'invalid_catalog_kind',
+    'invalid_category_key', 'missing_category_name', 'category_in_use', 'backup_not_found',
+    'invalid_backup_id', 'backup_in_progress', 'home_slot_full', 'unpublish_needs_replace',
+    'protected_media', 'unsupported_provider', 'invalid_resource', 'translation_length_mismatch',
+    'translation_bad_response', 'method_not_allowed', 'rate_limit_exceeded',
+  ]);
+  const code = err && err.message ? String(err.message) : 'internal_error';
+  const isProd = process.env.NODE_ENV === 'production';
+  if (isProd && status >= 500) {
+    sendJson(res, status, { error: 'internal_error' }, origin);
+    return;
+  }
+  if (isProd && !safeCodes.has(code) && !code.startsWith('translation_api_error')) {
+    sendJson(res, status, { error: code || 'request_failed' }, origin);
+    return;
+  }
+  sendJson(res, status, { error: code, message: code }, origin);
 }
 
 function defaultProduct() {

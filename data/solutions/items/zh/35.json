@@ -15,8 +15,8 @@
   "slug": "capacitor",
   "sortOrder": 35,
   "homeSlot": "",
-  "filterKey": "packaging",
-  "filterKeyEn": "packaging",
+  "filterKey": "capacitor",
+  "filterKeyEn": "capacitor",
   "painPoints": [
     {
       "title": "卷绕精度要求高",
@@ -84,5 +84,6 @@
       "desc": "防潮包装系统确保产品储存安全",
       "step": "08"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23 12:18:16"
 }

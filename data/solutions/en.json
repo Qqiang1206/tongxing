@@ -16,9 +16,9 @@
     "slug": "tv-display",
     "sortOrder": 31,
     "homeSlot": "hero",
-    "filterKey": "ac",
-    "filterKeyEn": "ac",
-    "updatedAt": "2026-07-22 08:28:16",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Difficulty in Large-Size Assembly",
@@ -105,9 +105,9 @@
     "slug": "refrigerator",
     "sortOrder": 32,
     "homeSlot": "category",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
-    "updatedAt": "2026-07-22 08:28:25",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Numerous Assembly Processes",
@@ -194,9 +194,9 @@
     "slug": "packaging",
     "sortOrder": 33,
     "homeSlot": "category",
-    "filterKey": "refrigerator",
-    "filterKeyEn": "refrigerator",
-    "updatedAt": "2026-07-22 08:28:34",
+    "filterKey": "packaging",
+    "filterKeyEn": "packaging",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Packaging Efficiency Bottleneck",
@@ -283,9 +283,9 @@
     "slug": "washer",
     "sortOrder": 34,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
-    "updatedAt": "2026-07-22 08:28:41",
+    "filterKey": "washer",
+    "filterKeyEn": "washer",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Complex Assembly Process",
@@ -372,9 +372,9 @@
     "slug": "capacitor",
     "sortOrder": 35,
     "homeSlot": "",
-    "filterKey": "packaging",
-    "filterKeyEn": "packaging",
-    "updatedAt": "2026-07-23 02:28:26",
+    "filterKey": "capacitor",
+    "filterKeyEn": "capacitor",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "High Winding Accuracy Requirements",
@@ -461,9 +461,9 @@
     "slug": "ac",
     "sortOrder": 36,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
-    "updatedAt": "2026-07-22 08:28:54",
+    "filterKey": "ac",
+    "filterKeyEn": "ac",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Heat exchanger assembly difficulty",
@@ -550,9 +550,9 @@
     "slug": "microwave",
     "sortOrder": 37,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
-    "updatedAt": "2026-07-22 08:28:59",
+    "filterKey": "microwave",
+    "filterKeyEn": "microwave",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Difficult Cavity Assembly",
@@ -639,9 +639,9 @@
     "slug": "coffee",
     "sortOrder": 38,
     "homeSlot": "",
-    "filterKey": "tv-display",
-    "filterKeyEn": "tv-display",
-    "updatedAt": "2026-07-22 08:29:04",
+    "filterKey": "coffee",
+    "filterKeyEn": "coffee",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Precision Heating Component Assembly",
@@ -728,9 +728,9 @@
     "slug": "tablet",
     "sortOrder": 39,
     "homeSlot": "",
-    "filterKey": "coffee",
-    "filterKeyEn": "coffee",
-    "updatedAt": "2026-07-22 08:30:09",
+    "filterKey": "tablet",
+    "filterKeyEn": "tablet",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "Precision Display Assembly",
@@ -817,9 +817,9 @@
     "slug": "headlight",
     "sortOrder": 40,
     "homeSlot": "",
-    "filterKey": "capacitor",
-    "filterKeyEn": "capacitor",
-    "updatedAt": "2026-07-22 08:29:17",
+    "filterKey": "headlight",
+    "filterKeyEn": "headlight",
+    "updatedAt": "2026-07-23 12:18:16",
     "painPoints": [
       {
         "title": "High optical precision requirements",

@@ -15,9 +15,9 @@
   "slug": "microwave",
   "sortOrder": 37,
   "homeSlot": "",
-  "filterKey": "tv-display",
-  "filterKeyEn": "tv-display",
-  "updatedAt": "2026-07-22 08:28:59",
+  "filterKey": "microwave",
+  "filterKeyEn": "microwave",
+  "updatedAt": "2026-07-23 12:18:16",
   "painPoints": [
     {
       "title": "Сложность сборки корпуса",

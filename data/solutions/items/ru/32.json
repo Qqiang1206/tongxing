@@ -15,9 +15,9 @@
   "slug": "refrigerator",
   "sortOrder": 32,
   "homeSlot": "category",
-  "filterKey": "tv-display",
-  "filterKeyEn": "tv-display",
-  "updatedAt": "2026-07-22 08:28:25",
+  "filterKey": "refrigerator",
+  "filterKeyEn": "refrigerator",
+  "updatedAt": "2026-07-23 12:18:16",
   "painPoints": [
     {
       "title": "Множество операций сборки",

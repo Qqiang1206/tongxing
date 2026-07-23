@@ -22,14 +22,17 @@ window.__TXAM_PAGE_SOLUTIONS_RU={
   ],
   "filters": {
     "all": "Все решения",
-    "tv-display": "Бытовая техника",
-    "refrigerator": "Логистика",
-    "packaging": "Накопление энергии",
-    "washer": "Складские системы",
-    "capacitor": "Новые энергетические автомобили",
-    "ac": "ТВ/коммерческие дисплеи",
-    "coffee": "3C/цифровые устройства",
-    "robot": "Роботы"
+    "tv-display": "TV & Commercial Display",
+    "refrigerator": "Refrigerator",
+    "packaging": "Packaging",
+    "washer": "Washer",
+    "capacitor": "Capacitor",
+    "ac": "Air Conditioning",
+    "microwave": "Microwave",
+    "coffee": "Coffee Machine",
+    "tablet": "Tablet",
+    "headlight": "Headlight",
+    "robot": "Robot"
   },
   "seo": {
     "title": "Решения | TXAM",
