@@ -1,0 +1,262 @@
+/* ============================================================
+   TXAM Admin — Refresh Skin v1 (2026-07)
+   与前台官网统一的 Apple 工业风：浅底、深字、橙色点睛、克制圆角
+   此文件最后加载，覆盖 admin.css / admin-design-system.css
+   回退方式：在 index.html 中删除此 link 即可恢复原样
+   ============================================================ */
+
+/* ——— 1. 变量统一（对齐前台 DESIGN.md） ——— */
+:root {
+  --txam-orange: #FF6B00;
+  --txam-orange-hover: #E85F00;
+  --txam-orange-soft: rgba(255, 107, 0, 0.07);
+  --txam-orange-border: rgba(255, 107, 0, 0.22);
+  --txam-dark: #1D1D1F;
+  --bg: #FBFBFD;
+  --bg-sidebar: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --border: #E5E5EA;
+  --border-strong: #D2D2D7;
+  --muted: #86868B;
+  --text: #1D1D1F;
+  --text-secondary: #6E6E73;
+  --success: #30A46C;
+  --warning: #E58A00;
+  --danger: #D92D20;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 12px;
+  --shadow-xs: none;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* ——— 2. 全局底色：去掉渐变，纯色透气 ——— */
+html, body {
+  background: var(--bg);
+  background-image: none;
+  color: var(--text);
+}
+
+/* ——— 3. 侧栏：纯白、细边、无阴影 ——— */
+.sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  box-shadow: none;
+}
+.sidebar-brand {
+  min-height: 64px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-brand .brand-logo img { height: 28px; }
+.sidebar-footer {
+  background: transparent;
+  border-top: 1px solid var(--border);
+}
+
+/* 导航分组标签：更小、更克制 */
+.nav-group-label {
+  margin: 20px 12px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #A1A1A6;
+  letter-spacing: 0.06em;
+}
+
+/* 导航项：简洁、激活态浅橙 */
+.nav-item {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: #6E6E73;
+  font-weight: 500;
+  font-size: 14px;
+}
+.nav-item:hover { background: #F5F5F7; color: var(--txam-dark); }
+.nav-item.is-active {
+  background: var(--txam-orange-soft);
+  color: var(--txam-orange);
+  font-weight: 600;
+}
+.nav-ico { opacity: 0.75; }
+.nav-item.is-active .nav-ico { opacity: 1; }
+
+/* ——— 4. 卡片：轻边框、超轻影、12px 圆角 ——— */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.card-title { font-weight: 700; color: var(--txam-dark); }
+
+/* ——— 5. 按钮：与前台一致 ——— */
+.btn { border-radius: var(--radius-sm); font-weight: 600; }
+.btn-primary { background: var(--txam-dark); color: #fff; filter: none; }
+.btn-primary:hover { background: var(--txam-orange); filter: none; }
+.btn-accent { background: var(--txam-orange); color: #fff; filter: none; }
+.btn-accent:hover { background: var(--txam-orange-hover); filter: none; }
+.btn-ghost {
+  background: #fff;
+  border-color: var(--border);
+  color: #6E6E73;
+}
+.btn-ghost:hover { background: #F5F5F7; border-color: var(--border-strong); color: var(--txam-dark); }
+
+/* ——— 6. 登录页：简洁居中 ——— */
+.login-page {
+  background: var(--bg);
+  background-image: none;
+}
+.login-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  padding: 36px 32px;
+}
+.login-card input[type="password"],
+.login-card input[type="text"] {
+  border-color: var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+.login-card input:focus {
+  outline: none;
+  border-color: var(--txam-orange);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
+}
+.login-card .btn-primary { border-radius: var(--radius-sm); }
+
+/* ——— 7. 工作台 ——— */
+.dash-welcome h2 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--txam-dark);
+}
+.dash-welcome .page-sub { color: var(--muted); }
+
+/* 统计卡片：更干净 */
+.stat-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.stat-card::after { display: none; }  /* 去掉顶部装饰条 */
+.stat-card .label { color: var(--muted); font-weight: 600; }
+.stat-card .value { color: var(--txam-dark); font-weight: 800; }
+.stat-card .hint { color: var(--muted); }
+.stat-card.warn {
+  border-color: var(--txam-orange-border);
+  background: var(--txam-orange-soft);
+}
+.stat-card.warn .value { color: var(--txam-orange); }
+.stat-card.visit .value { color: var(--txam-dark); }
+
+/* 快捷操作条：更轻 */
+.dash-toolbar {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.dash-toolbar-label { color: var(--muted); font-weight: 600; }
+.quick-btn {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: #6E6E73;
+  font-weight: 500;
+}
+.quick-btn:hover {
+  border-color: var(--txam-orange-border);
+  background: var(--txam-orange-soft);
+  color: var(--txam-orange);
+}
+
+/* ——— 8. Hub Tabs（产品/方案/新闻顶部切换）：更轻 ——— */
+.hub-tabs {
+  background: #F5F5F7;
+  border-radius: var(--radius-sm);
+  padding: 3px;
+}
+.hub-tab { border-radius: 6px; font-weight: 600; color: #6E6E73; }
+.hub-tab.is-active {
+  background: #fff;
+  color: var(--txam-dark);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* ——— 9. 左侧大纲面板：更窄更轻 ——— */
+.section-outline {
+  border-right: 1px solid var(--border);
+}
+.section-outline-head strong { color: var(--txam-dark); }
+.section-outline-head span { color: var(--muted); }
+.section-tabs .hub-tab,
+.section-outline-tabs .hub-tab {
+  font-weight: 500;
+  color: #6E6E73;
+}
+.section-tabs .hub-tab.is-active,
+.section-outline-tabs .hub-tab.is-active {
+  color: var(--txam-orange);
+  background: var(--txam-orange-soft);
+  box-shadow: none;
+}
+
+/* ——— 10. 表格与列表：更干净 ——— */
+.data-table thead th {
+  background: #FAFAFC;
+  color: var(--muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.data-table td { border-bottom: 1px solid #F0F0F2; }
+.data-table tbody tr:hover { background: #FAFAFC; }
+
+.list-card { border-radius: var(--radius-md); }
+.catalog-list-head {
+  background: #FAFAFC;
+  color: var(--muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ——— 11. 表单控件 ——— */
+input[type="text"], input[type="search"], input[type="password"],
+input[type="date"], input[type="number"], select, textarea, .select, .search {
+  border-color: var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--text);
+}
+input:focus, select:focus, textarea:focus, .search:focus {
+  outline: none;
+  border-color: var(--txam-orange);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
+}
+
+/* ——— 12. 抽屉与弹层：更轻的阴影 ——— */
+.drawer-panel { box-shadow: -12px 0 40px rgba(0, 0, 0, 0.08); }
+.media-picker-panel { box-shadow: var(--shadow-md); border-radius: var(--radius-md); }
+
+/* ——— 13. 页头标题：字重对齐前台 ——— */
+.page-head h2 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--txam-dark);
+}
+.page-sub { color: var(--muted); }
+
+/* ——— 14. 滚动条：更细更淡 ——— */
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb { background: #D2D2D7; border-radius: 3px; }
+*::-webkit-scrollbar-thumb:hover { background: #A1A1A6; }
+
+/* ——— 15. Toast ——— */
+.toast {
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
