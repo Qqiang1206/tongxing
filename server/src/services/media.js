@@ -6,6 +6,12 @@ import { getDb } from '../db.js';
 const UPLOAD_DIR = path.join(REPO_ROOT, 'assets', 'images', 'uploads');
 const ALLOWED_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg']);
 
+function mediaMeta(mediaPath) {
+  const normalized = String(mediaPath || '').replace(/\\/g, '/').replace(/^\//, '');
+  const uploaded = normalized.startsWith('assets/images/uploads/');
+  return { source: uploaded ? 'upload' : 'site', deletable: uploaded };
+}
+
 function safeName(name) {
   return (
     String(name || 'file')
@@ -60,7 +66,13 @@ export function saveUploadedMedia({ filename, dataBase64, mime, alt }) {
     /* non-fatal */
   }
 
-  return { path: relative, filename: outName, bytes: buf.length, alt: alt || '' };
+  return {
+    path: relative,
+    filename: outName,
+    bytes: buf.length,
+    alt: alt || '',
+    ...mediaMeta(relative),
+  };
 }
 
 export function listUploadedMedia() {
@@ -71,14 +83,18 @@ export function listUploadedMedia() {
       .prepare('SELECT path, id AS filename, alt FROM media ORDER BY created_at DESC')
       .all();
     if (rows.length) {
-      return rows.map((r) => ({
-        filename: r.filename,
-        path: r.path,
-        alt: r.alt || '',
-        bytes: fs.existsSync(path.join(REPO_ROOT, r.path))
-          ? fs.statSync(path.join(REPO_ROOT, r.path)).size
-          : 0,
-      }));
+      return rows.map((r) => {
+        const itemPath = String(r.path || '').replace(/\\/g, '/');
+        return {
+          filename: r.filename,
+          path: itemPath,
+          alt: r.alt || '',
+          bytes: fs.existsSync(path.join(REPO_ROOT, itemPath))
+            ? fs.statSync(path.join(REPO_ROOT, itemPath)).size
+            : 0,
+          ...mediaMeta(itemPath),
+        };
+      });
     }
   } catch (_) {
     /* fall through */
@@ -94,6 +110,7 @@ export function listUploadedMedia() {
       path: `assets/images/uploads/${f}`,
       alt: '',
       bytes: fs.statSync(path.join(UPLOAD_DIR, f)).size,
+      ...mediaMeta(`assets/images/uploads/${f}`),
     }));
 }
 
@@ -105,6 +122,7 @@ export function deleteUploadedMedia(idOrFilename) {
   const db = getDb();
   const row = db.prepare('SELECT id, path FROM media WHERE id = ?').get(name);
   const rel = row && row.path ? String(row.path).replace(/\\/g, '/') : `assets/images/uploads/${name}`;
+  if (!mediaMeta(rel).deletable) throw new Error('protected_media');
   const abs = path.join(REPO_ROOT, rel);
   const resolved = path.resolve(abs);
   const uploadsRoot = path.resolve(UPLOAD_DIR);
@@ -113,7 +131,7 @@ export function deleteUploadedMedia(idOrFilename) {
     if (fs.existsSync(resolved)) fs.unlinkSync(resolved);
   }
   db.prepare('DELETE FROM media WHERE id = ?').run(name);
-  return { filename: name, deleted: true, path: rel };
+  return { filename: name, deleted: true, path: rel, ...mediaMeta(rel) };
 }
 
 export function updateMediaAlt(idOrFilename, alt) {
@@ -123,5 +141,10 @@ export function updateMediaAlt(idOrFilename, alt) {
   const row = db.prepare('SELECT id, path, alt FROM media WHERE id = ?').get(name);
   if (!row) throw new Error('not_found');
   db.prepare('UPDATE media SET alt = ? WHERE id = ?').run(String(alt || ''), name);
-  return { filename: name, path: row.path, alt: String(alt || '') };
+  return {
+    filename: name,
+    path: row.path,
+    alt: String(alt || ''),
+    ...mediaMeta(row.path),
+  };
 }

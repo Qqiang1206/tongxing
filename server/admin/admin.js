@@ -22,7 +22,16 @@
     pageCache: {},
     siteCache: null,
     mediaItems: [],
+    mediaFilter: 'all',
+    mediaPage: 1,
+    mediaPageSize: 18,
+    selectedMediaId: null,
+    mediaUploading: false,
     auditActors: [],
+    auditItems: [],
+    auditTotal: 0,
+    auditPage: 1,
+    auditPageSize: 5,
     hubTabs: {
       products: 'items',
       news: 'items',
@@ -936,6 +945,7 @@
 
   var mediaPickerTarget = null;
   var mediaPickerCallback = null;
+  var mediaPickerItems = [];
   var richEditorIds = [];
   var richEditorQueued = [];
 
@@ -1046,52 +1056,125 @@
     return val(id);
   }
 
+  function mediaItemSource(item) {
+    if (item && (item.source === 'upload' || item.source === 'site')) return item.source;
+    var path = String((item || {}).path || '').replace(/\\/g, '/').replace(/^\//, '');
+    return path.indexOf('assets/images/uploads/') === 0 ? 'upload' : 'site';
+  }
+
+  function mediaItemDeletable(item) {
+    if (item && typeof item.deletable === 'boolean') return item.deletable;
+    return mediaItemSource(item) === 'upload';
+  }
+
+  function mediaItemName(item) {
+    var alt = String((item || {}).alt || '').trim();
+    if (alt) return alt;
+    var filename = String((item || {}).filename || String((item || {}).path || '').split('/').pop() || '');
+    return filename
+      .replace(/^\d{14}-/, '')
+      .replace(/\.[^.]+$/, '')
+      .replace(/[-_]+/g, ' ')
+      .trim() || '未命名图片';
+  }
+
+  function mediaSizeLabel(bytes) {
+    var size = Number(bytes) || 0;
+    if (!size) return '';
+    if (size >= 1024 * 1024) return (size / 1024 / 1024).toFixed(1) + ' MB';
+    return Math.max(1, Math.round(size / 1024)) + ' KB';
+  }
+
+  function mediaMatches(item, query) {
+    var q = String(query || '').trim().toLowerCase();
+    if (!q) return true;
+    return [item.alt, item.filename, item.path, mediaItemName(item)].some(function (value) {
+      return String(value || '').toLowerCase().indexOf(q) >= 0;
+    });
+  }
+
+  function mediaErrorMessage(err) {
+    var code = String((err || {}).message || '');
+    if (code === 'file_too_large') return '单张图片不能超过 8 MB';
+    if (code === 'invalid_file_type') return '仅支持 PNG、JPG、WEBP、GIF 或 SVG 图片';
+    if (code === 'empty_file' || code === 'missing_data') return '图片文件为空，请重新选择';
+    if (code === 'protected_media') return '网站内置素材受保护，不能在素材库中删除';
+    if (code === 'not_found') return '没有找到该图片，请刷新后重试';
+    return code || '操作失败，请稍后重试';
+  }
+
+  function selectMediaPickerItem(path) {
+    if (mediaPickerCallback) {
+      mediaPickerCallback(path);
+      closeMediaPicker();
+      toast('已插入图片');
+      return;
+    }
+    var input = $(mediaPickerTarget);
+    if (input) {
+      input.value = path;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    closeMediaPicker();
+    toast('已选用图片');
+  }
+
+  function renderMediaPickerGrid() {
+    var grid = $('media-picker-grid');
+    if (!grid) return;
+    var source = val('media-picker-filter') || 'all';
+    var query = val('media-picker-search');
+    var items = (mediaPickerItems || []).filter(function (item) {
+      return (source === 'all' || mediaItemSource(item) === source) && mediaMatches(item, query);
+    });
+    if ($('media-picker-count')) $('media-picker-count').textContent = items.length + ' 张';
+    if (!items.length) {
+      grid.innerHTML = '<p class="empty">没有匹配的图片，请更换关键词或来源。</p>';
+      return;
+    }
+    grid.innerHTML = items.map(function (item) {
+      var sourceLabel = mediaItemSource(item) === 'upload' ? '运营上传' : '网站素材';
+      var name = mediaItemName(item);
+      return '<button type="button" class="media-pick-card" data-path="' + escapeAttr(item.path) + '" title="选用 ' + escapeAttr(name) + '">' +
+        '<img loading="lazy" src="' + escapeHtml(assetUrl(item.path)) + '" alt="' + escapeAttr(name) + '">' +
+        '<span class="media-pick-copy"><strong>' + escapeHtml(name) + '</strong><small>' + sourceLabel + '</small></span></button>';
+    }).join('');
+    grid.querySelectorAll('[data-path]').forEach(function (btn) {
+      btn.addEventListener('click', function () { selectMediaPickerItem(btn.getAttribute('data-path')); });
+    });
+  }
+
   async function openMediaPicker(inputId, onPick) {
     mediaPickerTarget = inputId || null;
     mediaPickerCallback = typeof onPick === 'function' ? onPick : null;
+    mediaPickerItems = [];
+    if ($('media-picker-search')) $('media-picker-search').value = '';
+    if ($('media-picker-filter')) $('media-picker-filter').value = 'all';
     $('media-picker').classList.remove('hidden');
     $('media-picker-grid').innerHTML = '<p class="help">加载中…</p>';
     try {
       var data = await api('/admin/media');
-      var items = data.items || [];
-      if (!items.length) {
-        $('media-picker-grid').innerHTML = '<p class="help">媒体库为空，请先在「媒体库」上传图片</p>';
+      mediaPickerItems = data.items || [];
+      if (!mediaPickerItems.length) {
+        $('media-picker-grid').innerHTML = '<p class="empty">素材库为空，请先到左侧“素材库”上传图片。</p>';
+        if ($('media-picker-count')) $('media-picker-count').textContent = '0 张';
         return;
       }
-      $('media-picker-grid').innerHTML = items.map(function (m) {
-        return '<button type="button" class="media-pick-card" data-path="' + escapeAttr(m.path) + '">' +
-          '<img src="' + escapeHtml(assetUrl(m.path)) + '" alt="">' +
-          '<span>' + escapeHtml(m.path.split('/').pop()) + '</span></button>';
-      }).join('');
-      $('media-picker-grid').querySelectorAll('[data-path]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var path = btn.getAttribute('data-path');
-          if (mediaPickerCallback) {
-            mediaPickerCallback(path);
-            closeMediaPicker();
-            toast('已插入图片');
-            return;
-          }
-          var input = $(mediaPickerTarget);
-          if (input) {
-            input.value = path;
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-          }
-          closeMediaPicker();
-          toast('已填入路径');
-        });
-      });
+      renderMediaPickerGrid();
+      if ($('media-picker-search')) $('media-picker-search').focus();
     } catch (err) {
-      $('media-picker-grid').innerHTML = '<p class="help">' + escapeHtml(err.message) + '</p>';
+      $('media-picker-grid').innerHTML = '<p class="empty">' + escapeHtml(mediaErrorMessage(err)) + '</p>';
     }
   }
 
   function closeMediaPicker() {
     mediaPickerTarget = null;
     mediaPickerCallback = null;
+    mediaPickerItems = [];
     $('media-picker').classList.add('hidden');
   }
 
+  /* Dashboard */
   /* Dashboard */
   async function loadDashboard() {
     var results = await Promise.all([
@@ -3717,68 +3800,167 @@
     }
   }
   /* Media */
-  function renderMediaGrid() {
-    var grid = $('media-grid');
-    if (!grid) return;
-    var allItems = state.mediaItems || [];
-    var q = String(($('media-search') || {}).value || '').trim().toLowerCase();
-    var items = allItems.filter(function (m) {
-      if (!q) return true;
-      return [m.alt, m.filename, m.path].some(function (value) {
-        return String(value || '').toLowerCase().indexOf(q) >= 0;
-      });
+  function updateMediaOverview() {
+    var items = state.mediaItems || [];
+    var uploadCount = items.filter(function (item) { return mediaItemSource(item) === 'upload'; }).length;
+    var siteCount = items.length - uploadCount;
+    if ($('media-count')) $('media-count').textContent = String(items.length);
+    if ($('media-summary')) {
+      $('media-summary').textContent = '运营上传 ' + uploadCount + ' 张 · 网站素材 ' + siteCount + ' 张';
+    }
+    if ($('media-filter-all-count')) $('media-filter-all-count').textContent = String(items.length);
+    if ($('media-filter-upload-count')) $('media-filter-upload-count').textContent = String(uploadCount);
+    if ($('media-filter-site-count')) $('media-filter-site-count').textContent = String(siteCount);
+    document.querySelectorAll('[data-media-filter]').forEach(function (btn) {
+      var active = btn.getAttribute('data-media-filter') === state.mediaFilter;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
     });
-    if ($('media-count')) $('media-count').textContent = String(allItems.length);
-    if (!allItems.length) {
-      grid.innerHTML = '<p class="empty">暂无图片素材，点击右上角“上传图片”开始添加。</p>';
+  }
+
+  function renderMediaPagination(pageInfo) {
+    var root = $('media-pagination');
+    if (!root) return;
+    if (pageInfo.totalPages <= 1) {
+      root.innerHTML = '';
       return;
     }
-    if (!items.length) {
-      grid.innerHTML = '<p class="empty">没有匹配的图片素材，请更换搜索关键词。</p>';
-      return;
-    }
-    grid.innerHTML = items.map(function (m) {
-      var displayName = m.alt || '未填写图片说明';
-      return '<div class="media-item">' +
-        '<img src="' + escapeHtml(assetUrl(m.path)) + '" alt="' + escapeAttr(m.alt || '') + '">' +
-        '<div class="meta"><strong class="media-item-title">' + escapeHtml(displayName) + '</strong>' +
-        '<label class="media-item-label">素材名称 / 图片说明</label>' +
-        '<input class="media-alt" data-id="' + escapeAttr(m.filename) + '" type="text" placeholder="例如：惠州生产基地外景" value="' + escapeAttr(m.alt || '') + '">' +
-        '<div class="media-item-actions"><button type="button" class="btn btn-ghost btn-sm btn-danger-text" data-del="' + escapeAttr(m.filename) + '" data-name="' + escapeAttr(displayName) + '">删除</button></div>' +
-        '</div></div>';
-    }).join('');
-    grid.querySelectorAll('[data-del]').forEach(function (btn) {
-      btn.addEventListener('click', async function () {
-        var name = btn.getAttribute('data-name') || '该图片';
-        if (!confirm('确认删除“' + name + '”？删除后使用该图片的页面可能无法正常显示。')) return;
-        try {
-          await api('/admin/media/' + encodeURIComponent(btn.getAttribute('data-del')), { method: 'DELETE' });
-          toast('图片已删除');
-          loadMedia();
-        } catch (err) { toast(err.message, true); }
-      });
-    });
-    grid.querySelectorAll('.media-alt').forEach(function (input) {
-      input.addEventListener('change', async function () {
-        try {
-          await api('/admin/media/' + encodeURIComponent(input.getAttribute('data-id')), {
-            method: 'PUT',
-            body: JSON.stringify({ alt: input.value }),
-          });
-          var item = (state.mediaItems || []).find(function (m) {
-            return String(m.filename) === String(input.getAttribute('data-id'));
-          });
-          if (item) item.alt = input.value;
-          toast('素材说明已保存');
-        } catch (err) { toast(err.message, true); }
+    root.innerHTML =
+      '<button type="button" class="btn-page" data-media-page="prev"' + (pageInfo.page <= 1 ? ' disabled' : '') + '>上一页</button>' +
+      '<span class="page-indicator">' + pageInfo.page + ' / ' + pageInfo.totalPages + '</span>' +
+      '<button type="button" class="btn-page" data-media-page="next"' + (pageInfo.page >= pageInfo.totalPages ? ' disabled' : '') + '>下一页</button>';
+    root.querySelectorAll('[data-media-page]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        if (btn.getAttribute('data-media-page') === 'prev') state.mediaPage -= 1;
+        else state.mediaPage += 1;
+        renderMediaGrid();
       });
     });
   }
 
+  function renderMediaGrid() {
+    var grid = $('media-grid');
+    if (!grid) return;
+    var allItems = state.mediaItems || [];
+    var query = val('media-search');
+    var filtered = allItems.filter(function (item) {
+      return (state.mediaFilter === 'all' || mediaItemSource(item) === state.mediaFilter) && mediaMatches(item, query);
+    });
+    updateMediaOverview();
+    var pageInfo = paginateRows(filtered, state.mediaPage, state.mediaPageSize);
+    state.mediaPage = pageInfo.page;
+    if ($('media-page-summary')) {
+      $('media-page-summary').textContent = filtered.length
+        ? ('找到 ' + filtered.length + ' 张 · 第 ' + pageInfo.page + ' / ' + pageInfo.totalPages + ' 页')
+        : '没有匹配的图片';
+    }
+    renderMediaPagination(pageInfo);
+    if (!allItems.length) {
+      grid.innerHTML = '<div class="media-empty-state"><strong>还没有图片素材</strong><p>点击右上角“上传图片”，可一次选择多张图片。</p></div>';
+      return;
+    }
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="media-empty-state"><strong>没有找到匹配图片</strong><p>可以更换关键词，或切换“全部 / 运营上传 / 网站素材”。</p></div>';
+      return;
+    }
+    grid.innerHTML = pageInfo.rows.map(function (item) {
+      var name = mediaItemName(item);
+      var uploaded = mediaItemSource(item) === 'upload';
+      var sourceLabel = uploaded ? '运营上传' : '网站素材';
+      var sizeLabel = mediaSizeLabel(item.bytes);
+      var meta = sourceLabel + (sizeLabel ? ' · ' + sizeLabel : '') + (uploaded ? ' · 可删除' : ' · 已保护');
+      return '<article class="media-item">' +
+        '<button type="button" class="media-item-preview" data-media-open="' + escapeAttr(item.filename) + '" aria-label="查看 ' + escapeAttr(name) + '">' +
+          '<img loading="lazy" src="' + escapeHtml(assetUrl(item.path)) + '" alt="' + escapeAttr(name) + '">' +
+          '<span class="media-source-badge ' + (uploaded ? 'is-upload' : 'is-site') + '">' + sourceLabel + '</span>' +
+        '</button>' +
+        '<div class="meta"><strong class="media-item-title">' + escapeHtml(name) + '</strong>' +
+          '<span class="media-item-info">' + escapeHtml(meta) + '</span>' +
+          '<button type="button" class="btn btn-ghost btn-sm media-edit-button" data-media-open="' + escapeAttr(item.filename) + '">查看与编辑</button>' +
+        '</div></article>';
+    }).join('');
+    grid.querySelectorAll('[data-media-open]').forEach(function (btn) {
+      btn.addEventListener('click', function () { openMediaDetail(btn.getAttribute('data-media-open')); });
+    });
+    grid.scrollTop = 0;
+  }
+
   async function loadMedia() {
     var data = await api('/admin/media');
-    state.mediaItems = data.items || [];
+    state.mediaItems = (data.items || []).map(function (item) {
+      item.source = mediaItemSource(item);
+      item.deletable = mediaItemDeletable(item);
+      return item;
+    });
     renderMediaGrid();
+  }
+
+  function openMediaDetail(id) {
+    var item = (state.mediaItems || []).find(function (row) { return String(row.filename) === String(id); });
+    if (!item) { toast('没有找到该图片，请刷新后重试', true); return; }
+    state.selectedMediaId = item.filename;
+    var uploaded = mediaItemSource(item) === 'upload';
+    $('media-detail-title').textContent = mediaItemName(item);
+    $('media-detail-source').textContent = uploaded ? '运营上传素材' : '网站页面正在使用的内置素材';
+    $('media-detail-image').src = assetUrl(item.path);
+    $('media-detail-image').alt = mediaItemName(item);
+    $('media-detail-alt').value = item.alt || '';
+    $('media-detail-badge').textContent = uploaded ? '运营上传' : '网站素材';
+    $('media-detail-badge').className = 'media-source-badge ' + (uploaded ? 'is-upload' : 'is-site');
+    $('media-detail-note').textContent = uploaded
+      ? '这张图片由运营人员上传，可以修改名称或删除。'
+      : '网站素材已启用删除保护，避免前端页面因误删出现缺图。';
+    $('media-detail-delete').classList.toggle('hidden', !mediaItemDeletable(item));
+    $('media-detail').classList.remove('hidden');
+    setTimeout(function () { $('media-detail-alt').focus(); }, 0);
+  }
+
+  function closeMediaDetail() {
+    state.selectedMediaId = null;
+    $('media-detail').classList.add('hidden');
+  }
+
+  async function saveMediaDetail() {
+    var id = state.selectedMediaId;
+    var item = (state.mediaItems || []).find(function (row) { return String(row.filename) === String(id); });
+    if (!item) return;
+    var button = $('media-detail-save');
+    button.disabled = true;
+    button.textContent = '保存中…';
+    try {
+      await api('/admin/media/' + encodeURIComponent(id), {
+        method: 'PUT',
+        body: JSON.stringify({ alt: $('media-detail-alt').value.trim() }),
+      });
+      item.alt = $('media-detail-alt').value.trim();
+      closeMediaDetail();
+      renderMediaGrid();
+      toast('图片信息已保存');
+    } catch (err) {
+      toast(mediaErrorMessage(err), true);
+    } finally {
+      button.disabled = false;
+      button.textContent = '保存图片信息';
+    }
+  }
+
+  async function deleteSelectedMedia() {
+    var id = state.selectedMediaId;
+    var item = (state.mediaItems || []).find(function (row) { return String(row.filename) === String(id); });
+    if (!item || !mediaItemDeletable(item)) {
+      toast('网站内置素材受保护，不能删除', true);
+      return;
+    }
+    if (!confirm('确认删除“' + mediaItemName(item) + '”？删除后无法恢复。')) return;
+    try {
+      await api('/admin/media/' + encodeURIComponent(id), { method: 'DELETE' });
+      closeMediaDetail();
+      await loadMedia();
+      toast('图片已删除');
+    } catch (err) {
+      toast(mediaErrorMessage(err), true);
+    }
   }
 
   function fileToBase64(file) {
@@ -3791,13 +3973,44 @@
   }
 
   async function uploadMedia(file) {
+    if (!file || (!/^image\//i.test(file.type || '') && !/\.(png|jpe?g|webp|gif|svg)$/i.test(file.name || ''))) {
+      throw new Error('invalid_file_type');
+    }
+    if (file.size > 8 * 1024 * 1024) throw new Error('file_too_large');
     var dataUrl = await fileToBase64(file);
-    var saved = await api('/admin/media', {
+    return api('/admin/media', {
       method: 'POST',
       body: JSON.stringify({ filename: file.name, data: dataUrl, mime: file.type }),
     });
-    toast('已上传：' + saved.path);
-    await loadMedia();
+  }
+
+  async function uploadMediaFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList || []);
+    if (!files.length || state.mediaUploading) return;
+    state.mediaUploading = true;
+    var input = $('media-file');
+    var label = $('media-upload-label');
+    var text = $('media-upload-text');
+    var errors = [];
+    if (input) input.disabled = true;
+    if (label) label.classList.add('is-busy');
+    try {
+      for (var i = 0; i < files.length; i += 1) {
+        if (text) text.textContent = '上传中 ' + (i + 1) + ' / ' + files.length;
+        try { await uploadMedia(files[i]); }
+        catch (err) { errors.push(files[i].name + '：' + mediaErrorMessage(err)); }
+      }
+      state.mediaFilter = 'upload';
+      state.mediaPage = 1;
+      await loadMedia();
+      if (errors.length) toast('部分图片上传失败：' + errors[0], true);
+      else toast('已上传 ' + files.length + ' 张图片');
+    } finally {
+      state.mediaUploading = false;
+      if (input) { input.disabled = false; input.value = ''; }
+      if (label) label.classList.remove('is-busy');
+      if (text) text.textContent = '+ 上传图片';
+    }
   }
 
   var RESOURCE_LABELS = {
@@ -4511,10 +4724,19 @@
       });
     });
   }
-  $('refresh-media').addEventListener('click', function () { loadMedia().catch(function (e) { toast(e.message, true); }); });
+  $('refresh-media').addEventListener('click', function () {
+    loadMedia().then(function () { toast('素材库已刷新'); }).catch(function (e) { toast(mediaErrorMessage(e), true); });
+  });
   if ($('media-search')) {
-    $('media-search').addEventListener('input', renderMediaGrid);
+    $('media-search').addEventListener('input', function () { state.mediaPage = 1; renderMediaGrid(); });
   }
+  document.querySelectorAll('[data-media-filter]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state.mediaFilter = btn.getAttribute('data-media-filter') || 'all';
+      state.mediaPage = 1;
+      renderMediaGrid();
+    });
+  });
   if ($('refresh-audit')) {
     $('refresh-audit').addEventListener('click', function () { loadAudit().catch(function (e) { toast(e.message, true); }); });
   }
@@ -4550,6 +4772,15 @@
   $('media-picker-close').addEventListener('click', closeMediaPicker);
   $('media-picker').addEventListener('click', function (e) {
     if (e.target === $('media-picker')) closeMediaPicker();
+  });
+  if ($('media-picker-search')) $('media-picker-search').addEventListener('input', renderMediaPickerGrid);
+  if ($('media-picker-filter')) $('media-picker-filter').addEventListener('change', renderMediaPickerGrid);
+  $('media-detail-close').addEventListener('click', closeMediaDetail);
+  $('media-detail-cancel').addEventListener('click', closeMediaDetail);
+  $('media-detail-save').addEventListener('click', function () { saveMediaDetail(); });
+  $('media-detail-delete').addEventListener('click', function () { deleteSelectedMedia(); });
+  $('media-detail').addEventListener('click', function (e) {
+    if (e.target === $('media-detail')) closeMediaDetail();
   });
   $('product-search').addEventListener('input', function () {
     state.listPages.products = 1;
@@ -4614,10 +4845,10 @@
   $('save-page-solutions').addEventListener('click', function () { savePage('solutions'); });
   $('save-site').addEventListener('click', function () { saveSite(); });
   $('media-file').addEventListener('change', function (e) {
-    var file = e.target.files && e.target.files[0];
-    if (!file) return;
-    uploadMedia(file).catch(function (err) { toast(err.message, true); });
-    e.target.value = '';
+    uploadMediaFiles(e.target.files).catch(function (err) {
+      toast(mediaErrorMessage(err), true);
+      state.mediaUploading = false;
+    });
   });
 
   bindDashboardScrollSync();

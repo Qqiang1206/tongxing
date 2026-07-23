@@ -149,7 +149,7 @@ function adminErrorStatus(message) {
     return 400;
   }
   if (message === 'not_found') return 404;
-  if (message === 'home_slot_full' || message === 'unpublish_needs_replace') return 409;
+  if (message === 'home_slot_full' || message === 'unpublish_needs_replace' || message === 'protected_media') return 409;
   return 500;
 }
 
