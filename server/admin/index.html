@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
-  <link rel="stylesheet" href="./admin.css?v=20260722l">
+  <link rel="stylesheet" href="./admin.css?v=20260723a">
   <link rel="stylesheet" href="./admin-design-system.css?v=20260723b">
   <script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
@@ -187,11 +187,10 @@
           <div class="hub-panel hidden hub-panel--editor" data-hub="solutions" data-hub-panel="page">
             <div class="editor-stack">
               <div id="page-solutions-form" class="page-form-root"></div>
-              <div class="form-actions docked-actions">
-                <p class="form-actions-hint" data-save-status="solutions">所有更改均已保存 · 保存会更新“解决方案页面”内容</p>
+              <div class="form-actions inline-save-actions hidden" data-save-actions="solutions">
+                <p class="form-actions-hint" data-save-status="solutions">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
                 <div class="toolbar">
-                  <a class="btn btn-ghost btn-sm" href="/solutions.html" target="_blank" rel="noopener">预览修改位置</a>
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存页面设置</button>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-solutions">保存并发布</button>
                 </div>
               </div>
             </div>
@@ -282,11 +281,10 @@
           <div class="hub-panel hidden hub-panel--editor" data-hub="products" data-hub-panel="page">
             <div class="editor-stack">
               <div id="page-products-form" class="page-form-root"></div>
-              <div class="form-actions docked-actions">
-                <p class="form-actions-hint" data-save-status="products">所有更改均已保存 · 保存会更新“产品中心页面”内容</p>
+              <div class="form-actions inline-save-actions hidden" data-save-actions="products">
+                <p class="form-actions-hint" data-save-status="products">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
                 <div class="toolbar">
-                  <a class="btn btn-ghost btn-sm" href="/products.html" target="_blank" rel="noopener">预览修改位置</a>
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存页面设置</button>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-products">保存并发布</button>
                 </div>
               </div>
             </div>
@@ -376,11 +374,10 @@
           <div class="hub-panel hidden hub-panel--editor" data-hub="news" data-hub-panel="page">
             <div class="editor-stack">
               <div id="page-news-form" class="page-form-root"></div>
-              <div class="form-actions docked-actions">
-                <p class="form-actions-hint" data-save-status="news">所有更改均已保存 · 保存会更新“新闻中心页面”内容</p>
+              <div class="form-actions inline-save-actions hidden" data-save-actions="news">
+                <p class="form-actions-hint" data-save-status="news">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
                 <div class="toolbar">
-                  <a class="btn btn-ghost btn-sm" href="/news.html" target="_blank" rel="noopener">预览修改位置</a>
-                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存页面设置</button>
+                  <button type="button" class="btn btn-accent save-page-btn" id="save-page-news">保存并发布</button>
                 </div>
               </div>
             </div>
@@ -478,10 +475,10 @@
           </div>
           <div class="editor-stack">
             <div id="site-form" class="page-form-root"></div>
-            <div class="form-actions docked-actions">
-              <p class="form-actions-hint">保存会更新所有前台页面共同使用的内容</p>
+            <div class="form-actions inline-save-actions hidden" data-save-actions="site">
+              <p class="form-actions-hint" data-save-status="site">有尚未保存的更改 · 保存后中文站立即更新，英/俄文需另行同步</p>
               <div class="toolbar">
-                <button type="button" class="btn btn-accent" id="save-site">保存全站设置</button>
+                <button type="button" class="btn btn-accent" id="save-site">保存并发布</button>
               </div>
             </div>
           </div>

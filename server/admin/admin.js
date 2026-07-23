@@ -64,6 +64,7 @@
     'page-products': 'products',
     'page-news': 'news',
     'page-contact': 'contact',
+    sitewide: 'site',
   };
   var PAGE_LABELS = {
     home: '首页',
@@ -72,6 +73,7 @@
     products: '产品中心页面',
     news: '新闻中心页面',
     contact: '联系我们',
+    site: '全站设置',
   };
   var PAGE_FORM_IDS = {
     home: 'page-home-form',
@@ -80,6 +82,7 @@
     products: 'page-products-form',
     news: 'page-news-form',
     contact: 'page-contact-form',
+    site: 'site-form',
   };
   var PAGE_VIEW_BY_KEY = {
     home: 'page-home',
@@ -94,7 +97,15 @@
     return document.querySelector('[data-save-status="' + key + '"]');
   }
 
-  var INLINE_SAVE_PAGES = { home: true, about: true, contact: true };
+  var INLINE_SAVE_PAGES = {
+    home: true,
+    about: true,
+    contact: true,
+    solutions: true,
+    products: true,
+    news: true,
+    site: true,
+  };
 
   function pageSaveBarElement(key) {
     return document.querySelector('[data-save-actions="' + key + '"]');
@@ -3668,9 +3679,17 @@
     ];
     $('site-form').innerHTML = buildSectionTabs('site-form', sections, 'nav');
     bindSectionTabs('site-form');
+    bindPageDirty('site-form', 'site');
   }
   async function saveSite() {
+    var saveButton = $('save-site');
+    var originalLabel = saveButton ? saveButton.textContent : '';
     try {
+      if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent = '正在保存…';
+      }
+      setPageStatus('site', '正在保存“全站设置”…', 'saving');
       var prev = state.siteCache || {};
       var body = {
         nav: Object.assign({}, prev.nav || {}, collectSiteKv('nav', SITE_NAV_LABELS)),
@@ -3680,9 +3699,21 @@
       };
       await api('/admin/site', { method: 'PUT', body: JSON.stringify(body) });
       state.siteCache = body;
-      toast('站点文案已保存');
+      setPageDirty('site', false);
+      var now = new Date();
+      var savedAt = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      setPageStatus('site', '已保存于 ' + savedAt + ' · 英文和俄文版本等待同步', 'saved');
+      flashInlineSaveBar('site');
+      toast('全站设置已保存');
     } catch (err) {
+      state.dirtyPages.site = true;
+      setPageStatus('site', '保存失败，请检查后重试', 'error');
       toast(err.message || '保存失败', true);
+    } finally {
+      if (saveButton) {
+        saveButton.disabled = false;
+        saveButton.textContent = originalLabel || '保存并发布';
+      }
     }
   }
   /* Media */
