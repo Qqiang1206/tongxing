@@ -1333,8 +1333,8 @@ body.tx-syncing .hub-actions [data-hub-action="translation"] {
   border: 1px solid var(--border); border-radius: 8px;
   padding: 10px 12px; background: #fff;
 }
-.field textarea { min-height: 96px; resize: vertical; }
-.field textarea.code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; min-height: 160px; }
+.field textarea { min-height: 56px; max-height: 280px; resize: none; overflow-y: hidden; line-height: 1.65; }
+.field textarea.code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; min-height: 96px; max-height: 360px; }
 .field input:focus, .field textarea:focus { outline: 2px solid rgba(255,107,0,0.18); border-color: var(--txam-orange); }
 .check-row { flex-direction: row; align-items: center; gap: 8px; }
 .help { color: var(--muted); font-size: 12px; }
@@ -1556,7 +1556,10 @@ body.tx-syncing .hub-actions [data-hub-action="translation"] {
   padding-bottom: 12px;
 }
 .tox-tinymce { border-radius: 8px !important; border-color: var(--border) !important; }
-.field.rich-field { gap: 8px; }
+.field.rich-field {
+  gap: 8px;
+  position: relative;
+}
 .slot-replace-list { display: flex; flex-direction: column; gap: 8px; }
 .slot-replace-item {
   display: flex; align-items: center; gap: 10px;
@@ -1758,12 +1761,18 @@ body {
 }
 
 .rich-field textarea.rich-source {
-  min-height: 340px;
-  resize: vertical;
+  min-height: 0;
+  height: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .rich-field .tox-tinymce {
-  min-height: 340px !important;
+  min-height: 0 !important;
 }
 
 .card {
@@ -1801,8 +1810,11 @@ body {
 }
 
 .field textarea {
-  min-height: 112px;
-  line-height: 1.7;
+  min-height: 56px;
+  max-height: 280px;
+  resize: none;
+  overflow-y: hidden;
+  line-height: 1.65;
 }
 
 .field input:hover,
@@ -2295,7 +2307,8 @@ body {
 }
 
 .drawer--catalog .field textarea {
-  min-height: 92px;
+  min-height: 56px;
+  max-height: 280px;
 }
 
 .drawer--catalog .rich-field {
@@ -2303,7 +2316,7 @@ body {
 }
 
 .drawer--catalog .tox-tinymce {
-  min-height: 280px;
+  min-height: 0;
 }
 
 .catalog-publish-grid {

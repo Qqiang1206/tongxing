@@ -604,6 +604,28 @@
   function escapeAttr(s) { return escapeHtml(s).replace(/'/g, '&#39;'); }
   function val(id) { var el = $(id); return el ? el.value : ''; }
 
+  function autosizeTextarea(el) {
+    if (!el || el.tagName !== 'TEXTAREA' || el.classList.contains('rich-source')) return;
+    var min = el.classList.contains('code') ? 96 : 56;
+    var max = el.classList.contains('code') ? 360 : 280;
+    el.style.height = 'auto';
+    var next = Math.min(Math.max(el.scrollHeight, min), max);
+    el.style.height = next + 'px';
+    el.style.overflowY = el.scrollHeight > max ? 'auto' : 'hidden';
+  }
+
+  function autosizeTextareasIn(root) {
+    (root || document).querySelectorAll('textarea:not(.rich-source)').forEach(autosizeTextarea);
+  }
+
+  if (!document.documentElement._txamAutosizeBound) {
+    document.documentElement._txamAutosizeBound = true;
+    document.addEventListener('input', function (e) {
+      var t = e.target;
+      if (t && t.matches && t.matches('textarea:not(.rich-source)')) autosizeTextarea(t);
+    });
+  }
+
   function field(name, label, value, span, type) {
     var id = 'f-' + name;
     var cls = 'field' + (span === 'full' ? ' full' : '');
@@ -727,9 +749,12 @@
         if (show) {
           resetPanelScroll(p);
           flushRichEditorsInPanel(p);
+          autosizeTextareasIn(p);
         }
       });
     });
+    var activePanel = root.querySelector('.section-panels-scroll > .section-panel:not(.hidden)');
+    if (activePanel) autosizeTextareasIn(activePanel);
   }
 
 
@@ -767,6 +792,7 @@
           : '<span class="help">暂无预览</span>';
       });
     });
+    autosizeTextareasIn(root);
   }
 
   function pairRowsHtml(prefix, items, titleLabel, descLabel) {
@@ -805,6 +831,7 @@
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
         root.insertBefore(row, t);
         reindex();
+        autosizeTextareasIn(row);
       }
       if (t.classList.contains('rep-remove')) {
         var r = t.closest('.repeater-row');
@@ -987,13 +1014,15 @@
       menubar: false,
       branding: false,
       promotion: false,
-      height: 340,
+      min_height: 140,
+      max_height: 520,
       plugins: 'lists link image table code autoresize',
       toolbar:
         'undo redo | blocks | bold italic underline | ' +
         'alignleft aligncenter alignright | bullist numlist | ' +
         'link image | removeformat | code',
       block_formats: '段落=p; 标题=h3; 小标题=h2',
+      autoresize_bottom_margin: 8,
       convert_urls: false,
       relative_urls: false,
       remove_script_host: false,
@@ -2780,6 +2809,7 @@
         });
       });
     });
+    autosizeTextareasIn(scope);
   }
 
   function seoBlock(page) {

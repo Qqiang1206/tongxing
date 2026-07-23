@@ -828,9 +828,12 @@ table.data {
 }
 
 .field textarea {
-  min-height: 112px;
+  min-height: 56px;
+  max-height: 280px;
   padding: 11px 12px;
   line-height: 1.65;
+  resize: none;
+  overflow-y: hidden;
 }
 
 .field-help,
