@@ -1,10 +1,13 @@
 node_modules/
 server/node_modules/
 .playwright-cli/
+.workbuddy/
+output/
 _unused-images/
 _backups/
 _deploy-package-*/
 *.zip
+*.bak-*
 server/.env
 server/data/*.db
 server/data/*.db-journal
