@@ -32,7 +32,7 @@
     if (global.TXAM && global.TXAM.loadSite) {
       try {
         return await global.TXAM.loadSite(lang);
-      } catch (e) { /* fall through */ }
+      } catch (e) { /* API unavailable, fall through to static data */ }
     }
     return null;
   }
@@ -85,7 +85,7 @@
     try {
       sessionStorage.removeItem('txam-nav-history-' + lang);
       sessionStorage.removeItem('txam-nav-history');
-    } catch (e) { /* ignore */ }
+    } catch (e) { /* sessionStorage unavailable or blocked */ }
 
     function currentTitle() {
       return (global.document.body.dataset.breadcrumbName) ||

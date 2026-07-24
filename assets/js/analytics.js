@@ -14,7 +14,7 @@
       navigator.sendBeacon(url);
       return;
     }
-  } catch (e) { /* fall through */ }
+  } catch (e) { /* sendBeacon unavailable, fall through to fetch */ }
 
   fetch(url, { method: 'GET', keepalive: true, credentials: 'same-origin' }).catch(function () {});
 })();

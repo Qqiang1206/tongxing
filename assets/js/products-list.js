@@ -23,7 +23,7 @@
     'Logistics & Warehousing': 'logistics',
     'Packaging': 'packaging',
     'Robot Integration': 'robot',
-    'Production Lines': 'single',
+    'Production Lines': 'line',
     'Software & Control': 'single',
     '点胶装配': 'dispensing',
     '后段包装': 'packaging',
