@@ -349,6 +349,7 @@
     mobileBtn.addEventListener('click', function () {
 
       isMenuOpen = !isMenuOpen;
+      mobileBtn.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
 
       if (isMenuOpen) {
 

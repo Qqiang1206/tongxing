@@ -47,7 +47,7 @@
     var langs = [
       { lang: 'zh', hreflang: 'zh-CN' },
       { lang: 'en', hreflang: 'en-US' },
-      { lang: 'ru', hreflang: 'ru' },
+      { lang: 'ru', hreflang: 'ru-RU' },
     ];
     langs.forEach(function (row) {
       ensureLink('alternate', { hreflang: row.hreflang, href: urlForLang(row.lang, file) + qs });
