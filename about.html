@@ -32,7 +32,7 @@
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <!-- 🌐 顶部导航 -->
     <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <a href="index.html" class="flex items-center cursor-pointer relative z-50" aria-label="TXAM Home"><picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10" loading="lazy"></picture></a>
+        <a href="index.html" class="flex items-center cursor-pointer relative z-50" aria-label="TXAM Home"><picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10"></picture></a>
         
         <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
             <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">首页</a>
@@ -190,30 +190,7 @@
     <!-- 📍 统一 Footer -->
     <div data-footer-placeholder></div>
 
-    <!-- ⚙️ 交互脚本 -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIcon = document.getElementById('menu-icon');
-            let isMenuOpen = false;
-            mobileBtn.addEventListener('click', () => {
-                isMenuOpen = !isMenuOpen;
-                if(isMenuOpen) { 
-                    mobileMenu.classList.remove('menu-closed'); mobileMenu.classList.add('menu-open');
-                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); document.body.style.overflow = 'hidden'; 
-                } else { 
-                    mobileMenu.classList.remove('menu-open'); mobileMenu.classList.add('menu-closed');
-                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); document.body.style.overflow = 'auto'; 
-                }
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
-        });
-    </script>
+    <!-- ⚙️ 交互脚本（移动菜单 + fade-up 由 data-loader.js 统一处理） -->
     <script src="assets/js/factory-carousel.js" defer></script>
     <script src="assets/js/patent-marquee.js"></script>
     <script src="data/i18n/zh.js"></script>
