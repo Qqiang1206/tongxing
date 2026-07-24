@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="../assets/css/styles.css">
     
     
+    <link rel="icon" type="image/webp" href="../assets/images/brand/favicon.webp">
+    <link rel="icon" type="image/png" href="../assets/images/brand/favicon.png">
+    <link rel="apple-touch-icon" href="../assets/images/brand/favicon.png">
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
@@ -318,7 +321,7 @@ async function loadSolution(solutionData) {
                     .forEach(function (id) {
                         var item = solutionData[id];
                         var card = document.createElement('a');
-                        card.href = 'solutions-detail.html?id=' + id;
+                        card.href = 'solutions-detail.html?slug=' + (item.slug || id);
                         card.className = 'detail-related-card apple-card block p-6 group';
                         card.innerHTML =
                             '<div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
