@@ -322,7 +322,7 @@ async function loadSolution(solutionData) {
                     .forEach(function (id) {
                         var item = solutionData[id];
                         var card = document.createElement('a');
-                        card.href = 'solutions-detail.html?id=' + id;
+                        card.href = 'solutions-detail.html?slug=' + (item.slug || id);
                         card.className = 'detail-related-card apple-card block p-6 group';
                         card.innerHTML =
                             '<div class="detail-related-card__img w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
