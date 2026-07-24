@@ -11,20 +11,16 @@
     '搬运移载': 'transfer',
     '后段包装': 'packaging',
     '机器人集成': 'robot',
-    '整线交付': 'optical',
-    '软件控制': 'transfer',
+    '整线交付': 'line',
   };
 
   var CATEGORY_FALLBACK_EN = {
-    'Single Machines': 'single',
     'Dispensing': 'dispensing',
     'Optical Assembly': 'optical',
     'Flip Detection': 'flip',
-    'Logistics & Warehousing': 'logistics',
     'Packaging': 'packaging',
     'Robot Integration': 'robot',
     'Production Lines': 'line',
-    'Software & Control': 'single',
     '点胶装配': 'dispensing',
     '后段包装': 'packaging',
     '机器人集成': 'robot',

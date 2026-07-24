@@ -2,6 +2,14 @@
  * Hydrate about.html from TXAM.loadPage('about', lang).
  */
 (function (global) {
+  function escapeHtml(text) {
+    return String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function renderStatsGrid(container, statsBlock) {
     if (!container || !statsBlock || !statsBlock.items || !statsBlock.items.length) return;
 
@@ -18,15 +26,15 @@
       }
 
       var unitHtml = stat.unit
-        ? '<span class="' + unitClass + '">' + stat.unit + '</span>'
+        ? '<span class="' + unitClass + '">' + escapeHtml(stat.unit) + '</span>'
         : '';
 
       return (
         '<div class="' + wrapClass + '">' +
           '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">' +
-            stat.value + unitHtml +
+            escapeHtml(stat.value) + unitHtml +
           '</div>' +
-          '<p class="' + labelClass + '">' + stat.label + '</p>' +
+          '<p class="' + labelClass + '">' + escapeHtml(stat.label) + '</p>' +
         '</div>'
       );
     }).join('');
@@ -48,18 +56,18 @@
 
     slidesRoot.innerHTML = carousel.slides.map(function (slide, i) {
       var active = i === 0;
-      var imgAttrs = 'src="' + assetUrl(slide.image) + '" alt="' + (slide.imageAlt || slide.title || '') + '" decoding="async"';
+      var imgAttrs = 'src="' + escapeHtml(assetUrl(slide.image)) + '" alt="' + escapeHtml(slide.imageAlt || slide.title || '') + '" decoding="async"';
       if (slide.width) imgAttrs += ' width="' + slide.width + '"';
       if (slide.height) imgAttrs += ' height="' + slide.height + '"';
       if (slide.imageSrcset) {
-        imgAttrs += ' srcset="' + String(slide.imageSrcset).split(',').map(function (part) {
+        imgAttrs += ' srcset="' + escapeHtml(String(slide.imageSrcset).split(',').map(function (part) {
           var bits = part.trim().split(/\s+/);
           bits[0] = assetUrl(bits[0]);
           return bits.join(' ');
-        }).join(', ') + '"';
+        }).join(', ')) + '"';
       }
-      if (slide.sizes) imgAttrs += ' sizes="' + slide.sizes + '"';
-      if (slide.fetchpriority) imgAttrs += ' fetchpriority="' + slide.fetchpriority + '"';
+      if (slide.sizes) imgAttrs += ' sizes="' + escapeHtml(slide.sizes) + '"';
+      if (slide.fetchpriority) imgAttrs += ' fetchpriority="' + escapeHtml(slide.fetchpriority) + '"';
       else if (i > 0) imgAttrs += ' loading="lazy"';
 
       return (
@@ -67,9 +75,9 @@
           '<img ' + imgAttrs + '>' +
           '<div class="factory-carousel__gradient"></div>' +
           '<div class="factory-carousel__caption">' +
-            '<p class="factory-carousel__tag">' + (slide.tag || '') + '</p>' +
-            '<h2 class="factory-carousel__title">' + (slide.title || '') + '</h2>' +
-            '<p class="factory-carousel__desc">' + (slide.desc || '') + '</p>' +
+            '<p class="factory-carousel__tag">' + escapeHtml(slide.tag || '') + '</p>' +
+            '<h2 class="factory-carousel__title">' + escapeHtml(slide.title || '') + '</h2>' +
+            '<p class="factory-carousel__desc">' + escapeHtml(slide.desc || '') + '</p>' +
           '</div>' +
         '</div>'
       );
@@ -79,8 +87,8 @@
       dotsRoot.innerHTML = carousel.slides.map(function (slide, i) {
         var active = i === 0;
         return (
-          '<button type="button" class="factory-carousel__dot' + (active ? ' is-active' : '') + '" data-factory-dot role="tab" aria-selected="' + (active ? 'true' : 'false') + '" aria-label="' + (slide.dotAria || slide.title || '') + '">' +
-            '<span class="factory-carousel__dot-label">' + (slide.dotLabel || '') + '</span>' +
+          '<button type="button" class="factory-carousel__dot' + (active ? ' is-active' : '') + '" data-factory-dot role="tab" aria-selected="' + (active ? 'true' : 'false') + '" aria-label="' + escapeHtml(slide.dotAria || slide.title || '') + '">' +
+            '<span class="factory-carousel__dot-label">' + escapeHtml(slide.dotLabel || '') + '</span>' +
             '<span class="factory-carousel__dot-mark"></span>' +
           '</button>'
         );
@@ -111,7 +119,7 @@
     grid.innerHTML = culture.pillars.map(function (pillar) {
       return (
         '<div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">' +
-          '<h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">' + (pillar.title || '') + '</h3>' +
+          '<h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">' + escapeHtml(pillar.title || '') + '</h3>' +
           '<p class="text-gray-300 text-body-lg leading-relaxed font-light">' + (pillar.bodyHtml || '') + '</p>' +
         '</div>'
       );
@@ -144,7 +152,7 @@
         if (ev.bodyHtml) {
           body += '<p class="text-[#86868B] text-sm leading-relaxed">' + ev.bodyHtml + '</p>';
         }
-        var content = '<h3 class="' + yearClass + '">' + ev.year + '</h3>' + body;
+        var content = '<h3 class="' + yearClass + '">' + escapeHtml(ev.year) + '</h3>' + body;
 
         if (ev.side === 'left') {
           return (
@@ -176,7 +184,7 @@
         return (
           '<div class="' + mb + ' ml-8 relative">' +
             '<div class="absolute -left-[41px] top-1 ' + dotClass(ev.accent, true) + '"></div>' +
-            '<h3 class="' + yearClass + '">' + ev.year + '</h3>' +
+            '<h3 class="' + yearClass + '">' + escapeHtml(ev.year) + '</h3>' +
             '<p class="text-[#86868B] text-sm leading-relaxed">' + text + '</p>' +
           '</div>'
         );
@@ -202,8 +210,8 @@
 
       if (group.layout === 'marquee') {
         var cards = items.map(function (item) {
-          var src = assetUrl(item.image);
-          var alt = item.imageAlt || group.title || '';
+          var src = escapeHtml(assetUrl(item.image));
+          var alt = escapeHtml(item.imageAlt || group.title || '');
           var media = /\.webp$/i.test(item.image)
             ? '<picture><source srcset="' + src + '" type="image/webp"><img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain"></picture>'
             : '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain">';
@@ -215,8 +223,8 @@
         }).join('');
         return (
           '<div class="' + wrapClass + '">' +
-            '<h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">' + (group.title || '') + '</h3>' +
-            '<div class="patent-marquee" style="--marquee-duration: ' + (group.marqueeDuration || '40s') + '">' +
+            '<h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">' + escapeHtml(group.title || '') + '</h3>' +
+            '<div class="patent-marquee" style="--marquee-duration: ' + escapeHtml(group.marqueeDuration || '40s') + '">' +
               '<div class="patent-marquee__track" data-patent-marquee>' + cards + '</div>' +
             '</div>' +
           '</div>'
@@ -224,8 +232,8 @@
       }
 
       var grid = items.map(function (item) {
-        var src = assetUrl(item.image);
-        var alt = item.imageAlt || group.title || '';
+        var src = escapeHtml(assetUrl(item.image));
+        var alt = escapeHtml(item.imageAlt || group.title || '');
         var media = /\.webp$/i.test(item.image)
           ? '<picture><source srcset="' + src + '" type="image/webp"><img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain"></picture>'
           : '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="w-full h-full object-contain">';
@@ -238,7 +246,7 @@
 
       return (
         '<div class="' + wrapClass + '">' +
-          '<h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">' + (group.title || '') + '</h3>' +
+          '<h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">' + escapeHtml(group.title || '') + '</h3>' +
           '<div class="grid grid-cols-2 md:grid-cols-4 gap-6">' + grid + '</div>' +
         '</div>'
       );
@@ -257,8 +265,8 @@
     var assetUrl = global.TXAM && global.TXAM.assetUrl ? global.TXAM.assetUrl : function (u) { return u; };
 
     grid.innerHTML = clients.items.map(function (item) {
-      var src = assetUrl(item.image);
-      var alt = item.imageAlt || '';
+      var src = escapeHtml(assetUrl(item.image));
+      var alt = escapeHtml(item.imageAlt || '');
       return (
         '<div class="client-card h-28 bg-white border border-[#E5E5EA] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">' +
           '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="max-h-full max-w-full client-logo" onerror="this.parentElement.style.display=\'none\'">' +
@@ -286,7 +294,7 @@
 
       var titleEl = document.getElementById('about-hero-title');
       var leadEl = document.getElementById('about-hero-lead');
-      if (titleEl && page.hero) titleEl.innerHTML = page.hero.title || '';
+      if (titleEl && page.hero) titleEl.textContent = page.hero.title || '';
       if (leadEl && page.hero) leadEl.innerHTML = page.hero.leadHtml || page.hero.lead || '';
 
       renderCarousel(page.carousel);
