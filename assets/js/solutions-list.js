@@ -23,7 +23,7 @@
   var STATIC_SLUGS = Object.keys(ID_TO_SLUG).map(function (id) { return ID_TO_SLUG[id]; });
 
   function solutionFilterKey(item) {
-    return item.slug || item.filterKey || ID_TO_SLUG[String(item.id)] || '';
+    return item.category || '';
   }
 
   function solutionHref(item, pathPrefix) {
@@ -183,7 +183,7 @@
       '<div class="' +
       wrapClass +
       ' solution-item" data-category="' +
-      escapeHtml(solutionFilterKey(item)) +
+      escapeHtml(item.category || '') +
       '">' +
       '<div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">' +
       inner +
@@ -208,29 +208,35 @@
     });
   }
 
-  function hydrateFilters(page) {
-    if (!page || !page.filters) return;
+  function renderFilterButtons(categories, lang) {
     var bar = document.getElementById('solutions-filter-bar');
     if (!bar) return;
     var normalClass =
       'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
-    bar.innerHTML = Object.keys(page.filters)
-      .map(function (key) {
-        var active = key === 'all';
-        return (
-          '<button type="button" id="solution-filter-' +
-          escapeHtml(key) +
-          '" class="' +
-          normalClass +
-          (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') +
-          '" data-filter="' +
-          escapeHtml(key) +
-          '">' +
-          escapeHtml(page.filters[key]) +
-          '</button>'
-        );
-      })
-      .join('');
+    var allLabel = (lang === 'en') ? 'All' : (lang === 'ru') ? 'Все' : '全部方案';
+    var html = '<button type="button" id="solution-filter-all" class="' +
+      normalClass + ' active text-[#1D1D1F]" data-filter="all">' +
+      escapeHtml(allLabel) + '</button>';
+    categories.forEach(function (cat) {
+      html += '<button type="button" class="' +
+        normalClass + ' text-[#86868B]" data-filter="' +
+        escapeHtml(cat) + '">' +
+        escapeHtml(cat) + '</button>';
+    });
+    bar.innerHTML = html;
+  }
+
+  function collectCategories(items) {
+    var seen = {};
+    var result = [];
+    items.forEach(function (item) {
+      var cat = item.category || '';
+      if (cat && !seen[cat]) {
+        seen[cat] = true;
+        result.push(cat);
+      }
+    });
+    return result;
   }
 
   function bindSolutionFilters() {
@@ -248,16 +254,32 @@
       targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
       targetBtn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
 
-      document.querySelectorAll('.solution-item').forEach(function (row) {
-        var match =
-          filterValue === 'all' || row.getAttribute('data-category') === filterValue;
-        row.style.display = match ? '' : 'none';
+      document.querySelectorAll('.solution-item').forEach(function (item) {
+        var match = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
+        if (match) {
+          item.classList.remove('hidden-item');
+          item.style.display = '';
+          item.style.opacity = '1';
+          item.style.transform = '';
+        } else {
+          item.classList.add('hidden-item');
+          item.style.display = 'none';
+          item.style.opacity = '';
+          item.style.transform = '';
+        }
       });
     }
 
     filterBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
         applyFilter(btn.getAttribute('data-filter'));
+        setTimeout(function () {
+          var list = document.getElementById('solutions-list');
+          if (list) {
+            var top = list.getBoundingClientRect().top + window.pageYOffset - 220;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
+        }, 100);
       });
     });
   }
@@ -292,7 +314,6 @@
               if (b && p.body) b.textContent = p.body;
             });
           }
-          hydrateFilters(page);
         } catch (_) {}
       }
 
@@ -311,6 +332,9 @@
           if (sa !== sb) return sa - sb;
           return (Number(a.id) || 0) - (Number(b.id) || 0);
         });
+
+      var categories = collectCategories(items);
+      renderFilterButtons(categories, lang);
 
       root.innerHTML = items
         .map(function (item, index) {
