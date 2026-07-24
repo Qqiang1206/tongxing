@@ -1,7 +1,7 @@
 {
   "31": {
     "id": "31",
-    "category": "TV/商显行业",
+    "category": "ТВ и коммерческие дисплеи",
     "name": "Линия автоматизации производства TV/коммерческих дисплеев",
     "image": "assets/images/solutions/tv-flex-line.webp",
     "specs": [
@@ -90,7 +90,7 @@
   },
   "32": {
     "id": "32",
-    "category": "家电行业",
+    "category": "Бытовая техника",
     "name": "Решения для линий по производству холодильников",
     "image": "assets/images/solutions/refrigerator-production-line.webp",
     "specs": [
@@ -179,7 +179,7 @@
   },
   "33": {
     "id": "33",
-    "category": "物流行业",
+    "category": "Логистика",
     "name": "Автоматизированная линия упаковки и логистики",
     "image": "assets/images/solutions/pkg-logistics-line.webp",
     "specs": [
@@ -268,7 +268,7 @@
   },
   "34": {
     "id": "34",
-    "category": "家电行业",
+    "category": "Бытовая техника",
     "name": "Решения для производственных линий стиральных машин",
     "image": "assets/images/solutions/washer-production-line.webp",
     "specs": [
@@ -357,7 +357,7 @@
   },
   "35": {
     "id": "35",
-    "category": "储能行业",
+    "category": "Накопители энергии",
     "name": "Решения для производственных линий конденсаторов",
     "image": "assets/images/solutions/capacitor-production-line.webp",
     "specs": [
@@ -446,7 +446,7 @@
   },
   "36": {
     "id": "36",
-    "category": "家电行业",
+    "category": "Бытовая техника",
     "name": "Решения для производственных линий кондиционеров",
     "image": "assets/images/solutions/ac-production-line.webp",
     "specs": [
@@ -535,7 +535,7 @@
   },
   "37": {
     "id": "37",
-    "category": "家电行业",
+    "category": "Бытовая техника",
     "name": "Решение для линии производства микроволновых печей",
     "image": "assets/images/solutions/microwave-production-line.webp",
     "specs": [
@@ -624,7 +624,7 @@
   },
   "38": {
     "id": "38",
-    "category": "家电行业",
+    "category": "Бытовая техника",
     "name": "Решение для линии по производству кофемашин",
     "image": "assets/images/solutions/coffee-production-line.webp",
     "specs": [
@@ -713,7 +713,7 @@
   },
   "39": {
     "id": "39",
-    "category": "3C/数码行业",
+    "category": "3C и цифровые",
     "name": "Решения для производства планшетов",
     "image": "assets/images/solutions/tablet-production-line.webp",
     "specs": [
@@ -802,7 +802,7 @@
   },
   "40": {
     "id": "40",
-    "category": "新能源汽车行业",
+    "category": "Новые энергетические автомобили",
     "name": "Решение для производственной линии автомобильных фар",
     "image": "assets/images/solutions/headlight-production-line.webp",
     "specs": [
@@ -891,7 +891,7 @@
   },
   "41": {
     "id": "41",
-    "category": "机器人",
+    "category": "Роботы",
     "name": "Оборудование роботизированных ячеек",
     "image": "assets/images/solutions/robot-unit.webp",
     "specs": [
