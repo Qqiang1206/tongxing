@@ -68,6 +68,7 @@
     --bg-color: #FBFBFD;  
     --border-light: #E5E5EA;
     --text-muted: #6E6E73;
+    --color-surface-alt: #F5F5F7;
 
     /* Border radius — unified: 12px large / 8px small */
     --radius-sm: 8px;
@@ -78,12 +79,7 @@
 .radius-lg { border-radius: var(--radius-lg); }
 
 /* Buttons, filters, tags — unified 8px (not pill/circle) */
-.filter-btn,
-.btn-pill {
-    border-radius: var(--radius-sm);
-}
-.btn-primary,
-.btn-secondary {
+.filter-btn {
     border-radius: var(--radius-sm);
 }
 
@@ -104,13 +100,13 @@
 .media-h-map { height: 600px; }
 .media-h-solution { height: 400px; }
 .media-h-detail { height: 400px; }
-.media-h-factory { height: 320px; }
+/* .media-h-factory removed — unused */
 @media (min-width: 768px) {
     .media-h-index { height: 600px; }
     .media-h-map { height: 700px; }
     .media-h-solution { height: 600px; }
     .media-h-detail { height: 500px; }
-    .media-h-factory { height: 560px; }
+    /* .media-h-factory removed — unused */
 }
 
 body {
@@ -168,11 +164,7 @@ body {
     font-size: 0.875rem;
     line-height: 1.5;
 }
-.text-caption {
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    line-height: 1.4;
-}
+/* .text-caption removed — unused */
 .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
 
 /* Animation System */
@@ -205,29 +197,10 @@ body {
     border-color: rgba(255, 107, 0, 0.3);
 }
 
-/* Button States */
-.btn-primary {
-    background: var(--txam-dark);
-    color: white;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn-primary:hover {
-    background: var(--txam-orange);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255, 107, 0, 0.2);
-}
-.btn-secondary {
-    background: white;
-    border: 1px solid var(--border-light);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn-secondary:hover {
-    background: #F5F5F7;
-    transform: translateY(-2px);
-}
+/* Button States — .btn-primary/.btn-secondary removed (admin uses own CSS) */
 
 .text-gradient {
-    background: linear-gradient(135deg, #1D1D1F 0%, #6E6E73 100%);
+    background: linear-gradient(135deg, var(--txam-dark) 0%, var(--text-muted) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -329,7 +302,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: #F5F5F7;
+    background: var(--color-surface-alt);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-sm);
 }
@@ -356,11 +329,12 @@ body {
 /* Filter pills: active state must beat lingering bg-white utility */
 .filter-btn {
     border-radius: var(--radius-sm);
+    min-height: 44px;
 }
 .filter-btn.active {
-    background-color: #1D1D1F !important;
+    background-color: var(--txam-dark) !important;
     color: #ffffff !important;
-    border-color: #1D1D1F !important;
+    border-color: var(--txam-dark) !important;
 }
 
 /* Product / news cards — column flex so filter JS display:flex cannot break layout */
@@ -392,7 +366,7 @@ body {
 }
 .product-card .img-container {
     height: 220px;
-    background: #F5F5F7;
+    background: var(--color-surface-alt);
 }
 .product-card .img-container img,
 .product-card .img-container picture,
@@ -433,7 +407,7 @@ body {
 .factory-carousel {
     position: relative;
     overflow: hidden;
-    background: #F5F5F7;
+    background: var(--color-surface-alt);
     height: 320px;
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-light);
@@ -491,7 +465,7 @@ body {
     pointer-events: none;
 }
 .factory-carousel__tag {
-    color: #FF6B00;
+    color: var(--txam-orange);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.2em;
@@ -557,6 +531,7 @@ body {
     align-items: center;
     gap: 0.35rem;
     padding: 0.5rem 1rem;
+    min-height: 44px;
     border-radius: var(--radius-sm);
     border: none;
     background: transparent;
@@ -565,7 +540,7 @@ body {
     min-width: 5.5rem;
 }
 .factory-carousel__dot-label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     color: rgba(255, 255, 255, 0.55);
@@ -587,7 +562,7 @@ body {
 }
 .factory-carousel__dot.is-active .factory-carousel__dot-mark {
     width: 1.75rem;
-    background: #FF6B00;
+    background: var(--txam-orange);
 }
 @media (min-width: 768px) {
     .factory-carousel__arrow {
@@ -659,7 +634,7 @@ body {
 }
 
 .spec-tag {
-    background: #F5F5F7;
+    background: var(--color-surface-alt);
     border: 1px solid var(--border-light);
     color: var(--txam-dark);
     padding: 6px 12px;
@@ -757,7 +732,7 @@ body {
 
 .detail-related-card__img {
     overflow: hidden;
-    background: #F5F5F7;
+    background: var(--color-surface-alt);
 }
 
 .detail-related-card__img img,
@@ -850,7 +825,7 @@ body {
     left: 1rem;
     z-index: 10000;
     padding: 0.75rem 1.25rem;
-    background: #1D1D1F;
+    background: var(--txam-dark);
     color: #fff;
     font-weight: 700;
     border-radius: 0.375rem;
@@ -858,7 +833,7 @@ body {
 }
 .skip-link:focus {
     top: 1rem;
-    outline: 2px solid #FF6B00;
+    outline: 2px solid var(--txam-orange);
     outline-offset: 2px;
 }
 
