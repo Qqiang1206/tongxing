@@ -260,6 +260,19 @@ function sendCatalogError(res, err, origin, sendJson) {
   sendJson(res, status, { error: code, message: code }, origin);
 }
 
+/**
+ * Sanitize an error message for API responses. In production, unknown
+ * errors (status >= 500, e.g. SQL / filesystem failures) are masked so
+ * internal details never reach the client.
+ */
+function safeAdminMessage(err) {
+  const code = err && err.message ? String(err.message) : 'internal_error';
+  if (process.env.NODE_ENV === 'production' && adminErrorStatus(code) >= 500) {
+    return 'internal_error';
+  }
+  return code;
+}
+
 function defaultProduct() {
   return {
     category: '',
@@ -486,7 +499,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         detail: { error: err.message },
         ok: false,
       });
-      sendJson(res, 400, { error: 'bad_request', message: err.message }, origin);
+      sendJson(res, 400, { error: 'bad_request', message: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -525,7 +538,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 201, { ok: true, backup }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -548,7 +561,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 200, { ok: true, ...result }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -557,7 +570,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     try {
       ensureAutoBackup();
     } catch (err) {
-      sendJson(res, 500, { error: 'auto_backup_failed', message: err.message }, origin);
+      sendJson(res, 500, { error: 'auto_backup_failed', message: safeAdminMessage(err) }, origin);
       return true;
     }
   }
@@ -627,7 +640,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         detail: { error: err.message },
         ok: false,
       });
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -688,7 +701,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         detail: { error: err.message },
         ok: false,
       });
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -743,7 +756,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         detail: { error: err.message },
         ok: false,
       });
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
       return true;
     }
   }
@@ -787,7 +800,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         detail: { error: err.message },
         ok: false,
       });
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -832,7 +845,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         detail: { error: err.message },
         ok: false,
       });
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -865,7 +878,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
           detail: { error: err.message },
           ok: false,
         });
-        sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+        sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
       }
       return true;
     }
@@ -891,7 +904,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
           detail: { error: err.message },
           ok: false,
         });
-        sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+        sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
       }
       return true;
     }
@@ -958,7 +971,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         detail: { error: err.message },
         ok: false,
       });
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -1007,7 +1020,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 201, { ok: true, item }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -1029,7 +1042,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 201, { ok: true, item }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -1066,7 +1079,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 200, { ok: true, item }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -1103,7 +1116,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 200, { ok: true, item }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -1134,7 +1147,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 201, { ok: true, item }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }
@@ -1171,7 +1184,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       });
       sendJson(res, 200, { ok: true, item }, origin);
     } catch (err) {
-      sendJson(res, adminErrorStatus(err.message), { error: err.message }, origin);
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
     }
     return true;
   }

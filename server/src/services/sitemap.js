@@ -115,12 +115,7 @@ export function generateSitemap({ base = process.env.SITEMAP_BASE || DEFAULT_BAS
     for (const id of Object.keys(solutions)) {
       const item = solutions[id];
       if (!item) continue;
-      const slug = String(item.slug || '');
-      const staticFile = slug && STATIC_SOLUTION_SLUGS.has(slug)
-        ? path.join(REPO_ROOT, `${slug}-solution.html`)
-        : '';
-      const hasStaticLanding = staticFile && fs.existsSync(staticFile);
-      if (!hasStaticLanding && item.published === false) continue;
+      if (item.published === false) continue;
       urls.push(urlEntry(`${siteBase}/${prefix}${solutionPath(item, id)}`, 'monthly', '0.7'));
     }
   }

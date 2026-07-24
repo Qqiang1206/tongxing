@@ -27,6 +27,15 @@
     return m ? m[1].toLowerCase() : null;
   }
 
+  function esc(text) {
+    if (global.TXAM && global.TXAM.escapeHtml) return global.TXAM.escapeHtml(text);
+    return String(text == null ? '' : text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function renderPainPoints(container, points) {
     if (!container || !points) return;
     container.innerHTML = points.map(function (p) {
@@ -35,8 +44,8 @@
         '<svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
         '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
         '</div>' +
-        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + p.title + '</h4>' +
-        '<p class="text-sm text-[#86868B]">' + p.desc + '</p></div>';
+        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + esc(p.title) + '</h4>' +
+        '<p class="text-sm text-[#86868B]">' + esc(p.desc) + '</p></div>';
     }).join('');
   }
 
@@ -45,9 +54,9 @@
     container.innerHTML = steps.map(function (p) {
       return '<div class="apple-card p-6 text-center">' +
         '<div class="w-16 h-16 bg-[#FF6B00] rounded-full flex items-center justify-center mx-auto mb-4">' +
-        '<span class="text-white font-black text-xl mono-num">' + p.step + '</span></div>' +
-        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + p.title + '</h4>' +
-        '<p class="text-sm text-[#86868B]">' + p.desc + '</p></div>';
+        '<span class="text-white font-black text-xl mono-num">' + esc(p.step) + '</span></div>' +
+        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + esc(p.title) + '</h4>' +
+        '<p class="text-sm text-[#86868B]">' + esc(p.desc) + '</p></div>';
     }).join('');
   }
 
@@ -65,7 +74,7 @@
     if (specsContainer) {
       specsContainer.innerHTML = (data.specs || [])
         .map(function (spec) {
-          return '<span class="spec-tag">' + spec + '</span>';
+          return '<span class="spec-tag">' + esc(spec) + '</span>';
         })
         .join('');
     }
@@ -90,7 +99,6 @@
       document.querySelector('.specs-grid');
     if (relatedContainer && allData) {
       var currentId = String(data.id);
-      var esc = global.TXAM.escapeHtml || function (t) { return t; };
       var picks = global.TXAM.pickRandomKeys
         ? global.TXAM.pickRandomKeys(
             Object.keys(allData).filter(function (id) {

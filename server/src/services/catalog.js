@@ -586,7 +586,7 @@ export function readCatalogJson(kind, lang = 'zh') {
         `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json
          FROM products p
          JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
-         WHERE (? = 'zh' OR i.translation_status != 'missing')`
+         WHERE p.published = 1 AND (? = 'zh' OR i.translation_status != 'missing')`
       )
       .all(lang, lang);
     for (const r of rows) {
@@ -603,7 +603,7 @@ export function readCatalogJson(kind, lang = 'zh') {
         `SELECT s.*, i.name, i.summary, i.content_html, i.specs_json, i.pain_points_json, i.process_json
          FROM solutions s
          JOIN solution_i18n i ON i.solution_id = s.id AND i.lang = ?
-         WHERE (? = 'zh' OR i.translation_status != 'missing')`
+         WHERE s.published = 1 AND (? = 'zh' OR i.translation_status != 'missing')`
       )
       .all(lang, lang);
     for (const r of rows) {
@@ -622,7 +622,7 @@ export function readCatalogJson(kind, lang = 'zh') {
         `SELECT n.*, i.category, i.title, i.content_html, i.date_display
          FROM news n
          JOIN news_i18n i ON i.news_id = n.id AND i.lang = ?
-         WHERE (? = 'zh' OR i.translation_status != 'missing')`
+         WHERE n.published = 1 AND (? = 'zh' OR i.translation_status != 'missing')`
       )
       .all(lang, lang);
     for (const r of rows) {
