@@ -346,23 +346,23 @@ function solutionTail({ lang, footerSrc, dataSrc, loaderSrc, titleSuffix }) {
 
 const pages = [
   { rel: 'product-detail.html', kind: 'products', lang: 'zh', titleSuffix: '同兴高科',
-    loaderSrc: 'assets/js/data-loader.js', dataSrc: 'data/products/zh.js', footerSrc: 'assets/js/footer.js' },
+    loaderSrc: 'assets/js/data-loader.js', dataSrc: 'data/products/zh.js', footerSrc: 'assets/js/site-footer.js' },
   { rel: 'en/product-detail.html', kind: 'products', lang: 'en', titleSuffix: 'TXAM',
-    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/products/en.js', footerSrc: '../assets/js/footer-en.js' },
+    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/products/en.js', footerSrc: '../assets/js/site-footer.js' },
   { rel: 'ru/product-detail.html', kind: 'products', lang: 'ru', titleSuffix: 'Тунсин Гаотек',
-    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/products/ru.js', footerSrc: '../assets/js/footer-ru.js' },
+    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/products/ru.js', footerSrc: '../assets/js/site-footer.js' },
   { rel: 'news-detail.html', kind: 'news', lang: 'zh', titleSuffix: '同兴高科',
-    loaderSrc: 'assets/js/data-loader.js', dataSrc: 'data/news/zh.js', footerSrc: 'assets/js/footer.js' },
+    loaderSrc: 'assets/js/data-loader.js', dataSrc: 'data/news/zh.js', footerSrc: 'assets/js/site-footer.js' },
   { rel: 'en/news-detail.html', kind: 'news', lang: 'en', titleSuffix: 'TXAM',
-    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/news/en.js', footerSrc: '../assets/js/footer-en.js' },
+    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/news/en.js', footerSrc: '../assets/js/site-footer.js' },
   { rel: 'ru/news-detail.html', kind: 'news', lang: 'ru', titleSuffix: 'Тунсин Гаотек',
-    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/news/ru.js', footerSrc: '../assets/js/footer-ru.js' },
+    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/news/ru.js', footerSrc: '../assets/js/site-footer.js' },
   { rel: 'solutions-detail.html', kind: 'solutions', lang: 'zh', titleSuffix: '同兴高科',
-    loaderSrc: 'assets/js/data-loader.js', dataSrc: 'data/solutions/zh.js', footerSrc: 'assets/js/footer.js' },
+    loaderSrc: 'assets/js/data-loader.js', dataSrc: 'data/solutions/zh.js', footerSrc: 'assets/js/site-footer.js' },
   { rel: 'en/solutions-detail.html', kind: 'solutions', lang: 'en', titleSuffix: 'TXAM',
-    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/solutions/en.js', footerSrc: '../assets/js/footer-en.js' },
+    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/solutions/en.js', footerSrc: '../assets/js/site-footer.js' },
   { rel: 'ru/solutions-detail.html', kind: 'solutions', lang: 'ru', titleSuffix: 'Тунсин Гаотек',
-    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/solutions/ru.js', footerSrc: '../assets/js/footer-ru.js' },
+    loaderSrc: '../assets/js/data-loader.js', dataSrc: '../data/solutions/ru.js', footerSrc: '../assets/js/site-footer.js' },
 ];
 
 for (const p of pages) patchFile(p.rel, p);

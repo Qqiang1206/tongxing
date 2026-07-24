@@ -31,6 +31,6 @@ When backend is ready, change the `fetch(...)` URL in each detail page to `/api/
 Shared UI currently lives in:
 
 - `assets/js/header.js` (ZH homepage)
-- `assets/js/footer.js` / `footer-en.js` / `footer-ru.js`
+- `assets/js/site-footer.js`
 
 Next iteration can extract pure HTML partials and a `scripts/build.js` injector.

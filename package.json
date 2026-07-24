@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "description": "TXAM corporate site — static front + JSON data layer",
+  "engines": { "node": ">=22.5.0" },
     "scripts": {
       "extract-data": "node scripts/extract-content-data.js",
       "restructure": "node scripts/restructure-site.js",

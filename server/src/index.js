@@ -360,6 +360,11 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'GET') {
     if (serveSiteStatic(res, rawPath, origin)) return;
+    // 404: serve HTML page for browser requests, JSON for API
+    if (req.headers.accept && req.headers.accept.includes('text/html')) {
+      serveRepoFile(res, REPO_ROOT, '404.html', origin, 'no-cache');
+      return;
+    }
   }
 
   sendJson(res, 404, { error: 'not_found' }, origin);

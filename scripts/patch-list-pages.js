@@ -7,9 +7,9 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 
 const productPages = [
-  { file: 'products.html', lang: 'zh', loader: 'assets/js/data-loader.js', data: 'data/products/zh.js', list: 'assets/js/products-list.js', footer: 'assets/js/footer.js' },
-  { file: 'en/products.html', lang: 'en', loader: '../assets/js/data-loader.js', data: '../data/products/en.js', list: '../assets/js/products-list.js', footer: '../assets/js/footer-en.js' },
-  { file: 'ru/products.html', lang: 'ru', loader: '../assets/js/data-loader.js', data: '../data/products/ru.js', list: '../assets/js/products-list.js', footer: '../assets/js/footer-ru.js' },
+  { file: 'products.html', lang: 'zh', loader: 'assets/js/data-loader.js', data: 'data/products/zh.js', list: 'assets/js/products-list.js', footer: 'assets/js/site-footer.js' },
+  { file: 'en/products.html', lang: 'en', loader: '../assets/js/data-loader.js', data: '../data/products/en.js', list: '../assets/js/products-list.js', footer: '../assets/js/site-footer.js' },
+  { file: 'ru/products.html', lang: 'ru', loader: '../assets/js/data-loader.js', data: '../data/products/ru.js', list: '../assets/js/products-list.js', footer: '../assets/js/site-footer.js' },
 ];
 
 function clearProductGrid(html) {
@@ -89,9 +89,9 @@ const slugs = [
 ];
 
 for (const slug of slugs) {
-  patchSolutionLanding(path.join(root, `${slug}-solution.html`), 'zh', '', 'footer.js');
-  patchSolutionLanding(path.join(root, 'en', `${slug}-solution.html`), 'en', '../', 'footer-en.js');
-  patchSolutionLanding(path.join(root, 'ru', `${slug}-solution.html`), 'ru', '../', 'footer-ru.js');
+  patchSolutionLanding(path.join(root, `${slug}-solution.html`), 'zh', '', 'site-footer.js');
+  patchSolutionLanding(path.join(root, 'en', `${slug}-solution.html`), 'en', '../', 'site-footer.js');
+  patchSolutionLanding(path.join(root, 'ru', `${slug}-solution.html`), 'ru', '../', 'site-footer.js');
 }
 
 console.log('done');
