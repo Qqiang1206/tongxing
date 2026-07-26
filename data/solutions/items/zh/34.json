@@ -17,6 +17,7 @@
   "homeSlot": "",
   "filterKey": "washer",
   "filterKeyEn": "washer",
+  "updatedAt": "2026-07-26 04:26:18",
   "painPoints": [
     {
       "title": "装配工艺复杂",
@@ -84,6 +85,5 @@
       "title": "智能入库",
       "desc": "与MES系统对接，实现生产数据全程追溯"
     }
-  ],
-  "updatedAt": "2026-07-23 12:18:16"
+  ]
 }

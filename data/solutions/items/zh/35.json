@@ -17,6 +17,7 @@
   "homeSlot": "",
   "filterKey": "capacitor",
   "filterKeyEn": "capacitor",
+  "updatedAt": "2026-07-26 04:26:18",
   "painPoints": [
     {
       "title": "卷绕精度要求高",
@@ -84,6 +85,5 @@
       "desc": "防潮包装系统确保产品储存安全",
       "step": "08"
     }
-  ],
-  "updatedAt": "2026-07-23 12:18:16"
+  ]
 }

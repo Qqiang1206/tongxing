@@ -1,89 +1,89 @@
 {
   "id": "39",
-  "category": "3C & Digital",
-  "name": "Tablet PC Production Line Solutions",
+  "category": "3C/数码行业",
+  "name": "Tablet PC production line solutions",
   "image": "assets/images/solutions/tablet-production-line.webp",
   "specs": [
-    "Precision Assembly",
-    "Vision Inspection",
-    "Multi-model Compatibility",
-    "Quality Assurance"
+    "Precision assembly",
+    "Vision inspection",
+    "Multi-model compatibility",
+    "Quality assurance"
   ],
-  "summary": "Full-line automation solutions for tablet computer manufacturers, covering display assembly, battery installation, motherboard assembly, and final inspection and packaging.",
-  "contentHtml": "<p>The tablet computer production line solution is a full-line automation solution provided by TXAM for tablet computer manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process including display module assembly, battery installation, motherboard assembly, cable connection, visual inspection, functional testing, appearance inspection, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision lamination of display modules with accuracy of &plusmn;0.1mm</li>\n<li>Automated battery installation compliant with safety standards</li>\n<li>Precision motherboard assembly with high placement accuracy</li>\n<li>AOI visual inspection for accurate defect identification</li>\n<li>Full functional testing to ensure product quality</li>\n<li>Anti-static packaging to ensure product safety</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "summary": "A complete line automation solution for tablet PC manufacturers, covering display assembly, battery installation, motherboard assembly, and final inspection and packaging.",
+  "contentHtml": "<p>The tablet PC production line solution is a complete line automation solution provided by TXAM for tablet PC manufacturers.</p><h3>Solution Composition</h3><p>The entire line covers the full process including display module assembly, battery installation, motherboard assembly, cable connection, vision inspection, functional testing, appearance inspection, and automatic packaging.</p><h3>Technical Advantages</h3><ul><li>Precision lamination of display modules with an accuracy of ±0.1mm</li><li>Automated battery installation compliant with safety standards</li><li>Precision motherboard assembly with high placement accuracy</li><li>AOI vision inspection with accurate defect recognition</li><li>Full functional testing to ensure product quality</li><li>Anti-static packaging to ensure product safety</li></ul><h3>Service Content</h3><p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
   "published": true,
   "slug": "tablet",
   "sortOrder": 39,
   "homeSlot": "",
   "filterKey": "tablet",
   "filterKeyEn": "tablet",
-  "updatedAt": "2026-07-23 12:18:16",
+  "updatedAt": "2026-07-26 04:26:18",
   "painPoints": [
     {
-      "title": "Precision Display Assembly",
-      "desc": "Tablet computer display module assembly requires extremely high precision"
+      "title": "Precision display assembly",
+      "desc": "Tablet PC display module assembly requires extremely high precision"
     },
     {
-      "title": "Battery Installation Risks",
-      "desc": "Battery installation involves safety requirements, and manual operation poses risks"
+      "title": "Battery installation risks",
+      "desc": "Battery installation involves safety requirements, and manual operation carries risks"
     },
     {
-      "title": "Complex Motherboard Assembly",
+      "title": "Complex motherboard assembly",
       "desc": "Motherboards have numerous components, making precision assembly challenging"
     },
     {
-      "title": "Many Small Components",
-      "desc": "Tablet computers have many small components, making manual placement difficult"
+      "title": "Many small components",
+      "desc": "Tablet PCs have many small components, making manual placement difficult"
     },
     {
-      "title": "Visual Inspection Challenges",
+      "title": "Vision inspection challenges",
       "desc": "Minor defects are difficult to detect with the naked eye"
     },
     {
-      "title": "High Cleanliness Requirements",
-      "desc": "Tablet computer assembly requires high cleanliness standards"
+      "title": "High cleanliness requirements",
+      "desc": "Tablet PC assembly requires high cleanliness"
     }
   ],
   "process": [
     {
       "step": "01",
-      "title": "Display Module Assembly",
+      "title": "Display module assembly",
       "desc": "Precision display module assembly system ensures lamination accuracy"
     },
     {
       "step": "02",
-      "title": "Battery Installation",
+      "title": "Battery installation",
       "desc": "Automated battery installation system ensures safety and reliability"
     },
     {
       "step": "03",
-      "title": "Motherboard Assembly",
+      "title": "Motherboard assembly",
       "desc": "Precision motherboard assembly system completes component placement"
     },
     {
       "step": "04",
-      "title": "Cable Connection",
+      "title": "Cable connection",
       "desc": "Automated cable connection system ensures reliable connections"
     },
     {
       "step": "05",
-      "title": "Visual Inspection",
+      "title": "Vision inspection",
       "desc": "AOI visual inspection system automatically identifies defects"
     },
     {
       "step": "06",
-      "title": "Functional Testing",
-      "desc": "Comprehensive functional testing system completes all functional tests"
+      "title": "Functional testing",
+      "desc": "Comprehensive functional testing system completes various functional tests"
     },
     {
       "step": "07",
-      "title": "Appearance Inspection",
+      "title": "Appearance inspection",
       "desc": "Automated appearance inspection system ensures product aesthetics"
     },
     {
       "step": "08",
-      "title": "Automatic Packaging",
-      "desc": "Automated packaging system achieves anti-static packaging for shipment"
+      "title": "Automatic packaging",
+      "desc": "Automated packaging system achieves anti-static factory packaging"
     }
   ]
 }

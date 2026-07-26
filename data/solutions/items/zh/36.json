@@ -17,6 +17,7 @@
   "homeSlot": "",
   "filterKey": "ac",
   "filterKeyEn": "ac",
+  "updatedAt": "2026-07-26 04:26:18",
   "painPoints": [
     {
       "title": "换热器组装难",
@@ -84,6 +85,5 @@
       "title": "自动包装",
       "desc": "自动化包装系统实现高效出厂包装"
     }
-  ],
-  "updatedAt": "2026-07-23 12:18:16"
+  ]
 }
