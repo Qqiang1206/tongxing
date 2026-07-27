@@ -1399,22 +1399,14 @@
       api('/admin/products'),
       api('/admin/news'),
       api('/admin/solutions'),
-      api('/admin/translation-status'),
       api('/admin/analytics/summary'),
       api('/admin/dashboard/recent-updates?limit=6'),
     ]);
     state.products = results[0].items || [];
     state.news = results[1].items || [];
     state.solutions = results[2].items || [];
-    var status = results[3];
     var analytics = results[4];
     state.dashboardRecent = (results[5].items || []);
-    var stale = 0;
-    Object.keys(status.resources || {}).forEach(function (key) {
-      var r = status.resources[key];
-      if (r.en === 'stale') stale++;
-      if (r.ru === 'stale') stale++;
-    });
     var pubProducts = state.products.filter(function (p) { return p.published !== false; }).length;
     var pubNews = state.news.filter(function (n) { return n.published !== false; }).length;
     var pubSolutions = state.solutions.filter(function (s) { return s.published !== false; }).length;
@@ -1434,8 +1426,7 @@
       stat('今日访问', todayVisits, visitHint, false, 'visit') +
       stat('产品数量', state.products.length, '已上架 ' + pubProducts + ' 条') +
       stat('解决方案', state.solutions.length, '已上架 ' + pubSolutions + ' 条') +
-      stat('新闻文章', state.news.length, '已上架 ' + pubNews + ' 条') +
-      stat('待同步翻译', stale, stale ? '点击查看待同步内容' : 'en / ru 均已最新', stale > 0, 'stat-clickable');
+      stat('新闻文章', state.news.length, '已上架 ' + pubNews + ' 条');
     if ($('dash-traffic')) {
       $('dash-traffic').innerHTML =
         '<div class="traffic-summary">' +
@@ -1448,13 +1439,6 @@
     }
     renderRecentUpdates(state.dashboardRecent);
     syncDashboardScrollAreas();
-    var txStat = document.querySelector('.stat-card.stat-clickable');
-    if (txStat) {
-      txStat.style.cursor = 'pointer';
-      txStat.addEventListener('click', function () {
-        setView('system', { hubTab: 'translation' });
-      });
-    }
   }
 
   var dashboardScrollRaf = 0;
