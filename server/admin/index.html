@@ -418,30 +418,20 @@
           <div class="section-panel hub-panel" data-hub="system" data-hub-panel="translation">
             <div id="translation-overview" class="tx-overview"></div>
             <div id="translation-progress" class="tx-progress hidden" aria-live="polite"></div>
-            <div class="card tx-engine-card" style="margin-bottom:16px">
+            <div class="card" id="tx-api-usage-card" style="margin-top:16px;margin-bottom:16px">
               <div class="card-head">
-                <h3 class="card-title">翻译引擎配置</h3>
-                <button type="button" class="btn btn-ghost btn-sm" id="add-engine">+ 新增引擎</button>
+                <h3 class="card-title">API 使用记录</h3>
               </div>
-              <div id="translation-engines" class="table-wrap"></div>
-              <div id="engine-form-area" class="hidden" style="padding:16px;border-top:1px solid #E5E5EA"></div>
+              <div id="tx-api-usage"></div>
+              <div class="table-wrap" id="tx-api-logs-table" style="margin-top:12px"></div>
             </div>
-            <div class="card tx-pending-card" id="translation-pending-card">
+            <div class="card" id="tx-advanced">
               <div class="card-head">
-                <h3 class="card-title">待同步内容</h3>
+                <h3 class="card-title">en/ru 同步记录</h3>
               </div>
-              <div id="translation-pending"></div>
+              <p class="field-help" style="margin:0 0 12px">系统每 30 秒自动同步，无需手动操作。下表为历史同步任务（只读）。</p>
+              <div class="table-wrap" id="translation-jobs-table"></div>
             </div>
-            <details class="advanced-block tx-advanced">
-              <summary>高级：任务队列与手动标记</summary>
-              <p class="field-help" style="margin:0 0 12px">一般不用打开。仅在排查失败任务，或确认某语言已人工改好、只需改状态时使用。</p>
-              <div class="toolbar" style="margin-bottom:12px">
-                <button type="button" class="btn btn-ghost btn-sm" id="enqueue-stale-jobs">仅为待同步建任务（不运行）</button>
-                <button type="button" class="btn btn-ghost btn-sm" id="refresh-jobs">刷新任务</button>
-              </div>
-              <div class="card" style="margin-bottom:12px"><div class="table-wrap" id="translation-jobs-table"></div></div>
-              <div class="card"><div class="table-wrap" id="translation-table"></div></div>
-            </details>
           </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="analytics">
             <p class="page-hint">按日汇总前台页面访问量（PV）。可按日期与语言站筛选，查看趋势和页面排行。</p>

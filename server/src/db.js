@@ -56,10 +56,44 @@ export function getDb() {
       note TEXT,
       error TEXT,
       result_json TEXT,
+      attempts INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now')),
       started_at TEXT,
       completed_at TEXT
     );
+  `);
+  // Additive migration for pre-existing DBs lacking attempts column.
+  {
+    const cols = db.prepare('PRAGMA table_info(translation_job_store)').all().map((c) => c.name);
+    if (!cols.includes('attempts')) {
+      db.exec(`ALTER TABLE translation_job_store ADD COLUMN attempts INTEGER DEFAULT 0`);
+    }
+  }
+
+  // Per-call API usage log for translation providers (OpenAI-compatible).
+  // Each chunk call to translateProvider writes one row here.
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS translation_api_log (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      called_at TEXT DEFAULT (datetime('now')),
+      engine_name TEXT,
+      provider TEXT,
+      model TEXT,
+      target_lang TEXT,
+      input_chars INTEGER DEFAULT 0,
+      output_chars INTEGER DEFAULT 0,
+      prompt_tokens INTEGER DEFAULT 0,
+      completion_tokens INTEGER DEFAULT 0,
+      total_tokens INTEGER DEFAULT 0,
+      duration_ms INTEGER DEFAULT 0,
+      success INTEGER DEFAULT 1,
+      http_status INTEGER,
+      error TEXT,
+      job_id INTEGER
+    );
+    CREATE INDEX IF NOT EXISTS idx_api_log_called_at ON translation_api_log(called_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_api_log_job ON translation_api_log(job_id);
+    CREATE INDEX IF NOT EXISTS idx_api_log_engine ON translation_api_log(engine_name);
   `);
 
   migrateProductColumns(db);

@@ -15,18 +15,14 @@ import {
 import {
   readTranslationStatus,
   markStale,
-  markCurrent,
 } from './services/translationStatus.js';
 import { getAnalyticsSummary, getAnalyticsReport } from './services/analytics.js';
 import {
   listTranslationJobs,
-  createTranslationJob,
-  enqueueStaleJobs,
-  runTranslationJob,
-  applyTranslationJob,
   getTranslationJob,
 } from './services/translationJobs.js';
 import { getTranslationConfig } from './services/translateProvider.js';
+import { listApiLogs, getApiUsageStats } from './services/translationApiLog.js';
 import {
   listEngines,
   createEngine,
@@ -623,36 +619,6 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     return true;
   }
 
-  if (pathname === '/api/v1/admin/translation-status/mark-current' && req.method === 'POST') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
-      return true;
-    }
-    try {
-      const body = await readBody(req);
-      const status = markCurrent(body.resource, body.lang);
-      writeAudit({
-        req,
-        action: 'translation.mark_current',
-        resource: body.resource,
-        summary: `标记翻译已同步 ${body.resource}/${body.lang}`,
-        detail: { lang: body.lang },
-      });
-      sendJson(res, 200, { ok: true, status }, origin);
-    } catch (err) {
-      writeAudit({
-        req,
-        action: 'translation.mark_current',
-        resource: 'translation',
-        summary: '标记翻译同步失败',
-        detail: { error: err.message },
-        ok: false,
-      });
-      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
-    }
-    return true;
-  }
-
   if (pathname === '/api/v1/admin/translation-jobs' && req.method === 'GET') {
     if (!authOk(req)) {
       sendJson(res, 401, { error: 'unauthorized' }, origin);
@@ -774,45 +740,34 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/translation-jobs' && req.method === 'POST') {
+    // Write actions on translation jobs were removed when the auto-scheduler
+    // took over. Stale resources are now promoted + executed automatically;
+    // this endpoint stays read-only (GET). Keep a friendly 405 so old admin
+    // tabs that haven't refreshed don't get a silent 404.
+    sendJson(res, 405, { error: 'method_not_allowed', hint: 'translation_runs_automatically' }, origin);
+    return true;
+  }
+
+  // --- Translation API usage log (read-only observability) ---
+
+  if (pathname === '/api/v1/admin/translation-api-logs' && req.method === 'GET') {
     if (!authOk(req)) {
       sendJson(res, 401, { error: 'unauthorized' }, origin);
       return true;
     }
-    try {
-      const body = await readBody(req);
-      if (body.enqueueStale) {
-        const result = enqueueStaleJobs();
-        writeAudit({
-          req,
-          action: 'translation.enqueue_stale',
-          resource: 'translation',
-          summary: `为待同步资源建任务 (${result.created ?? result.count ?? '?'})`,
-          detail: result,
-        });
-        sendJson(res, 201, { ok: true, ...result }, origin);
-        return true;
-      }
-      const job = createTranslationJob(body);
-      writeAudit({
-        req,
-        action: 'translation.create_job',
-        resource: body.resource || 'translation',
-        resourceId: job.id,
-        summary: `创建翻译任务 #${job.id}`,
-        detail: { resource: body.resource, targetLangs: body.targetLangs },
-      });
-      sendJson(res, 201, { ok: true, job }, origin);
-    } catch (err) {
-      writeAudit({
-        req,
-        action: 'translation.create_job',
-        resource: 'translation',
-        summary: '创建翻译任务失败',
-        detail: { error: err.message },
-        ok: false,
-      });
-      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
+    const url = new URL(req.url || '/', 'http://localhost');
+    const limit = Math.min(Number(url.searchParams.get('limit')) || 50, 200);
+    const offset = Math.max(Number(url.searchParams.get('offset')) || 0, 0);
+    sendJson(res, 200, { logs: listApiLogs({ limit, offset }) }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/translation-api-usage' && req.method === 'GET') {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
     }
+    sendJson(res, 200, getApiUsageStats(), origin);
     return true;
   }
 
@@ -824,51 +779,18 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     }
     const jobId = jobMatch[1];
     const action = jobMatch[2];
-    try {
-      if (req.method === 'GET' && !action) {
+    // GET single job stays available (read-only history).
+    if (req.method === 'GET' && !action) {
+      try {
         sendJson(res, 200, getTranslationJob(jobId), origin);
-        return true;
+      } catch (err) {
+        sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
       }
-      if (req.method === 'POST' && action === 'run') {
-        const job = await runTranslationJob(jobId);
-        writeAudit({
-          req,
-          action: 'translation.run',
-          resource: 'translation',
-          resourceId: jobId,
-          summary: `运行翻译任务 #${jobId}`,
-          detail: { status: job.status },
-          ok: job.status !== 'failed',
-        });
-        sendJson(res, 200, { ok: true, job }, origin);
-        return true;
-      }
-      if (req.method === 'POST' && action === 'apply') {
-        const result = applyTranslationJob(jobId);
-        writeAudit({
-          req,
-          action: 'translation.apply',
-          resource: 'translation',
-          resourceId: jobId,
-          summary: `应用翻译任务 #${jobId}`,
-          detail: result,
-        });
-        sendJson(res, 200, { ok: true, ...result }, origin);
-        return true;
-      }
-    } catch (err) {
-      writeAudit({
-        req,
-        action: action ? `translation.${action}` : 'translation.job',
-        resource: 'translation',
-        resourceId: jobId,
-        summary: `翻译任务操作失败 #${jobId}`,
-        detail: { error: err.message },
-        ok: false,
-      });
-      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
       return true;
     }
+    // run / apply are now handled by the automatic scheduler.
+    sendJson(res, 405, { error: 'method_not_allowed', hint: 'translation_runs_automatically' }, origin);
+    return true;
   }
 
   if (pathname === '/api/v1/admin/home-slots' && req.method === 'GET') {

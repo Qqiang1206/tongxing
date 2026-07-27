@@ -43,6 +43,7 @@ const SOLUTION_SEED = [
   { key: 'robot', name: '机器人', nameEn: 'Robot', filterKeyEn: 'robot', sortOrder: 110 },
 ];
 
+let _pageFiltersSynced = false;
 export function ensureCategoryTables(db) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS product_categories (
@@ -69,6 +70,13 @@ export function ensureCategoryTables(db) {
     );
   `);
   seedIfEmpty(db);
+  if (!_pageFiltersSynced) {
+    _pageFiltersSynced = true;
+    try {
+      syncProductPageFilters();
+      syncNewsPageFilters();
+    } catch (_) { /* page json may not exist yet */ }
+  }
 }
 
 function seedIfEmpty(db) {
@@ -366,45 +374,90 @@ export function deleteNewsCategory(key) {
   return { ok: true, deleted: k };
 }
 
-/** Rewrite pages/products filters from product_categories (zh). */
+/** Rewrite pages/products filters from product_categories (zh/en/ru). */
 export function syncProductPageFilters() {
   const cats = listProductCategories();
-  const page = readPageJson('products', 'zh') || {
-    pageKey: 'products',
-    lang: 'zh',
-    hero: {},
-    filters: {},
-    seo: {},
-  };
-  const filters = { all: (page.filters && page.filters.all) || '全部产品' };
-  for (const c of cats) filters[c.key] = c.name;
-  page.filters = filters;
-  page.pageKey = 'products';
-  page.lang = 'zh';
-  writePageJsonAny('products', 'zh', page);
-  regeneratePageJs('products', 'zh');
+  const allLabels = { zh: '全部产品', en: 'All Products', ru: 'Все продукты' };
+  let zhFilters = null;
+  for (const lang of ['zh', 'en', 'ru']) {
+    const page = readPageJson('products', lang) || {
+      pageKey: 'products',
+      lang,
+      hero: {},
+      filters: {},
+      seo: {},
+    };
+    const oldFilters = page.filters || {};
+    const filters = {};
+    filters.all = oldFilters.all || allLabels[lang] || 'All Products';
+    for (const c of cats) {
+      if (lang === 'zh') {
+        filters[c.key] = c.name;
+      } else if (lang === 'en') {
+        // en: preserve existing translation; fall back to name_en, then zh name
+        filters[c.key] = oldFilters[c.key] || c.nameEn || c.name || c.key;
+      } else {
+        // ru: preserve existing ru translation; if old value is just the en
+        // fallback (equals nameEn) or the zh name, use zh name instead so
+        // translate sync picks it up from zh source rather than staying stuck.
+        var oldRu = oldFilters[c.key];
+        if (oldRu && oldRu !== c.nameEn && oldRu !== c.name) {
+          filters[c.key] = oldRu;
+        } else {
+          filters[c.key] = c.name || c.nameEn || c.key;
+        }
+      }
+    }
+    page.filters = filters;
+    page.pageKey = 'products';
+    page.lang = lang;
+    writePageJsonAny('products', lang, page);
+    regeneratePageJs('products', lang);
+    if (lang === 'zh') zhFilters = filters;
+  }
   markStale('pages:products');
-  return filters;
+  return zhFilters;
 }
 
 export function syncNewsPageFilters() {
   const cats = listNewsCategories();
-  const page = readPageJson('news', 'zh') || {
-    pageKey: 'news',
-    lang: 'zh',
-    hero: {},
-    filters: {},
-    seo: {},
-  };
-  const filters = { all: (page.filters && page.filters.all) || '全部资讯' };
-  for (const c of cats) filters[c.key] = c.name;
-  page.filters = filters;
-  page.pageKey = 'news';
-  page.lang = 'zh';
-  writePageJsonAny('news', 'zh', page);
-  regeneratePageJs('news', 'zh');
+  const allLabels = { zh: '全部资讯', en: 'All News', ru: 'Все новости' };
+  let zhFilters = null;
+  for (const lang of ['zh', 'en', 'ru']) {
+    const page = readPageJson('news', lang) || {
+      pageKey: 'news',
+      lang,
+      hero: {},
+      filters: {},
+      seo: {},
+    };
+    const oldFilters = page.filters || {};
+    const filters = {};
+    filters.all = oldFilters.all || allLabels[lang] || 'All News';
+    for (const c of cats) {
+      if (lang === 'zh') {
+        filters[c.key] = c.name;
+      } else {
+        // news categories have no name_en column; preserve existing
+        // translation, otherwise fall back to zh name so translate sync
+        // picks it up from the zh source.
+        var oldVal = oldFilters[c.key];
+        if (oldVal && oldVal !== c.name) {
+          filters[c.key] = oldVal;
+        } else {
+          filters[c.key] = c.name || c.key;
+        }
+      }
+    }
+    page.filters = filters;
+    page.pageKey = 'news';
+    page.lang = lang;
+    writePageJsonAny('news', lang, page);
+    regeneratePageJs('news', lang);
+    if (lang === 'zh') zhFilters = filters;
+  }
   markStale('pages:news');
-  return filters;
+  return zhFilters;
 }
 
 export function syncSolutionPageFilters() {

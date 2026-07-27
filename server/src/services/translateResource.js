@@ -48,7 +48,7 @@ const SKIP_KEYS = new Set([
 
 const CATALOG_KINDS = new Set(['products', 'news', 'solutions']);
 
-export async function translateResource(resource, targetLangs) {
+export async function translateResource(resource, targetLangs, opts) {
   const cfg = getTranslationConfig();
   if (!cfg.canWrite) {
     throw new Error('translation_not_configured');
@@ -57,11 +57,12 @@ export async function translateResource(resource, targetLangs) {
   const langs = (targetLangs || []).filter((l) => l === 'en' || l === 'ru');
   if (!langs.length) throw new Error('invalid_lang');
 
+  const jobId = opts && opts.jobId != null ? Number(opts.jobId) : null;
   const stats = { resource, provider: cfg.provider, model: cfg.model, langs: {}, stringCount: 0 };
 
   if (CATALOG_KINDS.has(resource)) {
     const results = await Promise.all(
-      langs.map((lang) => translateCatalog(resource, lang))
+      langs.map((lang) => translateCatalog(resource, lang, jobId))
     );
     langs.forEach((lang, i) => {
       stats.langs[lang] = results[i];
@@ -83,7 +84,7 @@ export async function translateResource(resource, targetLangs) {
             if (existing.footer.icpUrl) obj.footer.icpUrl = existing.footer.icpUrl;
           }
           writeSiteSettingsAny(lang, obj);
-        });
+        }, jobId);
       })
     );
     langs.forEach((lang, i) => {
@@ -102,7 +103,7 @@ export async function translateResource(resource, targetLangs) {
       langs.map((lang) =>
         translateTree(zh, lang, (obj) => {
           writePageJsonAny(pageKey, lang, obj);
-        })
+        }, jobId)
       )
     );
     langs.forEach((lang, i) => {
@@ -115,7 +116,7 @@ export async function translateResource(resource, targetLangs) {
   throw new Error('invalid_resource');
 }
 
-async function translateCatalog(kind, lang) {
+async function translateCatalog(kind, lang, jobId) {
   const zh = readCatalogJson(kind, 'zh');
   const out = {};
   let strings = 0;
@@ -128,7 +129,7 @@ async function translateCatalog(kind, lang) {
     collectStrings(zh[id], '', paths, values, id);
   }
   strings = values.length;
-  const translated = values.length ? await translateTexts(values, lang) : [];
+  const translated = values.length ? await translateTexts(values, lang, { jobId }) : [];
   let i = 0;
   for (const id of ids) {
     const clone = JSON.parse(JSON.stringify(zh[id]));
@@ -142,11 +143,11 @@ async function translateCatalog(kind, lang) {
   return { strings, items: ids.length };
 }
 
-async function translateTree(source, lang, writer) {
+async function translateTree(source, lang, writer, jobId) {
   const paths = [];
   const values = [];
   collectStrings(source, '', paths, values, null);
-  const translated = values.length ? await translateTexts(values, lang) : [];
+  const translated = values.length ? await translateTexts(values, lang, { jobId }) : [];
   const clone = JSON.parse(JSON.stringify(source));
   let i = 0;
   applyStrings(clone, '', () => translated[i++]);

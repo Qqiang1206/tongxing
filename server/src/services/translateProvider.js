@@ -11,6 +11,7 @@
  *   TRANSLATION_MODEL=
  */
 import { getDb } from '../db.js';
+import { logApiCall } from './translationApiLog.js';
 
 const LANG_NAMES = { en: 'English', ru: 'Russian' };
 
@@ -99,8 +100,11 @@ export function getTranslationConfig() {
 /**
  * Translate an array of strings zh → targetLang.
  * Returns same-length array.
+ * @param {string[]} texts
+ * @param {string} targetLang
+ * @param {{ jobId?: number|null }} [opts]  — job id forwarded to API log
  */
-export async function translateTexts(texts, targetLang) {
+export async function translateTexts(texts, targetLang, opts) {
   if (!Array.isArray(texts) || !texts.length) return [];
   const cfg = getTranslationConfig();
   if (cfg.provider === 'echo') {
@@ -116,10 +120,11 @@ export async function translateTexts(texts, targetLang) {
 
   const langName = LANG_NAMES[targetLang] || targetLang;
   const chunks = chunkBySize(texts, 60, 12000);
+  const jobId = opts && opts.jobId != null ? Number(opts.jobId) : null;
 
   // Parallel API calls — much faster than sequential.
   const results = await Promise.all(
-    chunks.map((chunk) => callOpenAiCompatible(cfg, chunk, langName))
+    chunks.map((chunk) => callOpenAiCompatible(cfg, chunk, langName, { targetLang, jobId }))
   );
 
   const out = [];
@@ -164,7 +169,7 @@ function isDeepSeek(cfg) {
   return cfg.provider === 'deepseek' || /deepseek\.com/i.test(cfg.baseUrl || '');
 }
 
-async function callOpenAiCompatible(cfg, texts, langName) {
+async function callOpenAiCompatible(cfg, texts, langName, logCtx = {}) {
   const n = texts.length;
   const system =
     `You are a professional translator for an industrial automation company website (TXAM). ` +
@@ -188,18 +193,52 @@ async function callOpenAiCompatible(cfg, texts, langName) {
   }
 
   const apiKey = cfg.apiKey || process.env.TRANSLATION_API_KEY || process.env.DEEPSEEK_API_KEY || '';
+  const inputChars = texts.reduce((s, t) => s + String(t || '').length, 0);
+  const startedAt = Date.now();
 
-  const res = await fetch(`${cfg.baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(body),
-  });
+  let res;
+  try {
+    res = await fetch(`${cfg.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (err) {
+    // Network / DNS / abort — log and rethrow so the job fails visibly.
+    logApiCall({
+      engineName: cfg.engineName,
+      provider: cfg.provider,
+      model: cfg.model,
+      targetLang: logCtx.targetLang,
+      inputChars,
+      outputChars: 0,
+      durationMs: Date.now() - startedAt,
+      success: false,
+      httpStatus: 0,
+      error: String(err.message || err),
+      jobId: logCtx.jobId,
+    });
+    throw err;
+  }
 
   if (!res.ok) {
     const errText = await res.text().catch(() => '');
+    logApiCall({
+      engineName: cfg.engineName,
+      provider: cfg.provider,
+      model: cfg.model,
+      targetLang: logCtx.targetLang,
+      inputChars,
+      outputChars: 0,
+      durationMs: Date.now() - startedAt,
+      success: false,
+      httpStatus: res.status,
+      error: errText.slice(0, 500),
+      jobId: logCtx.jobId,
+    });
     throw new Error(`translation_api_error:${res.status}:${errText.slice(0, 200)}`);
   }
 
@@ -207,7 +246,46 @@ async function callOpenAiCompatible(cfg, texts, langName) {
   const content = data.choices && data.choices[0] && data.choices[0].message
     ? data.choices[0].message.content
     : '';
-  return parseJsonArray(content);
+  const usage = data.usage || {};
+  let parsed;
+  try {
+    parsed = parseJsonArray(content);
+  } catch (err) {
+    logApiCall({
+      engineName: cfg.engineName,
+      provider: cfg.provider,
+      model: cfg.model,
+      targetLang: logCtx.targetLang,
+      inputChars,
+      outputChars: String(content || '').length,
+      promptTokens: Number(usage.prompt_tokens) || 0,
+      completionTokens: Number(usage.completion_tokens) || 0,
+      totalTokens: Number(usage.total_tokens) || 0,
+      durationMs: Date.now() - startedAt,
+      success: false,
+      httpStatus: res.status,
+      error: String(err.message || err),
+      jobId: logCtx.jobId,
+    });
+    throw err;
+  }
+  const outputChars = parsed.reduce((s, t) => s + String(t || '').length, 0);
+  logApiCall({
+    engineName: cfg.engineName,
+    provider: cfg.provider,
+    model: cfg.model,
+    targetLang: logCtx.targetLang,
+    inputChars,
+    outputChars,
+    promptTokens: Number(usage.prompt_tokens) || 0,
+    completionTokens: Number(usage.completion_tokens) || 0,
+    totalTokens: Number(usage.total_tokens) || 0,
+    durationMs: Date.now() - startedAt,
+    success: true,
+    httpStatus: res.status,
+    jobId: logCtx.jobId,
+  });
+  return parsed;
 }
 
 function parseJsonArray(content) {

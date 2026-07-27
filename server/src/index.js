@@ -12,6 +12,7 @@ import { recordPageView, shouldTrackPageView, normalizePagePath } from './servic
 import { cachedPublic } from './services/publicCache.js';
 import { clientIp } from './services/audit.js';
 import { createRateLimiter } from './services/rateLimit.js';
+import { startTranslationScheduler } from './services/translationScheduler.js';
 
 // Open SQLite on boot
 getDb();
@@ -418,4 +419,6 @@ server.listen(config.port, config.host, () => {
   console.log(`TXAM API   http://${config.host}:${config.port}/api/v1/health`);
   console.log(`TXAM Admin http://${config.host}:${config.port}/admin/`);
   console.log(`Storage: sqlite (${dbPathForHealth()})`);
+  // Auto-sync en/ru translations: drain stale resources every 30s.
+  startTranslationScheduler();
 });
