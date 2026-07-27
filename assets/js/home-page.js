@@ -129,7 +129,6 @@
 
       return (
         '<a href="' + escapeHtml(card.href) + '" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">' +
-          '<div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-4 uppercase">' + escapeHtml(card.eyebrow) + '</div>' +
           '<h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">' + escapeHtml(card.title) + '</h3>' +
           '<p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">' + escapeHtml(card.summary) + '</p>' +
           tagsHtml +
