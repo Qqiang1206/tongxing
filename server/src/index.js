@@ -290,8 +290,13 @@ const server = http.createServer((req, res) => {
   const pathname = rawPath.replace(/\/$/, '') || '/';
   const query = parseQuery(url);
 
-  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
-    if (req.method === 'GET' && serveAdminStatic(res, pathname === '/admin' ? '/admin/' : rawPath, origin)) return;
+  if (rawPath === '/admin') {
+    res.writeHead(301, { Location: '/admin/', 'Cache-Control': 'no-store' });
+    res.end();
+    return;
+  }
+  if (rawPath === '/admin/' || rawPath.startsWith('/admin/')) {
+    if (req.method === 'GET' && serveAdminStatic(res, rawPath, origin)) return;
     sendJson(res, 404, { error: 'not_found' }, origin);
     return;
   }
