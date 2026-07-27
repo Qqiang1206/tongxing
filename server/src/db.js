@@ -99,6 +99,7 @@ export function getDb() {
   migrateProductColumns(db);
   ensureCategoryTablesInline(db);
   migrateSolutionColumns(db);
+  migrateNewsCategoryKey(db);
   migrateHomeSlotColumns(db);
   ensureAuditTableInline(db);
   migrateMediaColumnsInline(db);
@@ -383,6 +384,36 @@ function migrateSolutionColumns(db) {
     if (fallback) {
       upd.run(fallback.key, fallback.key, fallback.name, row.id);
     }
+  }
+}
+
+function migrateNewsCategoryKey(db) {
+  const cols = db.prepare('PRAGMA table_info(news)').all().map((c) => c.name);
+  if (!cols.includes('category_key')) {
+    db.exec(`ALTER TABLE news ADD COLUMN category_key TEXT DEFAULT ''`);
+  }
+
+  // Backfill: set category_key from zh category name → news_categories.key
+  const empty = db.prepare(
+    `SELECT COUNT(*) AS c FROM news WHERE category_key IS NULL OR category_key = ''`
+  ).get()?.c || 0;
+  if (empty === 0) return;
+
+  const cats = db.prepare('SELECT key, name FROM news_categories').all();
+  const nameToKey = Object.fromEntries(cats.map((c) => [c.name, c.key]));
+  const zhCatMap = {};
+  try {
+    const rows = db.prepare(
+      `SELECT news_id, category FROM news_i18n WHERE lang = 'zh'`
+    ).all();
+    for (const r of rows) zhCatMap[String(r.news_id)] = r.category || '';
+  } catch { /* table may not exist yet */ }
+
+  const upd = db.prepare(`UPDATE news SET category_key = ? WHERE id = ?`);
+  for (const row of db.prepare('SELECT id FROM news').all()) {
+    const zhCat = zhCatMap[String(row.id)] || '';
+    const key = nameToKey[zhCat] || '';
+    upd.run(key, row.id);
   }
 }
 

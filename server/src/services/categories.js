@@ -578,3 +578,20 @@ export function resolveSolutionCategoryFields(categoryKeyOrName) {
     filterKeyEn: hit.filterKeyEn || hit.key,
   };
 }
+
+export function resolveNewsCategoryFields(categoryKeyOrName) {
+  const cats = listNewsCategories();
+  const hit =
+    cats.find((c) => c.key === categoryKeyOrName) ||
+    cats.find((c) => c.name === categoryKeyOrName);
+  if (!hit) {
+    return {
+      category: categoryKeyOrName || '',
+      categoryKey: '',
+    };
+  }
+  return {
+    category: hit.name,
+    categoryKey: hit.key,
+  };
+}

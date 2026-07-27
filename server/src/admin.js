@@ -46,6 +46,7 @@ import {
   deleteSolutionCategory,
   resolveProductCategoryFields,
   resolveSolutionCategoryFields,
+  resolveNewsCategoryFields,
 } from './services/categories.js';
 import { getHomeSlotsStatus } from './services/homeSlots.js';
 import { createBackup, ensureAutoBackup, listBackups, restoreBackup } from './services/backup.js';
@@ -103,6 +104,10 @@ function normalizeCatalogBody(kind, body) {
   if (kind === 'solutions') {
     const pick = body.categoryKey || body.filterKey || body.category || '';
     if (pick) Object.assign(next, resolveSolutionCategoryFields(pick));
+  }
+  if (kind === 'news') {
+    const pick = body.categoryKey || body.category || '';
+    if (pick) Object.assign(next, resolveNewsCategoryFields(pick));
   }
   return next;
 }

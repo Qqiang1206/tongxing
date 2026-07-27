@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS news (
   id TEXT PRIMARY KEY,
   slug TEXT,
   cover TEXT,
+  category_key TEXT DEFAULT '',
   published_at TEXT,
   sort_order INTEGER DEFAULT 0,
   home_featured INTEGER DEFAULT 0,

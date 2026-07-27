@@ -124,6 +124,7 @@ function newsApiFromRows(row, i18n, opts = {}) {
     {
       id: row.id,
       cover: row.cover || '',
+      category_key: row.category_key || '',
       published_at: row.published_at || '',
       published: !!row.published,
       sort_order: row.sort_order,
@@ -438,6 +439,7 @@ function rowToNewsRaw(n, i) {
   return {
     id: n.id,
     category: i?.category || '',
+    categoryKey: n.category_key || '',
     title: i?.title || '',
     date: i?.date_display || n.published_at || '',
     cover: n.cover || '',
@@ -761,16 +763,18 @@ function writeNewsRow(db, item) {
   const id = String(item.id);
   const homeFeatured = item.homeFeatured === true || item.home_featured === 1 || item.home_featured === true ? 1 : 0;
   db.prepare(
-    `INSERT INTO news (id, slug, cover, published_at, sort_order, home_featured, published, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO news (id, slug, cover, category_key, published_at, sort_order, home_featured, published, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(id) DO UPDATE SET
-       slug=excluded.slug, cover=excluded.cover, published_at=excluded.published_at,
+       slug=excluded.slug, cover=excluded.cover, category_key=excluded.category_key,
+       published_at=excluded.published_at,
        sort_order=excluded.sort_order, home_featured=excluded.home_featured,
        published=excluded.published, updated_at=datetime('now')`
   ).run(
     id,
     item.slug || null,
     item.cover || '',
+    item.categoryKey || item.category_key || '',
     item.date || '',
     Number(item.sortOrder != null ? item.sortOrder : item.sort_order) || Number(id) || 0,
     homeFeatured,

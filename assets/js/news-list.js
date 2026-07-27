@@ -8,7 +8,15 @@
 
   var CATEGORY_KEY_BY_NAME = {};
 
-  function categoryKey(category) {
+  function categoryKey(itemOrCategory) {
+
+    // Prefer server-side categoryKey (language-neutral key from news.category_key)
+    if (itemOrCategory && typeof itemOrCategory === 'object' && itemOrCategory.categoryKey) {
+      return itemOrCategory.categoryKey;
+    }
+
+    var category = typeof itemOrCategory === 'string' ? itemOrCategory
+      : (itemOrCategory && itemOrCategory.category) || '';
 
     if (!category) return 'company';
 
@@ -64,7 +72,7 @@
 
   function buildCard(item, featured, detailPrefix) {
 
-    var catKey = categoryKey(item.category);
+    var catKey = categoryKey(item);
 
     var isIndustry = catKey === 'industry';
 
@@ -149,7 +157,7 @@
 
     var counts = {};
     (items || []).forEach(function (item) {
-      var key = categoryKey(item.category);
+      var key = categoryKey(item);
       counts[key] = (counts[key] || 0) + 1;
     });
 

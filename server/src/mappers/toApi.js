@@ -74,6 +74,7 @@ export function mapNews(row, i18n, opts = {}) {
   const out = {
     id: row.id,
     category: i18n.category || '',
+    categoryKey: row.category_key || '',
     title: i18n.title,
     date: i18n.date_display || row.published_at || '',
     cover: row.cover || '',
