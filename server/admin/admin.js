@@ -1405,8 +1405,8 @@
     state.products = results[0].items || [];
     state.news = results[1].items || [];
     state.solutions = results[2].items || [];
-    var analytics = results[4];
-    state.dashboardRecent = (results[5].items || []);
+    var analytics = results[3];
+    state.dashboardRecent = (results[4].items || []);
     var pubProducts = state.products.filter(function (p) { return p.published !== false; }).length;
     var pubNews = state.news.filter(function (n) { return n.published !== false; }).length;
     var pubSolutions = state.solutions.filter(function (s) { return s.published !== false; }).length;
