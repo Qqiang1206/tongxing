@@ -16,9 +16,9 @@
 
     if (mapped) return mapped;
 
-    if (/行业|industry|洞察|insight/i.test(category)) return 'industry';
+    if (/行业|industry|洞察|insight|аналитик|отрасл/i.test(category)) return 'industry';
 
-    if (/项目|project|故事|story/i.test(category)) return 'project';
+    if (/项目|project|故事|story|проект/i.test(category)) return 'project';
 
     return 'company';
 
