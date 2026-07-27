@@ -377,6 +377,20 @@ export function deleteNewsCategory(key) {
 /** Rewrite pages/products filters from product_categories (zh/en/ru). */
 export function syncProductPageFilters() {
   const cats = listProductCategories();
+  // Count published products per filter_key so categories with no visible
+  // product don't get a filter tab on the products list page.
+  const productCounts = {};
+  try {
+    const db = getDb();
+    const rows = db
+      .prepare(
+        `SELECT filter_key AS k, COUNT(*) AS c FROM products WHERE published = 1 GROUP BY filter_key`
+      )
+      .all();
+    for (const r of rows) productCounts[r.k || ''] = r.c;
+  } catch {
+    /* products table may not exist yet during seed — treat as empty */
+  }
   const allLabels = { zh: '全部产品', en: 'All Products', ru: 'Все продукты' };
   let zhFilters = null;
   for (const lang of ['zh', 'en', 'ru']) {
@@ -391,9 +405,8 @@ export function syncProductPageFilters() {
     const filters = {};
     filters.all = oldFilters.all || allLabels[lang] || 'All Products';
     for (const c of cats) {
-      // line/software (filterKeyEn='single') are not standalone tabs — their
-      // products surface under "all" only, matching the zh hand-curated page.
-      if (c.filterKeyEn === 'single') continue;
+      // Skip categories with no published product — they would render as empty tabs.
+      if (!productCounts[c.key]) continue;
       if (lang === 'zh') {
         filters[c.key] = c.name;
       } else if (lang === 'en') {

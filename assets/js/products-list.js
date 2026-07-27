@@ -14,23 +14,11 @@
     '整线交付': 'line',
   };
 
-  var CATEGORY_FALLBACK_EN = {
-    'Dispensing': 'dispensing',
-    'Optical Assembly': 'optical',
-    'Flip Detection': 'flip',
-    'Packaging': 'packaging',
-    'Robot Integration': 'robot',
-    'Production Lines': 'line',
-    '点胶装配': 'dispensing',
-    '后段包装': 'packaging',
-    '机器人集成': 'robot',
-  };
-
+  // filterKey is a language-neutral category identifier (optical/dispensing/...)
+  // and is correct across zh/en/ru. filterKeyEn is unreliable in the DB, so we
+  // always use filterKey regardless of language, matching the admin back-office.
   function filterKey(item, lang) {
-    if (lang === 'zh') {
-      return item.filterKey || CATEGORY_FALLBACK_ZH[item.category] || 'optical';
-    }
-    return item.filterKeyEn || CATEGORY_FALLBACK_EN[item.category] || 'single';
+    return item.filterKey || CATEGORY_FALLBACK_ZH[item.category] || 'optical';
   }
 
   function escapeHtml(text) {
@@ -87,18 +75,33 @@
       if (title && page.hero.title) title.textContent = page.hero.title;
       if (lead && page.hero.lead) lead.innerHTML = page.hero.lead;
     }
-    if (page.filters) {
-      var root = document.getElementById('product-filters') || (document.querySelector('.filter-btn') || {}).parentElement || null;
-      if (root) {
-        var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
-        root.innerHTML = Object.keys(page.filters).map(function (key) {
-          var active = key === 'all';
-          return '<button id="filter-' + escapeHtml(key) + '" class="' + normalClass +
-            (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') + '" data-filter="' + escapeHtml(key) + '">' +
-            escapeHtml(page.filters[key]) + '</button>';
-        }).join('');
-      }
-    }
+  }
+
+  // Render filter tabs from page.filters, but hide any category tab that has
+  // no visible product in `items`. "all" always shows. This runs after items
+  // load so it reflects the real product distribution (e.g. after a product
+  // is unpublished in the back office, which does NOT rebuild the static
+  // filters JSON).
+  function renderFilters(page, items) {
+    if (!page || !page.filters) return;
+    var root = document.getElementById('product-filters') || (document.querySelector('.filter-btn') || {}).parentElement || null;
+    if (!root) return;
+
+    var counts = {};
+    (items || []).forEach(function (item) {
+      var key = filterKey(item);
+      counts[key] = (counts[key] || 0) + 1;
+    });
+
+    var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
+    root.innerHTML = Object.keys(page.filters)
+      .filter(function (key) { return key === 'all' || counts[key] > 0; })
+      .map(function (key) {
+        var active = key === 'all';
+        return '<button id="filter-' + escapeHtml(key) + '" class="' + normalClass +
+          (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') + '" data-filter="' + escapeHtml(key) + '">' +
+          escapeHtml(page.filters[key]) + '</button>';
+      }).join('');
   }
   function bindFilters() {
     var filterBtns = document.querySelectorAll('.filter-btn');
@@ -189,6 +192,7 @@
         .join('');
 
       observeFadeUps();
+      renderFilters(page, items);
       bindFilters();
     } catch (err) {
       console.error(err);

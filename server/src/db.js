@@ -319,25 +319,23 @@ function migrateProductColumns(db) {
       '21': 'screw', '22': 'packaging', '23': 'packaging', '24': 'robot', '25': 'robot',
       '26': 'transfer', '27': 'packaging', '28': 'packaging', '29': 'packaging', '30': 'robot',
     };
-    const fe = {
-      '1': 'single', '2': 'single', '3': 'single', '4': 'single', '5': 'dispensing',
-      '6': 'optical', '7': 'optical', '8': 'single', '9': 'single', '10': 'optical',
-      '11': 'logistics', '12': 'logistics', '13': 'robot', '14': 'packaging', '15': 'flip',
-      '16': 'packaging', '17': 'single', '18': 'single', '19': 'single', '20': 'single',
-      '21': 'single', '22': 'single', '23': 'single', '24': 'single', '25': 'robot',
-      '26': 'single', '27': 'packaging', '28': 'packaging', '29': 'packaging', '30': 'robot',
-    };
+    // filter_key_en for products must equal filter_key — both are the same
+    // language-neutral category key (optical/dispensing/...). The legacy `fe`
+    // map wrote 'single'/'logistics' (category-level "no tab" markers) onto
+    // individual products, which broke en/ru product filtering. 'single' is a
+    // property of the *category* (line/software), never of a product.
     const upd = db.prepare(
       `UPDATE products SET show_in_list = ?, sort_order = ?, filter_key = ?, filter_key_en = ? WHERE id = ?`
     );
     for (const { id } of db.prepare('SELECT id FROM products').all()) {
       const sid = String(id);
       const oi = order.indexOf(sid);
+      const fk = fz[sid] || '';
       upd.run(
         hidden.has(sid) ? 0 : 1,
         oi >= 0 ? oi + 1 : Number(sid) || 999,
-        fz[sid] || '',
-        fe[sid] || '',
+        fk,
+        fk,
         sid
       );
     }
