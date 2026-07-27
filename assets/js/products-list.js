@@ -88,8 +88,7 @@
       if (lead && page.hero.lead) lead.innerHTML = page.hero.lead;
     }
     if (page.filters) {
-      var current = document.querySelector('.filter-btn');
-      var root = current && current.parentElement;
+      var root = document.getElementById('product-filters') || (document.querySelector('.filter-btn') || {}).parentElement || null;
       if (root) {
         var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
         root.innerHTML = Object.keys(page.filters).map(function (key) {

@@ -15,6 +15,9 @@ import { translateTexts, getTranslationConfig } from './translateProvider.js';
 const SKIP_KEYS = new Set([
   'id',
   'pageKey',
+  'category',
+  'filterKey',
+  'filterKeyEn',
   'lang',
   'image',
   'cover',

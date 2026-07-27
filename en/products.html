@@ -96,16 +96,7 @@
 
     <!-- 📍 P2. Product Filter -->
     <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
-        <div class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center space-x-2 pb-4 gap-2">
-            <button id="filter-all" class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">All Products</button>
-            <button id="filter-dispensing" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="dispensing">Dispensing</button>
-            <button id="filter-flip" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="flip">Flip Detection</button>
-            <button id="filter-optical" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="optical">Optical Assembly</button>
-            <button id="filter-single" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="single">Single Machines</button>
-            <button id="filter-logistics" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="logistics">Logistics</button>
-            <button id="filter-packaging" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="packaging">Packaging</button>
-            <button id="filter-robot" class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="robot">Robot Integration</button>
-        </div>
+        <div id="product-filters" class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center space-x-2 pb-4 gap-2"><!-- filter buttons rendered by products-list.js from page.filters --></div>
     </section>
 
     <!-- 📍 P3. Product Grid -->

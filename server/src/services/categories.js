@@ -391,6 +391,9 @@ export function syncProductPageFilters() {
     const filters = {};
     filters.all = oldFilters.all || allLabels[lang] || 'All Products';
     for (const c of cats) {
+      // line/software (filterKeyEn='single') are not standalone tabs — their
+      // products surface under "all" only, matching the zh hand-curated page.
+      if (c.filterKeyEn === 'single') continue;
       if (lang === 'zh') {
         filters[c.key] = c.name;
       } else if (lang === 'en') {
