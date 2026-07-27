@@ -437,6 +437,24 @@ export function syncProductPageFilters() {
 
 export function syncNewsPageFilters() {
   const cats = listNewsCategories();
+  // Count published news per category name so categories with no visible
+  // news item don't get a filter tab on the news list page.
+  const newsCounts = {};
+  try {
+    const db = getDb();
+    const rows = db
+      .prepare(
+        `SELECT i.category AS name, COUNT(*) AS c
+         FROM news_i18n i
+         JOIN news n ON n.id = i.news_id
+         WHERE i.lang = 'zh' AND n.published = 1
+         GROUP BY i.category`
+      )
+      .all();
+    for (const r of rows) newsCounts[r.name || ''] = r.c;
+  } catch {
+    /* news tables may not exist yet during seed — treat as empty */
+  }
   const allLabels = { zh: '全部资讯', en: 'All News', ru: 'Все новости' };
   let zhFilters = null;
   for (const lang of ['zh', 'en', 'ru']) {
@@ -451,6 +469,8 @@ export function syncNewsPageFilters() {
     const filters = {};
     filters.all = oldFilters.all || allLabels[lang] || 'All News';
     for (const c of cats) {
+      // Skip categories with no published news — they would render as empty tabs.
+      if (!newsCounts[c.name]) continue;
       if (lang === 'zh') {
         filters[c.key] = c.name;
       } else {

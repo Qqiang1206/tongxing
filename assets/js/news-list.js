@@ -137,6 +137,32 @@
 
 
 
+  // Render filter tabs from page.filters, but hide any category tab that has
+  // no visible news item in `items`. "all" always shows. Runs after items load
+  // so it reflects the real news distribution (unpublishing a news item does
+  // NOT rebuild the static filters JSON).
+  function renderNewsFilters(page, items) {
+    if (!page || !page.filters) return;
+    var current = document.querySelector('.filter-btn');
+    var filterRoot = current && current.parentElement;
+    if (!filterRoot) return;
+
+    var counts = {};
+    (items || []).forEach(function (item) {
+      var key = categoryKey(item.category);
+      counts[key] = (counts[key] || 0) + 1;
+    });
+
+    var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
+    filterRoot.innerHTML = Object.keys(page.filters)
+      .filter(function (key) { return key === 'all' || counts[key] > 0; })
+      .map(function (key) {
+        var active = key === 'all';
+        return '<button class="' + normalClass + (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') +
+          '" data-filter="' + escapeHtml(key) + '">' + escapeHtml(page.filters[key]) + '</button>';
+      }).join('');
+  }
+
   function bindFilters() {
 
     var filterBtns = document.querySelectorAll('.filter-btn');
@@ -268,20 +294,14 @@
             if (hl && page.hero.lead) hl.innerHTML = page.hero.lead;
           }
           if (page && page.filters) {
+            // Build name→key map up front so categoryKey() (used by buildCard
+            // and renderNewsFilters) resolves correctly. Tab rendering is done
+            // later by renderNewsFilters() after items load, so empty
+            // categories don't show a dead tab.
             CATEGORY_KEY_BY_NAME = {};
             Object.keys(page.filters).forEach(function (key) {
               CATEGORY_KEY_BY_NAME[String(page.filters[key] || '').trim().toLowerCase()] = key;
             });
-            var current = document.querySelector('.filter-btn');
-            var filterRoot = current && current.parentElement;
-            if (filterRoot) {
-              var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
-              filterRoot.innerHTML = Object.keys(page.filters).map(function (key) {
-                var active = key === 'all';
-                return '<button class="' + normalClass + (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') +
-                  '" data-filter="' + escapeHtml(key) + '">' + escapeHtml(page.filters[key]) + '</button>';
-              }).join('');
-            }
           }
         } catch (_) {}
       }
@@ -315,6 +335,8 @@
 
 
       observeFadeUps();
+
+      renderNewsFilters(page, items);
 
       bindFilters();
 
