@@ -22,3 +22,18 @@ Thumbs.db
 assets/images/uploads/*
 !assets/images/uploads/.gitkeep
 *.opt.tmp.webp
+
+# Server-generated data snapshots (source of truth is server/data/*.db)
+data/news/
+data/solutions/
+data/products/
+data/pages/
+data/i18n/
+sitemap.xml
+
+# Server runtime logs
+server/.admin_server.log
+server/.admin_server.err
+
+# CodeBuddy session data
+.codebuddy/
