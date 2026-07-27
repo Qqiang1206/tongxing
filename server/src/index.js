@@ -174,6 +174,40 @@ function serveSiteStatic(res, pathname, origin) {
   return true;
 }
 
+/**
+ * Resolve a raw site pathname to whether it maps to a real served file.
+ * Mirrors serveSiteStatic() resolution so 404 paths (e.g. /foo) are rejected
+ * before being counted as page views.
+ */
+function siteFileExists(rawPathname) {
+  let rel = rawPathname === '/' ? 'index.html' : String(rawPathname).replace(/^\//, '');
+  if (rel.endsWith('/')) rel += 'index.html';
+  if (isBlockedSitePath(rel) || rel.includes('..')) return false;
+  const root = path.resolve(REPO_ROOT);
+  const direct = path.resolve(root, rel);
+  if (direct.startsWith(root + path.sep) && fs.existsSync(direct) && fs.statSync(direct).isFile()) {
+    return true;
+  }
+  if (!path.extname(rel)) {
+    const withHtml = path.resolve(root, `${rel}.html`);
+    if (withHtml.startsWith(root + path.sep) && fs.existsSync(withHtml) && fs.statSync(withHtml).isFile()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Known crawler / non-browser user-agent tokens. Real browser UAs never
+// contain these, so visits from bots/scripts are excluded from page-view
+// counts to keep the analytics numbers representative of human traffic.
+const CRAWLER_UA_RE = /(googlebot|bingbot|slurp|duckduckbot|baiduspider|sogou|exabot|facebookexternalhit|twitterbot|linkedinbot|semrush|ahrefs|mj12bot|rogerbot|applebot|petalbot|dotbot|bytespider|mauibot|uptimerobot|googleinspectiontool|crawler|spider|archiver|headless|phantomjs|puppeteer|selenium|lighthouse|curl\/|wget\/|python-requests|node-fetch|go-http-client|libwww|httpclient|java\/)/i;
+
+function isCrawler(userAgent) {
+  const ua = String(userAgent || '').trim();
+  if (!ua) return true; // real browsers always send a User-Agent
+  return CRAWLER_UA_RE.test(ua);
+}
+
 const routes = [
   {
     match: (p) => p === '/api/v1/health',
@@ -331,7 +365,11 @@ const server = http.createServer((req, res) => {
       return;
     }
     const hitPath = query.path || rawPath || '/';
-    if (shouldTrackPageView(normalizePagePath(hitPath))) {
+    if (
+      shouldTrackPageView(normalizePagePath(hitPath)) &&
+      !isCrawler(req.headers['user-agent']) &&
+      siteFileExists(hitPath)
+    ) {
       recordPageView(hitPath);
     }
     sendJson(res, 204, {}, origin);

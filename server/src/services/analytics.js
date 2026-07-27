@@ -98,26 +98,52 @@ function mergeLegacyPageViewPaths(db) {
   }
 }
 
+// Day bucketing follows Beijing time regardless of the server's local
+// timezone, so "today" always means the Beijing calendar day. Override via
+// ANALYTICS_TZ if you ever need a different boundary.
+const ANALYTICS_TZ = process.env.ANALYTICS_TZ || 'Asia/Shanghai';
+// en-CA formats calendar dates as YYYY-MM-DD; timeZone pins the wall clock.
+const dayFormatter = new Intl.DateTimeFormat('en-CA', {
+  timeZone: ANALYTICS_TZ,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
 function localDayString(date) {
   const d = date || new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
+  return dayFormatter.format(d); // => YYYY-MM-DD in ANALYTICS_TZ
 }
 
 function addDays(date, delta) {
+  // UTC arithmetic keeps day shifts stable regardless of server timezone.
   const d = new Date(date);
-  d.setDate(d.getDate() + delta);
+  d.setUTCDate(d.getUTCDate() + delta);
   return d;
+}
+
+// Anchor a YYYY-MM-DD string at noon UTC so subsequent day arithmetic never
+// crosses a day boundary in any reasonable timezone (UTC+8 included).
+function dayToDate(dayString) {
+  return new Date(`${dayString}T12:00:00Z`);
 }
 
 function parseDay(value) {
   const raw = String(value || '').trim();
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return null;
-  const d = new Date(raw + 'T00:00:00');
-  if (Number.isNaN(d.getTime())) return null;
-  return localDayString(d);
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+  if (!m) return null;
+  const [, y, mo, d] = m;
+  // Validate the calendar date (rejects e.g. 2026-02-31) using UTC so the
+  // check is independent of the server's local timezone.
+  const dt = new Date(Date.UTC(Number(y), Number(mo) - 1, Number(d)));
+  if (
+    dt.getUTCFullYear() !== Number(y) ||
+    dt.getUTCMonth() !== Number(mo) - 1 ||
+    dt.getUTCDate() !== Number(d)
+  ) {
+    return null;
+  }
+  return raw;
 }
 
 function ensureAnalyticsTable(db) {
@@ -285,8 +311,8 @@ function dailyHits(db, fromDay, toDay, lang) {
   `).all(fromDay, toDay);
 
   const byDay = new Map();
-  const start = new Date(fromDay + 'T00:00:00');
-  const end = new Date(toDay + 'T00:00:00');
+  const start = dayToDate(fromDay);
+  const end = dayToDate(toDay);
   for (let cursor = new Date(start); cursor <= end; cursor = addDays(cursor, 1)) {
     byDay.set(localDayString(cursor), 0);
   }
@@ -340,7 +366,7 @@ export function getAnalyticsReport(opts = {}) {
 
   const today = localDayString();
   let toDay = parseDay(opts.to) || today;
-  let fromDay = parseDay(opts.from) || localDayString(addDays(new Date(toDay + 'T00:00:00'), -6));
+  let fromDay = parseDay(opts.from) || localDayString(addDays(dayToDate(toDay), -6));
   if (fromDay > toDay) {
     const swap = fromDay;
     fromDay = toDay;

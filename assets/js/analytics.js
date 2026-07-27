@@ -5,8 +5,14 @@
 (function () {
   var path = location.pathname || '/';
   if (!path || path.indexOf('/admin') === 0 || path.indexOf('/api/') === 0) return;
-  var ext = path.slice(path.lastIndexOf('.'));
-  if (ext && ext !== '.html' && ext !== '.htm') return;
+  // Only skip paths that carry a non-html extension (.js/.css/.png/...).
+  // Directory / clean URLs without an extension (/, /en/, /ru/, /products)
+  // are tracked, matching the server-side shouldTrackPageView() policy.
+  var dotIdx = path.lastIndexOf('.');
+  if (dotIdx >= 0) {
+    var ext = path.slice(dotIdx).toLowerCase();
+    if (ext !== '.html' && ext !== '.htm') return;
+  }
 
   var url = '/api/v1/analytics/hit?path=' + encodeURIComponent(path);
   try {
