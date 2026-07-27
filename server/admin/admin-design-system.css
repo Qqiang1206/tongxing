@@ -466,11 +466,9 @@ textarea:focus-visible,
 
 #view-dashboard .recent-table td {
   min-height: 64px;
-  padding: 14px 12px;
+  padding: 16px 12px;
   border-bottom-color: #edf0f3;
 }
-
-.main table.data.recent-table tbody tr.is-clickable:hover td { background: #f7f8fa; }
 
 .recent-table .cell-type .audit-type-tag {
   min-width: 4.25rem;

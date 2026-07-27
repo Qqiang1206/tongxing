@@ -1505,52 +1505,6 @@
     return auditActionLabel(row.action).replace(/^(新建|更新|删除)/, function (m) { return m; });
   }
 
-  function jumpToRecentUpdate(row) {
-    if (!row || recentUpdateDeleted(row)) return Promise.resolve();
-    var action = row.action || '';
-    var id = row.resourceId;
-    if (action.indexOf('products.') === 0) {
-      return Promise.resolve(setView('page-products', { hubTab: 'items' })).then(function () {
-        if (id) return openProduct(id);
-      });
-    }
-    if (action.indexOf('solutions.') === 0) {
-      return Promise.resolve(setView('page-solutions', { hubTab: 'items' })).then(function () {
-        if (id) return openSolution(id);
-      });
-    }
-    if (action.indexOf('news.') === 0) {
-      return Promise.resolve(setView('page-news', { hubTab: 'items' })).then(function () {
-        if (id) return openNews(id);
-      });
-    }
-    if (action.indexOf('pages.') === 0) {
-      var pageKey = id || String(row.resource || '').replace(/^pages:/, '');
-      var hubPages = { solutions: 'page-solutions', products: 'page-products', news: 'page-news' };
-      if (hubPages[pageKey]) {
-        return Promise.resolve(setView(hubPages[pageKey], { hubTab: 'page' }));
-      }
-      var view = PAGE_VIEW_BY_KEY[pageKey];
-      if (view) return Promise.resolve(setView(view));
-    }
-    if (action.indexOf('site.') === 0) {
-      return Promise.resolve(setView('sitewide'));
-    }
-    if (action.indexOf('media.') === 0) {
-      return Promise.resolve(setView('media'));
-    }
-    if (action.indexOf('categories.product.') === 0) {
-      return Promise.resolve(openCatalogCategories('products'));
-    }
-    if (action.indexOf('categories.solution.') === 0) {
-      return Promise.resolve(openCatalogCategories('solutions'));
-    }
-    if (action.indexOf('categories.news.') === 0) {
-      return Promise.resolve(openCatalogCategories('news'));
-    }
-    return Promise.resolve();
-  }
-
   function renderRecentUpdates(items) {
     var box = $('dash-recent');
     if (!box) return;
@@ -1568,16 +1522,14 @@
       '<col class="col-type">' +
       '<col class="col-summary">' +
       '<col class="col-actor">' +
-      '<col class="col-go">' +
       '</colgroup>' +
       '<tbody>' +
-      items.map(function (row, index) {
+      items.map(function (row) {
         var deleted = recentUpdateDeleted(row);
         var typeLabel = recentUpdateTypeLabel(row);
         var actionLabel = recentUpdateActionLabel(row);
         var summary = row.summary || auditActionLabel(row.action);
-        return '<tr class="' + (deleted ? 'is-deleted' : 'is-clickable') + '"' +
-          (deleted ? '' : ' data-recent-idx="' + index + '"') + '>' +
+        return '<tr class="' + (deleted ? 'is-deleted' : '') + '">' +
           '<td class="cell-time">' + escapeHtml(formatDashTime(row.createdAt)) + '</td>' +
           '<td class="cell-type"><span class="audit-type-tag">' + escapeHtml(typeLabel) + '</span></td>' +
           '<td class="cell-summary recent-body-cell">' +
@@ -1585,17 +1537,9 @@
           '<span class="recent-summary" title="' + escapeAttr(summary) + '">' + escapeHtml(summary) + '</span>' +
           '</td>' +
           '<td class="cell-actor">' + escapeHtml(row.actor || '—') + '</td>' +
-          '<td class="cell-go">' + (deleted ? '' : '<span class="recent-go" aria-hidden="true">›</span>') + '</td>' +
           '</tr>';
       }).join('') +
       '</tbody></table></div>';
-    box.querySelectorAll('[data-recent-idx]').forEach(function (el) {
-      el.addEventListener('click', function () {
-        var idx = Number(el.getAttribute('data-recent-idx'));
-        var row = state.dashboardRecent && state.dashboardRecent[idx];
-        jumpToRecentUpdate(row).catch(function (e) { toast(e.message, true); });
-      });
-    });
   }
 
   var TRAFFIC_PAGE_LABELS = {
