@@ -554,6 +554,96 @@
     });
   }
 
+  // ===== 视图状态 URL 持久化（刷新保持当前页） =====
+  var VALID_VIEWS = ['dashboard','page-home','page-about','page-solutions',
+    'page-products','page-news','page-contact','sitewide','media','system'];
+
+  // 返回当前视图下“可见表单”的 root id（用于定位分区标签状态）；不可见则返回 null。
+  // 目录类 hub 仅在「页面设置」标签下才展示表单，items 列表态不记录分区。
+  function activeFormRootId() {
+    var name = state.view;
+    if (!name) return null;
+    var hub = HUB_BY_VIEW[name];
+    if (hub) {
+      var tab = state.hubTabs[hub] || 'items';
+      return tab === 'page' ? ('page-' + hub + '-form') : null;
+    }
+    var pkey = PAGE_KEY_BY_VIEW[name];
+    return pkey ? PAGE_FORM_IDS[pkey] : null;
+  }
+
+  // 把当前 state 序列化成 hash（只记非默认值，保持 URL 简洁）
+  function encodeViewHash() {
+    var name = state.view || 'dashboard';
+    var parts = [];
+    if (name !== 'dashboard') parts.push('view=' + encodeURIComponent(name));
+    var hub = HUB_BY_VIEW[name];
+    if (hub) {
+      var dft = hub === 'system' ? 'translation' : 'items';
+      var tab = state.hubTabs[hub] || dft;
+      if (tab !== dft) parts.push('hub=' + encodeURIComponent(tab));
+    }
+    var formId = activeFormRootId();
+    if (formId && state.sectionTabs && state.sectionTabs[formId]) {
+      parts.push('section=' + encodeURIComponent(state.sectionTabs[formId]));
+    }
+    return parts.length ? '#' + parts.join('&') : '';
+  }
+
+  function decodeViewHash() {
+    var raw = location.hash.replace(/^#/, '');
+    if (!raw) return null;
+    var params = {};
+    raw.split('&').forEach(function (kv) {
+      var i = kv.indexOf('=');
+      if (i > 0) params[decodeURIComponent(kv.slice(0, i))] = decodeURIComponent(kv.slice(i + 1));
+    });
+    return params;
+  }
+
+  // usePush=true 用 pushState（视图切换，后退可用）；false 用 replaceState（页内切 tab）
+  function syncViewHash(usePush) {
+    if (state._restoringFromHash) return;
+    var newHash = encodeViewHash();
+    if (location.hash === newHash) return;
+    var target = newHash || (location.pathname + location.search);
+    if (usePush) history.pushState({ view: state.view }, '', target);
+    else history.replaceState({ view: state.view }, '', target);
+  }
+
+  // 按 hash 恢复视图（刷新 / 后退前进 共用）
+  function restoreViewFromHash() {
+    var params = decodeViewHash();
+    state._restoringFromHash = true;
+    var p;
+    if (!params || !params.view || VALID_VIEWS.indexOf(params.view) < 0) {
+      p = setView('dashboard');
+    } else {
+      var v = params.view;
+      // 预置分区状态，使表单渲染时能读取到（renderPageForm 的 remembered 逻辑）
+      if (params.section) {
+        var hub = HUB_BY_VIEW[v];
+        var fid = hub ? ('page-' + hub + '-form')
+          : (PAGE_KEY_BY_VIEW[v] ? PAGE_FORM_IDS[PAGE_KEY_BY_VIEW[v]] : null);
+        if (fid) {
+          if (!state.sectionTabs) state.sectionTabs = {};
+          state.sectionTabs[fid] = params.section;
+        }
+      }
+      var opts = {};
+      if (params.hub) opts.hubTab = params.hub;
+      if (params.section) opts.sectionTab = params.section;
+      p = setView(v, opts);
+    }
+    return Promise.resolve(p).then(function () {
+      state._restoringFromHash = false;
+      syncViewHash(false); // 脏页取消离开时把 hash 修正回当前实际页
+    }, function () {
+      state._restoringFromHash = false;
+      return setView('dashboard');
+    });
+  }
+
   function updateHubCount(hub, count) {
     var el = $('hub-count-' + hub);
     if (!el) return;
@@ -633,21 +723,26 @@
     if (main) main.scrollTop = 0;
     var activeNav = document.querySelector('.nav-item[data-view="' + name + '"]');
     var hub = HUB_BY_VIEW[name];
+    var loadP;
     if (hub) {
-      return Promise.resolve(loadHub(hub, preferredTab)).catch(function (e) { toast(e.message, true); });
+      loadP = Promise.resolve(loadHub(hub, preferredTab)).catch(function (e) { toast(e.message, true); });
+    } else {
+      var loaders = {
+        dashboard: loadDashboard,
+        'page-home': function () { return loadPageForm('home'); },
+        'page-about': function () { return loadPageForm('about'); },
+        'page-contact': function () { return loadPageForm('contact'); },
+        sitewide: loadSiteForm,
+        media: loadMedia,
+      };
+      loadP = loaders[name]
+        ? Promise.resolve(loaders[name]()).catch(function (e) { toast(e.message, true); })
+        : Promise.resolve();
     }
-    var loaders = {
-      dashboard: loadDashboard,
-      'page-home': function () { return loadPageForm('home'); },
-      'page-about': function () { return loadPageForm('about'); },
-      'page-contact': function () { return loadPageForm('contact'); },
-      sitewide: loadSiteForm,
-      media: loadMedia,
-    };
-    if (loaders[name]) {
-      return Promise.resolve(loaders[name]()).catch(function (e) { toast(e.message, true); });
-    }
-    return Promise.resolve();
+    return loadP.then(function () {
+      syncViewHash(true); // 视图切换用 pushState，后退键可用
+      return true;
+    });
   }
 
   function handleGlobalSearch(query) {
@@ -817,6 +912,7 @@
       var key = btn.getAttribute('data-section-tab');
       if (!state.sectionTabs) state.sectionTabs = {};
       state.sectionTabs[formRootId] = key;
+      syncViewHash(false);
       tabBar.querySelectorAll('.hub-tab').forEach(function (t) {
         var active = t.getAttribute('data-section-tab') === key;
         t.classList.toggle('is-active', active);
@@ -5255,7 +5351,9 @@
       setActor(data.actor || name);
       $('login-msg').textContent = '';
       showLogin(false);
-      setView('dashboard');
+      history.replaceState(null, '', location.pathname + location.search);
+      state._restoringFromHash = true;
+      setView('dashboard').then(function () { state._restoringFromHash = false; });
     } catch (err) {
       $('login-msg').className = 'msg err';
       $('login-msg').textContent = err.message === 'admin_disabled'
@@ -5274,6 +5372,7 @@
   $('password').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('login-btn').click(); });
   function logout() {
     if (token) api('/admin/logout', { method: 'POST', body: '{}' }).catch(function () {});
+    history.replaceState(null, '', location.pathname + location.search);
     token = '';
     sessionStorage.removeItem('txam_admin_token');
     sessionStorage.removeItem('txam_admin_actor');
@@ -5284,6 +5383,8 @@
   if ($('sidebar-user-btn')) {
     $('sidebar-user-btn').addEventListener('click', logout);
   }
+
+  window.addEventListener('popstate', function () { restoreViewFromHash(); });
 
   document.querySelectorAll('.nav-item').forEach(function (btn) {
     btn.addEventListener('click', function () { setView(btn.getAttribute('data-view')); });
@@ -5309,6 +5410,7 @@
         setPageDirty(key, false);
       }
       applyHubTab(key, tab);
+      syncViewHash(false);
       if (tab === 'items') {
         if (key === 'products') loadProducts().catch(function (e) { toast(e.message, true); });
         if (key === 'news') loadNews().catch(function (e) { toast(e.message, true); });
@@ -5487,7 +5589,7 @@
   if (token) {
     updateUserChip();
     showLogin(false);
-    setView('dashboard');
+    restoreViewFromHash();
   } else {
     showLogin(true);
   }
