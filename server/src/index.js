@@ -130,7 +130,9 @@ function serveSiteAsset(res, pathname, origin) {
     ? 'public, max-age=31536000, immutable'
     : rel.startsWith('images/')
       ? 'public, max-age=2592000'
-      : 'public, max-age=604800';
+      : rel.startsWith('js/')
+        ? 'no-cache'
+        : 'public, max-age=604800';
   return serveRepoFile(res, ASSETS_DIR, rel, origin, cacheControl);
 }
 
@@ -163,7 +165,10 @@ function serveSiteStatic(res, pathname, origin) {
     return true;
   }
   // Prefer exact file; if missing and no extension, try .html.
-  const cacheControl = path.extname(rel).toLowerCase() === '.html'
+  // .html and .js use no-cache so code edits show up without a hard refresh;
+  // other assets (images, css) keep a short cache for dev performance.
+  const ext = path.extname(rel).toLowerCase();
+  const cacheControl = (ext === '.html' || ext === '.js')
     ? 'no-cache'
     : 'public, max-age=60';
   if (!serveRepoFile(res, REPO_ROOT, rel, origin, cacheControl)) {
