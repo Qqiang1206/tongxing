@@ -266,7 +266,7 @@ function sleep(ms) {
 }
 
 /** Windows may return EBUSY/EPERM when AV or preview still holds the file. */
-async function unlinkAbsWithRetry(absPath, { retries = 10, baseDelayMs = 60 } = {}) {
+async function unlinkAbsWithRetry(absPath, { retries = 20, baseDelayMs = 150 } = {}) {
   for (let attempt = 0; attempt < retries; attempt += 1) {
     try {
       await fs.promises.unlink(absPath);
@@ -282,13 +282,22 @@ async function unlinkAbsWithRetry(absPath, { retries = 10, baseDelayMs = 60 } = 
         const trash = `${absPath}.del-${Date.now()}`;
         try {
           await fs.promises.rename(absPath, trash);
-          await unlinkAbsWithRetry(trash, { retries: 4, baseDelayMs: 40 });
+          await unlinkAbsWithRetry(trash, { retries: 8, baseDelayMs: 80 });
           return;
         } catch (_) {
-          /* fall through */
+          /* rename also failed — try Windows force-delete */
+        }
+        try {
+          const { execSync } = await import('child_process');
+          execSync(`cmd /c del /f /q "${absPath}" 2>nul`, { timeout: 5000, windowsHide: true });
+          if (!fs.existsSync(absPath)) return;
+        } catch (_) {
+          /* give up */
         }
       }
-      throw err;
+      throw Object.assign(err, {
+        message: `${err.message} —— 文件被系统占用，请关闭其它程序后重试，或重启电脑。`,
+      });
     }
   }
 }
