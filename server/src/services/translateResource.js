@@ -72,11 +72,19 @@ export async function translateResource(resource, targetLangs) {
 
   if (resource === 'site') {
     const results = await Promise.all(
-      langs.map((lang) =>
-        translateTree(loadSiteSettings('zh'), lang, (obj) => {
+      langs.map((lang) => {
+        const existing = loadSiteSettings(lang);
+        return translateTree(loadSiteSettings('zh'), lang, (obj) => {
+          // Preserve footer fields that have language-specific values.
+          // ICP number format differs per language; AI tends to skip
+          // translating it, so keep the existing manually-set value.
+          if (existing && existing.footer && obj.footer) {
+            if (existing.footer.icp) obj.footer.icp = existing.footer.icp;
+            if (existing.footer.icpUrl) obj.footer.icpUrl = existing.footer.icpUrl;
+          }
           writeSiteSettingsAny(lang, obj);
-        })
-      )
+        });
+      })
     );
     langs.forEach((lang, i) => {
       stats.langs[lang] = results[i];
