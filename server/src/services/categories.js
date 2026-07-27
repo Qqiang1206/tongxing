@@ -209,14 +209,13 @@ export function upsertProductCategory(input, { isNew = false } = {}) {
   if (prev && prev.name !== name) {
     db.prepare(
       `UPDATE products SET category_key = ?, updated_at = datetime('now')
-       WHERE filter_key = ? OR category_key = ?`
-    ).run(name, key, prev.name);
+       WHERE filter_key = ?`
+    ).run(name, key);
   }
   db.prepare(
-    `UPDATE products SET filter_key = ?, filter_key_en = ?, category_key = ?
+    `UPDATE products SET filter_key_en = ?, category_key = ?, updated_at = datetime('now')
      WHERE filter_key = ?`
   ).run(
-    key,
     String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
     name,
     key
@@ -278,14 +277,13 @@ export function upsertSolutionCategory(input, { isNew = false } = {}) {
   if (prev && prev.name !== name) {
     db.prepare(
       `UPDATE solutions SET category_key = ?, updated_at = datetime('now')
-       WHERE filter_key = ? OR category_key = ?`
-    ).run(name, key, prev.name);
+       WHERE filter_key = ?`
+    ).run(name, key);
   }
   db.prepare(
-    `UPDATE solutions SET filter_key = ?, filter_key_en = ?, category_key = ?
+    `UPDATE solutions SET filter_key_en = ?, category_key = ?, updated_at = datetime('now')
      WHERE filter_key = ?`
   ).run(
-    key,
     String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
     name,
     key
@@ -411,23 +409,47 @@ export function syncNewsPageFilters() {
 
 export function syncSolutionPageFilters() {
   const cats = listSolutionCategories();
-  const page = readPageJson('solutions', 'zh') || {
-    pageKey: 'solutions',
-    lang: 'zh',
-    hero: {},
-    filters: {},
-    pillars: [],
-    seo: {},
-  };
-  const filters = { all: (page.filters && page.filters.all) || '全部方案' };
-  for (const c of cats) filters[c.key] = c.name;
-  page.filters = filters;
-  page.pageKey = 'solutions';
-  page.lang = 'zh';
-  writePageJsonAny('solutions', 'zh', page);
-  regeneratePageJs('solutions', 'zh');
+  const allLabels = { zh: '全部方案', en: 'All Solutions', ru: 'Все решения' };
+  let zhFilters = null;
+  for (const lang of ['zh', 'en', 'ru']) {
+    const page = readPageJson('solutions', lang) || {
+      pageKey: 'solutions',
+      lang,
+      hero: {},
+      filters: {},
+      pillars: [],
+      seo: {},
+    };
+    const oldFilters = page.filters || {};
+    const filters = {};
+    filters.all = oldFilters.all || allLabels[lang] || 'All Solutions';
+    for (const c of cats) {
+      if (lang === 'zh') {
+        filters[c.key] = c.name;
+      } else if (lang === 'en') {
+        // en: preserve existing translation; fall back to name_en, then zh name
+        filters[c.key] = oldFilters[c.key] || c.nameEn || c.name || c.key;
+      } else {
+        // ru: preserve existing ru translation; if old value is just the en
+        // fallback (equals nameEn), use zh name instead so translate sync
+        // picks it up from zh source rather than staying stuck in English.
+        var oldRu = oldFilters[c.key];
+        if (oldRu && oldRu !== c.nameEn && oldRu !== c.name) {
+          filters[c.key] = oldRu;
+        } else {
+          filters[c.key] = c.name || c.nameEn || c.key;
+        }
+      }
+    }
+    page.filters = filters;
+    page.pageKey = 'solutions';
+    page.lang = lang;
+    writePageJsonAny('solutions', lang, page);
+    regeneratePageJs('solutions', lang);
+    if (lang === 'zh') zhFilters = filters;
+  }
   markStale('pages:solutions');
-  return filters;
+  return zhFilters;
 }
 
 export function resolveProductCategoryFields(categoryKeyOrName) {

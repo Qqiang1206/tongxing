@@ -60,22 +60,28 @@ export async function translateResource(resource, targetLangs) {
   const stats = { resource, provider: cfg.provider, model: cfg.model, langs: {}, stringCount: 0 };
 
   if (CATALOG_KINDS.has(resource)) {
-    for (const lang of langs) {
-      const r = await translateCatalog(resource, lang);
-      stats.langs[lang] = r;
-      stats.stringCount += r.strings;
-    }
+    const results = await Promise.all(
+      langs.map((lang) => translateCatalog(resource, lang))
+    );
+    langs.forEach((lang, i) => {
+      stats.langs[lang] = results[i];
+      stats.stringCount += results[i].strings;
+    });
     return stats;
   }
 
   if (resource === 'site') {
-    for (const lang of langs) {
-      const r = await translateTree(loadSiteSettings('zh'), lang, (obj) => {
-        writeSiteSettingsAny(lang, obj);
-      });
-      stats.langs[lang] = r;
-      stats.stringCount += r.strings;
-    }
+    const results = await Promise.all(
+      langs.map((lang) =>
+        translateTree(loadSiteSettings('zh'), lang, (obj) => {
+          writeSiteSettingsAny(lang, obj);
+        })
+      )
+    );
+    langs.forEach((lang, i) => {
+      stats.langs[lang] = results[i];
+      stats.stringCount += results[i].strings;
+    });
     return stats;
   }
 
@@ -84,13 +90,17 @@ export async function translateResource(resource, targetLangs) {
     const pageKey = pageMatch[1];
     const zh = readPageJson(pageKey, 'zh');
     if (!zh) throw new Error('not_found');
-    for (const lang of langs) {
-      const r = await translateTree(zh, lang, (obj) => {
-        writePageJsonAny(pageKey, lang, obj);
-      });
-      stats.langs[lang] = r;
-      stats.stringCount += r.strings;
-    }
+    const results = await Promise.all(
+      langs.map((lang) =>
+        translateTree(zh, lang, (obj) => {
+          writePageJsonAny(pageKey, lang, obj);
+        })
+      )
+    );
+    langs.forEach((lang, i) => {
+      stats.langs[lang] = results[i];
+      stats.stringCount += results[i].strings;
+    });
     return stats;
   }
 

@@ -69,6 +69,7 @@ export function getDb() {
   ensureAuditTableInline(db);
   migrateMediaColumnsInline(db);
   ensurePageViewsTableInline(db);
+  ensureTranslationEngineTable(db);
   seedResourceStatus(db);
   dbInstance = db;
   return db;
@@ -374,6 +375,52 @@ function seedResourceStatus(db) {
     insert.run(resource, 'en');
     insert.run(resource, 'ru');
   }
+}
+
+/**
+ * Translation engine config table (managed via admin UI).
+ * Seeds from env vars on first run so existing .env config is preserved.
+ */
+function ensureTranslationEngineTable(db) {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS translation_engine_config (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      provider TEXT NOT NULL,
+      base_url TEXT NOT NULL,
+      model TEXT NOT NULL,
+      api_key TEXT NOT NULL DEFAULT '',
+      is_active INTEGER DEFAULT 0,
+      sort_order INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+  `);
+  const count = db.prepare('SELECT COUNT(*) AS c FROM translation_engine_config').get()?.c || 0;
+  if (count > 0) return;
+
+  const envProvider = (process.env.TRANSLATION_PROVIDER || '').toLowerCase();
+  const envKey = process.env.TRANSLATION_API_KEY || process.env.DEEPSEEK_API_KEY || '';
+  if (!envProvider || envProvider === 'echo' || !envKey) return;
+
+  const PRESETS = {
+    deepseek: { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat', label: 'DeepSeek' },
+    openai: { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', label: 'OpenAI' },
+    qianwen: {
+      baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+      model: 'qwen-plus',
+      label: '通义千问',
+    },
+  };
+  const preset = PRESETS[envProvider];
+  const baseUrl = (process.env.TRANSLATION_BASE_URL || (preset && preset.baseUrl) || '').replace(/\/$/, '');
+  const model = process.env.TRANSLATION_MODEL || (preset && preset.model) || '';
+  const name = preset ? preset.label : envProvider;
+
+  db.prepare(
+    `INSERT INTO translation_engine_config (name, provider, base_url, model, api_key, is_active, sort_order)
+     VALUES (?, ?, ?, ?, ?, 1, 10)`
+  ).run(name, envProvider, baseUrl, model, envKey);
 }
 
 export function closeDb() {

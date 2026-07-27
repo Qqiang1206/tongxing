@@ -23,7 +23,7 @@
   var STATIC_SLUGS = Object.keys(ID_TO_SLUG).map(function (id) { return ID_TO_SLUG[id]; });
 
   function solutionFilterKey(item) {
-    return item.category || '';
+    return item.filterKey || item.slug || '';
   }
 
   function solutionHref(item, pathPrefix) {
@@ -183,7 +183,7 @@
       '<div class="' +
       wrapClass +
       ' solution-item" data-category="' +
-      escapeHtml(item.category || '') +
+      escapeHtml(solutionFilterKey(item)) +
       '">' +
       '<div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">' +
       inner +
@@ -208,7 +208,7 @@
     });
   }
 
-  function renderFilterButtons(categories, lang) {
+  function renderFilterButtons(categories, lang, pageFilters) {
     var bar = document.getElementById('solutions-filter-bar');
     if (!bar) return;
     var normalClass =
@@ -218,10 +218,11 @@
       normalClass + ' active text-[#1D1D1F]" data-filter="all">' +
       escapeHtml(allLabel) + '</button>';
     categories.forEach(function (cat) {
+      var label = (pageFilters && pageFilters[cat]) ? pageFilters[cat] : cat;
       html += '<button type="button" class="' +
         normalClass + ' text-[#86868B]" data-filter="' +
         escapeHtml(cat) + '">' +
-        escapeHtml(cat) + '</button>';
+        escapeHtml(label) + '</button>';
     });
     bar.innerHTML = html;
   }
@@ -230,7 +231,7 @@
     var seen = {};
     var result = [];
     items.forEach(function (item) {
-      var cat = item.category || '';
+      var cat = solutionFilterKey(item);
       if (cat && !seen[cat]) {
         seen[cat] = true;
         result.push(cat);
@@ -334,7 +335,7 @@
         });
 
       var categories = collectCategories(items);
-      renderFilterButtons(categories, lang);
+      renderFilterButtons(categories, lang, page && page.filters);
 
       root.innerHTML = items
         .map(function (item, index) {

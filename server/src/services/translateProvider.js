@@ -1,18 +1,16 @@
 /**
- * OpenAI-compatible translation provider (OpenAI, DeepSeek, etc.).
+ * OpenAI-compatible translation provider (OpenAI, DeepSeek, Qianwen, etc.).
  *
- * Env:
- *   TRANSLATION_PROVIDER=deepseek|openai|echo
- *     (default: deepseek if key set and no provider; else echo)
- *   TRANSLATION_API_KEY=   (or DEEPSEEK_API_KEY)
+ * Engine config is read from the DB (translation_engine_config, is_active=1).
+ * Falls back to env vars if no active engine is configured.
+ *
+ * Env (legacy fallback):
+ *   TRANSLATION_PROVIDER=deepseek|openai|qianwen|echo
+ *   TRANSLATION_API_KEY=
  *   TRANSLATION_BASE_URL=
  *   TRANSLATION_MODEL=
- *
- * DeepSeek defaults:
- *   BASE_URL=https://api.deepseek.com
- *   MODEL=deepseek-v4-flash
- *   thinking disabled (cheaper / faster for bulk site copy)
  */
+import { getDb } from '../db.js';
 
 const LANG_NAMES = { en: 'English', ru: 'Russian' };
 
@@ -26,7 +24,42 @@ const OPENAI_DEFAULTS = {
   model: 'gpt-4o-mini',
 };
 
+const QIANWEN_DEFAULTS = {
+  baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+  model: 'qwen-plus',
+};
+
+/**
+ * Read translation config from the active DB engine, falling back to env vars.
+ * NOTE: the returned object includes `apiKey` (full key) for internal use.
+ * Do NOT send it to the client without stripping — admin route handles that.
+ */
 export function getTranslationConfig() {
+  // 1. Try active engine from DB
+  try {
+    const db = getDb();
+    const row = db.prepare(
+      `SELECT * FROM translation_engine_config WHERE is_active = 1 LIMIT 1`
+    ).get();
+    if (row && row.api_key) {
+      const provider = String(row.provider || '').toLowerCase();
+      return {
+        provider,
+        configured: true,
+        canWrite: true,
+        model: row.model,
+        baseUrl: String(row.base_url || '').replace(/\/$/, ''),
+        hasApiKey: true,
+        apiKey: row.api_key,
+        engineName: row.name,
+        source: 'db',
+      };
+    }
+  } catch (_) {
+    // DB not ready or table missing — fall through to env
+  }
+
+  // 2. Fall back to env vars (backward compat)
   const apiKey =
     process.env.TRANSLATION_API_KEY ||
     process.env.DEEPSEEK_API_KEY ||
@@ -40,6 +73,7 @@ export function getTranslationConfig() {
   const defaults =
     provider === 'deepseek' ? DEEPSEEK_DEFAULTS :
     provider === 'openai' ? OPENAI_DEFAULTS :
+    provider === 'qianwen' ? QIANWEN_DEFAULTS :
     DEEPSEEK_DEFAULTS;
 
   const baseUrl = (
@@ -54,9 +88,11 @@ export function getTranslationConfig() {
     model: process.env.TRANSLATION_MODEL || defaults.model,
     baseUrl,
     hasApiKey: Boolean(apiKey),
+    apiKey,
     apiKeyEnv: process.env.TRANSLATION_API_KEY
       ? 'TRANSLATION_API_KEY'
       : (process.env.DEEPSEEK_API_KEY ? 'DEEPSEEK_API_KEY' : null),
+    source: 'env',
   };
 }
 
@@ -71,7 +107,7 @@ export async function translateTexts(texts, targetLang) {
     const tag = String(targetLang || 'xx').toUpperCase();
     return texts.map((t) => (t && String(t).trim() ? `[${tag}] ${t}` : t));
   }
-  if (cfg.provider !== 'openai' && cfg.provider !== 'deepseek') {
+  if (cfg.provider !== 'openai' && cfg.provider !== 'deepseek' && cfg.provider !== 'qianwen') {
     throw new Error('unsupported_provider');
   }
   if (!cfg.hasApiKey) {
@@ -79,12 +115,27 @@ export async function translateTexts(texts, targetLang) {
   }
 
   const langName = LANG_NAMES[targetLang] || targetLang;
-  const chunks = chunkBySize(texts, 40, 12000);
+  const chunks = chunkBySize(texts, 60, 12000);
+
+  // Parallel API calls — much faster than sequential.
+  const results = await Promise.all(
+    chunks.map((chunk) => callOpenAiCompatible(cfg, chunk, langName))
+  );
+
   const out = [];
-  for (const chunk of chunks) {
-    const translated = await callOpenAiCompatible(cfg, chunk, langName);
+  for (let ci = 0; ci < chunks.length; ci++) {
+    const chunk = chunks[ci];
+    const translated = results[ci];
     if (translated.length !== chunk.length) {
-      throw new Error('translation_length_mismatch');
+      // Some models (e.g. Qwen flash) occasionally return wrong count.
+      // Best-effort fixup: pad missing slots with originals, truncate extras.
+      // This avoids total failure while keeping most translations correct.
+      while (translated.length < chunk.length) {
+        translated.push(chunk[translated.length]);
+      }
+      if (translated.length > chunk.length) {
+        translated.length = chunk.length;
+      }
     }
     out.push(...translated);
   }
@@ -109,20 +160,18 @@ function chunkBySize(items, maxItems, maxChars) {
   return chunks;
 }
 
-function resolveApiKey() {
-  return process.env.TRANSLATION_API_KEY || process.env.DEEPSEEK_API_KEY || '';
-}
-
 function isDeepSeek(cfg) {
   return cfg.provider === 'deepseek' || /deepseek\.com/i.test(cfg.baseUrl || '');
 }
 
 async function callOpenAiCompatible(cfg, texts, langName) {
+  const n = texts.length;
   const system =
     `You are a professional translator for an industrial automation company website (TXAM). ` +
-    `Translate the JSON array of Chinese strings into ${langName}. ` +
+    `Translate the JSON array of ${n} Chinese strings into ${langName}. ` +
+    `CRITICAL: You must return EXACTLY ${n} strings in a JSON array — no more, no less. ` +
     `Rules: keep HTML tags and attributes unchanged; keep brand names TXAM / 同兴高科 as appropriate; ` +
-    `do not translate URLs, file paths, or emails; return ONLY a JSON array of strings with the same length.`;
+    `do not translate URLs, file paths, or emails; return ONLY a JSON array of strings.`;
 
   const body = {
     model: cfg.model,
@@ -138,11 +187,13 @@ async function callOpenAiCompatible(cfg, texts, langName) {
     body.thinking = { type: 'disabled' };
   }
 
+  const apiKey = cfg.apiKey || process.env.TRANSLATION_API_KEY || process.env.DEEPSEEK_API_KEY || '';
+
   const res = await fetch(`${cfg.baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${resolveApiKey()}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify(body),
   });

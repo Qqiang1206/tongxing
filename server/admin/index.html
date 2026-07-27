@@ -418,6 +418,14 @@
           <div class="section-panel hub-panel" data-hub="system" data-hub-panel="translation">
             <div id="translation-overview" class="tx-overview"></div>
             <div id="translation-progress" class="tx-progress hidden" aria-live="polite"></div>
+            <div class="card tx-engine-card" style="margin-bottom:16px">
+              <div class="card-head">
+                <h3 class="card-title">翻译引擎配置</h3>
+                <button type="button" class="btn btn-ghost btn-sm" id="add-engine">+ 新增引擎</button>
+              </div>
+              <div id="translation-engines" class="table-wrap"></div>
+              <div id="engine-form-area" class="hidden" style="padding:16px;border-top:1px solid #E5E5EA"></div>
+            </div>
             <div class="card tx-pending-card" id="translation-pending-card">
               <div class="card-head">
                 <h3 class="card-title">待同步内容</h3>

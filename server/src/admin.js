@@ -27,6 +27,14 @@ import {
   getTranslationJob,
 } from './services/translationJobs.js';
 import { getTranslationConfig } from './services/translateProvider.js';
+import {
+  listEngines,
+  createEngine,
+  updateEngine,
+  deleteEngine,
+  activateEngine,
+  getProviderPresets,
+} from './services/translationEngines.js';
 import { saveUploadedMedia, listUploadedMedia, deleteUploadedMedia, updateMediaAlt } from './services/media.js';
 import { writeAudit, listAuditLogs, getAuditLog, listRecentContentUpdates, clientIp } from './services/audit.js';
 import {
@@ -659,8 +667,110 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       sendJson(res, 401, { error: 'unauthorized' }, origin);
       return true;
     }
-    sendJson(res, 200, getTranslationConfig(), origin);
+    // Strip apiKey before sending to client
+    const { apiKey, ...safeCfg } = getTranslationConfig();
+    sendJson(res, 200, safeCfg, origin);
     return true;
+  }
+
+  // --- Translation engine management ---
+
+  if (pathname === '/api/v1/admin/translation-engines' && (req.method === 'GET' || req.method === 'POST')) {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    if (req.method === 'GET') {
+      sendJson(res, 200, { engines: listEngines(), presets: getProviderPresets() }, origin);
+      return true;
+    }
+    // POST — create
+    try {
+      const body = await readBody(req);
+      const engine = createEngine(body);
+      writeAudit({
+        req,
+        action: 'translation.engine_create',
+        resource: 'translation',
+        resourceId: String(engine.id),
+        summary: `新增翻译引擎「${engine.name}」`,
+        detail: { provider: engine.provider, model: engine.model },
+      });
+      sendJson(res, 201, { ok: true, engine }, origin);
+    } catch (err) {
+      writeAudit({
+        req,
+        action: 'translation.engine_create',
+        resource: 'translation',
+        summary: '新增翻译引擎失败',
+        detail: { error: err.message },
+        ok: false,
+      });
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
+    }
+    return true;
+  }
+
+  const engineMatch = pathname.match(/^\/api\/v1\/admin\/translation-engines\/([^/]+)(?:\/(activate))?$/);
+  if (engineMatch) {
+    if (!authOk(req)) {
+      sendJson(res, 401, { error: 'unauthorized' }, origin);
+      return true;
+    }
+    const engineId = engineMatch[1];
+    const action = engineMatch[2];
+    try {
+      if (req.method === 'PUT' && !action) {
+        const body = await readBody(req);
+        const engine = updateEngine(engineId, body);
+        writeAudit({
+          req,
+          action: 'translation.engine_update',
+          resource: 'translation',
+          resourceId: String(engine.id),
+          summary: `编辑翻译引擎「${engine.name}」`,
+          detail: { provider: engine.provider, model: engine.model },
+        });
+        sendJson(res, 200, { ok: true, engine }, origin);
+        return true;
+      }
+      if (req.method === 'DELETE' && !action) {
+        deleteEngine(engineId);
+        writeAudit({
+          req,
+          action: 'translation.engine_delete',
+          resource: 'translation',
+          resourceId: engineId,
+          summary: `删除翻译引擎 #${engineId}`,
+        });
+        sendJson(res, 200, { ok: true, deleted: engineId }, origin);
+        return true;
+      }
+      if (req.method === 'POST' && action === 'activate') {
+        const engine = activateEngine(engineId);
+        writeAudit({
+          req,
+          action: 'translation.engine_activate',
+          resource: 'translation',
+          resourceId: String(engine.id),
+          summary: `设为当前翻译引擎「${engine.name}」`,
+        });
+        sendJson(res, 200, { ok: true, engine }, origin);
+        return true;
+      }
+    } catch (err) {
+      writeAudit({
+        req,
+        action: action ? `translation.engine_${action}` : 'translation.engine_update',
+        resource: 'translation',
+        resourceId: engineId,
+        summary: `翻译引擎操作失败 #${engineId}`,
+        detail: { error: err.message },
+        ok: false,
+      });
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
+      return true;
+    }
   }
 
   if (pathname === '/api/v1/admin/translation-jobs' && req.method === 'POST') {

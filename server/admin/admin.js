@@ -1435,7 +1435,7 @@
       stat('产品数量', state.products.length, '已上架 ' + pubProducts + ' 条') +
       stat('解决方案', state.solutions.length, '已上架 ' + pubSolutions + ' 条') +
       stat('新闻文章', state.news.length, '已上架 ' + pubNews + ' 条') +
-      stat('待同步翻译', stale, stale ? '请到「系统 → 翻译同步」处理' : 'en / ru 均已最新', stale > 0);
+      stat('待同步翻译', stale, stale ? '点击查看待同步内容' : 'en / ru 均已最新', stale > 0, 'stat-clickable');
     if ($('dash-traffic')) {
       $('dash-traffic').innerHTML =
         '<div class="traffic-summary">' +
@@ -1448,6 +1448,13 @@
     }
     renderRecentUpdates(state.dashboardRecent);
     syncDashboardScrollAreas();
+    var txStat = document.querySelector('.stat-card.stat-clickable');
+    if (txStat) {
+      txStat.style.cursor = 'pointer';
+      txStat.addEventListener('click', function () {
+        setView('system', { hubTab: 'translation' });
+      });
+    }
   }
 
   var dashboardScrollRaf = 0;
@@ -2435,6 +2442,7 @@
         body: JSON.stringify(payload),
       });
       await loadCategories();
+      loadTranslation().catch(function () {});
       closeDrawer();
       toast(meta.label + (isNew ? '已创建' : '已保存'));
     } catch (err) {
@@ -4737,6 +4745,9 @@
     if (state.txSync && state.txSync.active) return;
     var status = await api('/admin/translation-status');
     var cfg = await api('/admin/translation-config').catch(function () { return null; });
+    var enginesData = await api('/admin/translation-engines').catch(function () { return { engines: [], presets: {} }; });
+    state.txEngines = enginesData.engines || [];
+    state.txEnginePresets = enginesData.presets || {};
     var staleItems = collectStaleItems(status.resources);
     var staleLangCount = staleItems.reduce(function (n, it) { return n + it.langs.length; }, 0);
     var overview = $('translation-overview');
@@ -4775,6 +4786,8 @@
         });
       }
     }
+
+    renderEngines(state.txEngines, state.txEnginePresets);
 
     var pending = $('translation-pending');
     if (pending) {
@@ -4855,6 +4868,197 @@
       });
     }
     await loadTranslationJobs();
+  }
+
+  function renderEngines(engines, presets) {
+    var wrap = $('translation-engines');
+    if (!wrap) return;
+    state.txEnginePresets = presets || state.txEnginePresets || {};
+    var rows = (engines || []).map(function (e) {
+      var status = e.isActive
+        ? '<span class="badge badge-ok">当前使用</span>'
+        : '<span class="badge badge-draft">未启用</span>';
+      var actions = '';
+      if (!e.isActive) {
+        actions += '<button type="button" class="btn btn-ghost btn-sm" data-engine-activate="' + e.id + '">设为当前</button>';
+      }
+      actions += '<button type="button" class="btn btn-ghost btn-sm" data-engine-edit="' + e.id + '">编辑</button>';
+      if (!e.isActive) {
+        actions += '<button type="button" class="btn btn-ghost btn-sm" data-engine-delete="' + e.id + '" data-engine-name="' + escapeAttr(e.name) + '">删除</button>';
+      }
+      return '<tr>' +
+        '<td class="cell-name"><strong>' + escapeHtml(e.name) + '</strong></td>' +
+        '<td><code>' + escapeHtml(e.provider) + '</code></td>' +
+        '<td><code>' + escapeHtml(e.model) + '</code></td>' +
+        '<td><code class="tx-code">' + escapeHtml(e.apiKeyMasked || '(未设置)') + '</code></td>' +
+        '<td>' + status + '</td>' +
+        '<td class="cell-actions toolbar">' + actions + '</td>' +
+        '</tr>';
+    }).join('');
+    if (!rows) {
+      wrap.innerHTML = '<p class="field-help" style="margin:0;padding:8px 0">尚未配置翻译引擎。点击「+ 新增引擎」添加一个 OpenAI 兼容的翻译 API。</p>';
+    } else {
+      wrap.innerHTML =
+        '<table class="data data-table">' +
+        '<thead><tr><th>名称</th><th>Provider</th><th>模型</th><th>API Key</th><th>状态</th><th>操作</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody></table>';
+    }
+    var addBtn = $('add-engine');
+    if (addBtn) {
+      addBtn.onclick = function () { showEngineForm(null); };
+    }
+    wrap.querySelectorAll('[data-engine-activate]').forEach(function (btn) {
+      btn.onclick = function () { activateEngineClick(btn.getAttribute('data-engine-activate')); };
+    });
+    wrap.querySelectorAll('[data-engine-edit]').forEach(function (btn) {
+      btn.onclick = function () {
+        var id = Number(btn.getAttribute('data-engine-edit'));
+        var engine = (state.txEngines || []).find(function (e) { return e.id === id; });
+        showEngineForm(engine);
+      };
+    });
+    wrap.querySelectorAll('[data-engine-delete]').forEach(function (btn) {
+      btn.onclick = function () {
+        deleteEngineClick(btn.getAttribute('data-engine-delete'), btn.getAttribute('data-engine-name'));
+      };
+    });
+  }
+
+  function showEngineForm(engine) {
+    var area = $('engine-form-area');
+    if (!area) return;
+    var isEdit = !!engine;
+    var presets = state.txEnginePresets || {};
+    var providerKeys = Object.keys(presets);
+    // Fallback if presets failed to load (e.g. API hiccup)
+    if (!providerKeys.length) {
+      presets = {
+        deepseek: { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat', label: 'DeepSeek' },
+        openai: { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', label: 'OpenAI' },
+        qianwen: { baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1', model: 'qwen-plus', label: '通义千问' },
+      };
+      providerKeys = Object.keys(presets);
+    }
+    var providerOptions = providerKeys.map(function (key) {
+      var p = presets[key];
+      var selected = engine ? engine.provider === key : key === 'deepseek';
+      return '<option value="' + escapeAttr(key) + '"' + (selected ? ' selected' : '') + '>' +
+        escapeHtml(p.label || key) + '</option>';
+    }).join('');
+    var defaultKey = engine ? engine.provider : 'deepseek';
+    var preset = presets[defaultKey] || presets[providerKeys[0]] || {};
+    var baseUrl = engine ? engine.baseUrl : (preset.baseUrl || '');
+    var model = engine ? engine.model : (preset.model || '');
+    var keyPlaceholder = isEdit
+      ? '留空则不修改（当前：' + (engine.apiKeyMasked || '****') + '）'
+      : 'sk-...';
+    var requiredMark = '<span class="required-mark">*</span>';
+    area.innerHTML =
+      '<h4 class="form-section-title">' + (isEdit ? '编辑翻译引擎' : '新增翻译引擎') + '</h4>' +
+      '<div class="form-grid">' +
+      '<div class="field full">' +
+        '<label for="engine-name">名称 ' + requiredMark + '</label>' +
+        '<input id="engine-name" type="text" maxlength="40" value="' + escapeAttr(engine ? engine.name : '') + '" placeholder="如：DeepSeek / 通义千问">' +
+      '</div>' +
+      '<div class="field">' +
+        '<label for="engine-provider">Provider ' + requiredMark + '</label>' +
+        '<select id="engine-provider">' + providerOptions + '</select>' +
+      '</div>' +
+      '<div class="field">' +
+        '<label for="engine-model">模型 ' + requiredMark + '</label>' +
+        '<input id="engine-model" type="text" value="' + escapeAttr(model) + '" placeholder="如：deepseek-chat / qwen-plus">' +
+      '</div>' +
+      '<div class="field full">' +
+        '<label for="engine-base-url">Base URL ' + requiredMark + '</label>' +
+        '<input id="engine-base-url" type="text" value="' + escapeAttr(baseUrl) + '" placeholder="https://...">' +
+        '<p class="field-help">OpenAI 兼容接口地址，通义千问为 https://dashscope.aliyuncs.com/compatible-mode/v1</p>' +
+      '</div>' +
+      '<div class="field full">' +
+        '<label for="engine-api-key">API Key' + (isEdit ? '' : ' ' + requiredMark) + '</label>' +
+        '<input id="engine-api-key" type="password" autocomplete="off" placeholder="' + escapeAttr(keyPlaceholder) + '">' +
+        (isEdit ? '<p class="field-help">留空则保留当前密钥</p>' : '') +
+      '</div>' +
+      '</div>' +
+      '<div class="form-actions" style="margin-top:16px">' +
+      '<div class="toolbar">' +
+        '<button type="button" class="btn btn-accent btn-sm" id="save-engine">保存</button>' +
+        '<button type="button" class="btn btn-ghost btn-sm" id="cancel-engine">取消</button>' +
+      '</div>' +
+      '</div>';
+    area.classList.remove('hidden');
+    var providerSel = $('engine-provider');
+    if (providerSel) {
+      providerSel.onchange = function () {
+        var p = presets[providerSel.value];
+        if (p) {
+          if ($('engine-base-url')) $('engine-base-url').value = p.baseUrl;
+          if ($('engine-model')) $('engine-model').value = p.model;
+        }
+      };
+    }
+    $('save-engine').onclick = function () { saveEngineForm(engine ? engine.id : null); };
+    $('cancel-engine').onclick = function () { hideEngineForm(); };
+    var nameInput = $('engine-name');
+    if (nameInput) nameInput.focus();
+  }
+
+  function hideEngineForm() {
+    var area = $('engine-form-area');
+    if (area) {
+      area.classList.add('hidden');
+      area.innerHTML = '';
+    }
+  }
+
+  async function saveEngineForm(id) {
+    var name = val('engine-name').trim();
+    var provider = val('engine-provider').trim();
+    var baseUrl = val('engine-base-url').trim();
+    var model = val('engine-model').trim();
+    var apiKey = val('engine-api-key').trim();
+    if (!name) { toast('请填写名称', true); return; }
+    if (!provider) { toast('请选择 Provider', true); return; }
+    if (!baseUrl) { toast('请填写 Base URL', true); return; }
+    if (!model) { toast('请填写模型', true); return; }
+    var payload = { name: name, provider: provider, baseUrl: baseUrl, model: model, apiKey: apiKey };
+    var btn = $('save-engine');
+    if (btn) { btn.disabled = true; btn.textContent = '保存中…'; }
+    try {
+      if (id) {
+        await api('/admin/translation-engines/' + id, { method: 'PUT', body: JSON.stringify(payload) });
+        toast('引擎已更新');
+      } else {
+        await api('/admin/translation-engines', { method: 'POST', body: JSON.stringify(payload) });
+        toast('引擎已创建');
+      }
+      hideEngineForm();
+      await loadTranslation();
+    } catch (err) {
+      toast(err.message || '保存失败', true);
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = '保存'; }
+    }
+  }
+
+  async function activateEngineClick(id) {
+    try {
+      await api('/admin/translation-engines/' + id + '/activate', { method: 'POST' });
+      toast('已设为当前引擎');
+      await loadTranslation();
+    } catch (err) {
+      toast(err.message || '操作失败', true);
+    }
+  }
+
+  async function deleteEngineClick(id, name) {
+    if (!confirm('确定删除引擎「' + name + '」吗？此操作不可撤销。')) return;
+    try {
+      await api('/admin/translation-engines/' + id, { method: 'DELETE' });
+      toast('引擎已删除');
+      await loadTranslation();
+    } catch (err) {
+      toast(err.message || '删除失败', true);
+    }
   }
 
   async function loadTranslationJobs() {
