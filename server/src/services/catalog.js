@@ -7,6 +7,7 @@ import path from 'path';
 import { DATA_DIR, REPO_ROOT, LANGS, parseLang } from '../config.js';
 import { mapProduct, mapSolution, mapNews, toCatalogMap } from '../mappers/toApi.js';
 import { getDb } from '../db.js';
+import { removeItemSnapshot } from './translationSnapshot.js';
 import { assertSolutionHomeSlot, assertNewsHomeFeatured, reconcileHomeSlots, guardRequiredSlotVacate } from './homeSlots.js';
 import { clearPublicCache } from './publicCache.js';
 
@@ -854,8 +855,11 @@ export function deleteCatalogItemRaw(kind, id, opts = {}) {
   if (kind === 'products') db.prepare('DELETE FROM products WHERE id = ?').run(key);
   else if (kind === 'solutions') db.prepare('DELETE FROM solutions WHERE id = ?').run(key);
   else if (kind === 'news') db.prepare('DELETE FROM news WHERE id = ?').run(key);
-  else throw new Error('invalid_catalog_kind');
+    else throw new Error('invalid_catalog_kind');
   for (const lang of LANGS) exportCatalogLang(kind, lang);
+  // Drop the translation snapshot for this item so a re-created id won't
+  // wrongly reuse a stale translation.
+  removeItemSnapshot(kind, key);
   clearPublicCache();
   return true;
 }

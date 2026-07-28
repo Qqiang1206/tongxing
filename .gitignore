@@ -29,6 +29,9 @@ data/solutions/
 data/products/
 data/pages/
 data/i18n/
+# Server-generated meta snapshots / reports (source of truth is server/data/*.db)
+data/meta/translation-snapshot.json
+data/meta/verify-report.json
 sitemap.xml
 
 # Server runtime logs

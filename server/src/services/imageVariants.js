@@ -21,15 +21,21 @@ export function shouldBuildVariants(ext) {
 async function writeWebpVariant(input, outPath, maxWidth, targetKb, startQuality = 80) {
   let quality = startQuality;
   let meta;
+  let bestBuf;
+  // Encode to buffer in the quality loop — avoids Windows file-handle
+  // issues when overwriting the same path repeatedly via toFile().
   for (let i = 0; i < 8; i += 1) {
     let pipeline = sharp(input).rotate();
     if (maxWidth) pipeline = pipeline.resize({ width: maxWidth, withoutEnlargement: true });
-    await pipeline.webp({ quality, effort: 6 }).toFile(outPath);
-    meta = await sharp(outPath).metadata();
-    const sizeKb = fs.statSync(outPath).size / 1024;
+    const buf = await pipeline.webp({ quality, effort: 6 }).toBuffer();
+    meta = await sharp(buf).metadata();
+    const sizeKb = buf.length / 1024;
+    bestBuf = buf;
     if (sizeKb <= targetKb || quality <= 55) break;
     quality -= 5;
   }
+  // Single disk write — no overwrite loop, no file-lock contention
+  fs.writeFileSync(outPath, bestBuf);
   return meta;
 }
 

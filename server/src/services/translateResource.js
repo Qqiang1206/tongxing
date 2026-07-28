@@ -11,6 +11,7 @@ import {
   writeSiteSettingsAny,
 } from './catalog.js';
 import { translateTexts, getTranslationConfig } from './translateProvider.js';
+import { getNorm, saveSnapshotBatch } from './translationSnapshot.js';
 
 const SKIP_KEYS = new Set([
   'id',
@@ -51,6 +52,116 @@ const SKIP_KEYS = new Set([
 
 const CATALOG_KINDS = new Set(['products', 'news', 'solutions']);
 
+/**
+ * Normalize a source string for change detection.
+ * Punctuation, symbols and whitespace are stripped and the text is lower-cased,
+ * so purely cosmetic edits (removing a period, toggling spaces) are treated as
+ * "no change" and do NOT trigger a translation engine call.
+ * Only used for comparison — the actual text sent to the engine is untouched.
+ */
+function normalizeForCompare(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .toLowerCase()
+    .replace(/[\p{P}\p{S}\p{Z}\s]/gu, '');
+}
+
+/** Read a value from an object by a dotted/bracketed path, e.g. "specs[0].label". */
+function getByPath(obj, path) {
+  if (obj == null) return undefined;
+  const parts = path.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean);
+  let cur = obj;
+  for (const p of parts) {
+    if (cur == null) return undefined;
+    cur = cur[p];
+  }
+  return cur;
+}
+
+const ASSET_STRING_RE = /^(assets\/|https?:\/\/|mailto:|tel:|\/)/i;
+
+/**
+ * Mirror non-translatable "asset" fields (images, links, slugs, …) from the zh
+ * data into a target-lang object, WITHOUT invoking the translation engine.
+ *
+ * - Fields in SKIP_KEYS, or strings that look like asset/URL paths, are always
+ *   taken from zh (they never get translated — see collectStrings).
+ * - Translatable text fields keep their existing target-lang value, falling
+ *   back to zh only when no translation exists yet.
+ *
+ * This is the "mode 2" sync: asset-only edits (e.g. swapping the factory hero
+ * image) are mirrored to en/ru immediately on save, independent of whether the
+ * translation engine is configured or the scheduler has run.
+ */
+export function mirrorAssets(zhData, targetData) {
+  if (zhData == null) return targetData;
+  if (typeof zhData !== 'object' || Array.isArray(zhData)) return zhData;
+  const tObj =
+    targetData && typeof targetData === 'object' && !Array.isArray(targetData) ? targetData : {};
+  const result = {};
+  for (const key of Object.keys(zhData)) {
+    const zhVal = zhData[key];
+    const tVal = tObj[key];
+    if (SKIP_KEYS.has(key) || (typeof zhVal === 'string' && ASSET_STRING_RE.test(zhVal))) {
+      // Non-translatable asset field → always take the zh value.
+      result[key] = zhVal;
+    } else if (typeof zhVal === 'object' && zhVal !== null) {
+      result[key] = mirrorAssets(zhVal, tVal);
+    } else {
+      // Translatable scalar → keep existing translation, fall back to zh.
+      result[key] = tVal !== undefined ? tVal : zhVal;
+    }
+  }
+  // Keep any extra keys that exist only in the target (defensive — avoids
+  // dropping manually-set values that happen to be absent from zh). Skip
+  // asset-derived extras (e.g. a stale `imageSrcset` URL still pointing at the
+  // old image) so they don't linger once zh drops them.
+  for (const key of Object.keys(tObj)) {
+    if (!(key in result)) {
+      const v = tObj[key];
+      if (SKIP_KEYS.has(key) || (typeof v === 'string' && ASSET_STRING_RE.test(v))) continue;
+      result[key] = v;
+    }
+  }
+  return result;
+}
+
+/**
+ * Split a resource's collected strings into "reuse" vs "changed".
+ * - Reuse: normalized source equals the stored snapshot AND a valid existing
+ *   translation is available → keep the existing en/ru text (0 engine calls).
+ * - Changed: everything else → send only those to the translation engine.
+ * Returns the value array aligned to `values` order (changed slots = translated
+ * or null), plus the snapshot entries to persist and the count of changed strings.
+ */
+async function classifyAndTranslate(resourceKey, lang, itemId, values, paths, existingObj, jobId) {
+  const changedValues = [];
+  const order = [];
+  const changes = [];
+  for (let k = 0; k < values.length; k++) {
+    const p = paths[k];
+    const srcNorm = normalizeForCompare(values[k]);
+    const prevNorm = getNorm(resourceKey, lang, itemId, p);
+    const lookupPath = itemId ? p.slice(p.indexOf(':') + 1) : p;
+    const ex = existingObj != null ? getByPath(existingObj, lookupPath) : undefined;
+    if (prevNorm === srcNorm && typeof ex === 'string' && ex.length) {
+      order.push(ex);
+    } else {
+      order.push(null);
+      changedValues.push(values[k]);
+    }
+    changes.push([resourceKey, lang, itemId, p, srcNorm]);
+  }
+  const translated = changedValues.length ? await translateTexts(changedValues, lang, { jobId }) : [];
+  let ci = 0;
+  const finalValues = order.map((reused) => {
+    if (reused != null) return reused;
+    const t = translated[ci++];
+    return typeof t === 'string' && t.length ? t : null;
+  });
+  return { finalValues, changes, strings: changedValues.length };
+}
+
 export async function translateResource(resource, targetLangs, opts) {
   const cfg = getTranslationConfig();
   if (!cfg.canWrite) {
@@ -78,16 +189,23 @@ export async function translateResource(resource, targetLangs, opts) {
     const results = await Promise.all(
       langs.map((lang) => {
         const existing = loadSiteSettings(lang);
-        return translateTree(loadSiteSettings('zh'), lang, (obj) => {
-          // Preserve footer fields that have language-specific values.
-          // ICP number format differs per language; AI tends to skip
-          // translating it, so keep the existing manually-set value.
-          if (existing && existing.footer && obj.footer) {
-            if (existing.footer.icp) obj.footer.icp = existing.footer.icp;
-            if (existing.footer.icpUrl) obj.footer.icpUrl = existing.footer.icpUrl;
-          }
-          writeSiteSettingsAny(lang, obj);
-        }, jobId);
+        return translateTree(
+          loadSiteSettings('zh'),
+          lang,
+          existing,
+          (obj) => {
+            // Preserve footer fields that have language-specific values.
+            // ICP number format differs per language; AI tends to skip
+            // translating it, so keep the existing manually-set value.
+            if (existing && existing.footer && obj.footer) {
+              if (existing.footer.icp) obj.footer.icp = existing.footer.icp;
+              if (existing.footer.icpUrl) obj.footer.icpUrl = existing.footer.icpUrl;
+            }
+            writeSiteSettingsAny(lang, obj);
+          },
+          jobId,
+          'site'
+        );
       })
     );
     langs.forEach((lang, i) => {
@@ -104,9 +222,16 @@ export async function translateResource(resource, targetLangs, opts) {
     if (!zh) throw new Error('not_found');
     const results = await Promise.all(
       langs.map((lang) =>
-        translateTree(zh, lang, (obj) => {
-          writePageJsonAny(pageKey, lang, obj);
-        }, jobId)
+        translateTree(
+          zh,
+          lang,
+          readPageJson(pageKey, lang),
+          (obj) => {
+            writePageJsonAny(pageKey, lang, obj);
+          },
+          jobId,
+          `pages:${pageKey}`
+        )
       )
     );
     langs.forEach((lang, i) => {
@@ -121,42 +246,81 @@ export async function translateResource(resource, targetLangs, opts) {
 
 async function translateCatalog(kind, lang, jobId) {
   const zh = readCatalogJson(kind, 'zh');
+  const existing = readCatalogJson(kind, lang);
   const out = {};
   let strings = 0;
   const ids = Object.keys(zh).sort((a, b) => Number(a) - Number(b));
 
-  // Batch all extractable strings across items for fewer API calls
-  const paths = [];
-  const values = [];
+  const snapshotChanges = [];
+
   for (const id of ids) {
+    const paths = [];
+    const values = [];
     collectStrings(zh[id], '', paths, values, id);
-  }
-  strings = values.length;
-  const translated = values.length ? await translateTexts(values, lang, { jobId }) : [];
-  let i = 0;
-  for (const id of ids) {
+
+    if (!values.length) {
+      // No translatable text — still mirror zh (image/slug/etc.) to target lang.
+      const clone = JSON.parse(JSON.stringify(zh[id]));
+      clone.id = id;
+      out[id] = clone;
+      continue;
+    }
+
+    const { finalValues, changes, strings: changed } = await classifyAndTranslate(
+      kind,
+      lang,
+      id,
+      values,
+      paths,
+      existing ? existing[id] : null,
+      jobId
+    );
+
+    // Non-text fields (image/slug/href/...) are inherited from zh via the clone.
+    const appliedValues = finalValues.map((v, k) => (v != null ? v : values[k]));
     const clone = JSON.parse(JSON.stringify(zh[id]));
-    applyStrings(clone, '', () => translated[i++]);
+    let i = 0;
+    applyStrings(clone, '', () => appliedValues[i++]);
     clone.id = id;
     out[id] = clone;
+
+    strings += changed;
+    for (const c of changes) snapshotChanges.push(c);
   }
 
   writeCatalogJsonAny(kind, lang, out);
   regenerateCatalogJs(kind, lang);
+  saveSnapshotBatch(snapshotChanges);
   return { strings, items: ids.length };
 }
 
-async function translateTree(source, lang, writer, jobId) {
+async function translateTree(source, lang, existing, writer, jobId, resourceKey) {
   const paths = [];
   const values = [];
   collectStrings(source, '', paths, values, null);
-  const translated = values.length ? await translateTexts(values, lang, { jobId }) : [];
+  if (!values.length) {
+    const clone = JSON.parse(JSON.stringify(source));
+    if (clone.lang != null) clone.lang = lang;
+    writer(clone);
+    return { strings: 0 };
+  }
+  const { finalValues, changes, strings } = await classifyAndTranslate(
+    resourceKey,
+    lang,
+    '',
+    values,
+    paths,
+    existing,
+    jobId
+  );
+  const appliedValues = finalValues.map((v, k) => (v != null ? v : values[k]));
   const clone = JSON.parse(JSON.stringify(source));
   let i = 0;
-  applyStrings(clone, '', () => translated[i++]);
+  applyStrings(clone, '', () => appliedValues[i++]);
   if (clone.lang != null) clone.lang = lang;
   writer(clone);
-  return { strings: values.length };
+  saveSnapshotBatch(changes);
+  return { strings };
 }
 
 function collectStrings(node, path, paths, values, itemId) {
