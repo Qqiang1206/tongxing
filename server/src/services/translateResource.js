@@ -16,7 +16,9 @@ import { getNorm, saveSnapshotBatch } from './translationSnapshot.js';
 const SKIP_KEYS = new Set([
   'id',
   'pageKey',
-  'category',
+  // 'category' intentionally NOT skipped — it holds display text (e.g. "光学元件组装")
+  // that must be translated; the structural key lives in filterKey / categoryKey.
+  'categoryKey',
   'filterKey',
   'filterKeyEn',
   'lang',
@@ -27,7 +29,8 @@ const SKIP_KEYS = new Set([
   'navUrl',
   'src',
   'srcset',
-  'model',
+  // 'model' intentionally NOT skipped — model names may contain Chinese suffixes
+  // (e.g. "TXM-A 系列") that should be translated.
   'published',
   'date',
   'publishedAt',
@@ -44,6 +47,10 @@ const SKIP_KEYS = new Set([
   'value',
   'step',
   'dotColor',
+  'homeSlot',
+  'homeFeatured',
+  'sortOrder',
+  'showInList',
   'website',
   'mime',
   'path',
