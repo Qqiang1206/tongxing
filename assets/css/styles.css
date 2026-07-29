@@ -167,6 +167,149 @@ body {
 /* .text-caption removed — unused */
 .mono-num { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "DIN Alternate", monospace; }
 
+/* Main-page P1 typography
+ * Keep the same content and centered visual language while giving long English
+ * and Russian headings a calmer measure than compact Chinese headings. */
+#home-hero-title,
+#about-hero-title,
+#contact-hero-title,
+#list-hero-title {
+    display: block;
+    width: 100%;
+    max-width: 18ch;
+    margin-right: auto;
+    margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
+    margin-left: auto;
+    font-size: clamp(2.75rem, 5.2vw, 4.5rem);
+    font-weight: 850;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+}
+
+#home-hero-lead,
+#about-hero-lead,
+#contact-hero-lead,
+#list-hero-lead {
+    width: 100%;
+    max-width: 50rem;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: clamp(1.0625rem, 1.25vw, 1.1875rem);
+    font-weight: 450;
+    line-height: 1.75;
+    letter-spacing: 0.005em;
+    text-wrap: pretty;
+}
+
+#about-hero-title {
+    max-width: 20ch;
+}
+
+#list-hero-title {
+    margin-bottom: 0;
+}
+
+#about-hero-lead {
+    max-width: 62rem;
+    font-size: clamp(1rem, 1.15vw, 1.125rem);
+    line-height: 1.85;
+}
+
+html[lang^="en"] #home-hero-title,
+html[lang^="en"] #about-hero-title,
+html[lang^="en"] #contact-hero-title,
+html[lang^="en"] #list-hero-title {
+    max-width: 24ch;
+    font-size: clamp(2.625rem, 4.65vw, 4.125rem);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+}
+
+html[lang^="ru"] #home-hero-title,
+html[lang^="ru"] #about-hero-title,
+html[lang^="ru"] #contact-hero-title,
+html[lang^="ru"] #list-hero-title {
+    max-width: 27ch;
+    font-size: clamp(2.5rem, 4.25vw, 3.875rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+}
+
+html[lang^="en"] #home-hero-lead,
+html[lang^="en"] #about-hero-lead,
+html[lang^="en"] #contact-hero-lead,
+html[lang^="en"] #list-hero-lead,
+html[lang^="ru"] #home-hero-lead,
+html[lang^="ru"] #about-hero-lead,
+html[lang^="ru"] #contact-hero-lead,
+html[lang^="ru"] #list-hero-lead {
+    letter-spacing: 0;
+}
+
+@media (max-width: 767px) {
+    #home-hero-title,
+    #about-hero-title,
+    #contact-hero-title,
+    #list-hero-title,
+    html[lang^="en"] #home-hero-title,
+    html[lang^="en"] #about-hero-title,
+    html[lang^="en"] #contact-hero-title,
+    html[lang^="en"] #list-hero-title,
+    html[lang^="ru"] #home-hero-title,
+    html[lang^="ru"] #about-hero-title,
+    html[lang^="ru"] #contact-hero-title,
+    html[lang^="ru"] #list-hero-title {
+        max-width: 100%;
+        margin-bottom: 1.25rem;
+        font-size: clamp(2.25rem, 10.5vw, 3rem);
+        line-height: 1.08;
+        letter-spacing: -0.035em;
+    }
+
+    #home-hero-lead,
+    #about-hero-lead,
+    #contact-hero-lead,
+    #list-hero-lead {
+        max-width: 35rem;
+        font-size: 1rem;
+        line-height: 1.72;
+        letter-spacing: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    html[lang^="en"] #home-hero-title,
+    html[lang^="en"] #about-hero-title,
+    html[lang^="en"] #contact-hero-title,
+    html[lang^="en"] #list-hero-title {
+        font-size: clamp(2.125rem, 9.2vw, 2.5rem);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+    }
+
+    html[lang^="ru"] #home-hero-title,
+    html[lang^="ru"] #about-hero-title,
+    html[lang^="ru"] #contact-hero-title,
+    html[lang^="ru"] #list-hero-title {
+        font-size: clamp(2rem, 8.8vw, 2.375rem);
+        line-height: 1.12;
+        letter-spacing: -0.025em;
+    }
+
+    html[lang^="en"] #list-hero-title {
+        font-size: clamp(2rem, 8.4vw, 2.25rem);
+    }
+
+    html[lang^="ru"] #list-hero-title {
+        font-size: clamp(1.9375rem, 8vw, 2.125rem);
+    }
+
+
+    #list-hero-title { margin-bottom: 0; }
+}
+
+
 /* Animation System */
 .fade-up {
     opacity: 0;
