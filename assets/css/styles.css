@@ -175,9 +175,8 @@ body {
 }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-/* Detail pages: never leave content invisible if IO misses */
-.detail-page .fade-up.visible,
-.detail-page.detail-ready .fade-up {
+/* Detail pages use the same observer-driven reveal as all other pages. */
+.detail-page .fade-up.visible {
     opacity: 1;
     transform: translateY(0);
 }

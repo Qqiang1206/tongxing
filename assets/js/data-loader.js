@@ -319,16 +319,25 @@
     return pool.slice(0, count);
   }
   function revealFadeUps() {
-
-    var page = document.querySelector('.detail-page');
-
-    if (page) page.classList.add('detail-ready');
-
-    document.querySelectorAll('.fade-up').forEach(function (el) {
-
-      el.classList.add('visible');
-
-    });
+    // Use IntersectionObserver for scroll-triggered fade-in
+    if (typeof IntersectionObserver !== 'undefined') {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-up').forEach(function (el) {
+        observer.observe(el);
+      });
+    } else {
+      // Fallback for older browsers
+      document.querySelectorAll('.fade-up').forEach(function (el) {
+        el.classList.add('visible');
+      });
+    }
 
   }
 

@@ -167,9 +167,9 @@
     }
 
     if (global.TXAM.bindMobileMenu) global.TXAM.bindMobileMenu();
-    document.querySelectorAll('.fade-up').forEach(function (el) {
-      el.classList.add('visible');
-    });
+    if (global.TXAM && global.TXAM.revealFadeUps) {
+      global.TXAM.revealFadeUps();
+    }
     window.addEventListener('load', function () { initAmap(pendingMapPage); });
     // AMap may already be ready
     initAmap(pendingMapPage);
