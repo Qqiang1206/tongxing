@@ -389,6 +389,19 @@
     return resource;
   }
 
+  function toBeijing(iso) {
+    if (!iso) return '—';
+    var s = String(iso).replace(' ', 'T');
+    if (!/[zZ]|[+-]\d{2}:?\d{2}$/.test(s)) s += 'Z';
+    var d = new Date(s);
+    if (isNaN(d.getTime())) return String(iso);
+    // UTC → UTC+8
+    var bj = new Date(d.getTime() + 8 * 60 * 60 * 1000);
+    var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+    return bj.getUTCFullYear() + '-' + pad(bj.getUTCMonth() + 1) + '-' + pad(bj.getUTCDate()) +
+      ' ' + pad(bj.getUTCHours()) + ':' + pad(bj.getUTCMinutes()) + ':' + pad(bj.getUTCSeconds());
+  }
+
   function formatAuditTime(iso) {
     if (!iso) return '—';
     var s = String(iso).replace(' ', 'T');
@@ -4703,7 +4716,7 @@
         '<h3 class="tx-hero-title">' + escapeHtml(title) + '</h3>' +
         '<p class="tx-hero-sub">' + escapeHtml(sub) + '</p>' +
         '<p class="tx-hero-meta">' + escapeHtml(engineLine) +
-        (status.updatedAt ? ' · 状态更新于 ' + escapeHtml(status.updatedAt) : '') +
+        (status.updatedAt ? ' · 状态更新于 ' + escapeHtml(toBeijing(status.updatedAt)) : '') +
         '</p>' +
         usageLine +
         '</div>' +
@@ -4724,7 +4737,7 @@
       return;
     }
     var rows = logs.map(function (log) {
-      var time = String(log.calledAt || '').replace('T', ' ').slice(0, 19);
+      var time = toBeijing(log.calledAt);
       var engine = log.engineName || log.provider || '—';
       var tokens = log.totalTokens || 0;
       var dur = log.durationMs ? (Math.round(log.durationMs / 100) / 10) + 's' : '—';
@@ -4749,7 +4762,7 @@
       '<col class="col-time"><col><col><col class="col-lang">' +
       '<col class="col-num"><col class="col-num"><col class="col-num"><col class="col-result">' +
       '</colgroup>' +
-      '<thead><tr><th>时间</th><th>引擎</th><th>模型</th><th>语言</th><th>输入字符</th><th>Tokens</th><th>耗时</th><th>结果</th></tr></thead><tbody>' +
+      '<thead><tr><th>时间（北京）</th><th>引擎</th><th>模型</th><th>语言</th><th>输入字符</th><th>Tokens</th><th>耗时</th><th>结果</th></tr></thead><tbody>' +
       rows + '</tbody></table>';
   }
 
@@ -4779,7 +4792,7 @@
           '<strong>' + escapeHtml(contentLabel) + '</strong>' +
           (msg && msg !== '—' ? '<div class="cell-sub cell-note">' + escapeHtml(msg) + '</div>' : '') +
           '</td>' +
-        '<td class="cell-time">' + escapeHtml(String(job.createdAt || '').replace('T', ' ').slice(0, 19)) + '</td>' +
+        '<td class="cell-time">' + escapeHtml(toBeijing(job.createdAt)) + '</td>' +
         '</tr>';
     }).join('');
     $('translation-jobs-table').innerHTML =
@@ -4788,7 +4801,7 @@
       '<col class="col-id"><col class="col-lang"><col class="col-result">' +
       '<col class="col-name"><col class="col-time">' +
       '</colgroup>' +
-      '<thead><tr><th>ID</th><th>目标语言</th><th>状态</th><th>内容</th><th>创建时间</th></tr></thead><tbody>' +
+      '<thead><tr><th>ID</th><th>目标语言</th><th>状态</th><th>内容</th><th>创建时间（北京）</th></tr></thead><tbody>' +
       rows + '</tbody></table>';
   }
 

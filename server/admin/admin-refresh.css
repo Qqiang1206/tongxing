@@ -260,3 +260,202 @@ input:focus, select:focus, textarea:focus, .search:focus {
   border-radius: var(--radius-sm);
   font-weight: 500;
 }
+
+/* ——— 16. 翻译 API 记录表与任务表：更干净清晰 ——— */
+
+/* 状态徽章：强制内联排列，禁止折行 */
+.tx-jobs-table .badge,
+.tx-api-log-table .badge {
+  display: inline !important;
+  white-space: nowrap !important;
+  vertical-align: middle;
+}
+.tx-jobs-table .badge + .badge,
+.tx-api-log-table .badge + .badge {
+  margin-left: 6px;
+}
+.tx-jobs-table .cell-result,
+.tx-api-log-table .cell-result {
+  white-space: nowrap;
+}
+.tx-api-log-table,
+.tx-jobs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.tx-api-log-table thead th,
+.tx-jobs-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: #FAFAFC;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.tx-api-log-table tbody td,
+.tx-jobs-table tbody td {
+  padding: 9px 10px;
+  vertical-align: middle;
+  border-bottom: 1px solid #F0F0F2;
+  color: var(--text);
+}
+.tx-api-log-table tbody tr:hover,
+.tx-jobs-table tbody tr:hover {
+  background: #F8F8FA;
+}
+.tx-api-log-table tbody tr:last-child td,
+.tx-jobs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 表格容器：限制高度，滚动查看 */
+#tx-api-logs-table,
+#translation-jobs-table {
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+#tx-api-logs-table .data-table,
+#translation-jobs-table .data-table {
+  border: none;
+  margin: 0;
+}
+
+/* 数字列右对齐 */
+.col-num { text-align: right; }
+.tx-api-log-table td.cell-num {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace;
+  font-size: 12px;
+  text-align: right;
+  color: var(--text-secondary);
+}
+
+/* 时间列等宽 */
+.cell-time {
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 语言标签 */
+.cell-lang {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* 任务 ID */
+.cell-id {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.tx-jobs-table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+.tx-jobs-table td,
+.tx-jobs-table th {
+  padding: 9px 10px;
+  text-align: left;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.tx-jobs-table td:first-child { width: 60px; }
+.tx-jobs-table td:nth-child(2) { width: 110px; }
+.tx-jobs-table td:nth-child(3) { width: 140px; }
+.tx-jobs-table td:nth-child(4) { text-overflow: ellipsis; }
+.tx-jobs-table td:nth-child(5) { width: 170px; }
+.tx-jobs-table td:nth-child(3) { text-overflow: clip; }
+
+.tx-api-log-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 翻译内容名称 */
+.cell-name strong {
+  font-weight: 600;
+  color: var(--txam-dark);
+}
+.cell-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 翻译引擎状态卡片 */
+.tx-hero {
+  padding: 20px 24px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+.tx-hero-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--txam-dark);
+  margin-bottom: 4px;
+}
+.tx-hero-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.tx-hero-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+.tx-hero-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--success);
+}
+.tx-hero.is-pending .tx-hero-kicker {
+  color: var(--warning);
+}
+
+/* API 用量概览行 */
+.tx-usage-row {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.tx-usage-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tx-usage-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--txam-dark);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace;
+  line-height: 1.2;
+}
+.tx-usage-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
