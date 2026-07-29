@@ -185,9 +185,16 @@ Catalog extras on public payloads:
   "slug": "tv-display",
   "name": "TV/商业显示器生产线解决方案",
   "homeSlot": "hero",
-  "published": true
+  "published": true,
+  "filterKey": "tv-display"
 }
 ```
+
+> **`filterKey` / `filterKeyEn`**: Grouping key for the frontend filter bar on `solutions.html`. Multiple solutions that share the same `filterKey` appear under one filter button. The human-readable label is defined in `data/pages/solutions/{lang}.json → filters`. For example, solutions with `filterKey: "refrigerator"` appear under the "家电" (Home Appliances) filter. See `assets/js/solutions-list.js → collectCategories()` and `scripts/fix-solutions-filterkey.mjs`.
+
+### Example product (filterKey)
+
+Products also use `filterKey`/`filterKeyEn` as a grouping key for the products list filter bar, following the same pattern.
 
 ---
 

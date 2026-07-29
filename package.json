@@ -3,11 +3,14 @@
   "version": "2.0.0",
   "private": true,
   "description": "TXAM corporate site — static front + JSON data layer",
-  "engines": { "node": ">=22.5.0" },
-    "scripts": {
-      "extract-data": "node scripts/extract-content-data.js",
-      "restructure": "node scripts/restructure-site.js",
-      "generate-data-js": "node scripts/generate-data-js.js",
+  "dependencies": {},
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "extract-data": "node scripts/extract-content-data.js",
+    "restructure": "node scripts/restructure-site.js",
+    "generate-data-js": "node scripts/generate-data-js.js",
     "fill-catalog-slugs": "node scripts/fill-catalog-slugs.mjs",
     "fix-data-issues": "node scripts/fix-data-issues.mjs",
     "fix-seo-tags": "node scripts/fix-seo-tags.mjs",

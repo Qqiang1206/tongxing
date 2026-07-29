@@ -1,3 +1,31 @@
+/**
+ * API response mappers: convert DB rows to frontend-consumed shapes.
+ *
+ * ── filterKey / filterKeyEn ──────────────────────────────────────────────
+ * These are NOT per-item identity keys. They serve as **grouping keys** for
+ * the frontend filter bar on list pages (solutions.html, products.html).
+ *
+ * Multiple items that should appear under the same filter button share one
+ * filterKey value. The human-readable label for each filterKey is defined
+ * in data/pages/{kind}/{lang}.json → filters map.
+ *
+ * Example (solutions):
+ *   - "冰箱线"(id=32, slug=refrigerator)   → filterKey: "refrigerator"
+ *   - "洗衣机线"(id=34, slug=washer)       → filterKey: "refrigerator"  ← grouped
+ *   - "空调线"(id=36, slug=ac)             → filterKey: "refrigerator"  ← grouped
+ *   All three appear under the "家电" (Home Appliances) filter button.
+ *
+ *   pages/solutions/zh.json → filters.refrigerator = "家电"
+ *   pages/solutions/en.json → filters.refrigerator = "Home Appliances"
+ *
+ * To add a new filter group, pick an unused key, assign it as filterKey on
+ * the items, and add a label in pages/{kind}/{lang}.json → filters.
+ *
+ * See also: assets/js/solutions-list.js → collectCategories()
+ *           assets/js/product-list.js   → similar grouping
+ * ──────────────────────────────────────────────────────────────────────────
+ */
+
 export function parseJsonField(value, fallback = null) {
   if (value == null || value === '') return fallback;
   if (typeof value === 'object') return value;
@@ -34,6 +62,7 @@ export function mapProduct(row, i18n, opts = {}) {
     published: !!row.published,
     showInList: row.show_in_list == null ? true : !!Number(row.show_in_list),
     sortOrder: Number(row.sort_order) || 0,
+    // Grouping key for frontend filter bar — see file header comment
     filterKey: row.filter_key || '',
     filterKeyEn: row.filter_key_en || '',
   };
@@ -56,6 +85,7 @@ export function mapSolution(row, i18n, opts = {}) {
     published: !!row.published,
     sortOrder: Number(row.sort_order) || 0,
     homeSlot: row.home_slot === 'hero' || row.home_slot === 'category' ? row.home_slot : '',
+    // Grouping key for frontend filter bar — see file header comment
     filterKey: row.filter_key || '',
     filterKeyEn: row.filter_key_en || '',
   };

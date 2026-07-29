@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, '..', 'data');
-const now = '2026-07-23 19:20:00';
+const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 function rw(fp, cb) {
   const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
