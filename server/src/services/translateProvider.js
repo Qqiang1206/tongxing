@@ -82,10 +82,13 @@ export function getTranslationConfig() {
     defaults.baseUrl
   ).replace(/\/$/, '');
 
+  const allowEchoWrite = provider === 'echo' && process.env.TRANSLATION_ALLOW_ECHO_WRITE === '1';
+  const canWrite = provider === 'echo' ? allowEchoWrite : Boolean(apiKey);
+
   return {
     provider,
-    configured: provider === 'echo' || Boolean(apiKey),
-    canWrite: provider === 'echo' || Boolean(apiKey),
+    configured: canWrite,
+    canWrite,
     model: process.env.TRANSLATION_MODEL || defaults.model,
     baseUrl,
     hasApiKey: Boolean(apiKey),

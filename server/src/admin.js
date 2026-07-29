@@ -22,7 +22,6 @@ import {
   getTranslationJob,
 } from './services/translationJobs.js';
 import { getTranslationConfig } from './services/translateProvider.js';
-import { mirrorAssets } from './services/translateResource.js';
 import { listApiLogs, getApiUsageStats } from './services/translationApiLog.js';
 import {
   listEngines,
@@ -990,16 +989,11 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       payload.lang = 'zh';
       writePageJson(pageKey, 'zh', payload);
       regeneratePageJs(pageKey, 'zh');
-      // Mode 2 sync: mirror non-translatable assets (images/links/slugs/…) from
-      // zh into en/ru immediately on save, WITHOUT the translation engine or the
-      // scheduler. This keeps asset-only edits (e.g. swapping the factory hero
-      // image) in sync even when the translation engine is not configured.
-      for (const lang of ['en', 'ru']) {
-        const existing = readPageJson(pageKey, lang);
-        const merged = mirrorAssets(payload, existing || {});
-        merged.lang = lang;
-        writePageJsonAny(pageKey, lang, merged);
-      }
+      // En/ru are handled by the translation scheduler.
+      // Do NOT mirror zh into en/ru here — mirrorAssets cannot safely merge
+      // structural array changes (added/removed items) without corrupting
+      // existing translations. The scheduler's translateTree properly handles
+      // zh→en/ru translation, including change detection via snapshots.
       markStale(`pages:${pageKey}`);
       writeAudit({
         req,
