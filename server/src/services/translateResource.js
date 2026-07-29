@@ -13,10 +13,15 @@ import {
 import { translateTexts, getTranslationConfig } from './translateProvider.js';
 import { getItemSnapshot, replaceSnapshotBatch } from './translationSnapshot.js';
 import {
+  getSharedPageTitleTranslation,
+  isSharedPageTitlePath,
+  rememberSharedPageTitleTranslations,
+} from './translationMemory.js';
+import {
   applyStrings as applyTranslationStrings,
   buildBeforeCommit,
   collectStrings as collectTranslationStrings,
-  mergeTranslatedValues,
+  normalizeForCompare,
   planTranslations,
   snapshotEntries,
 } from './translationFields.js';
@@ -32,13 +37,74 @@ async function classifyAndTranslate(resourceKey, lang, itemId, values, paths, ex
     snapshot,
     itemId,
   });
-  const translated = plan.changedValues.length
-    ? await translateTexts(plan.changedValues, lang, { jobId })
+  const finalValues = plan.planned.slice();
+  const requests = [];
+  const requestGroups = [];
+  const sharedPending = new Map();
+  const memoryEntries = [];
+
+  for (let index = 0; index < values.length; index++) {
+    const path = paths[index];
+    const source = values[index];
+    const shared = getSharedPageTitleTranslation(path, source, lang);
+
+    // Canonical/fixed copy wins even when the source snapshot did not change.
+    // This heals old per-page translation drift on the next resource sync.
+    if (shared) {
+      finalValues[index] = shared;
+      memoryEntries.push({ path, source, lang, translation: shared });
+      continue;
+    }
+
+    if (finalValues[index] != null) {
+      if (isSharedPageTitlePath(path)) {
+        memoryEntries.push({ path, source, lang, translation: finalValues[index] });
+      }
+      continue;
+    }
+
+    if (isSharedPageTitlePath(path)) {
+      const sourceNorm = normalizeForCompare(source);
+      const existingGroup = sharedPending.get(sourceNorm);
+      if (existingGroup) {
+        existingGroup.slots.push(index);
+        continue;
+      }
+      const group = { slots: [index], path, source, shared: true };
+      sharedPending.set(sourceNorm, group);
+      requestGroups.push(group);
+      requests.push(source);
+      continue;
+    }
+
+    requestGroups.push({ slots: [index], path, source, shared: false });
+    requests.push(source);
+  }
+
+  const translated = requests.length
+    ? await translateTexts(requests, lang, { jobId })
     : [];
+  requestGroups.forEach((group, requestIndex) => {
+    const value = translated[requestIndex];
+    const resolved = typeof value === 'string' && value.length ? value : null;
+    group.slots.forEach((slot) => {
+      finalValues[slot] = resolved;
+    });
+    if (group.shared && resolved) {
+      memoryEntries.push({
+        path: group.path,
+        source: group.source,
+        lang,
+        translation: resolved,
+      });
+    }
+  });
+
   return {
-    finalValues: mergeTranslatedValues(plan, translated),
+    finalValues,
     changes: snapshotEntries(resourceKey, lang, itemId, paths, values),
-    strings: plan.changedValues.length,
+    strings: requests.length,
+    memoryEntries,
   };
 }
 
@@ -100,6 +166,9 @@ export async function translateResource(resource, targetLangs, opts) {
     );
   }
 
+  rememberSharedPageTitleTranslations(
+    prepared.flatMap((result) => result.memoryEntries || [])
+  );
   replaceSnapshotBatch(
     prepared.flatMap((result) => result.scopes),
     prepared.flatMap((result) => result.changes)
@@ -161,7 +230,7 @@ async function buildTranslatedTree(source, lang, existing, jobId, resourceKey) {
 
   if (!values.length) {
     if (clone.lang != null) clone.lang = lang;
-    return { data: clone, strings: 0, changes: [], scopes };
+    return { data: clone, strings: 0, changes: [], scopes, memoryEntries: [] };
   }
 
   const result = await classifyAndTranslate(
@@ -177,5 +246,11 @@ async function buildTranslatedTree(source, lang, existing, jobId, resourceKey) {
   let valueIndex = 0;
   applyTranslationStrings(clone, '', () => applied[valueIndex++]);
   if (clone.lang != null) clone.lang = lang;
-  return { data: clone, strings: result.strings, changes: result.changes, scopes };
+  return {
+    data: clone,
+    strings: result.strings,
+    changes: result.changes,
+    scopes,
+    memoryEntries: result.memoryEntries,
+  };
 }

@@ -178,7 +178,7 @@ async function callOpenAiCompatible(cfg, texts, langName, logCtx = {}) {
     `You are a professional translator for an industrial automation company website (TXAM). ` +
     `Translate the JSON array of ${n} Chinese strings into ${langName}. ` +
     `CRITICAL: You must return EXACTLY ${n} strings in a JSON array — no more, no less. ` +
-    `Rules: keep HTML tags and attributes unchanged; keep brand names TXAM / 同兴高科 as appropriate; ` +
+    `Rules: keep HTML tags and attributes unchanged; always translate 同兴高科 as TXAM and never transliterate it; ` +
     `do not translate URLs, file paths, or emails; return ONLY a JSON array of strings.`;
 
   const body = {

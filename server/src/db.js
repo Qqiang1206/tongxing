@@ -62,6 +62,18 @@ export function getDb() {
       completed_at TEXT
     );
   `);
+  // Shared translation memory for copy that must remain identical across
+  // resources (for example the same page hero / SEO title on every page).
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS translation_memory (
+      scope TEXT NOT NULL,
+      source_norm TEXT NOT NULL,
+      lang TEXT NOT NULL CHECK (lang IN ('en', 'ru')),
+      translation TEXT NOT NULL,
+      updated_at TEXT DEFAULT (datetime('now')),
+      PRIMARY KEY (scope, source_norm, lang)
+    );
+  `);
   // Additive migration for pre-existing DBs lacking attempts column.
   {
     const cols = db.prepare('PRAGMA table_info(translation_job_store)').all().map((c) => c.name);
