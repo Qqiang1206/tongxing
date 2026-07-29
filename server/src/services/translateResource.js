@@ -102,7 +102,16 @@ const ASSET_STRING_RE = /^(assets\/|https?:\/\/|mailto:|tel:|\/)/i;
  */
 export function mirrorAssets(zhData, targetData) {
   if (zhData == null) return targetData;
-  if (typeof zhData !== 'object' || Array.isArray(zhData)) return zhData;
+  if (typeof zhData !== 'object') return zhData;
+  // Arrays: merge element-by-element using index, so existing translations in
+  // target elements are preserved instead of being overwritten with zh text.
+  // New elements (where target has no counterpart) fall back to zh (source).
+  if (Array.isArray(zhData)) {
+    const targetArr = Array.isArray(targetData) ? targetData : [];
+    return zhData.map(function (item, i) {
+      return i < targetArr.length ? mirrorAssets(item, targetArr[i]) : item;
+    });
+  }
   const tObj =
     targetData && typeof targetData === 'object' && !Array.isArray(targetData) ? targetData : {};
   const result = {};

@@ -1111,7 +1111,7 @@
           '<div class="field full"><label>说明</label><input class="st-label" type="text" value="' + escapeAttr(item.label || '') + '"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
-      '<button type="button" class="btn btn-ghost btn-sm" id="rep-add-stat">＋ 添加数据</button></div>';
+      '<button type="button" class="btn btn-ghost btn-sm rep-add-stats">＋ 添加数据</button></div>';
   }
   function bindStatsRepeater() {
     var root = $('rep-stats');
