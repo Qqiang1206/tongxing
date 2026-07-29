@@ -1,0 +1,12 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+# Don't strip trailing whitespace on save — some existing files have it,
+# and forcing a trim would create churn diffs. Keep content as-is.
+trim_trailing_whitespace = false
+indent_style = space
+# indent_size intentionally omitted: let editors auto-detect per file
+# (HTML uses 4, JS/JSON use 2, etc.).
