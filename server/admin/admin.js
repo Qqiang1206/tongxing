@@ -62,6 +62,8 @@
     },
   };
 
+  var glossaryState = { page: 1, size: 20, q: '', scope: '' };
+
   var $ = function (id) { return document.getElementById(id); };
 
   function toast(text, isErr) {
@@ -678,7 +680,7 @@
     } else if (hub === 'solutions') {
       await Promise.all([loadPageForm('solutions'), loadSolutions(), loadCategories()]);
     } else if (hub === 'system') {
-      await Promise.all([loadTranslation(), loadAnalytics(), loadAudit(), loadBackups()]);
+      await Promise.all([loadTranslation(), loadGlossary(), loadAnalytics(), loadAudit(), loadBackups()]);
     }
     updateHubCount(hub);
   }
@@ -5472,8 +5474,6 @@
 
   /* ═══════ Glossary (term) management ═══════ */
 
-  var glossaryState = { page: 1, size: 20, q: '', scope: '' };
-
   function bindGlossary() {
     var searchTimer = null;
     var searchEl = $('glossary-search');
@@ -5495,62 +5495,80 @@
         loadGlossary();
       });
     }
-    var addBtn = $('glossary-add-btn');
-    if (addBtn) addBtn.addEventListener('click', function () { openGlossaryEditor(null); });
+    if ($('glossary-reset')) {
+      $('glossary-reset').addEventListener('click', function () {
+        glossaryState.q = '';
+        glossaryState.scope = '';
+        glossaryState.page = 1;
+        if (searchEl) searchEl.value = '';
+        if (scopeEl) scopeEl.value = '';
+        loadGlossary();
+      });
+    }
+    if ($('glossary-add-btn')) {
+      $('glossary-add-btn').addEventListener('click', function () { openGlossaryEditor(null); });
+    }
   }
 
   function loadGlossary() {
     var qs = 'page=' + glossaryState.page + '&size=' + glossaryState.size;
     if (glossaryState.q) qs += '&q=' + encodeURIComponent(glossaryState.q);
     if (glossaryState.scope) qs += '&scope=' + encodeURIComponent(glossaryState.scope);
-    return api('/api/v1/admin/glossary?' + qs).then(function (data) {
-      renderGlossaryStats(data.stats || {});
+    return api('/admin/glossary?' + qs).then(function (data) {
+      renderGlossaryHero(data.stats || {}, data.total || 0);
       renderGlossaryTable(data.items || []);
-      renderGlossaryPager(data.total || 0, data.page || 1, data.size || 20);
+      renderGlossaryPagination(data.total || 0, data.page || 1, data.size || glossaryState.size);
     });
   }
 
-  function renderGlossaryStats(stats) {
-    var el = $('glossary-stats');
+  function renderGlossaryHero(stats, shown) {
+    var el = $('glossary-hero');
     if (!el) return;
     var term = stats.term || 0;
     var title = stats['page-title'] || 0;
+    var total = term + title;
+    var filtered = glossaryState.q || glossaryState.scope;
+    var sub = filtered
+      ? '筛选后共 ' + shown + ' 条记录。'
+      : '翻译时优先命中标准译法，保证同一中文在英文 / 俄文站始终译法一致。';
     el.innerHTML =
-      '<div class="stat-grid" style="margin-bottom:16px">' +
-      '<div class="stat-card"><div class="stat-num">' + (term + title) + '</div><div class="stat-label">术语总数</div></div>' +
-      '<div class="stat-card"><div class="stat-num">' + term + '</div><div class="stat-label">内容术语</div></div>' +
-      '<div class="stat-card"><div class="stat-num">' + title + '</div><div class="stat-label">页面标题</div></div>' +
-      '</div>';
+      '<div class="tx-hero is-ok">' +
+      '<div class="tx-hero-main">' +
+      '<p class="tx-hero-kicker">多语言一致性保障</p>' +
+      '<h3 class="tx-hero-title">标准译法术语表</h3>' +
+      '<p class="tx-hero-sub">' + escapeHtml(sub) + '</p>' +
+      '<div class="tx-usage-row">' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + total + '</span><span class="tx-usage-label">术语总数</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + term + '</span><span class="tx-usage-label">内容术语</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + title + '</span><span class="tx-usage-label">页面标题</span></div>' +
+      '</div>' +
+      '</div></div>';
   }
 
   function renderGlossaryTable(items) {
-    var el = $('glossary-table');
-    if (!el) return;
+    var tbody = $('glossary-table') && $('glossary-table').querySelector('tbody');
+    if (!tbody) return;
     if (!items.length) {
-      el.innerHTML = '<p class="field-help" style="padding:24px;text-align:center">暂无术语记录</p>';
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">暂无匹配的术语</td></tr>';
       return;
     }
-    var html = '<table class="table"><thead><tr>' +
-      '<th>中文源文</th><th>英文译法</th><th>俄文译法</th><th>作用域</th><th>更新时间</th><th style="width:90px">操作</th>' +
-      '</tr></thead><tbody>';
-    items.forEach(function (item) {
-      var scopeLabel = item.scope === 'page-title'
-        ? '<span class="badge badge--purple">页面标题</span>'
-        : '<span class="badge badge--blue">术语</span>';
-      html += '<tr>' +
-        '<td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escapeAttr(item.source) + '">' + escapeHtml(item.source) + '</td>' +
-        '<td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escapeAttr(item.en) + '">' + escapeHtml(item.en || '—') + '</td>' +
-        '<td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escapeAttr(item.ru) + '">' + escapeHtml(item.ru || '—') + '</td>' +
-        '<td>' + scopeLabel + '</td>' +
-        '<td class="mono-num" style="font-size:12px;color:#86868b">' + escapeHtml((item.updatedAt || '').slice(0, 16)) + '</td>' +
-        '<td>' +
-        '<button type="button" class="btn btn-ghost btn-sm glossary-edit" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '" data-en="' + escapeAttr(item.en) + '" data-ru="' + escapeAttr(item.ru) + '">✏️</button> ' +
-        '<button type="button" class="btn btn-ghost btn-sm glossary-del" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '" style="color:#e53e3e">🗑️</button>' +
+    tbody.innerHTML = items.map(function (item) {
+      var scopeBadge = item.scope === 'page-title'
+        ? '<span class="badge badge-stale">页面标题</span>'
+        : '<span class="badge badge-ok">内容术语</span>';
+      var time = (item.updatedAt || '').replace('T', ' ').slice(0, 16);
+      return '<tr>' +
+        '<td class="cell-gl-source" title="' + escapeAttr(item.source) + '"><strong>' + escapeHtml(item.source) + '</strong></td>' +
+        '<td class="cell-gl-en" title="' + escapeAttr(item.en) + '">' + escapeHtml(item.en || '—') + '</td>' +
+        '<td class="cell-gl-ru" title="' + escapeAttr(item.ru) + '">' + escapeHtml(item.ru || '—') + '</td>' +
+        '<td class="cell-gl-scope">' + scopeBadge + '</td>' +
+        '<td class="cell-time">' + escapeHtml(time || '—') + '</td>' +
+        '<td class="cell-gl-actions">' +
+        '<button type="button" class="btn btn-ghost btn-sm glossary-edit" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '" data-en="' + escapeAttr(item.en) + '" data-ru="' + escapeAttr(item.ru) + '">编辑</button> ' +
+        '<button type="button" class="btn btn-ghost btn-sm glossary-del" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '" style="color:#D14343">删除</button>' +
         '</td></tr>';
-    });
-    html += '</tbody></table>';
-    el.innerHTML = html;
-    el.querySelectorAll('.glossary-edit').forEach(function (btn) {
+    }).join('');
+    tbody.querySelectorAll('.glossary-edit').forEach(function (btn) {
       btn.addEventListener('click', function () {
         openGlossaryEditor({
           source: btn.getAttribute('data-source'),
@@ -5560,30 +5578,35 @@
         });
       });
     });
-    el.querySelectorAll('.glossary-del').forEach(function (btn) {
+    tbody.querySelectorAll('.glossary-del').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var src = btn.getAttribute('data-source');
-        if (!confirm('确定删除术语「' + src + '」的 en/ru 标准译法？')) return;
-        api('/api/v1/admin/glossary?source=' + encodeURIComponent(src) + '&scope=' + encodeURIComponent(btn.getAttribute('data-scope')), { method: 'DELETE' })
+        if (!confirm('确定删除术语「' + src + '」的英文 / 俄文标准译法？')) return;
+        api('/admin/glossary?source=' + encodeURIComponent(src) + '&scope=' + encodeURIComponent(btn.getAttribute('data-scope')), { method: 'DELETE' })
           .then(function () { toast('已删除'); loadGlossary(); })
           .catch(function (e) { toast(e.message, true); });
       });
     });
   }
 
-  function renderGlossaryPager(total, page, size) {
-    var el = $('glossary-pager');
-    if (!el) return;
-    var pages = Math.ceil(total / size);
-    if (pages <= 1) { el.innerHTML = ''; return; }
-    var html = '';
-    for (var i = 1; i <= pages; i++) {
-      html += '<button type="button" class="btn btn-sm ' + (i === page ? 'btn-primary' : 'btn-ghost') + ' glossary-page" data-page="' + i + '">' + i + '</button>';
+  function renderGlossaryPagination(total, page, size) {
+    var totalPages = Math.max(1, Math.ceil(total / size));
+    if ($('glossary-table-foot')) {
+      $('glossary-table-foot').textContent = total
+        ? '共 ' + total + ' 条 · 第 ' + page + ' / ' + totalPages + ' 页'
+        : '暂无术语';
     }
-    el.innerHTML = html;
-    el.querySelectorAll('.glossary-page').forEach(function (btn) {
+    var el = $('glossary-pagination');
+    if (!el) return;
+    if (totalPages <= 1) { el.innerHTML = ''; return; }
+    el.innerHTML =
+      '<button type="button" class="btn-page" data-gl-page="prev"' + (page <= 1 ? ' disabled' : '') + '>上一页</button>' +
+      '<span class="page-indicator">' + page + ' / ' + totalPages + '</span>' +
+      '<button type="button" class="btn-page" data-gl-page="next"' + (page >= totalPages ? ' disabled' : '') + '>下一页</button>';
+    el.querySelectorAll('.btn-page').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        glossaryState.page = Number(btn.getAttribute('data-page'));
+        if (btn.disabled) return;
+        glossaryState.page += btn.getAttribute('data-gl-page') === 'prev' ? -1 : 1;
         loadGlossary();
       });
     });
@@ -5597,7 +5620,7 @@
     overlay.innerHTML =
       '<div class="gl-modal">' +
       '<div class="gl-modal-head"><h3>' + escapeHtml(title) + '</h3>' +
-      '<button type="button" class="btn btn-ghost btn-sm gl-close">✕</button></div>' +
+      '<button type="button" class="btn btn-ghost btn-sm gl-close" aria-label="关闭">✕</button></div>' +
       '<div class="gl-modal-body">' +
       '<div class="field"><label>中文源文 *</label>' +
       '<input type="text" id="gl-source" class="input" value="' + escapeAttr(isNew ? '' : item.source) + '"' + (isNew ? '' : ' readonly style="opacity:.6"') + '></div>' +
@@ -5607,10 +5630,10 @@
       '<input type="text" id="gl-ru" class="input" value="' + escapeAttr(isNew ? '' : item.ru) + '"></div>' +
       '<div class="field"><label>作用域</label>' +
       '<select id="gl-scope" class="select">' +
-      '<option value="term"' + (!item || item.scope === 'term' ? ' selected' : '') + '>术语 (term)</option>' +
+      '<option value="term"' + (!item || item.scope === 'term' ? ' selected' : '') + '>内容术语 (term)</option>' +
       '<option value="page-title"' + (item && item.scope === 'page-title' ? ' selected' : '') + '>页面标题 (page-title)</option>' +
       '</select></div>' +
-      '<p class="field-help">修改后，下次翻译同步时自动生效。</p>' +
+      '<p class="field-help">保存后，下次翻译同步时自动生效。</p>' +
       '</div>' +
       '<div class="gl-modal-foot">' +
       '<button type="button" class="btn btn-ghost gl-close">取消</button>' +
@@ -5625,7 +5648,7 @@
       var source = $('gl-source').value.trim();
       if (!source) { toast('请填写中文源文', true); return; }
       var body = { source: source, en: $('gl-en').value.trim(), ru: $('gl-ru').value.trim(), scope: $('gl-scope').value };
-      api('/api/v1/admin/glossary', { method: 'PUT', body: JSON.stringify(body) })
+      api('/admin/glossary', { method: 'PUT', body: JSON.stringify(body) })
         .then(function () { toast('已保存'); close(); loadGlossary(); })
         .catch(function (e) { toast(e.message, true); });
     });

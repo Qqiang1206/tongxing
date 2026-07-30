@@ -3289,27 +3289,46 @@ body {
 }
 
 /* ═══ Glossary ═══ */
-.badge--blue { background: #EBF2FF; color: #1D4ED8; }
-.badge--purple { background: #F3EEFF; color: #6D28D9; }
+.glossary-table .col-gl-source { width: 22%; }
+.glossary-table .col-gl-en { width: 22%; }
+.glossary-table .col-gl-ru { width: 22%; }
+.glossary-table .col-gl-scope { width: 10%; }
+.glossary-table .col-gl-time { width: 12%; }
+.glossary-table .col-gl-actions { width: 12%; }
+.glossary-table .cell-gl-source,
+.glossary-table .cell-gl-en,
+.glossary-table .cell-gl-ru {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.glossary-table .cell-gl-source strong { font-weight: 700; color: var(--txam-dark); }
+.glossary-table .cell-gl-actions { white-space: nowrap; }
 .gl-modal-overlay {
   position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,.35); backdrop-filter: blur(2px);
+  background: rgba(28, 32, 40, 0.4); backdrop-filter: blur(2px);
   display: flex; align-items: center; justify-content: center;
 }
 .gl-modal {
-  background: #fff; border-radius: 12px; width: 440px; max-width: 92vw;
-  box-shadow: 0 20px 60px rgba(0,0,0,.18); overflow: hidden;
+  background: var(--bg-card); border-radius: var(--radius-md);
+  width: 440px; max-width: 92vw;
+  box-shadow: 0 24px 64px rgba(28, 32, 40, 0.2); overflow: hidden;
+  animation: gl-pop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes gl-pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
 }
 .gl-modal-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 24px 0;
 }
-.gl-modal-head h3 { margin: 0; font-size: 17px; font-weight: 700; }
-.gl-modal-body { padding: 16px 24px; }
+.gl-modal-head h3 { margin: 0; font-size: 17px; font-weight: 800; color: var(--txam-dark); }
+.gl-modal-body { padding: 16px 24px 4px; }
 .gl-modal-body .field { margin-bottom: 14px; }
-.gl-modal-body label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #1d1d1f; }
+.gl-modal-body label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 5px; color: var(--txam-dark); }
 .gl-modal-foot {
   display: flex; justify-content: flex-end; gap: 8px;
-  padding: 12px 24px 20px; border-top: 1px solid #e5e5ea;
+  padding: 14px 24px 20px; border-top: 1px solid var(--border);
 }
-.glossary-stats .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }

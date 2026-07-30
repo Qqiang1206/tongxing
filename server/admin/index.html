@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
   <link rel="icon" type="image/png" href="/assets/images/brand/favicon.png">
-  <link rel="stylesheet" href="./admin.css?v=20260726">
+  <link rel="stylesheet" href="./admin.css?v=20260730a">
   <link rel="stylesheet" href="./admin-design-system.css?v=20260726">
   <link rel="stylesheet" href="./admin-refresh.css?v=20260729">
   <script src="./vendor/tinymce/tinymce.min.js"></script>
@@ -437,18 +437,47 @@
             </div>
           </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="glossary">
-            <div class="glossary-stats" id="glossary-stats"></div>
-            <div class="filter-bar" style="margin-bottom:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-              <input type="search" id="glossary-search" class="select" placeholder="搜索中文 / 英文 / 俄文…" style="flex:1;min-width:200px">
+            <div id="glossary-hero"></div>
+            <div class="filter-bar" style="margin:16px 0 12px">
+              <input class="search" id="glossary-search" type="search" placeholder="搜索中文源文 / 英文 / 俄文译法">
               <select id="glossary-scope" class="select" style="width:auto">
                 <option value="">全部作用域</option>
-                <option value="term">术语</option>
+                <option value="term">内容术语</option>
                 <option value="page-title">页面标题</option>
               </select>
+              <button type="button" class="btn btn-ghost btn-sm" id="glossary-reset">重置</button>
+              <span style="flex:1"></span>
               <button type="button" class="btn btn-primary btn-sm" id="glossary-add-btn">+ 新增术语</button>
             </div>
-            <div class="table-wrap" id="glossary-table"></div>
-            <div class="glossary-pager" id="glossary-pager" style="display:flex;justify-content:center;gap:8px;margin-top:16px"></div>
+            <div class="card table-card">
+              <div class="table-wrap">
+                <table class="data data-table glossary-table" id="glossary-table">
+                  <colgroup>
+                    <col class="col-gl-source">
+                    <col class="col-gl-en">
+                    <col class="col-gl-ru">
+                    <col class="col-gl-scope">
+                    <col class="col-gl-time">
+                    <col class="col-gl-actions">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>中文源文</th>
+                      <th>英文译法</th>
+                      <th>俄文译法</th>
+                      <th>作用域</th>
+                      <th>更新时间</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="table-foot">
+                <span id="glossary-table-foot"></span>
+                <div class="pagination" id="glossary-pagination"></div>
+              </div>
+            </div>
           </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="analytics">
             <p class="page-hint">按日汇总前台页面访问量（PV）。可按日期与语言站筛选，查看趋势和页面排行。</p>
@@ -698,6 +727,6 @@
     </div>
   </div>
 
-  <script src="./admin.js?v=20260723t"></script>
+  <script src="./admin.js?v=20260730a"></script>
 </body>
 </html>
