@@ -462,11 +462,9 @@ a { color: inherit; text-decoration: none; }
 .btn-accent:hover { filter: brightness(1.05); }
 .btn-ghost { background: #fff; border-color: var(--border); color: #5C6370; }
 .btn-ghost:hover { border-color: #ccc; color: var(--txam-dark); }
-.btn-link {
   border: 0; background: transparent; color: var(--txam-orange);
   padding: 0; font-weight: 700; cursor: pointer;
 }
-.btn-link:hover { text-decoration: underline; }
 .btn-danger-text { color: #D14343; }
 
 /* ——— Cards / stats ——— */
@@ -3294,7 +3292,7 @@ body {
 .glossary-table .col-gl-ru { width: 22%; }
 .glossary-table .col-gl-scope { width: 10%; }
 .glossary-table .col-gl-time { width: 12%; }
-.glossary-table .col-gl-actions { width: 12%; }
+.glossary-table .col-gl-actions { width: 8%; }
 .glossary-table .cell-gl-source,
 .glossary-table .cell-gl-en,
 .glossary-table .cell-gl-ru {
@@ -3347,7 +3345,7 @@ body {
 }
 .tx-jobs-table .col-id { width: 3.5rem; }
 .tx-jobs-table .col-time { width: 9.5rem; }
-.backup-table .col-time { width: 10rem; }
+.backup-table .col-time { width: 6rem; }
 .backup-table .col-type { width: 8.5rem; }
 .backup-table .col-size { width: 5.5rem; }
 .backup-table .col-coverage { width: auto; }
@@ -3357,10 +3355,13 @@ body {
 .backup-table .cell-time strong { font-weight: 700; color: var(--txam-dark); }
 
 /* ═══ Account management ═══ */
-.accounts-table .col-acc-user { width: 12%; }
+.accounts-table .col-acc-user { width: 14%; }
 .accounts-table .col-acc-name { width: 12%; }
-.accounts-table .col-acc-role { width: 12%; }
-.accounts-table .col-acc-status { width: 8%; }
-.accounts-table .col-acc-login { width: 18%; }
-.accounts-table .col-acc-actions { width: 16rem; }
-.accounts-table .cell-actions { white-space: nowrap; }
+.accounts-table .col-acc-role { width: 10%; }
+.accounts-table .col-acc-status { width: 6%; }
+.accounts-table .col-acc-login { width: 16%; }
+.accounts-table .col-acc-actions { width: 10%; }
+.btn-table { display: inline-block; padding: 3px 7px; font-size: 12px; font-weight: 600; border: 1px solid transparent; border-radius: 6px; background: transparent; cursor: pointer; color: var(--txam-dark); }
+.btn-table:hover { background: #F5F6F8; border-color: var(--border); }
+.btn-table.danger { color: #D14343; }
+.btn-table.danger:hover { background: #FDF0F0; border-color: #F5C6C6; }

@@ -5252,7 +5252,7 @@
         '<td>' + typeBadge + '</td>' +
         '<td class="cell-num">' + escapeHtml(formatBackupBytes(item.bytes)) + '</td>' +
         '<td>' + escapeHtml(coverage) + '</td>' +
-        '<td class="cell-actions"><button type="button" class="btn btn-ghost btn-sm" data-restore-backup="' + escapeAttr(item.id) + '">恢复此版本</button></td></tr>';
+        '<td class="cell-actions"><button type="button" class="btn-table" data-restore-backup="' + escapeAttr(item.id) + '">恢复此版本</button></td></tr>';
     }).join('');
     tbody.querySelectorAll('[data-restore-backup]').forEach(function (button) {
       button.addEventListener('click', function () {
@@ -5661,8 +5661,8 @@
         '<td class="cell-gl-scope">' + scopeBadge + '</td>' +
         '<td class="cell-time">' + escapeHtml(time || '—') + '</td>' +
         '<td class="cell-gl-actions">' +
-        '<button type="button" class="btn btn-ghost btn-sm glossary-edit" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '" data-en="' + escapeAttr(item.en) + '" data-ru="' + escapeAttr(item.ru) + '">编辑</button> ' +
-        '<button type="button" class="btn btn-ghost btn-sm glossary-del" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '" style="color:#D14343">删除</button>' +
+        '<button type="button" class="btn-table glossary-edit" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '" data-en="' + escapeAttr(item.en) + '" data-ru="' + escapeAttr(item.ru) + '">编辑</button>' +
+        '<button type="button" class="btn-table danger glossary-del" data-source="' + escapeAttr(item.source) + '" data-scope="' + escapeAttr(item.scope) + '">删除</button>' +
         '</td></tr>';
     }).join('');
     tbody.querySelectorAll('.glossary-edit').forEach(function (btn) {
@@ -5823,10 +5823,10 @@
         '<td>' + statusBadge + '</td>' +
         '<td class="cell-time">' + escapeHtml(lastLogin) + '</td>' +
         '<td class="cell-actions" style="white-space:nowrap">' +
-        '<button type="button" class="btn btn-ghost btn-sm acc-edit" data-id="' + a.id + '">编辑</button>' +
+        '<button type="button" class="btn-table acc-edit" data-id="' + a.id + '">编辑</button>' +
         (a.status === 'active'
-          ? '<button type="button" class="btn btn-ghost btn-sm acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '" data-self="' + (isSelf ? '1' : '') + '" style="color:#D14343">停用</button>'
-          : '<button type="button" class="btn btn-ghost btn-sm acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '">启用</button>') +
+          ? '<button type="button" class="btn-table danger acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '" data-self="' + (isSelf ? '1' : '') + '">停用</button>'
+          : '<button type="button" class="btn-table acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '">启用</button>') +
         '</td></tr>';
     }).join('');
     tbody.querySelectorAll('.acc-edit').forEach(function (btn) {
