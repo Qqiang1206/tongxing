@@ -13,9 +13,12 @@ import { cachedPublic } from './services/publicCache.js';
 import { clientIp } from './services/audit.js';
 import { createRateLimiter } from './services/rateLimit.js';
 import { startTranslationScheduler } from './services/translationScheduler.js';
+import { ensureBootstrapAdmin } from './services/adminUsers.js';
 
 // Open SQLite on boot
 getDb();
+// Seed the first super_admin from ADMIN_PASSWORD on a fresh database.
+ensureBootstrapAdmin();
 
 const isProduction = process.env.NODE_ENV === 'production' || process.env.HOST === '127.0.0.1';
 const analyticsRateLimit = createRateLimiter({

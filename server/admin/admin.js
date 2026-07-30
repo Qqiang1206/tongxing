@@ -5,6 +5,31 @@
   var API = '/api/v1';
   var token = sessionStorage.getItem('txam_admin_token') || '';
   var actorName = sessionStorage.getItem('txam_admin_actor') || '';
+  var currentUser = null;
+  try { currentUser = JSON.parse(sessionStorage.getItem('txam_admin_user') || 'null'); } catch (e) { currentUser = null; }
+
+  /** Does the logged-in user hold the given permission? */
+  function can(permission) {
+    return !!(currentUser && currentUser.permissions && currentUser.permissions.indexOf(permission) >= 0);
+  }
+  function setCurrentUser(user) {
+    currentUser = user || null;
+    if (user) {
+      sessionStorage.setItem('txam_admin_user', JSON.stringify(user));
+      actorName = user.displayName || user.username || '';
+      sessionStorage.setItem('txam_admin_actor', actorName);
+    } else {
+      sessionStorage.removeItem('txam_admin_user');
+    }
+  }
+
+  /** Hide any element declaring data-requires="<permission>" the user lacks. */
+  function applyPermissionsToNav() {
+    document.querySelectorAll('[data-requires]').forEach(function (el) {
+      var perm = el.getAttribute('data-requires');
+      el.classList.toggle('hidden', !can(perm));
+    });
+  }
   var state = {
     view: 'dashboard',
     products: [],
@@ -305,10 +330,11 @@
 
   function updateUserChip() {
     var name = actorName || '管理员';
+    var role = currentUser && currentUser.roleLabel ? '（' + currentUser.roleLabel + '）' : '';
     if ($('user-name')) $('user-name').textContent = name;
     if ($('user-avatar')) $('user-avatar').textContent = name.charAt(0) || '管';
-    if ($('sidebar-user')) $('sidebar-user').title = '当前操作人：' + name;
-    if ($('sidebar-user-btn')) $('sidebar-user-btn').title = '退出登录（' + name + '）';
+    if ($('sidebar-user')) $('sidebar-user').title = '当前操作人：' + name + role;
+    if ($('sidebar-user-btn')) $('sidebar-user-btn').title = '退出登录（' + name + role + '）';
   }
 
   var WEEKDAY_LABELS = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
@@ -680,7 +706,9 @@
     } else if (hub === 'solutions') {
       await Promise.all([loadPageForm('solutions'), loadSolutions(), loadCategories()]);
     } else if (hub === 'system') {
-      await Promise.all([loadTranslation(), loadGlossary(), loadAnalytics(), loadAudit(), loadBackups()]);
+      var tasks = [loadTranslation(), loadGlossary(), loadAnalytics(), loadAudit(), loadBackups()];
+      if (can('account.manage')) tasks.push(loadAccounts());
+      await Promise.all(tasks);
     }
     updateHubCount(hub);
   }
@@ -5299,7 +5327,9 @@
       });
       token = data.token;
       sessionStorage.setItem('txam_admin_token', token);
+      setCurrentUser(data.user || { displayName: data.actor || name, permissions: [] });
       setActor(data.actor || name);
+      applyPermissionsToNav();
       $('login-msg').textContent = '';
       showLogin(false);
       history.replaceState(null, '', location.pathname + location.search);
@@ -5374,6 +5404,7 @@
         if (tab === 'analytics') loadAnalytics().catch(function (e) { toast(e.message, true); });
         if (tab === 'audit') loadAudit().catch(function (e) { toast(e.message, true); });
         if (tab === 'backup') loadBackups().catch(function (e) { toast(e.message, true); });
+        if (tab === 'accounts') loadAccounts().catch(function (e) { toast(e.message, true); });
       }
     });
   });
@@ -5515,6 +5546,18 @@
   bindDashboardScrollSync();
   bindListCategoryTabs();
   bindGlossary();
+  bindAccounts();
+
+  // Restore user session from persisted token (refresh resilience).
+  if (token && !currentUser) {
+    api('/admin/me').then(function (data) {
+      if (data && data.user) { setCurrentUser(data.user); updateUserChip(); applyPermissionsToNav(); }
+    }).catch(function () {
+      // Token expired / server restart — login page will show on next protected call.
+    });
+  } else if (currentUser) {
+    applyPermissionsToNav();
+  }
 
   if (token) {
     updateUserChip();
@@ -5703,6 +5746,192 @@
       api('/admin/glossary', { method: 'PUT', body: JSON.stringify(body) })
         .then(function () { toast('已保存'); close(); loadGlossary(); })
         .catch(function (e) { toast(e.message, true); });
+    });
+  }
+
+  /* ═══════ Account management (super_admin) ═══════ */
+
+  function bindAccounts() {
+    if ($('account-add-btn')) {
+      $('account-add-btn').addEventListener('click', function () { openAccountEditor(null); });
+    }
+  }
+
+  var accountRoles = [];
+
+  function roleLabelClient(key) {
+    for (var i = 0; i < accountRoles.length; i++) {
+      if (accountRoles[i].key === key) return accountRoles[i].label;
+    }
+    return key;
+  }
+
+  function loadAccounts() {
+    return Promise.all([
+      api('/admin/accounts'),
+      accountRoles.length ? Promise.resolve({ roles: accountRoles }) : api('/admin/roles'),
+    ]).then(function (results) {
+      accountRoles = results[1].roles || accountRoles;
+      var accounts = results[0].accounts || [];
+      renderAccountsHero(accounts);
+      renderAccountsTable(accounts);
+    });
+  }
+
+  function renderAccountsHero(accounts) {
+    var el = $('accounts-hero');
+    if (!el) return;
+    var active = accounts.filter(function (a) { return a.status === 'active'; }).length;
+    var supers = accounts.filter(function (a) { return a.role === 'super_admin' && a.status === 'active'; }).length;
+    el.innerHTML =
+      '<div class="tx-hero">' +
+      '<div class="tx-hero-main">' +
+      '<p class="tx-hero-kicker">身份与权限</p>' +
+      '<h3 class="tx-hero-title">后台账号管理</h3>' +
+      '<p class="tx-hero-sub">为团队成员创建独立账号并分配角色；不同角色可见与可操作的功能不同。</p>' +
+      '<div class="tx-usage-row">' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + accounts.length + '</span><span class="tx-usage-label">账号总数</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + active + '</span><span class="tx-usage-label">启用中</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + supers + '</span><span class="tx-usage-label">超级管理员</span></div>' +
+      '</div>' +
+      '</div></div>';
+  }
+
+  function renderAccountsTable(accounts) {
+    var tbody = $('accounts-table') && $('accounts-table').querySelector('tbody');
+    if (!tbody) return;
+    if ($('accounts-table-foot')) $('accounts-table-foot').textContent = accounts.length ? '共 ' + accounts.length + ' 个账号' : '暂无账号';
+    if (!accounts.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">暂无账号</td></tr>';
+      return;
+    }
+    var me = currentUser && currentUser.username;
+    tbody.innerHTML = accounts.map(function (a) {
+      var statusBadge = a.status === 'active'
+        ? '<span class="badge badge-ok">启用</span>'
+        : '<span class="badge badge-draft">停用</span>';
+      var isSelf = a.username === me;
+      var lastLogin = a.lastLoginAt ? String(a.lastLoginAt).replace('T', ' ').slice(0, 16) : '从未登录';
+      return '<tr>' +
+        '<td><strong>' + escapeHtml(a.username) + '</strong>' + (isSelf ? ' <span class="badge badge-stale">我</span>' : '') + '</td>' +
+        '<td>' + escapeHtml(a.displayName || '—') + '</td>' +
+        '<td>' + escapeHtml(roleLabelClient(a.role)) + '</td>' +
+        '<td>' + statusBadge + '</td>' +
+        '<td class="cell-time">' + escapeHtml(lastLogin) + '</td>' +
+        '<td class="cell-actions" style="white-space:nowrap">' +
+        '<button type="button" class="btn btn-ghost btn-sm acc-edit" data-id="' + a.id + '">编辑</button> ' +
+        '<button type="button" class="btn btn-ghost btn-sm acc-reset" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '">重置密码</button> ' +
+        (a.status === 'active'
+          ? '<button type="button" class="btn btn-ghost btn-sm acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '" data-self="' + (isSelf ? '1' : '') + '" style="color:#D14343">停用</button>'
+          : '<button type="button" class="btn btn-ghost btn-sm acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '">启用</button>') +
+        '</td></tr>';
+    }).join('');
+    tbody.querySelectorAll('.acc-edit').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var acc = accounts.filter(function (a) { return String(a.id) === btn.getAttribute('data-id'); })[0];
+        openAccountEditor(acc);
+      });
+    });
+    tbody.querySelectorAll('.acc-reset').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openResetPassword(btn.getAttribute('data-id'), btn.getAttribute('data-user'));
+      });
+    });
+    tbody.querySelectorAll('.acc-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        var user = btn.getAttribute('data-user');
+        if (btn.getAttribute('data-self') === '1') { toast('不能停用自己的账号', true); return; }
+        var disabling = btn.textContent === '停用';
+        if (disabling && !confirm('确定停用账号「' + user + '」？停用后该账号无法登录。')) return;
+        api('/admin/accounts/' + id, { method: 'PUT', body: JSON.stringify({ status: disabling ? 'disabled' : 'active' }) })
+          .then(function () { toast(disabling ? '已停用' : '已启用'); loadAccounts(); })
+          .catch(function (e) { toast(accountErrorMessage(e), true); });
+      });
+    });
+  }
+
+  function accountErrorMessage(e) {
+    var map = {
+      invalid_username: '账号格式无效（2-32 位字母数字）',
+      username_taken: '账号已存在',
+      weak_password: '密码至少 6 位',
+      invalid_role: '角色无效',
+      last_super_admin: '不能取消最后一个超级管理员',
+      cannot_disable_self: '不能停用自己的账号',
+    };
+    return map[e && e.message] || (e && e.message) || '操作失败';
+  }
+
+  function roleOptions(selected) {
+    return accountRoles.map(function (r) {
+      return '<option value="' + r.key + '"' + (r.key === selected ? ' selected' : '') + '>' + escapeHtml(r.label) + ' — ' + escapeHtml(r.desc) + '</option>';
+    }).join('');
+  }
+
+  function openAccountEditor(account) {
+    var isNew = !account;
+    var overlay = document.createElement('div');
+    overlay.className = 'gl-modal-overlay';
+    overlay.innerHTML =
+      '<div class="gl-modal">' +
+      '<div class="gl-modal-head"><h3>' + (isNew ? '新增账号' : '编辑账号') + '</h3>' +
+      '<button type="button" class="btn btn-ghost btn-sm gl-close" aria-label="关闭">✕</button></div>' +
+      '<div class="gl-modal-body">' +
+      '<div class="field"><label>账号 *</label>' +
+      '<input type="text" id="acc-username" class="input" value="' + escapeAttr(isNew ? '' : account.username) + '"' + (isNew ? '' : ' readonly style="opacity:.6"') + ' placeholder="2-32 位字母数字"></div>' +
+      '<div class="field"><label>显示名</label>' +
+      '<input type="text" id="acc-display" class="input" value="' + escapeAttr(isNew ? '' : account.displayName) + '"></div>' +
+      (isNew ? '<div class="field"><label>密码 *（至少 6 位）</label><input type="password" id="acc-password" class="input"></div>' : '') +
+      '<div class="field"><label>角色</label><select id="acc-role" class="select">' + roleOptions(isNew ? 'editor' : account.role) + '</select></div>' +
+      '</div>' +
+      '<div class="gl-modal-foot">' +
+      '<button type="button" class="btn btn-ghost gl-close">取消</button>' +
+      '<button type="button" class="btn btn-primary" id="acc-save">保存</button>' +
+      '</div></div>';
+    document.body.appendChild(overlay);
+    function close() { overlay.remove(); }
+    overlay.querySelectorAll('.gl-close').forEach(function (b) { b.addEventListener('click', close); });
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+    $('acc-username').focus();
+    $('acc-save').addEventListener('click', function () {
+      var body = { displayName: $('acc-display').value.trim(), role: $('acc-role').value };
+      var promise;
+      if (isNew) {
+        body.username = $('acc-username').value.trim();
+        body.password = $('acc-password').value;
+        promise = api('/admin/accounts', { method: 'POST', body: JSON.stringify(body) });
+      } else {
+        promise = api('/admin/accounts/' + account.id, { method: 'PUT', body: JSON.stringify(body) });
+      }
+      promise.then(function () { toast('已保存'); close(); loadAccounts(); })
+        .catch(function (e) { toast(accountErrorMessage(e), true); });
+    });
+  }
+
+  function openResetPassword(id, username) {
+    var overlay = document.createElement('div');
+    overlay.className = 'gl-modal-overlay';
+    overlay.innerHTML =
+      '<div class="gl-modal">' +
+      '<div class="gl-modal-head"><h3>重置密码 · ' + escapeHtml(username) + '</h3>' +
+      '<button type="button" class="btn btn-ghost btn-sm gl-close" aria-label="关闭">✕</button></div>' +
+      '<div class="gl-modal-body">' +
+      '<div class="field"><label>新密码（至少 6 位）</label><input type="password" id="rp-password" class="input"></div>' +
+      '</div>' +
+      '<div class="gl-modal-foot">' +
+      '<button type="button" class="btn btn-ghost gl-close">取消</button>' +
+      '<button type="button" class="btn btn-primary" id="rp-save">重置</button>' +
+      '</div></div>';
+    document.body.appendChild(overlay);
+    function close() { overlay.remove(); }
+    overlay.querySelectorAll('.gl-close').forEach(function (b) { b.addEventListener('click', close); });
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+    $('rp-password').focus();
+    $('rp-save').addEventListener('click', function () {
+      api('/admin/accounts/' + id, { method: 'PUT', body: JSON.stringify({ password: $('rp-password').value }) })
+        .then(function () { toast('密码已重置'); close(); })
+        .catch(function (e) { toast(accountErrorMessage(e), true); });
     });
   }
 })();

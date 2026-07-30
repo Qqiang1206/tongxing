@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
   <link rel="icon" type="image/png" href="/assets/images/brand/favicon.png">
-  <link rel="stylesheet" href="./admin.css?v=20260730c">
+  <link rel="stylesheet" href="./admin.css?v=20260730d">
   <link rel="stylesheet" href="./admin-design-system.css?v=20260726">
   <link rel="stylesheet" href="./admin-refresh.css?v=20260729">
   <script src="./vendor/tinymce/tinymce.min.js"></script>
@@ -409,11 +409,14 @@
                 <button type="button" class="hub-tab" data-hub-tab="analytics" role="tab" aria-selected="false">
                   <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>访问概况</strong><small>查看页面访问量与热门排行</small></span>
                 </button>
-                <button type="button" class="hub-tab" data-hub-tab="audit" role="tab" aria-selected="false">
+                <button type="button" class="hub-tab" data-hub-tab="audit" data-requires="audit.read" role="tab" aria-selected="false">
                   <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>操作记录</strong><small>查询登录和内容修改记录</small></span>
                 </button>
-                <button type="button" class="hub-tab" data-hub-tab="backup" role="tab" aria-selected="false">
+                <button type="button" class="hub-tab" data-hub-tab="backup" data-requires="backup.read" role="tab" aria-selected="false">
                   <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>备份与恢复</strong><small>保护网站内容和上传图片</small></span>
+                </button>
+                <button type="button" class="hub-tab" data-hub-tab="accounts" data-requires="account.manage" role="tab" aria-selected="false">
+                  <span class="section-marker" aria-hidden="true"></span><span class="section-nav-copy"><strong>账号管理</strong><small>后台账号与角色权限</small></span>
                 </button>
               </div>
             </aside>
@@ -650,6 +653,28 @@
               <div class="table-foot"><span id="backup-list-foot"></span></div>
             </div>
           </div>
+          <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="accounts">
+            <div id="accounts-hero"></div>
+            <div class="filter-bar" style="margin:16px 0 12px">
+              <span class="field-help" style="margin:0">账号用于区分操作人员并控制权限；密码以密文存储，停用后无法登录。</span>
+              <span style="flex:1"></span>
+              <button type="button" class="btn btn-primary btn-sm" id="account-add-btn">+ 新增账号</button>
+            </div>
+            <div class="card table-card">
+              <div class="table-wrap">
+                <table class="data data-table accounts-table" id="accounts-table">
+                  <colgroup>
+                    <col class="col-acc-user"><col class="col-acc-name"><col class="col-acc-role"><col class="col-acc-status"><col class="col-acc-login"><col class="col-acc-actions">
+                  </colgroup>
+                  <thead>
+                    <tr><th>账号</th><th>显示名</th><th>角色</th><th>状态</th><th>最近登录</th><th>操作</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="table-foot"><span id="accounts-table-foot"></span></div>
+            </div>
+          </div>
             </div>
           </div>
         </section>
@@ -749,6 +774,6 @@
     </div>
   </div>
 
-  <script src="./admin.js?v=20260730c"></script>
+  <script src="./admin.js?v=20260730d"></script>
 </body>
 </html>

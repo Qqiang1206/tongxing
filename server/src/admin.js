@@ -53,6 +53,19 @@ import { getHomeSlotsStatus } from './services/homeSlots.js';
 import { createBackup, ensureAutoBackup, listBackups, restoreBackup } from './services/backup.js';
 import { generateSitemap } from './services/sitemap.js';
 import { getDb } from './db.js';
+import {
+  authenticate,
+  listAdminUsers,
+  getAdminUserById,
+  createAdminUser,
+  updateAdminUser,
+  resetAdminPassword,
+  hasPermission,
+  roleLabel,
+  ROLES,
+  ROLE_KEYS,
+  verifyPassword,
+} from './services/adminUsers.js';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const ADMIN_SESSION_TTL_MS = Math.max(
@@ -74,10 +87,18 @@ function passwordMatches(candidate) {
   return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
 }
 
-function createAdminSession(actor) {
+function createAdminSession(user) {
   const token = crypto.randomBytes(32).toString('base64url');
   const expiresAt = Date.now() + ADMIN_SESSION_TTL_MS;
-  adminSessions.set(token, { actor: actor || '管理员', expiresAt });
+  adminSessions.set(token, {
+    user: {
+      id: user.id,
+      username: user.username,
+      displayName: user.displayName || user.username,
+      role: user.role,
+    },
+    expiresAt,
+  });
   return { token, expiresAt: new Date(expiresAt).toISOString() };
 }
 
@@ -172,11 +193,39 @@ function clearLoginFailures(req) {
 }
 
 function authOk(req) {
-  if (!ADMIN_PASSWORD) return false;
   cleanExpiredSessions();
   const token = bearerToken(req);
   const session = adminSessions.get(token);
-  return !!session && session.expiresAt > Date.now();
+  return !!session && !!session.user && session.expiresAt > Date.now();
+}
+
+/** The authenticated user object { id, username, displayName, role } or null. */
+function currentUser(req) {
+  cleanExpiredSessions();
+  const session = adminSessions.get(bearerToken(req));
+  return session && session.expiresAt > Date.now() ? session.user : null;
+}
+
+/** Does the current user hold the given permission? */
+function can(req, permission) {
+  const user = currentUser(req);
+  return !!user && hasPermission(user.role, permission);
+}
+
+/**
+ * Auth + permission guard. Sends 401/403 and returns false when denied.
+ * Usage: if (!guard(req, res, origin, sendJson, 'content.write')) return true;
+ */
+function guard(req, res, origin, sendJson, permission) {
+  if (!authOk(req)) {
+    sendJson(res, 401, { error: 'unauthorized' }, origin);
+    return false;
+  }
+  if (permission && !can(req, permission)) {
+    sendJson(res, 403, { error: 'forbidden', required: permission }, origin);
+    return false;
+  }
+  return true;
 }
 
 export function writePageJson(pageKey, lang, data) {
@@ -235,13 +284,18 @@ function adminErrorStatus(message) {
     message === 'invalid_category_key' ||
     message === 'missing_category_name' ||
     message === 'category_in_use' ||
+    message === 'invalid_username' ||
+    message === 'weak_password' ||
+    message === 'invalid_role' ||
+    message === 'cannot_disable_self' ||
+    message === 'cannot_delete_self' ||
     String(message || '').startsWith('translation_api_error')
   ) {
     return 400;
   }
   if (message === 'not_found' || message === 'backup_not_found') return 404;
   if (message === 'invalid_backup_id') return 400;
-  if (message === 'backup_in_progress' || message === 'home_slot_full' || message === 'unpublish_needs_replace' || message === 'protected_media') return 409;
+  if (message === 'backup_in_progress' || message === 'home_slot_full' || message === 'unpublish_needs_replace' || message === 'protected_media' || message === 'username_taken' || message === 'last_super_admin') return 409;
   return 500;
 }
 
@@ -454,11 +508,6 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
 }
 
 export async function handleAdmin(req, res, pathname, origin, sendJson) {
-  if (!ADMIN_PASSWORD) {
-    sendJson(res, 503, { error: 'admin_disabled', message: 'Set ADMIN_PASSWORD env' }, origin);
-    return true;
-  }
-
   if (pathname === '/api/v1/admin/login' && req.method === 'POST') {
     try {
       if (loginRateLimited(req)) {
@@ -466,30 +515,51 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         return true;
       }
       const body = await readBody(req);
-      const actor = body.actor || body.operator || body.name || '';
-      if (!passwordMatches(body.password)) {
+      const username = String(body.actor || body.username || body.operator || body.name || '').trim();
+      const password = body.password || '';
+
+      // Primary: authenticate against admin_users.
+      let user = authenticate(username, password);
+
+      // Transition fallback: the legacy shared ADMIN_PASSWORD still grants the
+      // bootstrap super_admin account, so existing deployments keep working.
+      if (!user && ADMIN_PASSWORD && passwordMatches(password)) {
+        const db = getDb();
+        const row = db.prepare(
+          `SELECT * FROM admin_users WHERE role = 'super_admin' AND status = 'active' ORDER BY id LIMIT 1`
+        ).get();
+        if (row) {
+          db.prepare(`UPDATE admin_users SET last_login_at = datetime('now') WHERE id = ?`).run(row.id);
+          user = {
+            id: row.id, username: row.username,
+            displayName: row.display_name, role: row.role,
+          };
+        }
+      }
+
+      if (!user) {
         recordLoginFailure(req);
         writeAudit({
           req,
-          actor,
+          actor: username || undefined,
           action: 'login.fail',
           resource: 'auth',
-          summary: actor ? `登录失败（${String(actor).slice(0, 40)}）` : '登录失败',
+          summary: username ? `登录失败（${username.slice(0, 40)}）` : '登录失败',
           ok: false,
         });
         sendJson(res, 401, { error: 'unauthorized' }, origin);
         return true;
       }
+
       clearLoginFailures(req);
-      const safeActor = String(actor || '').trim().slice(0, 40) || undefined;
       writeAudit({
         req,
-        actor: safeActor,
+        actor: user.displayName || user.username,
         action: 'login.ok',
         resource: 'auth',
-        summary: safeActor ? `${safeActor} 登录成功` : '登录成功',
+        summary: `${user.displayName || user.username} 登录成功`,
       });
-      const session = createAdminSession(safeActor);
+      const session = createAdminSession(user);
       sendJson(
         res,
         200,
@@ -497,7 +567,15 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
           token: session.token,
           expiresAt: session.expiresAt,
           sourceLang: 'zh',
-          actor: safeActor || '管理员',
+          actor: user.displayName || user.username,
+          user: {
+            id: user.id,
+            username: user.username,
+            displayName: user.displayName || user.username,
+            role: user.role,
+            roleLabel: roleLabel(user.role),
+            permissions: [...(ROLES[user.role] ? ROLES[user.role].permissions : [])],
+          },
         },
         origin
       );
@@ -515,6 +593,20 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     return true;
   }
 
+  // A personal "who am I" endpoint so the frontend can restore role/permissions on refresh.
+  if (pathname === '/api/v1/admin/me' && req.method === 'GET') {
+    const user = currentUser(req);
+    if (!user) { sendJson(res, 401, { error: 'unauthorized' }, origin); return true; }
+    sendJson(res, 200, {
+      user: {
+        id: user.id, username: user.username, displayName: user.displayName,
+        role: user.role, roleLabel: roleLabel(user.role),
+        permissions: [...(ROLES[user.role] ? ROLES[user.role].permissions : [])],
+      },
+    }, origin);
+    return true;
+  }
+
   if (pathname === '/api/v1/admin/logout' && req.method === 'POST') {
     const token = bearerToken(req);
     if (token) adminSessions.delete(token);
@@ -523,8 +615,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/backups' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'backup.read')) {
       return true;
     }
     const items = listBackups();
@@ -533,8 +624,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/backups' && req.method === 'POST') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'backup.write')) {
       return true;
     }
     try {
@@ -556,8 +646,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const restoreMatch = pathname.match(/^\/api\/v1\/admin\/backups\/([^/]+)\/restore$/);
   if (restoreMatch && req.method === 'POST') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'backup.write')) {
       return true;
     }
     try {
@@ -586,8 +675,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     }
   }
   if (pathname === '/api/v1/admin/audit-logs' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'audit.read')) {
       return true;
     }
     const url = new URL(req.url || '/', 'http://localhost');
@@ -604,8 +692,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const auditOneMatch = pathname.match(/^\/api\/v1\/admin\/audit-logs\/(\d+)$/);
   if (auditOneMatch && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'audit.read')) {
       return true;
     }
     const item = getAuditLog(auditOneMatch[1]);
@@ -618,8 +705,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/translation-status' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'translation.read')) {
       return true;
     }
     sendJson(res, 200, readTranslationStatus(), origin);
@@ -627,8 +713,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/translation-jobs' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'translation.read')) {
       return true;
     }
     sendJson(res, 200, listTranslationJobs(), origin);
@@ -636,8 +721,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/translation-config' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'translation.read')) {
       return true;
     }
     // Strip apiKey before sending to client
@@ -649,8 +733,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   // --- Translation engine management ---
 
   if (pathname === '/api/v1/admin/translation-engines' && (req.method === 'GET' || req.method === 'POST')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, req.method === 'GET' ? 'translation.read' : 'translation.write')) {
       return true;
     }
     if (req.method === 'GET') {
@@ -686,8 +769,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const engineMatch = pathname.match(/^\/api\/v1\/admin\/translation-engines\/([^/]+)(?:\/(activate))?$/);
   if (engineMatch) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'translation.read')) {
       return true;
     }
     const engineId = engineMatch[1];
@@ -758,8 +840,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   // --- Translation API usage log (read-only observability) ---
 
   if (pathname === '/api/v1/admin/translation-api-logs' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'translation.read')) {
       return true;
     }
     const url = new URL(req.url || '/', 'http://localhost');
@@ -770,8 +851,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/translation-api-usage' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'translation.read')) {
       return true;
     }
     sendJson(res, 200, getApiUsageStats(), origin);
@@ -779,7 +859,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/glossary' && req.method === 'GET') {
-    if (!authOk(req)) { sendJson(res, 401, { error: 'unauthorized' }, origin); return true; }
+    if (!guard(req, res, origin, sendJson, 'translation.read')) { return true; }
     const u = new URL(req.url, 'http://localhost');
     const q = (u.searchParams.get('q') || '').trim().toLowerCase();
     const scope = u.searchParams.get('scope') || '';
@@ -817,7 +897,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/glossary' && req.method === 'PUT') {
-    if (!authOk(req)) { sendJson(res, 401, { error: 'unauthorized' }, origin); return true; }
+    if (!guard(req, res, origin, sendJson, 'translation.write')) { return true; }
     const body = await readBody(req);
     const source = String(body.source || '').trim();
     if (!source) { sendJson(res, 400, { error: 'missing_source' }, origin); return true; }
@@ -838,7 +918,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/glossary' && req.method === 'DELETE') {
-    if (!authOk(req)) { sendJson(res, 401, { error: 'unauthorized' }, origin); return true; }
+    if (!guard(req, res, origin, sendJson, 'translation.write')) { return true; }
     const u = new URL(req.url, 'http://localhost');
     const source = (u.searchParams.get('source') || '').trim();
     const scope = u.searchParams.get('scope') || 'term';
@@ -851,10 +931,81 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
     return true;
   }
 
+  /* ── Account management (super_admin only) ── */
+
+  if (pathname === '/api/v1/admin/roles' && req.method === 'GET') {
+    if (!guard(req, res, origin, sendJson, 'account.manage')) return true;
+    const roles = ROLE_KEYS.map((key) => ({
+      key,
+      label: ROLES[key].label,
+      desc: ROLES[key].desc,
+      permissions: [...ROLES[key].permissions],
+    }));
+    sendJson(res, 200, { roles }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/accounts' && req.method === 'GET') {
+    if (!guard(req, res, origin, sendJson, 'account.manage')) return true;
+    sendJson(res, 200, { accounts: listAdminUsers() }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/accounts' && req.method === 'POST') {
+    if (!guard(req, res, origin, sendJson, 'account.manage')) return true;
+    try {
+      const body = await readBody(req);
+      const me = currentUser(req);
+      const account = createAdminUser({
+        username: body.username,
+        displayName: body.displayName,
+        password: body.password,
+        role: body.role || 'editor',
+        createdBy: me ? me.username : '',
+      });
+      writeAudit({ req, action: 'account.create', resource: 'account', resourceId: String(account.id), summary: `新建账号 ${account.username}（${roleLabel(account.role)}）` });
+      sendJson(res, 201, { ok: true, account }, origin);
+    } catch (err) {
+      sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
+    }
+    return true;
+  }
+
+  const accountMatch = pathname.match(/^\/api\/v1\/admin\/accounts\/(\d+)$/);
+  if (accountMatch) {
+    if (!guard(req, res, origin, sendJson, 'account.manage')) return true;
+    const id = Number(accountMatch[1]);
+    const me = currentUser(req);
+    if (req.method === 'PUT') {
+      try {
+        const body = await readBody(req);
+        const account = updateAdminUser(id, body, me ? me.username : '');
+        writeAudit({ req, action: 'account.update', resource: 'account', resourceId: String(id), summary: `更新账号 ${account.username}` });
+        sendJson(res, 200, { ok: true, account }, origin);
+      } catch (err) {
+        sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
+      }
+      return true;
+    }
+    if (req.method === 'DELETE') {
+      try {
+        const target = getAdminUserById(id);
+        if (!target) { sendJson(res, 404, { error: 'not_found' }, origin); return true; }
+        if (me && target.username === me.username) { sendJson(res, 400, { error: 'cannot_delete_self' }, origin); return true; }
+        // Reuse disable path: deleting == disabling (soft). Hard delete not exposed.
+        const account = updateAdminUser(id, { status: 'disabled' }, me ? me.username : '');
+        writeAudit({ req, action: 'account.disable', resource: 'account', resourceId: String(id), summary: `停用账号 ${account.username}` });
+        sendJson(res, 200, { ok: true, account }, origin);
+      } catch (err) {
+        sendJson(res, adminErrorStatus(err.message), { error: safeAdminMessage(err) }, origin);
+      }
+      return true;
+    }
+  }
+
   const jobMatch = pathname.match(/^\/api\/v1\/admin\/translation-jobs\/([^/]+)(?:\/(run|apply))?$/);
   if (jobMatch) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, req.method === 'GET' ? 'translation.read' : 'translation.write')) {
       return true;
     }
     const jobId = jobMatch[1];
@@ -874,8 +1025,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/home-slots' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.read')) {
       return true;
     }
     sendJson(res, 200, getHomeSlotsStatus(), origin);
@@ -883,8 +1033,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/site' && (req.method === 'GET' || req.method === 'PUT')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, req.method === 'GET' ? 'content.read' : 'content.write')) {
       return true;
     }
     if (req.method === 'GET') {
@@ -918,8 +1067,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/media' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'media.read')) {
       return true;
     }
     sendJson(res, 200, { items: listUploadedMedia() }, origin);
@@ -927,8 +1075,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/media' && req.method === 'POST') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'media.write')) {
       return true;
     }
     try {
@@ -964,8 +1111,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const mediaItemMatch = pathname.match(/^\/api\/v1\/admin\/media\/([^/]+)$/);
   if (mediaItemMatch) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'media.read')) {
       return true;
     }
     const mediaId = decodeURIComponent(mediaItemMatch[1]);
@@ -1024,8 +1170,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const catalogListMatch = pathname.match(/^\/api\/v1\/admin\/(products|news|solutions)$/);
   if (catalogListMatch && (req.method === 'GET' || req.method === 'POST')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, req.method === 'GET' ? 'content.read' : 'content.write')) {
       return true;
     }
     return handleCatalogAdmin(req, res, catalogListMatch[1], null, origin, sendJson);
@@ -1033,8 +1178,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const catalogItemMatch = pathname.match(/^\/api\/v1\/admin\/(products|news|solutions)\/([^/]+)$/);
   if (catalogItemMatch && (req.method === 'GET' || req.method === 'PUT' || req.method === 'DELETE')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, req.method === 'GET' ? 'content.read' : 'content.write')) {
       return true;
     }
     return handleCatalogAdmin(req, res, catalogItemMatch[1], catalogItemMatch[2], origin, sendJson);
@@ -1042,8 +1186,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const pageMatch = pathname.match(/^\/api\/v1\/admin\/pages\/([^/]+)$/);
   if (pageMatch && (req.method === 'GET' || req.method === 'PUT')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, req.method === 'GET' ? 'content.read' : 'content.write')) {
       return true;
     }
     const pageKey = pageMatch[1];
@@ -1094,8 +1237,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/categories' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.read')) {
       return true;
     }
     sendJson(res, 200, getCategoriesBundle(), origin);
@@ -1103,8 +1245,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/categories/products' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.read')) {
       return true;
     }
     sendJson(res, 200, { items: listProductCategories() }, origin);
@@ -1112,8 +1253,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/categories/news' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.read')) {
       return true;
     }
     sendJson(res, 200, { items: listNewsCategories() }, origin);
@@ -1121,8 +1261,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/categories/products' && req.method === 'POST') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.write')) {
       return true;
     }
     try {
@@ -1143,8 +1282,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/categories/news' && req.method === 'POST') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.write')) {
       return true;
     }
     try {
@@ -1166,8 +1304,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const catProductMatch = pathname.match(/^\/api\/v1\/admin\/categories\/products\/([^/]+)$/);
   if (catProductMatch && (req.method === 'PUT' || req.method === 'DELETE')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.write')) {
       return true;
     }
     const key = decodeURIComponent(catProductMatch[1]);
@@ -1203,8 +1340,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const catNewsMatch = pathname.match(/^\/api\/v1\/admin\/categories\/news\/([^/]+)$/);
   if (catNewsMatch && (req.method === 'PUT' || req.method === 'DELETE')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.write')) {
       return true;
     }
     const key = decodeURIComponent(catNewsMatch[1]);
@@ -1239,8 +1375,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/categories/solutions' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.read')) {
       return true;
     }
     sendJson(res, 200, { items: listSolutionCategories() }, origin);
@@ -1248,8 +1383,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/categories/solutions' && req.method === 'POST') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.write')) {
       return true;
     }
     try {
@@ -1271,8 +1405,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
   const catSolutionMatch = pathname.match(/^\/api\/v1\/admin\/categories\/solutions\/([^/]+)$/);
   if (catSolutionMatch && (req.method === 'PUT' || req.method === 'DELETE')) {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.write')) {
       return true;
     }
     const key = decodeURIComponent(catSolutionMatch[1]);
@@ -1307,8 +1440,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/analytics/summary' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'analytics.read')) {
       return true;
     }
     sendJson(res, 200, getAnalyticsSummary(), origin);
@@ -1316,8 +1448,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/analytics/report' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'analytics.read')) {
       return true;
     }
     const url = new URL(req.url || '/', 'http://localhost');
@@ -1332,8 +1463,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
   }
 
   if (pathname === '/api/v1/admin/dashboard/recent-updates' && req.method === 'GET') {
-    if (!authOk(req)) {
-      sendJson(res, 401, { error: 'unauthorized' }, origin);
+    if (!guard(req, res, origin, sendJson, 'content.read')) {
       return true;
     }
     const url = new URL(req.url || '/', 'http://localhost');
