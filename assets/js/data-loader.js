@@ -6,6 +6,11 @@
 
 (function (global) {
 
+  // Static-first: by default the front-end reads data/*.js globals (with
+  // data/*.json fallback), NOT the runtime API. Set window.__TXAM_API_BASE
+  // to a URL string on a page to opt that page into API/DB mode.
+  if (typeof global.__TXAM_API_BASE === 'undefined') global.__TXAM_API_BASE = false;
+
   function inLangDir() {
 
     return /\/(en|ru)(\/|$)/i.test((location.pathname || '').replace(/\\/g, '/'));
@@ -86,8 +91,8 @@
   }
 
   /**
-   * Public pages are static-data first. An explicit window.__TXAM_API_BASE
-   * enables API mode when needed; omitting it avoids a blocking health probe.
+   * Public pages are static-data first. API mode is only used when
+   * window.__TXAM_API_BASE is explicitly set to a URL string.
    */
   async function ensureApiBase() {
     if (global.__TXAM_API_BASE === false) return '';
@@ -98,7 +103,7 @@
 
    * Load catalog data for detail pages.
 
-   * Uses API when available (auto-detect or window.__TXAM_API_BASE).
+   * Uses API only when window.__TXAM_API_BASE is explicitly set; otherwise static data.
 
    * @param {'products'|'solutions'|'news'} kind
 

@@ -29,7 +29,7 @@ Static front-end shells (`/`, `/en/`, `/ru/`) stay as HTML + CSS; **content** co
 | `news-detail.html` | `news` | `id`, `category`, `title`, `date`, `cover`, `contentHtml`, `published`, **`homeFeatured`** |
 | `index.html` | `pages/home` + solutions + news | 文案来自 `pages/home`；标杆/精选方案与精选新闻来自目录字段（见 §3） |
 
-Loader: `TXAM.loadData(kind, lang)` in `assets/js/data-loader.js` — auto-probes `/api/v1` on http(s), or set `window.__TXAM_API_BASE`.
+Loader: `TXAM.loadData(kind, lang)` in `assets/js/data-loader.js` — static-first (reads `data/*.js` / JSON); set `window.__TXAM_API_BASE='/api/v1'` to opt into API mode.
 
 ### B. Front-end content wiring (done)
 

@@ -142,7 +142,7 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 - [x] `/solutions.html` 方案矩阵由目录数据渲染（仅已发布）
 - [x] 方案落地页（如 `tv-display-solution.html`）
 - [x] `/en/`、`/ru/` 对应页与语言切换 — 关键页 HTTP 200（8 URL）
-- [x] 同域有后端时自动走 `/api/v1`（Network 可见）；无后端时静态 fallback — `ensureApiBase` 代码存在；浏览器 Network 需肉眼确认
+- [x] 默认静态优先（读 `data/*.js` / JSON）；显式设置 `window.__TXAM_API_BASE` 后走 `/api/v1` — `ensureApiBase` 代码存在；浏览器 Network 需肉眼确认
 - [x] `/admin/` 登录；产品/方案/新闻可发布与**下架**；占用首页坑位下架须选替代；「操作日志」可见写操作与登录
 - [x] 媒体上传一张图，路径可复制使用 — 返回 `assets/images/uploads/…png`
 - [x] `GET /api/v1/health` 返回 ok；`GET /api/v1/admin/home-slots` 显示 1+2+2 占用

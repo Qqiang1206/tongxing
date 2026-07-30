@@ -16,6 +16,7 @@
     "import:reset": "node scripts/import-from-json.js --reset",
     "import:media": "node scripts/import-site-images-to-media.js",
     "migrate:uploads": "node scripts/migrate-upload-variants.js",
-    "setup": "node scripts/import-from-json.js"
+    "setup": "node scripts/import-from-json.js",
+    "sync:static": "node scripts/sync-static-from-db.js"
   }
 }

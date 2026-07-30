@@ -42,7 +42,7 @@ See [DESIGN.md](DESIGN.md) for colors, type scale, spacing, components, and page
 
 ## Backend path
 
-见 [server/README.md](server/README.md)。同源 http(s) 下前台会自动探测 `/api/v1`；失败则回退 `data/*.js` / JSON。
+见 [server/README.md](server/README.md)。前台默认读静态 `data/*.js` / JSON（静态优先）；需走 API 时在页面显式设置 `window.__TXAM_API_BASE='/api/v1'`。
 
 ```bash
 cd server && npm run import && npm run dev
