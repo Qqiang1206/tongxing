@@ -5767,12 +5767,13 @@
   }
 
   function loadAccounts() {
+    if (!can('account.manage')) return Promise.resolve();
     return Promise.all([
-      api('/admin/accounts'),
-      accountRoles.length ? Promise.resolve({ roles: accountRoles }) : api('/admin/roles'),
+      api('/admin/accounts').catch(function () { return { accounts: [] }; }),
+      accountRoles && accountRoles.length ? Promise.resolve({ roles: accountRoles }) : api('/admin/roles').catch(function () { return { roles: [] }; }),
     ]).then(function (results) {
-      accountRoles = results[1].roles || accountRoles;
-      var accounts = results[0].accounts || [];
+      accountRoles = (results[1] && results[1].roles) || accountRoles || [];
+      var accounts = (results[0] && results[0].accounts) || [];
       renderAccountsHero(accounts);
       renderAccountsTable(accounts);
     });
@@ -5781,6 +5782,7 @@
   function renderAccountsHero(accounts) {
     var el = $('accounts-hero');
     if (!el) return;
+    accounts = accounts || [];
     var active = accounts.filter(function (a) { return a.status === 'active'; }).length;
     var supers = accounts.filter(function (a) { return a.role === 'super_admin' && a.status === 'active'; }).length;
     el.innerHTML =
