@@ -36,6 +36,19 @@ export function parseJsonField(value, fallback = null) {
   }
 }
 
+/**
+ * Resolve a language-appropriate category display name.
+ * categoryMap: { [filterKey]: { name, nameEn, nameRu } }
+ */
+function resolveCategoryName(categoryMap, filterKey, fallback, lang) {
+  if (!categoryMap || !filterKey) return fallback || '';
+  const cat = categoryMap[filterKey];
+  if (!cat) return fallback || '';
+  if (lang === 'en') return cat.nameEn || cat.name || fallback || '';
+  if (lang === 'ru') return cat.nameRu || cat.name || fallback || '';
+  return cat.name || fallback || '';
+}
+
 function stripHtml(html) {
   return String(html || '')
     .replace(/<[^>]+>/g, ' ')
@@ -53,8 +66,8 @@ export function mapProduct(row, i18n, opts = {}) {
   if (!row || !i18n) return null;
   const out = {
     id: row.id,
-    category: row.category_key || '',
-    model: row.model || '',
+    category: resolveCategoryName(opts.categoryMap, row.filter_key, row.category_key, opts.lang),
+    model: i18n.model || row.model || '',
     name: i18n.name,
     image: row.image || '',
     specs: parseJsonField(i18n.specs_json, []),
@@ -77,7 +90,7 @@ export function mapSolution(row, i18n, opts = {}) {
   const out = {
     id: row.id,
     slug: row.slug || '',
-    category: row.category_key || '',
+    category: resolveCategoryName(opts.categoryMap, row.filter_key, row.category_key, opts.lang),
     name: i18n.name,
     image: row.image || '',
     specs: parseJsonField(i18n.specs_json, []),

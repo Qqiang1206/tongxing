@@ -8,19 +8,20 @@ import {
   writePageJsonAny,
   regeneratePageJs,
   regenerateCatalogJs,
+  invalidateCategoryMaps,
 } from './catalog.js';
 import { markStale } from './translationStatus.js';
 
 const PRODUCT_SEED = [
-  { key: 'optical', name: '光学元件组装', nameEn: 'Optical Assembly', filterKeyEn: 'optical', sortOrder: 10 },
-  { key: 'dispensing', name: '点胶装配', nameEn: 'Dispensing', filterKeyEn: 'dispensing', sortOrder: 20 },
-  { key: 'flip', name: '翻转检测', nameEn: 'Flip Detection', filterKeyEn: 'flip', sortOrder: 30 },
-  { key: 'screw', name: '锁付组装', nameEn: 'Screw Assembly', filterKeyEn: 'screw', sortOrder: 40 },
-  { key: 'transfer', name: '搬运移载', nameEn: 'Transfer', filterKeyEn: 'transfer', sortOrder: 50 },
-  { key: 'packaging', name: '后段包装', nameEn: 'Packaging', filterKeyEn: 'packaging', sortOrder: 60 },
-  { key: 'robot', name: '机器人集成', nameEn: 'Robot Integration', filterKeyEn: 'robot', sortOrder: 70 },
-  { key: 'line', name: '整线交付', nameEn: 'Production Lines', filterKeyEn: 'single', sortOrder: 80 },
-  { key: 'software', name: '软件控制', nameEn: 'Software & Control', filterKeyEn: 'single', sortOrder: 90 },
+  { key: 'optical', name: '光学元件组装', nameEn: 'Optical Assembly', nameRu: 'Сборка оптики', filterKeyEn: 'optical', sortOrder: 10 },
+  { key: 'dispensing', name: '点胶装配', nameEn: 'Dispensing', nameRu: 'Дозирование', filterKeyEn: 'dispensing', sortOrder: 20 },
+  { key: 'flip', name: '翻转检测', nameEn: 'Flip Detection', nameRu: 'Контроль переворота', filterKeyEn: 'flip', sortOrder: 30 },
+  { key: 'screw', name: '锁付组装', nameEn: 'Screw Assembly', nameRu: 'Винтовая сборка', filterKeyEn: 'screw', sortOrder: 40 },
+  { key: 'transfer', name: '搬运移载', nameEn: 'Transfer', nameRu: 'Перемещение', filterKeyEn: 'transfer', sortOrder: 50 },
+  { key: 'packaging', name: '后段包装', nameEn: 'Packaging', nameRu: 'Упаковка', filterKeyEn: 'packaging', sortOrder: 60 },
+  { key: 'robot', name: '机器人集成', nameEn: 'Robot Integration', nameRu: 'Робототехника', filterKeyEn: 'robot', sortOrder: 70 },
+  { key: 'line', name: '整线交付', nameEn: 'Production Lines', nameRu: 'Линии под ключ', filterKeyEn: 'single', sortOrder: 80 },
+  { key: 'software', name: '软件控制', nameEn: 'Software & Control', nameRu: 'ПО и управление', filterKeyEn: 'single', sortOrder: 90 },
 ];
 
 const NEWS_SEED = [
@@ -30,17 +31,17 @@ const NEWS_SEED = [
 ];
 
 const SOLUTION_SEED = [
-  { key: 'tv-display', name: 'TV / 商显', nameEn: 'TV & Commercial Display', filterKeyEn: 'tv-display', sortOrder: 10 },
-  { key: 'refrigerator', name: '冰箱', nameEn: 'Refrigerator', filterKeyEn: 'refrigerator', sortOrder: 20 },
-  { key: 'packaging', name: '包装', nameEn: 'Packaging', filterKeyEn: 'packaging', sortOrder: 30 },
-  { key: 'washer', name: '洗衣机', nameEn: 'Washer', filterKeyEn: 'washer', sortOrder: 40 },
-  { key: 'capacitor', name: '电容', nameEn: 'Capacitor', filterKeyEn: 'capacitor', sortOrder: 50 },
-  { key: 'ac', name: '空调', nameEn: 'Air Conditioning', filterKeyEn: 'ac', sortOrder: 60 },
-  { key: 'microwave', name: '微波炉', nameEn: 'Microwave', filterKeyEn: 'microwave', sortOrder: 70 },
-  { key: 'coffee', name: '咖啡机', nameEn: 'Coffee Machine', filterKeyEn: 'coffee', sortOrder: 80 },
-  { key: 'tablet', name: '平板', nameEn: 'Tablet', filterKeyEn: 'tablet', sortOrder: 90 },
-  { key: 'headlight', name: '车灯', nameEn: 'Headlight', filterKeyEn: 'headlight', sortOrder: 100 },
-  { key: 'robot', name: '机器人', nameEn: 'Robot', filterKeyEn: 'robot', sortOrder: 110 },
+  { key: 'tv-display', name: 'TV / 商显', nameEn: 'TV & Commercial Display', nameRu: 'ТВ и коммерческие дисплеи', filterKeyEn: 'tv-display', sortOrder: 10 },
+  { key: 'refrigerator', name: '冰箱', nameEn: 'Refrigerator', nameRu: 'Бытовая техника', filterKeyEn: 'refrigerator', sortOrder: 20 },
+  { key: 'packaging', name: '包装', nameEn: 'Packaging', nameRu: 'Логистика и упаковка', filterKeyEn: 'packaging', sortOrder: 30 },
+  { key: 'washer', name: '洗衣机', nameEn: 'Washer', nameRu: '3C-электроника', filterKeyEn: 'washer', sortOrder: 40 },
+  { key: 'capacitor', name: '电容', nameEn: 'Capacitor', nameRu: 'Накопители энергии', filterKeyEn: 'capacitor', sortOrder: 50 },
+  { key: 'ac', name: '空调', nameEn: 'Air Conditioning', nameRu: 'Автомобильная отрасль', filterKeyEn: 'ac', sortOrder: 60 },
+  { key: 'microwave', name: '微波炉', nameEn: 'Microwave', nameRu: 'Микроволновые печи', filterKeyEn: 'microwave', sortOrder: 70 },
+  { key: 'coffee', name: '咖啡机', nameEn: 'Coffee Machine', nameRu: 'Кофемашины', filterKeyEn: 'coffee', sortOrder: 80 },
+  { key: 'tablet', name: '平板', nameEn: 'Tablet', nameRu: 'Планшеты', filterKeyEn: 'tablet', sortOrder: 90 },
+  { key: 'headlight', name: '车灯', nameEn: 'Headlight', nameRu: 'Автомобильные фары', filterKeyEn: 'headlight', sortOrder: 100 },
+  { key: 'robot', name: '机器人', nameEn: 'Robot', nameRu: 'Робототехника', filterKeyEn: 'robot', sortOrder: 110 },
 ];
 
 let _pageFiltersSynced = false;
@@ -50,6 +51,7 @@ export function ensureCategoryTables(db) {
       key TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       name_en TEXT DEFAULT '',
+      name_ru TEXT DEFAULT '',
       filter_key_en TEXT DEFAULT '',
       sort_order INTEGER DEFAULT 0,
       updated_at TEXT DEFAULT (datetime('now'))
@@ -64,12 +66,19 @@ export function ensureCategoryTables(db) {
       key TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       name_en TEXT DEFAULT '',
+      name_ru TEXT DEFAULT '',
       filter_key_en TEXT DEFAULT '',
       sort_order INTEGER DEFAULT 0,
       updated_at TEXT DEFAULT (datetime('now'))
     );
   `);
+  // Additive migration: name_ru for pre-existing DBs
+  for (const table of ['product_categories', 'solution_categories']) {
+    const cols = db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name);
+    if (!cols.includes('name_ru')) db.exec(`ALTER TABLE ${table} ADD COLUMN name_ru TEXT DEFAULT ''`);
+  }
   seedIfEmpty(db);
+  backfillNameRu(db);
   if (!_pageFiltersSynced) {
     _pageFiltersSynced = true;
     try {
@@ -79,15 +88,37 @@ export function ensureCategoryTables(db) {
   }
 }
 
+/** One-time backfill: populate name_ru from seed data for existing DBs. */
+function backfillNameRu(db) {
+  const empty = db.prepare(
+    `SELECT COUNT(*) AS c FROM product_categories WHERE name_ru IS NULL OR name_ru = ''`
+  ).get()?.c || 0;
+  if (empty > 0) {
+    const upd = db.prepare(`UPDATE product_categories SET name_ru = ? WHERE key = ?`);
+    for (const row of PRODUCT_SEED) {
+      if (row.nameRu) upd.run(row.nameRu, row.key);
+    }
+  }
+  const emptyS = db.prepare(
+    `SELECT COUNT(*) AS c FROM solution_categories WHERE name_ru IS NULL OR name_ru = ''`
+  ).get()?.c || 0;
+  if (emptyS > 0) {
+    const upd = db.prepare(`UPDATE solution_categories SET name_ru = ? WHERE key = ?`);
+    for (const row of SOLUTION_SEED) {
+      if (row.nameRu) upd.run(row.nameRu, row.key);
+    }
+  }
+}
+
 function seedIfEmpty(db) {
   const pc = db.prepare('SELECT COUNT(*) AS c FROM product_categories').get()?.c || 0;
   if (pc === 0) {
     const ins = db.prepare(
-      `INSERT INTO product_categories (key, name, name_en, filter_key_en, sort_order)
-       VALUES (?, ?, ?, ?, ?)`
+      `INSERT INTO product_categories (key, name, name_en, name_ru, filter_key_en, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?)`
     );
     for (const row of PRODUCT_SEED) {
-      ins.run(row.key, row.name, row.nameEn, row.filterKeyEn, row.sortOrder);
+      ins.run(row.key, row.name, row.nameEn, row.nameRu || '', row.filterKeyEn, row.sortOrder);
     }
   }
   const nc = db.prepare('SELECT COUNT(*) AS c FROM news_categories').get()?.c || 0;
@@ -102,11 +133,11 @@ function seedIfEmpty(db) {
   const sc = db.prepare('SELECT COUNT(*) AS c FROM solution_categories').get()?.c || 0;
   if (sc === 0) {
     const ins = db.prepare(
-      `INSERT INTO solution_categories (key, name, name_en, filter_key_en, sort_order)
-       VALUES (?, ?, ?, ?, ?)`
+      `INSERT INTO solution_categories (key, name, name_en, name_ru, filter_key_en, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?)`
     );
     for (const row of SOLUTION_SEED) {
-      ins.run(row.key, row.name, row.nameEn, row.filterKeyEn, row.sortOrder);
+      ins.run(row.key, row.name, row.nameEn, row.nameRu || '', row.filterKeyEn, row.sortOrder);
     }
     try {
       syncSolutionPageFilters();
@@ -119,6 +150,7 @@ function rowProduct(r) {
     key: r.key,
     name: r.name,
     nameEn: r.name_en || '',
+    nameRu: r.name_ru || '',
     filterKeyEn: r.filter_key_en || r.key,
     sortOrder: Number(r.sort_order) || 0,
   };
@@ -129,6 +161,7 @@ function rowSolution(r) {
     key: r.key,
     name: r.name,
     nameEn: r.name_en || '',
+    nameRu: r.name_ru || '',
     filterKeyEn: r.filter_key_en || r.key,
     sortOrder: Number(r.sort_order) || 0,
   };
@@ -200,15 +233,17 @@ export function upsertProductCategory(input, { isNew = false } = {}) {
     : null;
 
   db.prepare(
-    `INSERT INTO product_categories (key, name, name_en, filter_key_en, sort_order, updated_at)
-     VALUES (?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO product_categories (key, name, name_en, name_ru, filter_key_en, sort_order, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(key) DO UPDATE SET
-       name=excluded.name, name_en=excluded.name_en, filter_key_en=excluded.filter_key_en,
+       name=excluded.name, name_en=excluded.name_en, name_ru=excluded.name_ru,
+       filter_key_en=excluded.filter_key_en,
        sort_order=excluded.sort_order, updated_at=datetime('now')`
   ).run(
     key,
     name,
     String(input.nameEn || '').trim(),
+    String(input.nameRu || input.name_ru || '').trim(),
     String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
     Number(input.sortOrder != null ? input.sortOrder : input.sort_order) || 0
   );
@@ -230,6 +265,7 @@ export function upsertProductCategory(input, { isNew = false } = {}) {
   );
 
   syncProductPageFilters();
+  invalidateCategoryMaps();
   try {
     regenerateCatalogJs('products', 'zh');
     markStale('products');
@@ -251,6 +287,7 @@ export function deleteProductCategory(key) {
   if (used > 0) throw new Error('category_in_use');
   db.prepare('DELETE FROM product_categories WHERE key = ?').run(k);
   syncProductPageFilters();
+  invalidateCategoryMaps();
   return { ok: true, deleted: k };
 }
 
@@ -269,15 +306,17 @@ export function upsertSolutionCategory(input, { isNew = false } = {}) {
     : null;
 
   db.prepare(
-    `INSERT INTO solution_categories (key, name, name_en, filter_key_en, sort_order, updated_at)
-     VALUES (?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO solution_categories (key, name, name_en, name_ru, filter_key_en, sort_order, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(key) DO UPDATE SET
-       name=excluded.name, name_en=excluded.name_en, filter_key_en=excluded.filter_key_en,
+       name=excluded.name, name_en=excluded.name_en, name_ru=excluded.name_ru,
+       filter_key_en=excluded.filter_key_en,
        sort_order=excluded.sort_order, updated_at=datetime('now')`
   ).run(
     key,
     name,
     String(input.nameEn || '').trim(),
+    String(input.nameRu || input.name_ru || '').trim(),
     String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
     Number(input.sortOrder != null ? input.sortOrder : input.sort_order) || 0
   );
@@ -298,6 +337,7 @@ export function upsertSolutionCategory(input, { isNew = false } = {}) {
   );
 
   syncSolutionPageFilters();
+  invalidateCategoryMaps();
   try {
     regenerateCatalogJs('solutions', 'zh');
     markStale('solutions');
@@ -319,6 +359,7 @@ export function deleteSolutionCategory(key) {
   if (used > 0) throw new Error('category_in_use');
   db.prepare('DELETE FROM solution_categories WHERE key = ?').run(k);
   syncSolutionPageFilters();
+  invalidateCategoryMaps();
   return { ok: true, deleted: k };
 }
 

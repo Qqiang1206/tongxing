@@ -4,6 +4,48 @@ import { normalizeForCompare } from './translationFields.js';
 const PAGE_TITLE_SCOPE = 'page-title';
 const SHARED_PAGE_TITLE_PATHS = new Set(['seo.title', 'hero.title']);
 
+const TERM_SCOPE = 'term';
+const TERM_MAX_SOURCE_LEN = 80;
+
+/**
+ * Look up a term in the global glossary. Returns the canonical translation
+ * or null if not found. Only short strings (specs, labels) are glossed.
+ */
+export function getTermTranslation(source, lang) {
+  const sourceNorm = normalizeForCompare(source);
+  if (!sourceNorm || sourceNorm.length > TERM_MAX_SOURCE_LEN) return null;
+  const row = getDb()
+    .prepare(
+      `SELECT translation FROM translation_memory
+       WHERE scope = ? AND source_norm = ? AND lang = ?`
+    )
+    .get(TERM_SCOPE, sourceNorm, lang);
+  return row && row.translation ? row.translation : null;
+}
+
+/**
+ * Store new term translations (first-come-first-served).
+ * Only short, non-empty strings are stored.
+ */
+export function rememberTermTranslations(entries) {
+  const db = getDb();
+  const stmt = db.prepare(
+    `INSERT INTO translation_memory (scope, source_norm, lang, translation, updated_at)
+     VALUES (?, ?, ?, ?, datetime('now'))
+     ON CONFLICT(scope, source_norm, lang) DO NOTHING`
+  );
+  let count = 0;
+  for (const { source, lang, translation } of entries) {
+    if (lang !== 'en' && lang !== 'ru') continue;
+    const sourceNorm = normalizeForCompare(source);
+    if (!sourceNorm || sourceNorm.length > TERM_MAX_SOURCE_LEN) continue;
+    const t = String(translation || '').trim();
+    if (!t) continue;
+    count += stmt.run(TERM_SCOPE, sourceNorm, lang, t).changes || 0;
+  }
+  return count;
+}
+
 /** Canonical homepage brand copy. Other pages keep independent titles. */
 const FIXED_PAGE_TITLE_TRANSLATIONS = new Map([
   [

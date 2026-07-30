@@ -16,6 +16,8 @@ import {
   getSharedPageTitleTranslation,
   isSharedPageTitlePath,
   rememberSharedPageTitleTranslations,
+  getTermTranslation,
+  rememberTermTranslations,
 } from './translationMemory.js';
 import {
   applyStrings as applyTranslationStrings,
@@ -27,6 +29,7 @@ import {
 } from './translationFields.js';
 
 const CATALOG_KINDS = new Set(['products', 'news', 'solutions']);
+const CJK_RE = /[\u4e00-\u9fff]/;
 
 async function classifyAndTranslate(resourceKey, lang, itemId, values, paths, existingObj, jobId) {
   const snapshot = getItemSnapshot(resourceKey, lang, itemId);
@@ -60,6 +63,13 @@ async function classifyAndTranslate(resourceKey, lang, itemId, values, paths, ex
       if (isSharedPageTitlePath(path)) {
         memoryEntries.push({ path, source, lang, translation: finalValues[index] });
       }
+      continue;
+    }
+
+    // Term glossary lookup (short recurring strings: specs, labels, etc.)
+    const term = getTermTranslation(source, lang);
+    if (term) {
+      finalValues[index] = term;
       continue;
     }
 
@@ -99,6 +109,24 @@ async function classifyAndTranslate(resourceKey, lang, itemId, values, paths, ex
       });
     }
   });
+
+  // Write back new term translations (first-come-first-served)
+  const termEntries = requestGroups
+    .filter((g) => !g.shared)
+    .map((g, i) => ({ source: g.source, lang, translation: translated[i] }))
+    .filter((e) => e.translation);
+  rememberTermTranslations(termEntries);
+
+  // Detect residual Chinese in translated output
+  for (let i = 0; i < finalValues.length; i++) {
+    const v = finalValues[i];
+    if (typeof v === 'string' && CJK_RE.test(v)) {
+      console.warn(
+        '[translation] residual Chinese in %s/%s path=%s: "%s"',
+        resourceKey, lang, paths[i], v.slice(0, 80)
+      );
+    }
+  }
 
   return {
     finalValues,

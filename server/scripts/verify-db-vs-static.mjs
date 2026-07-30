@@ -138,7 +138,7 @@ for (const kind of KINDS) {
     ? Object.keys(JSON.parse(fs.readFileSync(prodFiltersPath, 'utf8')).filters || {})
     : [];
   const validProdFilterKeys = new Set(prodFilters.filter((k) => k !== 'all'));
-  const prows = db.prepare('SELECT id, filter_key, filter_key_en FROM products WHERE published = 1').all();
+  const prows = db.prepare('SELECT id, filter_key, filter_key_en FROM products WHERE published = 1 AND show_in_list = 1').all();
   for (const r of prows) {
     if (r.filter_key && validProdFilterKeys.size && !validProdFilterKeys.has(r.filter_key))
       errors.push(`[C] products id=${r.id}: filterKey='${r.filter_key}' 不在产品页 filters 中（有效值: ${[...validProdFilterKeys].join(', ')}）`);

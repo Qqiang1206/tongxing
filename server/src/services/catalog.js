@@ -84,6 +84,30 @@ function publishedInt(v) {
 
 /* ——— Public API shape (published only) ——— */
 
+/** Build a filterKey→{name,nameEn,nameRu} map from the category table. */
+let _productCatMap = null;
+let _solutionCatMap = null;
+function getCategoryMap(kind) {
+  const db = getDb();
+  const table = kind === 'products' ? 'product_categories' : 'solution_categories';
+  try {
+    const rows = db.prepare(`SELECT key, name, name_en, name_ru FROM ${table}`).all();
+    const map = {};
+    for (const r of rows) map[r.key] = { name: r.name, nameEn: r.name_en || '', nameRu: r.name_ru || '' };
+    return map;
+  } catch { return null; }
+}
+function productCategoryMap() {
+  if (!_productCatMap) _productCatMap = getCategoryMap('products');
+  return _productCatMap;
+}
+function solutionCategoryMap() {
+  if (!_solutionCatMap) _solutionCatMap = getCategoryMap('solutions');
+  return _solutionCatMap;
+}
+/** Invalidate cached category maps (call after category upsert). */
+export function invalidateCategoryMaps() { _productCatMap = null; _solutionCatMap = null; }
+
 function productApiFromRows(row, i18n, opts = {}) {
   return mapProduct(
     {
@@ -98,7 +122,7 @@ function productApiFromRows(row, i18n, opts = {}) {
       filter_key_en: row.filter_key_en,
     },
     i18n,
-    opts
+    { ...opts, categoryMap: productCategoryMap() }
   );
 }
 
@@ -116,7 +140,7 @@ function solutionApiFromRows(row, i18n, opts = {}) {
       filter_key_en: row.filter_key_en,
     },
     i18n,
-    opts
+    { ...opts, categoryMap: solutionCategoryMap() }
   );
 }
 
@@ -140,7 +164,7 @@ function getAllProducts(lang) {
   const db = getDb();
   const rows = db
     .prepare(
-      `SELECT p.*, i.name, i.summary, i.specs_json
+      `SELECT p.*, i.name, i.summary, i.specs_json, i.model AS i18n_model
        FROM products p
        JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
        WHERE p.published = 1
@@ -156,8 +180,9 @@ function getAllProducts(lang) {
           name: r.name,
           summary: r.summary,
           specs_json: r.specs_json,
+          model: r.i18n_model,
         },
-        { slim: true }
+        { slim: true, lang }
       )
     )
   );
@@ -167,7 +192,7 @@ function getProductById(id, lang) {
   const db = getDb();
   const r = db
     .prepare(
-      `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json
+      `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json, i.model AS i18n_model
        FROM products p
        JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
        WHERE p.id = ? AND p.published = 1
@@ -180,7 +205,8 @@ function getProductById(id, lang) {
     summary: r.summary,
     content_html: r.content_html,
     specs_json: r.specs_json,
-  });
+    model: r.i18n_model,
+  }, { lang });
 }
 
 function getAllSolutions(lang) {
@@ -204,7 +230,7 @@ function getAllSolutions(lang) {
           summary: r.summary,
           specs_json: r.specs_json,
         },
-        { slim: true }
+        { slim: true, lang }
       )
     )
   );
@@ -229,7 +255,7 @@ function getSolutionById(id, lang) {
     specs_json: r.specs_json,
     pain_points_json: r.pain_points_json,
     process_json: r.process_json,
-  });
+  }, { lang });
 }
 
 function getAllNews(lang) {
@@ -392,11 +418,16 @@ export const catalog = {
 
 /* ——— Admin raw (zh flat objects) ——— */
 
-function rowToProductRaw(p, i) {
+function rowToProductRaw(p, i, opts = {}) {
+  const catMap = opts.lang && opts.lang !== 'zh' ? productCategoryMap() : null;
+  const cat = catMap && p.filter_key && catMap[p.filter_key];
+  const category = cat
+    ? (opts.lang === 'en' ? cat.nameEn || cat.name : opts.lang === 'ru' ? cat.nameRu || cat.name : cat.name)
+    : (p.category_key || '');
   return {
     id: p.id,
-    category: p.category_key || '',
-    model: p.model || '',
+    category,
+    model: i?.model || p.model || '',
     name: i?.name || '',
     image: p.image || '',
     specs: parseJson(i?.specs_json, []),
@@ -412,10 +443,15 @@ function rowToProductRaw(p, i) {
   };
 }
 
-function rowToSolutionRaw(s, i) {
+function rowToSolutionRaw(s, i, opts = {}) {
+  const catMap = opts.lang && opts.lang !== 'zh' ? solutionCategoryMap() : null;
+  const cat = catMap && s.filter_key && catMap[s.filter_key];
+  const category = cat
+    ? (opts.lang === 'en' ? cat.nameEn || cat.name : opts.lang === 'ru' ? cat.nameRu || cat.name : cat.name)
+    : (s.category_key || '');
   const out = {
     id: s.id,
-    category: s.category_key || '',
+    category,
     name: i?.name || '',
     image: s.image || '',
     specs: parseJson(i?.specs_json, []),
@@ -586,7 +622,7 @@ export function readCatalogJson(kind, lang = 'zh') {
   if (kind === 'products') {
     const rows = db
       .prepare(
-        `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json
+        `SELECT p.*, i.name, i.summary, i.content_html, i.specs_json, i.model AS i18n_model
          FROM products p
          JOIN product_i18n i ON i.product_id = p.id AND i.lang = ?
          WHERE p.published = 1 AND (? = 'zh' OR i.translation_status != 'missing')`
@@ -598,7 +634,8 @@ export function readCatalogJson(kind, lang = 'zh') {
         summary: r.summary,
         content_html: r.content_html,
         specs_json: r.specs_json,
-      });
+        model: r.i18n_model,
+      }, { lang });
     }
   } else if (kind === 'solutions') {
     const rows = db
@@ -617,7 +654,7 @@ export function readCatalogJson(kind, lang = 'zh') {
         specs_json: r.specs_json,
         pain_points_json: r.pain_points_json,
         process_json: r.process_json,
-      });
+      }, { lang });
     }
   } else if (kind === 'news') {
     const rows = db
@@ -644,11 +681,11 @@ export function readCatalogJson(kind, lang = 'zh') {
 
 function upsertProductLang(db, id, lang, item, status) {
   db.prepare(
-    `INSERT INTO product_i18n (product_id, lang, name, summary, content_html, specs_json, translation_status, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO product_i18n (product_id, lang, name, summary, content_html, specs_json, model, translation_status, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(product_id, lang) DO UPDATE SET
        name=excluded.name, summary=excluded.summary, content_html=excluded.content_html,
-       specs_json=excluded.specs_json, translation_status=excluded.translation_status,
+       specs_json=excluded.specs_json, model=excluded.model, translation_status=excluded.translation_status,
        updated_at=datetime('now')`
   ).run(
     id,
@@ -657,6 +694,7 @@ function upsertProductLang(db, id, lang, item, status) {
     item.summary || item.desc || '',
     item.contentHtml || item.detail || '',
     jsonStr(item.specs || [], '[]'),
+    item.model || '',
     status
   );
 }

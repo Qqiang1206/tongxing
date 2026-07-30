@@ -112,6 +112,7 @@ export function getDb() {
   ensureCategoryTablesInline(db);
   migrateSolutionColumns(db);
   migrateNewsCategoryKey(db);
+  migrateProductI18nModel(db);
   migrateHomeSlotColumns(db);
   ensureAuditTableInline(db);
   migrateMediaColumnsInline(db);
@@ -147,6 +148,35 @@ function ensureCategoryTablesInline(db) {
       updated_at TEXT DEFAULT (datetime('now'))
     );
   `);
+  // Additive migration: name_ru for pre-existing DBs
+  for (const table of ['product_categories', 'solution_categories']) {
+    const cols = db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name);
+    if (!cols.includes('name_ru')) db.exec(`ALTER TABLE ${table} ADD COLUMN name_ru TEXT DEFAULT ''`);
+  }
+  // Backfill name_ru from seed data
+  {
+    const empty = db.prepare(`SELECT COUNT(*) AS c FROM product_categories WHERE name_ru IS NULL OR name_ru = ''`).get()?.c || 0;
+    if (empty > 0) {
+      const ruMap = {
+        optical: 'Сборка оптики', dispensing: 'Дозирование', flip: 'Контроль переворота',
+        screw: 'Винтовая сборка', transfer: 'Перемещение', packaging: 'Упаковка',
+        robot: 'Робототехника', line: 'Линии под ключ', software: 'ПО и управление',
+      };
+      const upd = db.prepare(`UPDATE product_categories SET name_ru = ? WHERE key = ?`);
+      for (const [k, v] of Object.entries(ruMap)) upd.run(v, k);
+    }
+    const emptyS = db.prepare(`SELECT COUNT(*) AS c FROM solution_categories WHERE name_ru IS NULL OR name_ru = ''`).get()?.c || 0;
+    if (emptyS > 0) {
+      const ruMap = {
+        'tv-display': 'ТВ и коммерческие дисплеи', refrigerator: 'Бытовая техника',
+        packaging: 'Логистика и упаковка', washer: '3C-электроника', capacitor: 'Накопители энергии',
+        ac: 'Автомобильная отрасль', microwave: 'Микроволновые печи', coffee: 'Кофемашины',
+        tablet: 'Планшеты', headlight: 'Автомобильные фары', robot: 'Робототехника',
+      };
+      const upd = db.prepare(`UPDATE solution_categories SET name_ru = ? WHERE key = ?`);
+      for (const [k, v] of Object.entries(ruMap)) upd.run(v, k);
+    }
+  }
   const pc = db.prepare('SELECT COUNT(*) AS c FROM product_categories').get()?.c || 0;
   if (pc === 0) {
     const rows = [
@@ -426,6 +456,28 @@ function migrateNewsCategoryKey(db) {
     const zhCat = zhCatMap[String(row.id)] || '';
     const key = nameToKey[zhCat] || '';
     upd.run(key, row.id);
+  }
+}
+
+/** Additive migration: add model column to product_i18n and backfill from main table. */
+function migrateProductI18nModel(db) {
+  const cols = db.prepare('PRAGMA table_info(product_i18n)').all().map((c) => c.name);
+  if (!cols.includes('model')) {
+    db.exec(`ALTER TABLE product_i18n ADD COLUMN model TEXT DEFAULT ''`);
+  }
+  // Backfill if i18n model is empty but main table has values
+  const empty = db.prepare(
+    `SELECT COUNT(*) AS c FROM product_i18n i JOIN products p ON p.id = i.product_id
+     WHERE (i.model IS NULL OR i.model = '') AND p.model IS NOT NULL AND p.model != ''`
+  ).get()?.c || 0;
+  if (empty === 0) return;
+  const products = db.prepare("SELECT id, model FROM products WHERE model IS NOT NULL AND model != ''").all();
+  for (const p of products) {
+    const en = p.model.replace(/系列/g, 'Series').trim();
+    const ru = p.model.replace(/系列/g, 'Серия').trim();
+    db.prepare(`UPDATE product_i18n SET model = ? WHERE product_id = ? AND lang = 'zh'`).run(p.model, p.id);
+    db.prepare(`UPDATE product_i18n SET model = ? WHERE product_id = ? AND lang = 'en'`).run(en, p.id);
+    db.prepare(`UPDATE product_i18n SET model = ? WHERE product_id = ? AND lang = 'ru'`).run(ru, p.id);
   }
 }
 
