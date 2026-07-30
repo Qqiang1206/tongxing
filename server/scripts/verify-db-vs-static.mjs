@@ -93,7 +93,14 @@ for (const kind of KINDS) {
       if (!allIds.has(id)) {
         errors.push(`[B] 孤儿文件 ${kind}/items/${lang}/${id}.json（DB 中已无此 id，应删除）`);
       } else if (!pubIds.has(id)) {
-        errors.push(`[B] 下线残留 ${kind}/items/${lang}/${id}.json（DB published=0，但详情页仍可访问）`);
+        // Unpublished items may keep their item file (re-publish ready);
+        // the front-end guardPublishedCatalogItem() redirects visitors.
+        // Only an error if the file's published flag doesn't match DB.
+        const raw = JSON.parse(fs.readFileSync(path.join(itemsDir, `${id}.json`), 'utf8'));
+        if (raw.published !== false)
+          errors.push(`[B] ${kind}/items/${lang}/${id}.json published=${JSON.stringify(raw.published)}，DB published=0（守卫无法拦截，应改为 false）`);
+        else
+          infos.push(`[B] ${kind}/items/${lang}/${id}.json 已下架，published=false，守卫可拦截 ✓`);
       } else if (dbIds.has(id)) {
         // 已发布：内容比对
         const item = JSON.parse(fs.readFileSync(path.join(itemsDir, `${id}.json`), 'utf8'));
@@ -109,21 +116,38 @@ for (const kind of KINDS) {
 
 // ---------- C. 字段语义 ----------
 {
+  // C1. solutions: filter_key is a category grouping key (not a slug mirror).
+  // Validate it exists in the solutions page filters map.
+  const solFiltersPath = path.join(DATA_DIR, 'pages', 'solutions', 'zh.json');
+  const solFilters = fs.existsSync(solFiltersPath)
+    ? Object.keys(JSON.parse(fs.readFileSync(solFiltersPath, 'utf8')).filters || {})
+    : [];
+  const validSolFilterKeys = new Set(solFilters.filter((k) => k !== 'all'));
   const rows = db.prepare('SELECT id, slug, filter_key FROM solutions').all();
   for (const r of rows) {
-    if (r.slug && r.filter_key && r.slug !== r.filter_key)
-      errors.push(`[C] solutions id=${r.id}: filterKey='${r.filter_key}' ≠ slug='${r.slug}'（筛选/锚点将错位）`);
+    if (r.filter_key && validSolFilterKeys.size && !validSolFilterKeys.has(r.filter_key))
+      errors.push(`[C] solutions id=${r.id}: filterKey='${r.filter_key}' 不在方案页 filters 中（有效值: ${[...validSolFilterKeys].join(', ')}）`);
   }
-  const validFilterKeys = new Set(
-    db.prepare('SELECT DISTINCT filter_key FROM products WHERE filter_key IS NOT NULL').all().map((r) => r.filter_key)
-  );
-  const prows = db.prepare('SELECT id, filter_key, filter_key_en FROM products').all();
+  if (validSolFilterKeys.size)
+    infos.push(`[C] solutions filterKey 有效分类: ${[...validSolFilterKeys].join(', ')}`);
+
+  // C2. products: filter_key is language-neutral and used by the front-end.
+  // filterKeyEn is a legacy unused field — report as info only.
+  const prodFiltersPath = path.join(DATA_DIR, 'pages', 'products', 'zh.json');
+  const prodFilters = fs.existsSync(prodFiltersPath)
+    ? Object.keys(JSON.parse(fs.readFileSync(prodFiltersPath, 'utf8')).filters || {})
+    : [];
+  const validProdFilterKeys = new Set(prodFilters.filter((k) => k !== 'all'));
+  const prows = db.prepare('SELECT id, filter_key, filter_key_en FROM products WHERE published = 1').all();
   for (const r of prows) {
-    if (r.filter_key_en && r.filter_key && r.filter_key_en !== r.filter_key)
-      warns.push(`[C] products id=${r.id}: filterKeyEn='${r.filter_key_en}' ≠ filterKey='${r.filter_key}'`);
-    if (r.filter_key_en && !validFilterKeys.has(r.filter_key_en))
-      warns.push(`[C] products id=${r.id}: filterKeyEn='${r.filter_key_en}' 不在有效 filterKey 集合中`);
+    if (r.filter_key && validProdFilterKeys.size && !validProdFilterKeys.has(r.filter_key))
+      errors.push(`[C] products id=${r.id}: filterKey='${r.filter_key}' 不在产品页 filters 中（有效值: ${[...validProdFilterKeys].join(', ')}）`);
   }
+  if (validProdFilterKeys.size)
+    infos.push(`[C] products filterKey 有效分类: ${[...validProdFilterKeys].join(', ')}`);
+  const legacyEn = prows.filter((r) => r.filter_key_en && r.filter_key_en !== r.filter_key);
+  if (legacyEn.length)
+    infos.push(`[C] products filterKeyEn 为废弃字段（前端未使用），${legacyEn.length} 条与 filterKey 不一致，不影响功能`);
 }
 
 // ---------- 输出 ----------
