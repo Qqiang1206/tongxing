@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>同兴高科 TXAM  · 后台管理</title>
   <link rel="icon" type="image/png" href="/assets/images/brand/favicon.png">
-  <link rel="stylesheet" href="./admin.css?v=20260730a">
+  <link rel="stylesheet" href="./admin.css?v=20260730c">
   <link rel="stylesheet" href="./admin-design-system.css?v=20260726">
   <link rel="stylesheet" href="./admin-refresh.css?v=20260729">
   <script src="./vendor/tinymce/tinymce.min.js"></script>
@@ -426,14 +426,37 @@
                 <h3 class="card-title">API 使用记录</h3>
               </div>
               <div id="tx-api-usage"></div>
-              <div class="table-wrap" id="tx-api-logs-table" style="margin-top:12px"></div>
+              <div class="table-wrap" style="margin-top:12px">
+                <table class="data data-table tx-api-log-table" id="tx-api-logs-table">
+                  <colgroup>
+                    <col class="col-time"><col class="col-engine"><col class="col-model"><col class="col-lang">
+                    <col class="col-num"><col class="col-num"><col class="col-num"><col class="col-result">
+                  </colgroup>
+                  <thead>
+                    <tr><th>时间（北京）</th><th>引擎</th><th>模型</th><th>语言</th><th>输入字符</th><th>Tokens</th><th>耗时</th><th>结果</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="table-foot"><span id="tx-api-logs-foot"></span></div>
             </div>
             <div class="card" id="tx-advanced">
               <div class="card-head">
                 <h3 class="card-title">en/ru 同步记录</h3>
               </div>
               <p class="field-help" style="margin:0 0 12px">系统每 30 秒自动同步，无需手动操作。下表为历史同步任务（只读）。</p>
-              <div class="table-wrap" id="translation-jobs-table"></div>
+              <div class="table-wrap">
+                <table class="data data-table tx-jobs-table" id="translation-jobs-table">
+                  <colgroup>
+                    <col class="col-id"><col class="col-lang"><col class="col-result"><col class="col-name"><col class="col-time">
+                  </colgroup>
+                  <thead>
+                    <tr><th>ID</th><th>目标语言</th><th>状态</th><th>内容</th><th>创建时间（北京）</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="table-foot"><span id="translation-jobs-foot"></span></div>
             </div>
           </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="glossary">
@@ -480,8 +503,8 @@
             </div>
           </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="analytics">
-            <p class="page-hint">按日汇总前台页面访问量（PV）。可按日期与语言站筛选，查看趋势和页面排行。</p>
-            <div class="filter-bar analytics-filter-bar">
+            <div id="analytics-hero"></div>
+            <div class="filter-bar analytics-filter-bar" style="margin:16px 0 12px">
               <div class="analytics-range-presets" role="group" aria-label="日期范围">
                 <button type="button" class="btn btn-ghost btn-sm" data-analytics-range="today">今天</button>
                 <button type="button" class="btn btn-ghost btn-sm is-active" data-analytics-range="7d">近7天</button>
@@ -498,7 +521,6 @@
               </select>
               <button type="button" class="btn btn-primary btn-sm" id="analytics-filter-btn">查询</button>
             </div>
-            <div id="analytics-summary" class="analytics-summary"></div>
             <div class="analytics-grid">
               <div class="card analytics-chart-card">
                 <div class="card-head"><h3 class="card-title">访问趋势</h3></div>
@@ -541,8 +563,8 @@
             </div>
           </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="audit">
-            <p class="page-hint">记录谁在何时改了什么（写操作与登录；默认保留 90 天）。</p>
-            <div class="filter-bar">
+            <div id="audit-hero"></div>
+            <div class="filter-bar" style="margin:16px 0 12px">
               <select id="audit-resource" class="select" title="资源类型">
                 <option value="">全部资源</option>
                 <option value="auth">登录</option>
@@ -606,26 +628,26 @@
             </div>
           </div>
           <div class="section-panel hub-panel hidden" data-hub="system" data-hub-panel="backup">
-            <div class="backup-hero card">
-              <div>
-                <span class="backup-kicker">网站安全网</span>
-                <h3>完整备份与恢复</h3>
-                <p>每次开始修改前，系统最多每 15 分钟自动备份一次。备份包含网站内容、数据库和运营上传的图片。</p>
-              </div>
-              <div class="toolbar backup-actions">
-                <button type="button" class="btn btn-ghost" id="backup-restore-latest" disabled>恢复最近备份</button>
-                <button type="button" class="btn btn-accent" id="backup-create">立即完整备份</button>
-              </div>
-            </div>
-            <div id="backup-overview" class="backup-overview" aria-live="polite"></div>
-            <div class="card table-card backup-list-card">
+            <div id="backup-hero"></div>
+            <div class="card table-card backup-list-card" style="margin-top:16px">
               <div class="card-head">
                 <div>
                   <h3 class="card-title">最近备份</h3>
                   <p class="field-help">恢复会先自动保存当前状态，再恢复所选版本，避免误操作无法返回。</p>
                 </div>
               </div>
-              <div class="table-wrap" id="backup-list"></div>
+              <div class="table-wrap">
+                <table class="data data-table backup-table" id="backup-list">
+                  <colgroup>
+                    <col class="col-time"><col class="col-type"><col class="col-size"><col class="col-coverage"><col class="col-actions">
+                  </colgroup>
+                  <thead>
+                    <tr><th>备份时间</th><th>类型</th><th>大小</th><th>包含内容</th><th>操作</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="table-foot"><span id="backup-list-foot"></span></div>
             </div>
           </div>
             </div>
@@ -727,6 +749,6 @@
     </div>
   </div>
 
-  <script src="./admin.js?v=20260730a"></script>
+  <script src="./admin.js?v=20260730c"></script>
 </body>
 </html>

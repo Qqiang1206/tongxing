@@ -3332,3 +3332,26 @@ body {
   display: flex; justify-content: flex-end; gap: 8px;
   padding: 14px 24px 20px; border-top: 1px solid var(--border);
 }
+
+/* ═══ Unified data-table columns (translation / backup) ═══ */
+.tx-api-log-table .col-time { width: 9.5rem; }
+.tx-api-log-table .col-engine { width: 6rem; }
+.tx-api-log-table .col-model { width: 9rem; }
+.tx-api-log-table .col-lang { width: 4.5rem; }
+.tx-api-log-table .col-num { width: 5.5rem; }
+.tx-api-log-table .col-result { width: 6.5rem; }
+.tx-api-log-table .cell-num { text-align: right; font-variant-numeric: tabular-nums; }
+.tx-api-log-table code {
+  font-size: 11px; background: #F5F6F8; border: 1px solid var(--border);
+  border-radius: 6px; padding: 2px 6px; color: var(--muted);
+}
+.tx-jobs-table .col-id { width: 3.5rem; }
+.tx-jobs-table .col-time { width: 9.5rem; }
+.backup-table .col-time { width: 10rem; }
+.backup-table .col-type { width: 8.5rem; }
+.backup-table .col-size { width: 5.5rem; }
+.backup-table .col-coverage { width: auto; }
+.backup-table .col-actions { width: 7rem; }
+.backup-table .cell-num { text-align: right; font-variant-numeric: tabular-nums; }
+.backup-table .cell-actions { white-space: nowrap; }
+.backup-table .cell-time strong { font-weight: 700; color: var(--txam-dark); }

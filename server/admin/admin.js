@@ -4732,10 +4732,14 @@
   async function loadApiLogs() {
     var data = await api('/admin/translation-api-logs').catch(function () { return { logs: [] }; });
     var logs = data.logs || [];
-    var wrap = $('tx-api-logs-table');
-    if (!wrap) return;
+    var table = $('tx-api-logs-table');
+    var tbody = table && table.querySelector('tbody');
+    if (!tbody) return;
+    if ($('tx-api-logs-foot')) {
+      $('tx-api-logs-foot').textContent = logs.length ? '共 ' + logs.length + ' 条调用记录' : '暂无 API 调用记录';
+    }
     if (!logs.length) {
-      wrap.innerHTML = '<p class="help">暂无 API 调用记录</p>';
+      tbody.innerHTML = '<tr><td colspan="8" class="empty">暂无 API 调用记录</td></tr>';
       return;
     }
     var rows = logs.map(function (log) {
@@ -4758,22 +4762,20 @@
         '<td class="cell-result">' + statusBadge + errLine + '</td>' +
         '</tr>';
     }).join('');
-    wrap.innerHTML =
-      '<table class="data data-table tx-api-log-table">' +
-      '<colgroup>' +
-      '<col class="col-time"><col><col><col class="col-lang">' +
-      '<col class="col-num"><col class="col-num"><col class="col-num"><col class="col-result">' +
-      '</colgroup>' +
-      '<thead><tr><th>时间（北京）</th><th>引擎</th><th>模型</th><th>语言</th><th>输入字符</th><th>Tokens</th><th>耗时</th><th>结果</th></tr></thead><tbody>' +
-      rows + '</tbody></table>';
+    tbody.innerHTML = rows;
   }
 
   async function loadTranslationJobs() {
     var data = await api('/admin/translation-jobs');
     var jobs = data.jobs || [];
-    if (!$('translation-jobs-table')) return;
+    var table = $('translation-jobs-table');
+    var tbody = table && table.querySelector('tbody');
+    if (!tbody) return;
+    if ($('translation-jobs-foot')) {
+      $('translation-jobs-foot').textContent = jobs.length ? '共 ' + jobs.length + ' 条同步任务' : '暂无任务记录';
+    }
     if (!jobs.length) {
-      $('translation-jobs-table').innerHTML = '<p class="help">暂无任务记录</p>';
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">暂无任务记录</td></tr>';
       return;
     }
     var rows = jobs.map(function (job) {
@@ -4797,14 +4799,7 @@
         '<td class="cell-time">' + escapeHtml(toBeijing(job.createdAt)) + '</td>' +
         '</tr>';
     }).join('');
-    $('translation-jobs-table').innerHTML =
-      '<table class="data data-table tx-jobs-table">' +
-      '<colgroup>' +
-      '<col class="col-id"><col class="col-lang"><col class="col-result">' +
-      '<col class="col-name"><col class="col-time">' +
-      '</colgroup>' +
-      '<thead><tr><th>ID</th><th>目标语言</th><th>状态</th><th>内容</th><th>创建时间（北京）</th></tr></thead><tbody>' +
-      rows + '</tbody></table>';
+    tbody.innerHTML = rows;
   }
 
   function localDayString(date) {
@@ -4854,16 +4849,27 @@
     }
   }
 
-  function renderAnalyticsSummary(report) {
-    var box = $('analytics-summary');
+  function renderAnalyticsHero(report) {
+    var box = $('analytics-hero');
     if (!box) return;
     report = report || {};
+    var from = ($('analytics-from') && $('analytics-from').value) || '';
+    var to = ($('analytics-to') && $('analytics-to').value) || '';
+    var rangeText = from && to ? (from + ' 至 ' + to)
+      : (state.analyticsRange === 'today' ? '今天'
+      : state.analyticsRange === '30d' ? '近 30 天' : '近 7 天');
     box.innerHTML =
-      '<div class="traffic-summary analytics-summary-grid">' +
-      '<div class="traffic-stat"><span class="traffic-label">总访问</span><strong>' + escapeHtml(String(report.total || 0)) + '</strong></div>' +
-      '<div class="traffic-stat"><span class="traffic-label">日均</span><strong>' + escapeHtml(String(report.avgDaily || 0)) + '</strong></div>' +
-      '<div class="traffic-stat"><span class="traffic-label">有访问页面</span><strong>' + escapeHtml(String(report.pageCount || 0)) + '</strong></div>' +
-      '</div>';
+      '<div class="tx-hero">' +
+      '<div class="tx-hero-main">' +
+      '<p class="tx-hero-kicker">前台流量洞察</p>' +
+      '<h3 class="tx-hero-title">页面访问概况</h3>' +
+      '<p class="tx-hero-sub">按日汇总前台页面访问量（PV），当前统计范围：' + escapeHtml(rangeText) + '。</p>' +
+      '<div class="tx-usage-row">' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + escapeHtml(String(report.total || 0)) + '</span><span class="tx-usage-label">总访问</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + escapeHtml(String(report.avgDaily || 0)) + '</span><span class="tx-usage-label">日均访问</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + escapeHtml(String(report.pageCount || 0)) + '</span><span class="tx-usage-label">有访问页面</span></div>' +
+      '</div>' +
+      '</div></div>';
   }
 
   function renderAnalyticsDaily(daily) {
@@ -4962,7 +4968,7 @@
   }
 
   async function loadAnalytics() {
-    if (!$('analytics-summary')) return;
+    if (!$('analytics-hero')) return;
     ensureAnalyticsDates();
     var from = ($('analytics-from') && $('analytics-from').value) || '';
     var to = ($('analytics-to') && $('analytics-to').value) || '';
@@ -4975,7 +4981,7 @@
     var report = await api('/admin/analytics/report' + qs);
     state.analyticsReport = report;
     state.analyticsPage = report.page || 1;
-    renderAnalyticsSummary(report);
+    renderAnalyticsHero(report);
     renderAnalyticsDaily(report.daily);
     renderAnalyticsSections(report.sections);
     renderAnalyticsTable(report);
@@ -5008,7 +5014,34 @@
 
     state.auditItems = items;
     state.auditPage = 1;
+    renderAuditHero(items);
     renderAuditTable();
+  }
+
+  function renderAuditHero(items) {
+    var box = $('audit-hero');
+    if (!box) return;
+    items = items || [];
+    var todayKey = new Date();
+    var ymd = todayKey.getFullYear() + '-' +
+      String(todayKey.getMonth() + 1).padStart(2, '0') + '-' +
+      String(todayKey.getDate()).padStart(2, '0');
+    var todayCount = items.filter(function (r) { return String(r.createdAt || '').slice(0, 10) === ymd; }).length;
+    var actors = {};
+    items.forEach(function (r) { if (r.actor) actors[r.actor] = true; });
+    var actorCount = Object.keys(actors).length;
+    box.innerHTML =
+      '<div class="tx-hero">' +
+      '<div class="tx-hero-main">' +
+      '<p class="tx-hero-kicker">安全与变更追溯</p>' +
+      '<h3 class="tx-hero-title">操作记录</h3>' +
+      '<p class="tx-hero-sub">记录谁在何时改了什么（写操作与登录；默认保留 90 天）。</p>' +
+      '<div class="tx-usage-row">' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + (state.auditTotal || items.length) + '</span><span class="tx-usage-label">总记录</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + todayCount + '</span><span class="tx-usage-label">今日操作</span></div>' +
+      '<div class="tx-usage-cell"><span class="tx-usage-num">' + actorCount + '</span><span class="tx-usage-label">操作人</span></div>' +
+      '</div>' +
+      '</div></div>';
   }
 
   function renderAuditPagination(pageInfo) {
@@ -5136,35 +5169,62 @@
   function renderBackups() {
     var items = state.backups || [];
     var latest = state.latestBackup || items[0] || null;
-    var overview = $('backup-overview');
-    var restoreLatest = $('backup-restore-latest');
-    if (restoreLatest) {
-      restoreLatest.disabled = !latest;
-      restoreLatest.setAttribute('data-backup-id', latest ? latest.id : '');
+    var hero = $('backup-hero');
+    if (hero) {
+      var statsHtml = latest
+        ? '<div class="tx-usage-row">' +
+          '<div class="tx-usage-cell"><span class="tx-usage-num">' + escapeHtml(formatBackupTime(latest.createdAt).slice(5, 16)) + '</span><span class="tx-usage-label">最近备份 · ' + escapeHtml(backupReasonLabel(latest.reason)) + '</span></div>' +
+          '<div class="tx-usage-cell"><span class="tx-usage-num">' + escapeHtml(formatBackupBytes(latest.bytes)) + '</span><span class="tx-usage-label">备份大小 · ' + latest.files + ' 个文件</span></div>' +
+          '<div class="tx-usage-cell"><span class="tx-usage-num">已开启</span><span class="tx-usage-label">自动保护 · 15 分钟内不重复</span></div>' +
+          '</div>'
+        : '<p class="tx-hero-sub" style="color:var(--warning);font-weight:700">还没有完整备份，建议先建立第一个安全版本。</p>';
+      hero.innerHTML =
+        '<div class="tx-hero is-ok">' +
+        '<div class="tx-hero-main">' +
+        '<p class="tx-hero-kicker">网站安全网</p>' +
+        '<h3 class="tx-hero-title">完整备份与恢复</h3>' +
+        '<p class="tx-hero-sub">每次开始修改前，系统最多每 15 分钟自动备份一次。备份包含网站内容、数据库和运营上传的图片。</p>' +
+        statsHtml +
+        '</div>' +
+        '<div class="toolbar backup-actions">' +
+        '<button type="button" class="btn btn-ghost" id="backup-restore-latest"' + (latest ? '' : ' disabled') + ' data-backup-id="' + escapeAttr(latest ? latest.id : '') + '">恢复最近备份</button>' +
+        '<button type="button" class="btn btn-accent" id="backup-create">立即完整备份</button>' +
+        '</div></div>';
+      var createBtn = $('backup-create');
+      if (createBtn) createBtn.addEventListener('click', createManualBackup);
+      var restoreBtn = $('backup-restore-latest');
+      if (restoreBtn) {
+        restoreBtn.addEventListener('click', function () {
+          var id = restoreBtn.getAttribute('data-backup-id');
+          if (id) restoreBackupVersion(id);
+        });
+      }
     }
-    if (overview) {
-      overview.innerHTML = latest
-        ? '<div class="backup-stat"><span>最近一次备份</span><strong>' + escapeHtml(formatBackupTime(latest.createdAt)) + '</strong><small>' + escapeHtml(backupReasonLabel(latest.reason)) + '</small></div>' +
-          '<div class="backup-stat"><span>备份内容</span><strong>' + escapeHtml(formatBackupBytes(latest.bytes)) + '</strong><small>' + latest.files + ' 个文件 · 数据库、内容和上传图片</small></div>' +
-          '<div class="backup-stat is-safe"><span>自动保护</span><strong>已开启</strong><small>开始修改前自动创建，15 分钟内不重复</small></div>'
-        : '<div class="backup-empty">还没有完整备份。建议先点击“立即完整备份”建立第一个安全版本。</div>';
+    var table = $('backup-list');
+    var tbody = table && table.querySelector('tbody');
+    if (!tbody) return;
+    if ($('backup-list-foot')) {
+      $('backup-list-foot').textContent = items.length ? '共 ' + items.length + ' 个备份（显示最近 20 个）' : '暂无备份记录';
     }
-    var list = $('backup-list');
-    if (!list) return;
     if (!items.length) {
-      list.innerHTML = '<p class="empty">暂无备份记录</p>';
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">暂无备份记录</td></tr>';
       return;
     }
-    list.innerHTML = '<table class="data data-table backup-table"><thead><tr><th>备份时间</th><th>类型</th><th>大小</th><th>包含内容</th><th class="cell-actions">操作</th></tr></thead><tbody>' +
-      items.slice(0, 20).map(function (item) {
-        var coverage = item.hasUploads ? '数据库、内容、上传图片' : '数据库和内容';
-        return '<tr><td>' + escapeHtml(formatBackupTime(item.createdAt)) + '</td>' +
-          '<td><span class="backup-type">' + escapeHtml(backupReasonLabel(item.reason)) + '</span></td>' +
-          '<td>' + escapeHtml(formatBackupBytes(item.bytes)) + '</td>' +
-          '<td>' + escapeHtml(coverage) + '</td>' +
-          '<td class="cell-actions"><button type="button" class="btn btn-ghost btn-sm" data-restore-backup="' + escapeAttr(item.id) + '">恢复此版本</button></td></tr>';
-      }).join('') + '</tbody></table>';
-    list.querySelectorAll('[data-restore-backup]').forEach(function (button) {
+    tbody.innerHTML = items.slice(0, 20).map(function (item) {
+      var coverage = item.hasUploads ? '数据库、内容、上传图片' : '数据库和内容';
+      var typeBadge = item.reason === 'auto'
+        ? '<span class="badge badge-draft">' + escapeHtml(backupReasonLabel(item.reason)) + '</span>'
+        : item.reason === 'pre-restore'
+        ? '<span class="badge badge-stale">' + escapeHtml(backupReasonLabel(item.reason)) + '</span>'
+        : '<span class="badge badge-ok">' + escapeHtml(backupReasonLabel(item.reason)) + '</span>';
+      return '<tr>' +
+        '<td class="cell-time"><strong>' + escapeHtml(formatBackupTime(item.createdAt)) + '</strong></td>' +
+        '<td>' + typeBadge + '</td>' +
+        '<td class="cell-num">' + escapeHtml(formatBackupBytes(item.bytes)) + '</td>' +
+        '<td>' + escapeHtml(coverage) + '</td>' +
+        '<td class="cell-actions"><button type="button" class="btn btn-ghost btn-sm" data-restore-backup="' + escapeAttr(item.id) + '">恢复此版本</button></td></tr>';
+    }).join('');
+    tbody.querySelectorAll('[data-restore-backup]').forEach(function (button) {
       button.addEventListener('click', function () {
         restoreBackupVersion(button.getAttribute('data-restore-backup'));
       });
@@ -5325,14 +5385,6 @@
     });
   });
 
-  if ($('backup-create')) {
-    $('backup-create').addEventListener('click', createManualBackup);
-  }
-  if ($('backup-restore-latest')) {
-    $('backup-restore-latest').addEventListener('click', function () {
-      restoreBackupVersion($('backup-restore-latest').getAttribute('data-backup-id'));
-    });
-  }
   if ($('media-search')) {
     $('media-search').addEventListener('input', function () { state.mediaPage = 1; renderMediaGrid(); });
   }
