@@ -33,6 +33,7 @@ import {
 } from './services/translationEngines.js';
 import { saveUploadedMedia, listUploadedMedia, deleteUploadedMedia, updateMediaAlt } from './services/media.js';
 import { writeAudit, listAuditLogs, getAuditLog, listRecentContentUpdates, clientIp } from './services/audit.js';
+import { normalizeForCompare } from './services/translationFields.js';
 import {
   getCategoriesBundle,
   listProductCategories,
@@ -51,6 +52,7 @@ import {
 import { getHomeSlotsStatus } from './services/homeSlots.js';
 import { createBackup, ensureAutoBackup, listBackups, restoreBackup } from './services/backup.js';
 import { generateSitemap } from './services/sitemap.js';
+import { getDb } from './db.js';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const ADMIN_SESSION_TTL_MS = Math.max(
@@ -773,6 +775,79 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       return true;
     }
     sendJson(res, 200, getApiUsageStats(), origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/glossary' && req.method === 'GET') {
+    if (!authOk(req)) { sendJson(res, 401, { error: 'unauthorized' }, origin); return true; }
+    const u = new URL(req.url, 'http://localhost');
+    const q = (u.searchParams.get('q') || '').trim().toLowerCase();
+    const scope = u.searchParams.get('scope') || '';
+    const page = Math.max(1, Number(u.searchParams.get('page')) || 1);
+    const size = Math.min(100, Math.max(1, Number(u.searchParams.get('size')) || 20));
+    const db = getDb();
+    let where = '1=1';
+    const params = [];
+    if (scope) { where += ' AND scope = ?'; params.push(scope); }
+    // Group en/ru by (scope, source_norm)
+    const baseSql = `FROM translation_memory WHERE ${where}`;
+    let rows = db.prepare(`SELECT DISTINCT scope, source_norm ${baseSql} ORDER BY source_norm`).all(...params);
+    // Search filter (match source_norm or any translation)
+    if (q) {
+      rows = rows.filter((r) => {
+        if (r.source_norm.toLowerCase().includes(q)) return true;
+        const tr = db.prepare('SELECT translation FROM translation_memory WHERE scope=? AND source_norm=?').all(r.scope, r.source_norm);
+        return tr.some((t) => t.translation.toLowerCase().includes(q));
+      });
+    }
+    const total = rows.length;
+    const paged = rows.slice((page - 1) * size, page * size);
+    const items = paged.map((r) => {
+      const en = db.prepare("SELECT translation, updated_at FROM translation_memory WHERE scope=? AND source_norm=? AND lang='en'").get(r.scope, r.source_norm);
+      const ru = db.prepare("SELECT translation, updated_at FROM translation_memory WHERE scope=? AND source_norm=? AND lang='ru'").get(r.scope, r.source_norm);
+      return {
+        source: r.source_norm, scope: r.scope,
+        en: en?.translation || '', ru: ru?.translation || '',
+        updatedAt: en?.updated_at || ru?.updated_at || '',
+      };
+    });
+    const stats = db.prepare('SELECT scope, COUNT(DISTINCT source_norm) AS c FROM translation_memory GROUP BY scope').all();
+    sendJson(res, 200, { total, page, size, items, stats: Object.fromEntries(stats.map((s) => [s.scope, s.c])) }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/glossary' && req.method === 'PUT') {
+    if (!authOk(req)) { sendJson(res, 401, { error: 'unauthorized' }, origin); return true; }
+    const body = await readBody(req);
+    const source = String(body.source || '').trim();
+    if (!source) { sendJson(res, 400, { error: 'missing_source' }, origin); return true; }
+    const sourceNorm = normalizeForCompare(source);
+    const scope = body.scope === 'page-title' ? 'page-title' : 'term';
+    const db = getDb();
+    const stmt = db.prepare(
+      `INSERT INTO translation_memory (scope, source_norm, lang, translation, updated_at)
+       VALUES (?, ?, ?, ?, datetime('now'))
+       ON CONFLICT(scope, source_norm, lang) DO UPDATE SET translation=excluded.translation, updated_at=datetime('now')`
+    );
+    let changes = 0;
+    if (body.en != null && String(body.en).trim()) changes += stmt.run(scope, sourceNorm, 'en', String(body.en).trim()).changes || 0;
+    if (body.ru != null && String(body.ru).trim()) changes += stmt.run(scope, sourceNorm, 'ru', String(body.ru).trim()).changes || 0;
+    writeAudit({ req, action: 'glossary.upsert', resource: 'glossary', summary: `术语「${source}」更新` });
+    sendJson(res, 200, { ok: true, sourceNorm, scope, changes }, origin);
+    return true;
+  }
+
+  if (pathname === '/api/v1/admin/glossary' && req.method === 'DELETE') {
+    if (!authOk(req)) { sendJson(res, 401, { error: 'unauthorized' }, origin); return true; }
+    const u = new URL(req.url, 'http://localhost');
+    const source = (u.searchParams.get('source') || '').trim();
+    const scope = u.searchParams.get('scope') || 'term';
+    if (!source) { sendJson(res, 400, { error: 'missing_source' }, origin); return true; }
+    const sourceNorm = normalizeForCompare(source);
+    const db = getDb();
+    const r = db.prepare('DELETE FROM translation_memory WHERE scope=? AND source_norm=?').run(scope, sourceNorm);
+    writeAudit({ req, action: 'glossary.delete', resource: 'glossary', summary: `删除术语「${source}」` });
+    sendJson(res, 200, { ok: true, deleted: r.changes }, origin);
     return true;
   }
 

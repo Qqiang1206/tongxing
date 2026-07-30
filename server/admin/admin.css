@@ -3287,3 +3287,29 @@ body {
     margin-left: 0;
   }
 }
+
+/* ═══ Glossary ═══ */
+.badge--blue { background: #EBF2FF; color: #1D4ED8; }
+.badge--purple { background: #F3EEFF; color: #6D28D9; }
+.gl-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.35); backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center;
+}
+.gl-modal {
+  background: #fff; border-radius: 12px; width: 440px; max-width: 92vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,.18); overflow: hidden;
+}
+.gl-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px 0;
+}
+.gl-modal-head h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.gl-modal-body { padding: 16px 24px; }
+.gl-modal-body .field { margin-bottom: 14px; }
+.gl-modal-body label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #1d1d1f; }
+.gl-modal-foot {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 12px 24px 20px; border-top: 1px solid #e5e5ea;
+}
+.glossary-stats .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
