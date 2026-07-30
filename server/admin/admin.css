@@ -3357,10 +3357,10 @@ body {
 .backup-table .cell-time strong { font-weight: 700; color: var(--txam-dark); }
 
 /* ═══ Account management ═══ */
-.accounts-table .col-acc-user { width: 14%; }
-.accounts-table .col-acc-name { width: 14%; }
-.accounts-table .col-acc-role { width: 14%; }
-.accounts-table .col-acc-status { width: 10%; }
-.accounts-table .col-acc-login { width: 20%; }
-.accounts-table .col-acc-actions { width: 28%; }
+.accounts-table .col-acc-user { width: 12%; }
+.accounts-table .col-acc-name { width: 12%; }
+.accounts-table .col-acc-role { width: 12%; }
+.accounts-table .col-acc-status { width: 8%; }
+.accounts-table .col-acc-login { width: 18%; }
+.accounts-table .col-acc-actions { width: 16rem; }
 .accounts-table .cell-actions { white-space: nowrap; }

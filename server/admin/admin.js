@@ -706,7 +706,9 @@
     } else if (hub === 'solutions') {
       await Promise.all([loadPageForm('solutions'), loadSolutions(), loadCategories()]);
     } else if (hub === 'system') {
-      var tasks = [loadTranslation(), loadGlossary(), loadAnalytics(), loadAudit(), loadBackups()];
+      var tasks = [loadTranslation(), loadGlossary(), loadAnalytics()];
+      if (can('audit.read')) tasks.push(loadAudit());
+      if (can('backup.read')) tasks.push(loadBackups());
       if (can('account.manage')) tasks.push(loadAccounts());
       await Promise.all(tasks);
     }
@@ -5821,8 +5823,7 @@
         '<td>' + statusBadge + '</td>' +
         '<td class="cell-time">' + escapeHtml(lastLogin) + '</td>' +
         '<td class="cell-actions" style="white-space:nowrap">' +
-        '<button type="button" class="btn btn-ghost btn-sm acc-edit" data-id="' + a.id + '">编辑</button> ' +
-        '<button type="button" class="btn btn-ghost btn-sm acc-reset" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '">重置密码</button> ' +
+        '<button type="button" class="btn btn-ghost btn-sm acc-edit" data-id="' + a.id + '">编辑</button>' +
         (a.status === 'active'
           ? '<button type="button" class="btn btn-ghost btn-sm acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '" data-self="' + (isSelf ? '1' : '') + '" style="color:#D14343">停用</button>'
           : '<button type="button" class="btn btn-ghost btn-sm acc-toggle" data-id="' + a.id + '" data-user="' + escapeAttr(a.username) + '">启用</button>') +
@@ -5832,11 +5833,6 @@
       btn.addEventListener('click', function () {
         var acc = accounts.filter(function (a) { return String(a.id) === btn.getAttribute('data-id'); })[0];
         openAccountEditor(acc);
-      });
-    });
-    tbody.querySelectorAll('.acc-reset').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        openResetPassword(btn.getAttribute('data-id'), btn.getAttribute('data-user'));
       });
     });
     tbody.querySelectorAll('.acc-toggle').forEach(function (btn) {
@@ -5884,7 +5880,7 @@
       '<input type="text" id="acc-username" class="input" value="' + escapeAttr(isNew ? '' : account.username) + '"' + (isNew ? '' : ' readonly style="opacity:.6"') + ' placeholder="2-32 位字母数字"></div>' +
       '<div class="field"><label>显示名</label>' +
       '<input type="text" id="acc-display" class="input" value="' + escapeAttr(isNew ? '' : account.displayName) + '"></div>' +
-      (isNew ? '<div class="field"><label>密码 *（至少 6 位）</label><input type="password" id="acc-password" class="input"></div>' : '') +
+      (isNew ? '<div class="field"><label>密码 *（至少 6 位）</label><input type="password" id="acc-password" class="input"></div>' : '<div class="field"><label>新密码（留空不修改）</label><input type="password" id="acc-password" class="input" placeholder="留空则不修改密码"></div>') +
       '<div class="field"><label>角色</label><select id="acc-role" class="select">' + roleOptions(isNew ? 'editor' : account.role) + '</select></div>' +
       '</div>' +
       '<div class="gl-modal-foot">' +
@@ -5904,35 +5900,11 @@
         body.password = $('acc-password').value;
         promise = api('/admin/accounts', { method: 'POST', body: JSON.stringify(body) });
       } else {
+        var pw = $('acc-password').value.trim();
+        if (pw) body.password = pw;
         promise = api('/admin/accounts/' + account.id, { method: 'PUT', body: JSON.stringify(body) });
       }
       promise.then(function () { toast('已保存'); close(); loadAccounts(); })
-        .catch(function (e) { toast(accountErrorMessage(e), true); });
-    });
-  }
-
-  function openResetPassword(id, username) {
-    var overlay = document.createElement('div');
-    overlay.className = 'gl-modal-overlay';
-    overlay.innerHTML =
-      '<div class="gl-modal">' +
-      '<div class="gl-modal-head"><h3>重置密码 · ' + escapeHtml(username) + '</h3>' +
-      '<button type="button" class="btn btn-ghost btn-sm gl-close" aria-label="关闭">✕</button></div>' +
-      '<div class="gl-modal-body">' +
-      '<div class="field"><label>新密码（至少 6 位）</label><input type="password" id="rp-password" class="input"></div>' +
-      '</div>' +
-      '<div class="gl-modal-foot">' +
-      '<button type="button" class="btn btn-ghost gl-close">取消</button>' +
-      '<button type="button" class="btn btn-primary" id="rp-save">重置</button>' +
-      '</div></div>';
-    document.body.appendChild(overlay);
-    function close() { overlay.remove(); }
-    overlay.querySelectorAll('.gl-close').forEach(function (b) { b.addEventListener('click', close); });
-    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
-    $('rp-password').focus();
-    $('rp-save').addEventListener('click', function () {
-      api('/admin/accounts/' + id, { method: 'PUT', body: JSON.stringify({ password: $('rp-password').value }) })
-        .then(function () { toast('密码已重置'); close(); })
         .catch(function (e) { toast(accountErrorMessage(e), true); });
     });
   }
