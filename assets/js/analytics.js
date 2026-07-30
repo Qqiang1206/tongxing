@@ -1,13 +1,11 @@
 /**
  * Lightweight page-view beacon for TXAM site analytics (admin dashboard).
  * Sends one hit per full page load to the Node API.
- * Skipped entirely in static-only mode (window.__TXAM_API_BASE === false).
+ * Silently fails when no server is running (pure static deployment).
  */
 (function () {
-  // Static-first: skip analytics when no API is configured.
-  var apiBase = window.__TXAM_API_BASE;
-  if (apiBase === false) return;
-  var base = typeof apiBase === 'string' ? apiBase.replace(/\/$/, '') : '/api/v1';
+  var base = (typeof window.__TXAM_API_BASE === 'string' && window.__TXAM_API_BASE)
+    ? window.__TXAM_API_BASE.replace(/\/$/, '') : '/api/v1';
 
   var path = location.pathname || '/';
   if (!path || path.indexOf('/admin') === 0 || path.indexOf('/api/') === 0) return;
