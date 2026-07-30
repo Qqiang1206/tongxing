@@ -32,6 +32,9 @@
 ```bash
 PORT=3000
 ADMIN_PASSWORD=换成足够长的随机密码
+# 首次启动时会自动创建 super_admin 账号，用户名默认 admin
+ADMIN_USERNAME=admin        # 可选，自定义初始管理员用户名
+ADMIN_DISPLAY_NAME=超级管理员  # 可选
 CORS_ORIGIN=https://www.sztxgk.com
 # 生产环境 Node 只监听本机，由 Nginx 反代
 HOST=127.0.0.1
@@ -40,6 +43,7 @@ PUBLIC_CACHE_TTL_MS=45000
 ```
 
 - **切勿**把真实 `ADMIN_PASSWORD` 提交进 Git。
+- 后台支持多账号 RBAC（4 个角色：超级管理员/内容编辑/翻译运营/只读访客）。首次启动后登录后台「系统管理 → 账号管理」创建团队成员的账号。
 - 公网部署时建议限制后台访问（VPN / IP 白名单 / Basic Auth 外层）。
 
 ---
@@ -97,7 +101,7 @@ npm run backup-data
 # 建议 cron：每日 03:00 backup-data + ossutil sync；保留 OSS 生命周期 30 天。
 ```
 
-翻译：后台「翻译状态 / 任务」
+翻译：系统每 30 秒自动调度（无需手动操作）。中文源修改后自动标记 en/ru 为 stale，调度器依次翻译并回写。翻译前优先匹配术语表，保证同一中文译法一致。
 
 ```bash
 # DeepSeek（推荐，OpenAI 兼容）
@@ -112,8 +116,7 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 # TRANSLATION_MODEL=gpt-4o-mini
 ```
 
-未配置 Key 时默认为 **echo**（给文案加 `[EN]`/`[RU]` 前缀，用于联调，勿用于生产）。  
-点「运行」会写 en/ru JSON 并再生 `.js`，成功后自动标 current。
+未配置 Key 时默认为 **echo**（给文案加 `[EN]`/`[RU]` 前缀，用于联调，勿用于生产）。
 
 ---
 
@@ -162,7 +165,9 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 | 首页精选坑位（`home_slot` / `home_featured`，必填，下架须替代） | 完成 |
 | 操作审计日志（写操作 + 登录，后台只读） | 完成 |
 | E SEO | 详情页动态 meta；`npm run generate-sitemap` |
-| 前台对接 | 同源自动探测 `/api/v1`；产品列表由 `showInList` 控制 |
+| RBAC | 4 角色 / 11 权限；后台账号管理页 |
+| 术语表 | 全局翻译记忆；术语管理页；翻译一致性 |
+| 前台对接 | 静态优先（默认读 data/*.js / JSON）；产品列表由 `showInList` 控制 |
 
 | 现象 | 处理 |
 |------|------|

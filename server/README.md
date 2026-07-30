@@ -200,42 +200,97 @@ Products also use `filterKey`/`filterKeyEn` as a grouping key for the products l
 
 ## 7. Admin API
 
-Set `ADMIN_PASSWORD` in the environment to enable. Login returns a random in-memory session token (8 hours by default; set `ADMIN_SESSION_HOURS` to adjust).
+Set `ADMIN_PASSWORD` in the environment. On first boot, this creates a `super_admin` account (username: `admin` by default, or set `ADMIN_USERNAME`). Login returns a session token with the user's role and permissions.
 
 ```
-POST /api/v1/admin/login          { "password": "..." } → { "token": "...", "expiresAt": "..." }
-GET  /api/v1/admin/pages/:key     Authorization: Bearer <token>  (zh only)
-PUT  /api/v1/admin/pages/:key     Authorization: Bearer <token>  (zh body only)
+POST /api/v1/admin/login   { "actor": "username", "password": "..." }
+  → { "token": "...", "expiresAt": "...", "user": { "id", "username", "displayName", "role", "roleLabel", "permissions": [...] } }
+GET  /api/v1/admin/me      → { "user": { ... } }  (restore session on refresh)
 ```
 
-Allowed page keys: `contact`, `home`, `about`, plus list landing keys used by the UI. PUT regenerates `data/pages/{key}/zh.js` for file:// preview.
+Session TTL: 8 hours by default; set `ADMIN_SESSION_HOURS` to adjust.
 
-Admin UI: `http://localhost:3000/admin/` — products, news, solutions（含首页坑位与下架）, pages, site, media, translation, complete backup/restore, audit log.
+### 7a. RBAC — 角色与权限
+
+后台通过 4 个角色控制操作权限，每个 API 端点都有对应的权限检查：
+
+| 角色 | 权限 |
+|------|------|
+| `super_admin`（超级管理员） | 全部功能，含账号管理、备份恢复 |
+| `editor`（内容编辑） | 产品/方案/新闻/页面/分类/素材的增删改发布；可看访问概况和操作记录 |
+| `translator`（翻译运营） | 翻译同步、术语表、翻译引擎配置；可查看内容 |
+| `viewer`（只读访客） | 只能查看，不能修改 |
+
+精细权限矩阵见 `server/src/services/adminUsers.js` → `ROLES`。前端按权限隐藏无权限的导航和按钮（后端是权限的真实来源）。
+
+账号管理 API（仅 `super_admin`）：
 
 ```
-GET|POST /api/v1/admin/products
+GET    /api/v1/admin/accounts        → { accounts: [...] }
+POST   /api/v1/admin/accounts        → 创建账号 { username, displayName, password, role }
+PUT    /api/v1/admin/accounts/:id     → 更新角色/显示名/密码/状态
+DELETE /api/v1/admin/accounts/:id     → 停用账号
+GET    /api/v1/admin/roles            → { roles: [...] }
+```
+
+### 7b. 术语表（翻译记忆）
+
+后台「系统管理 → 术语表」：
+
+```
+GET    /api/v1/admin/glossary?q=&scope=&page=&size=   → { total, items[], stats }
+PUT    /api/v1/admin/glossary                          → 新增/更新术语 { source, en, ru, scope }
+DELETE /api/v1/admin/glossary?source=&scope=           → 删除术语
+```
+
+翻译流程会优先命中术语表里的标准译法，再调用 AI。相同的中文在不同产品里保证译法一致。
+
+### 7c. 翻译调度（自动）
+
+翻译由调度器每 30 秒自动处理（`translationScheduler.js`），无需手动操作。`POST /api/v1/admin/translation-jobs/:id/run` 和 `/:id/apply` 已禁用（返回 405）。
+
+```
+GET  /api/v1/admin/translation-status
+GET  /api/v1/admin/translation-jobs
+GET  /api/v1/admin/translation-config
+GET  /api/v1/admin/translation-api-logs
+GET  /api/v1/admin/translation-api-usage
+GET|POST /api/v1/admin/translation-engines
+```
+
+### 7d. 全量 Admin API
+
+```
+POST   /api/v1/admin/login
+GET    /api/v1/admin/me
+POST   /api/v1/admin/logout
+
+GET|POST    /api/v1/admin/products
 GET|PUT|DELETE /api/v1/admin/products/:id
-
-GET|POST /api/v1/admin/news
+GET|POST    /api/v1/admin/news
 GET|PUT|DELETE /api/v1/admin/news/:id
-
-GET|POST /api/v1/admin/solutions
+GET|POST    /api/v1/admin/solutions
 GET|PUT|DELETE /api/v1/admin/solutions/:id
 
-GET  /api/v1/admin/home-slots
+GET  /api/v1/admin/pages/:key      (zh only)
+PUT  /api/v1/admin/pages/:key      (zh body only)
 
+GET  /api/v1/admin/home-slots
 GET|PUT /api/v1/admin/site
 GET|POST /api/v1/admin/media
 
-GET  /api/v1/admin/translation-status
-POST /api/v1/admin/translation-status/mark-current  { "resource", "lang" }
-GET  /api/v1/admin/translation-jobs
-POST /api/v1/admin/translation-jobs  { "resource" } | { "enqueueStale": true }
-POST /api/v1/admin/translation-jobs/:id/run
-POST /api/v1/admin/translation-jobs/:id/apply
+GET|POST|PUT|DELETE /api/v1/admin/categories/products
+GET|POST|PUT|DELETE /api/v1/admin/categories/news
+GET|POST|PUT|DELETE /api/v1/admin/categories/solutions
 
 GET|POST /api/v1/admin/backups
 POST /api/v1/admin/backups/:id/restore
+
+GET  /api/v1/admin/analytics/summary
+GET  /api/v1/admin/analytics/report
+
+GET  /api/v1/admin/audit-logs
+GET  /api/v1/admin/dashboard/recent-updates
 ```
 
 **409 冲突（首页坑位）**
@@ -245,7 +300,7 @@ POST /api/v1/admin/backups/:id/restore
 | `home_slot_full` | 认领已满坑位 | `occupants[]`, `slot`, `action: "claim"` → 传 `replaceId` 让出占用项 |
 | `unpublish_needs_replace` | 下架/撤坑/删除占用必填坑位 | `candidates[]`, `slot`, `action: "vacate"` → 传 `replaceId` 顶替 |
 
-Translation: set `TRANSLATION_PROVIDER=deepseek` and `TRANSLATION_API_KEY` (or `DEEPSEEK_API_KEY`). Defaults: `https://api.deepseek.com` + `deepseek-v4-flash` (thinking off). OpenAI also works via `TRANSLATION_PROVIDER=openai`. Without a key, `echo` mode writes prefixed placeholders. `POST .../translation-jobs/:id/run` writes en/ru and marks current.
+Translation engines: set `TRANSLATION_PROVIDER=deepseek` and `TRANSLATION_API_KEY` (or `DEEPSEEK_API_KEY`). Defaults: `https://api.deepseek.com` + `deepseek-v4-flash` (thinking off). OpenAI also works via `TRANSLATION_PROVIDER=openai`. Without a key, `echo` mode writes prefixed placeholders. Translation runs automatically via scheduler every 30s.
 
 ---
 
@@ -256,7 +311,7 @@ Translation: set `TRANSLATION_PROVIDER=deepseek` and `TRANSLATION_API_KEY` (or `
 - Admin/API read & write SQLite; by default also syncs `data/*.json` + companion `.js` for static/`file://` fallback (`SYNC_JSON_ON_WRITE=1`).
 - **Production optional:** PostgreSQL — use `schema/tables.sql` (same logical model; adapter not wired yet).
 
-Core tables: `products`, `product_i18n`, `solutions`（含 `home_slot`）, `solution_i18n`, `news`（含 `home_featured`）, `news_i18n`, `pages`, `site_settings`, `media`, `resource_translation_status`, `translation_job_store`, `admin_audit_log`.
+Core tables: `admin_users`（RBAC）, `products`, `product_i18n`（含 `model`）, `solutions`（含 `home_slot`）, `solution_i18n`, `news`（含 `home_featured`）, `news_i18n`, `pages`, `site_settings`, `media`, `product_categories`, `solution_categories`, `news_categories`, `resource_translation_status`, `translation_job_store`, `translation_memory`（术语表 + 页面标题记忆）, `admin_audit_log`, `page_view_daily`.
 
 See `schema/sqlite-init.sql` and `schema/tables.sql`.
 
@@ -293,7 +348,7 @@ curl "http://localhost:3000/api/v1/health"
 curl "http://localhost:3000/api/v1/products?lang=zh" | head
 ```
 
-Front-end: `data-loader.js` auto-probes same-origin `/api/v1/health` on http(s). Override with:
+Front-end: static-first by default (reads `data/*.js` / JSON). To opt into API mode:
 
 ```html
 <script>window.__TXAM_API_BASE = 'http://localhost:3000/api/v1';</script>
@@ -325,6 +380,9 @@ Production: same-origin `/api/v1` via nginx reverse proxy (see repo root `nginx.
 | **SEO** | ✅ | Client `applySeo` + generated `sitemap.xml` (no SSR) |
 | **DB** | ✅ | SQLite (`node:sqlite`); Postgres schema reserved |
 | **Home slots** | ✅ | `home_slot` / `home_featured`；必填坑位；下架须替代 |
+| **RBAC** | ✅ | 4 roles, 11 permissions, `admin_users` table |
+| **Glossary** | ✅ | `translation_memory`；术语表管理页；翻译一致性保障 |
+| **Scheduler** | ✅ | 翻译自动调度（30s）；术语优先匹配 |
 
 ---
 
@@ -335,19 +393,30 @@ server/
 ├── README.md                 ← this file
 ├── DEPLOY.md
 ├── package.json
+├── .env.example
 ├── schema/
 │   ├── tables.sql            ← PostgreSQL reference
-│   └── sqlite-init.sql       ← SQLite DDL（含 home_slot / home_featured）
+│   └── sqlite-init.sql       ← SQLite DDL
 ├── scripts/
-│   └── import-from-json.js
-├── admin/                    ← CMS UI（admin.js / index.html）
+│   ├── import-from-json.js
+│   ├── sync-static-from-db.js  ← DB → 静态文件全量导出
+│   └── verify-db-vs-static.mjs ← DB ↔ 静态文件一致性校验
+├── admin/                    ← CMS UI（admin.js / index.html / admin.css）
 └── src/
-    ├── index.js              ← HTTP entry (zero deps)
+    ├── index.js              ← HTTP entry
     ├── config.js
-    ├── admin.js
-    ├── db.js
-    ├── mappers/toApi.js
+    ├── admin.js              ← 全部 admin API 路由 + RBAC 守卫
+    ├── db.js                 ← SQLite 连接 + boot migration
+    ├── mappers/toApi.js       ← API 响应映射（含多语言 category/model）
     └── services/
-        ├── catalog.js
-        └── homeSlots.js      ← 首页坑位容量与下架守卫
+        ├── adminUsers.js      ← RBAC 账号/角色/权限/密码哈希
+        ├── catalog.js         ← 目录/页面/站点 CRUD + 静态导出
+        ├── categories.js      ← 产品/方案/新闻分类管理
+        ├── homeSlots.js       ← 首页坑位容量与下架守卫
+        ├── translationMemory.js ← 术语表 + 页面标题一致性记忆
+        ├── translateResource.js ← 翻译执行（术语优先 + 快照比对 + 中文残留检测）
+        ├── translationScheduler.js ← 自动翻译调度（30s 轮询）
+        ├── translationFields.js / translateProvider.js / translationJobs.js / ...
+        ├── analytics.js / audit.js / backup.js / media.js / sitemap.js
+        └── ...
 ```
