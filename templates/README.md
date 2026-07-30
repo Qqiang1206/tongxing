@@ -18,13 +18,11 @@ This folder documents the page shells. Currently the live HTML under `/`, `/en/`
 
 ## Data binding
 
-Detail pages load:
+Detail pages load content via `assets/js/data-loader.js`:
+- **Static-first** (default): reads `data/{kind}/{lang}.js` globals, with `data/*.json` fallback
+- **API mode** (opt-in): set `window.__TXAM_API_BASE='/api/v1'` on a page to read from the runtime API
 
-- `data/products/{lang}.json`
-- `data/solutions/{lang}.json`
-- `data/news/{lang}.json`
-
-When backend is ready, change the `fetch(...)` URL in each detail page to `/api/v1/...`.
+Data files are auto-synced from the CMS database (`npm run sync:static`).
 
 ## Partials
 

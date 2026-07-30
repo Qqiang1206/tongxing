@@ -209,6 +209,8 @@ assets/images/
   brand|hero|products|solutions|certifications|clients
 data/
   products|solutions|news/{zh,en,ru}.{json,js}
+  pages/{home,about,contact,products,news,solutions}/{zh,en,ru}.{json,js}
+  i18n/{zh,en,ru}.{json,js}
 ```
 
 图片路径相对站点：`assets/images/...`（不要写死域名；语言子目录页由 `TXAM.assetUrl` 处理）。
