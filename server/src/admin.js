@@ -48,6 +48,7 @@ import {
   resolveProductCategoryFields,
   resolveSolutionCategoryFields,
   resolveNewsCategoryFields,
+  syncProductPageFilters,
 } from './services/categories.js';
 import { getHomeSlotsStatus } from './services/homeSlots.js';
 import { createBackup, ensureAutoBackup, listBackups, restoreBackup } from './services/backup.js';
@@ -131,6 +132,30 @@ function hasTranslatableDiff(before, after) {
   const b = translatableStrings(after);
   if (a.length !== b.length) return true;
   return a.some((v, i) => v !== b[i]);
+}
+
+/**
+ * Product filter tabs (page.filters) are rebuilt from product_categories,
+ * skipping categories without published products. Category CRUD triggers that
+ * rebuild, but moving products into/out of a category does not — so a category
+ * created while empty never gets a tab. Detect when a product move flips a
+ * category between empty and non-empty (0 → 1 or 1 → 0) so the caller can
+ * re-sync page filters. Counts are read after the change has been applied.
+ */
+function productFilterTabsNeedSync(kind, beforeKey, afterKey) {
+  if (kind !== 'products') return false;
+  if ((beforeKey || '') === (afterKey || '')) return false;
+  const db = getDb();
+  const count = (k) => {
+    if (!k) return 0;
+    const row = db.prepare('SELECT COUNT(*) AS c FROM products WHERE filter_key = ?').get(k);
+    return row ? Number(row.c) || 0 : 0;
+  };
+  const oldKey = beforeKey || '';
+  const newKey = afterKey || '';
+  // old tab disappears when its count drops to 0;
+  // new tab appears when its count rises from 0 to 1
+  return (oldKey && count(oldKey) === 0) || (newKey && count(newKey) === 1);
 }
 
 function normalizeCatalogBody(kind, body) {
@@ -423,6 +448,12 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
       regenerateCatalogJs(kind, 'zh');
       generateSitemap();
       markStale(kind);
+      // A product added to a previously empty category must surface its tab.
+      try {
+        if (productFilterTabsNeedSync(kind, '', item.filterKey)) {
+          syncProductPageFilters();
+        }
+      } catch (_) { /* filters sync is best-effort */ }
       writeAudit({
         req,
         action: `${kind}.create`,
@@ -468,6 +499,13 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
       if (!before || hasTranslatableDiff(before, item)) {
         markStale(kind);
       }
+      // Moving a product between categories must refresh the filter tabs when
+      // that flips a category between empty and non-empty.
+      try {
+        if (productFilterTabsNeedSync(kind, before.filterKey, item.filterKey)) {
+          syncProductPageFilters();
+        }
+      } catch (_) { /* filters sync is best-effort */ }
       writeAudit({
         req,
         action: `${kind}.update`,
@@ -496,10 +534,17 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
     try {
       const u = new URL(req.url || '', 'http://localhost');
       const replaceId = u.searchParams.get('replaceId') || null;
+      const before = getCatalogItemRaw(kind, id);
       deleteCatalogItemRaw(kind, id, { replaceId });
       regenerateCatalogJs(kind, 'zh');
       generateSitemap();
       markStale(kind);
+      // Deleting the last product of a category must remove its tab.
+      try {
+        if (productFilterTabsNeedSync(kind, before.filterKey, '')) {
+          syncProductPageFilters();
+        }
+      } catch (_) { /* filters sync is best-effort */ }
       writeAudit({
         req,
         action: `${kind}.delete`,

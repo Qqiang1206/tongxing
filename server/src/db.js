@@ -404,13 +404,6 @@ function migrateProductColumns(db) {
     }
   }
 
-  // Legacy imports duplicated solution records 31–39 into the product table.
-  // Keep them recoverable in the database, but never expose them in Product Center.
-  db.prepare(
-    `UPDATE products SET show_in_list = 0, updated_at = datetime('now')
-     WHERE id IN ('31','32','33','34','35','36','37','38','39')
-       AND show_in_list != 0`
-  ).run();
 }
 
 function migrateSolutionColumns(db) {
