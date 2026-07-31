@@ -263,9 +263,10 @@ async function loadSolution(solutionData) {
             var solutionId = (await TXAM.resolveCatalogId('solutions', 'ru', params)) || params.get('id') || '31';
             var data = await TXAM.loadCatalogItem('solutions', solutionId, 'ru');
             if (!data) data = solutionData[solutionId];
-            if (!TXAM.guardPublishedCatalogItem(data, 'solutions')) return;
+            data = TXAM.guardPublishedCatalogItem(data, 'solutions');
             if (!data) {
                 console.error('Solution not found:', solutionId);
+                location.replace('solutions.html');
                 return;
             }
 

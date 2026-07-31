@@ -158,6 +158,7 @@
             product = TXAM.guardPublishedCatalogItem(product, 'products');
             if (!product) {
                 console.error('Product not found', id);
+                location.replace('products.html');
                 TXAM.revealFadeUps();
                 TXAM.bindMobileMenu();
                 return;

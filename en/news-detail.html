@@ -138,6 +138,7 @@
             news = TXAM.guardPublishedCatalogItem(news, 'news');
             if (!news) {
                 console.error('News not found', id);
+                location.replace('news.html');
                 TXAM.revealFadeUps();
                 TXAM.bindMobileMenu();
                 return;
