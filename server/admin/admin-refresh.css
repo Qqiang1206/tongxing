@@ -459,3 +459,263 @@ input:focus, select:focus, textarea:focus, .search:focus {
   color: var(--muted);
   font-weight: 500;
 }
+
+/* 17. System management tables: unified density, typography and responsiveness. */
+.system-task-workspace {
+  --system-table-x: clamp(10px, 0.8vw, 15px);
+  --system-table-y: clamp(9px, 0.65vw, 11px);
+}
+.system-task-workspace .table-card,
+.system-task-workspace #tx-api-usage-card,
+.system-task-workspace #tx-advanced { overflow: hidden; }
+.system-task-workspace .table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+.system-task-workspace table.data {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+}
+.system-task-workspace table.data th,
+.system-task-workspace table.data td {
+  height: auto;
+  min-height: 0;
+  padding: var(--system-table-y) var(--system-table-x);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.system-task-workspace table.data th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 42px;
+  border-bottom: 1px solid var(--border);
+  background: #fafafc;
+  color: var(--muted);
+  font: 600 12px/1.25 var(--font);
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+.system-task-workspace table.data td {
+  min-height: 48px;
+  border-bottom: 1px solid #f0f0f2;
+  color: var(--text);
+  font-weight: 400;
+}
+.system-task-workspace table.data tbody tr {
+  transition: background-color 0.15s ease;
+}
+.system-task-workspace table.data tbody tr:hover { background: #fafafc; }
+.system-task-workspace table.data tbody tr:last-child td { border-bottom: 0; }
+
+/* Wide panels fill naturally; narrow panels scroll instead of crushing cells. */
+.system-task-workspace .tx-api-log-table { min-width: 44rem; }
+.system-task-workspace .tx-jobs-table { min-width: 42rem; }
+.system-task-workspace .glossary-table { min-width: 50rem; }
+.system-task-workspace .analytics-table { min-width: 39rem; }
+.system-task-workspace .audit-table { min-width: 54rem; }
+.system-task-workspace .backup-table { min-width: 45rem; }
+.system-task-workspace .accounts-table { min-width: 48rem; }
+
+/* Balanced percentage tracks prevent one flexible column swallowing all space. */
+.system-task-workspace .tx-api-log-table col:nth-child(1) { width: 15%; }
+.system-task-workspace .tx-api-log-table col:nth-child(2) { width: 11%; }
+.system-task-workspace .tx-api-log-table col:nth-child(3) { width: 18%; }
+.system-task-workspace .tx-api-log-table col:nth-child(4) { width: 9%; }
+.system-task-workspace .tx-api-log-table col:nth-child(5) { width: 12%; }
+.system-task-workspace .tx-api-log-table col:nth-child(6) { width: 12%; }
+.system-task-workspace .tx-api-log-table col:nth-child(7) { width: 12%; }
+.system-task-workspace .tx-api-log-table col:nth-child(8) { width: 11%; }
+
+.system-task-workspace .tx-jobs-table col:nth-child(1) { width: 8%; }
+.system-task-workspace .tx-jobs-table col:nth-child(2) { width: 16%; }
+.system-task-workspace .tx-jobs-table col:nth-child(3) { width: 16%; }
+.system-task-workspace .tx-jobs-table col:nth-child(4) { width: 38%; }
+.system-task-workspace .tx-jobs-table col:nth-child(5) { width: 22%; }
+
+.system-task-workspace .glossary-table col:nth-child(1),
+.system-task-workspace .glossary-table col:nth-child(2),
+.system-task-workspace .glossary-table col:nth-child(3) { width: 21%; }
+.system-task-workspace .glossary-table col:nth-child(4) { width: 10%; }
+.system-task-workspace .glossary-table col:nth-child(5) { width: 13%; }
+.system-task-workspace .glossary-table col:nth-child(6) { width: 14%; }
+
+.system-task-workspace .analytics-table col:nth-child(1) { width: 10%; }
+.system-task-workspace .analytics-table col:nth-child(2) { width: 36%; }
+.system-task-workspace .analytics-table col:nth-child(3),
+.system-task-workspace .analytics-table col:nth-child(4),
+.system-task-workspace .analytics-table col:nth-child(5) { width: 18%; }
+
+.system-task-workspace .audit-table col:nth-child(1) { width: 18%; }
+.system-task-workspace .audit-table col:nth-child(2) { width: 15%; }
+.system-task-workspace .audit-table col:nth-child(3) { width: 14%; }
+.system-task-workspace .audit-table col:nth-child(4) { width: 12%; }
+.system-task-workspace .audit-table col:nth-child(5) { width: 15%; }
+.system-task-workspace .audit-table col:nth-child(6) { width: 26%; }
+
+.system-task-workspace .backup-table col:nth-child(1) { width: 20%; }
+.system-task-workspace .backup-table col:nth-child(2) { width: 20%; }
+.system-task-workspace .backup-table col:nth-child(3) { width: 15%; }
+.system-task-workspace .backup-table col:nth-child(4) { width: 25%; }
+.system-task-workspace .backup-table col:nth-child(5) { width: 20%; }
+
+.system-task-workspace .accounts-table col:nth-child(1) { width: 15%; }
+.system-task-workspace .accounts-table col:nth-child(2) { width: 18%; }
+.system-task-workspace .accounts-table col:nth-child(3) { width: 16%; }
+.system-task-workspace .accounts-table col:nth-child(4) { width: 11%; }
+.system-task-workspace .accounts-table col:nth-child(5) { width: 20%; }
+.system-task-workspace .accounts-table col:nth-child(6) { width: 20%; }
+
+/* Descriptive copy may wrap naturally instead of being crushed or over-spaced. */
+.system-task-workspace .glossary-table .cell-gl-source,
+.system-task-workspace .glossary-table .cell-gl-en,
+.system-task-workspace .glossary-table .cell-gl-ru,
+.system-task-workspace .tx-jobs-table .cell-name,
+.system-task-workspace .audit-table .cell-summary,
+.system-task-workspace .backup-table td:nth-child(4),
+.system-task-workspace .analytics-table .cell-name {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.55;
+}
+.system-task-workspace .glossary-table .cell-gl-source,
+.system-task-workspace .glossary-table .cell-gl-en,
+.system-task-workspace .glossary-table .cell-gl-ru,
+.system-task-workspace .tx-jobs-table .cell-name,
+.system-task-workspace .audit-table .cell-summary,
+.system-task-workspace .backup-table td:nth-child(4) {
+  min-width: 0;
+  max-width: none;
+}
+
+.system-task-workspace .glossary-table th:last-child,
+.system-task-workspace .glossary-table .cell-gl-actions,
+.system-task-workspace .backup-table th:last-child,
+.system-task-workspace .backup-table .cell-actions,
+.system-task-workspace .accounts-table th:last-child,
+.system-task-workspace .accounts-table .cell-actions {
+  text-align: center;
+}
+
+.system-task-workspace .cell-time,
+.system-task-workspace .cell-id,
+.system-task-workspace .cell-num,
+.system-task-workspace .tx-api-log-table td.cell-num {
+  font-family: var(--font);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+.system-task-workspace .cell-actions,
+.system-task-workspace .cell-gl-actions { white-space: nowrap; }
+
+/* Table actions match the restrained Apple-industrial admin shell. */
+.system-task-workspace .btn-table {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--text-secondary);
+  font: 600 13px/1.2 var(--font);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+.system-task-workspace .btn-table + .btn-table { margin-left: 6px; }
+.system-task-workspace .btn-table:hover {
+  border-color: var(--txam-orange-border);
+  background: var(--txam-orange-soft);
+  color: var(--txam-orange);
+}
+.system-task-workspace .btn-table.danger { color: var(--danger); }
+.system-task-workspace .btn-table.danger:hover {
+  border-color: rgba(217, 45, 32, 0.24);
+  background: rgba(217, 45, 32, 0.06);
+}
+.system-task-workspace .btn-table:focus-visible {
+  outline: 3px solid rgba(255, 107, 0, 0.16);
+  outline-offset: 2px;
+}
+.system-task-workspace table.data .badge,
+.system-task-workspace table.data .audit-type-tag {
+  min-height: 24px;
+  padding: 3px 8px;
+  font: 600 12px/1.35 var(--font);
+}
+
+@media (max-width: 900px) {
+  .system-task-workspace {
+    --system-table-x: 10px;
+    --system-table-y: 9px;
+  }
+  .system-task-workspace table.data { font-size: 12.5px; }
+  .system-task-workspace table.data th { height: 40px; font-size: 11.5px; }
+}
+@media (max-width: 640px) {
+  .system-task-workspace > .section-panels-scroll { padding: 10px; }
+  .system-task-workspace .filter-bar > .search,
+  .system-task-workspace .filter-bar > .select {
+    width: 100%;
+    max-width: none;
+  }
+  .system-task-workspace .table-foot { padding: 10px 12px; }
+}
+
+/* 18. Dashboard 最近更新 feed: same balanced-track discipline as section 17.
+   The 摘要 column used to be the lone flex track (width:auto), so it swallowed
+   the card on wide screens while 时间/类型/操作人 stayed pinched. Proportional
+   tracks keep the rhythm even at any card width; narrow cards scroll instead of
+   crushing. The descriptive summary wraps naturally instead of being ellipsed
+   (full text is already in the title attribute). */
+#view-dashboard .recent-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+#view-dashboard .recent-table {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 34rem;
+}
+#view-dashboard .recent-table col:nth-child(1) { width: 17%; }  /* 时间 */
+#view-dashboard .recent-table col:nth-child(2) { width: 16%; }  /* 类型 */
+#view-dashboard .recent-table col:nth-child(3) { width: 52%; }  /* 摘要 */
+#view-dashboard .recent-table col:nth-child(4) { width: 15%; }  /* 操作人 */
+
+/* structured metadata stays on a single line */
+#view-dashboard .recent-table .cell-time,
+#view-dashboard .recent-table .cell-type,
+#view-dashboard .recent-table .cell-actor {
+  white-space: nowrap;
+}
+
+/* descriptive summary wraps instead of being cut off */
+#view-dashboard .recent-body-cell .recent-summary {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+/* rows respond to the pointer, matching the system tables */
+#view-dashboard .recent-table tbody tr { transition: background-color 0.15s ease; }
+#view-dashboard .recent-table tbody tr:hover { background: #fafafc; }
