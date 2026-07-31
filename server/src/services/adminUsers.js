@@ -222,6 +222,8 @@ function activeSuperAdminCount() {
 
 /* ── Bootstrap: seed first super_admin from env on first boot ─────────── */
 
+// Only used on first boot with an empty database.
+// After that, admin accounts are managed entirely via the Admin UI.
 export function ensureBootstrapAdmin() {
   const db = getDb();
   const count = db.prepare('SELECT COUNT(*) AS c FROM admin_users').get()?.c || 0;

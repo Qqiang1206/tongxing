@@ -50,9 +50,21 @@
     }
   }
 
+  /** Escape HTML special chars to prevent XSS when inserting text into innerHTML. */
+  function escapeHtml(str) {
+    var s = String(str == null ? '' : str);
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   global.TXAM = global.TXAM || {};
   global.TXAM.initSiteCommon = initSiteCommon;
   global.TXAM.applyCommonLabels = applyCommon;
+  global.TXAM.escapeHtml = escapeHtml;
 
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', function () {

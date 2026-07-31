@@ -543,6 +543,7 @@ function ensureTranslationEngineTable(db) {
       updated_at TEXT DEFAULT (datetime('now'))
     );
   `);
+  // Only seed on first boot — after that, manage via Admin UI
   const count = db.prepare('SELECT COUNT(*) AS c FROM translation_engine_config').get()?.c || 0;
   if (count > 0) return;
 

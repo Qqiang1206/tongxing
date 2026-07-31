@@ -67,7 +67,6 @@ import {
   verifyPassword,
 } from './services/adminUsers.js';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const ADMIN_SESSION_TTL_MS = Math.max(
   30 * 60 * 1000,
   Number(process.env.ADMIN_SESSION_HOURS || 8) * 60 * 60 * 1000
@@ -80,12 +79,6 @@ const MAX_BODY_BYTES = Math.max(
 const LOGIN_WINDOW_MS = 60 * 1000;
 const LOGIN_MAX_ATTEMPTS = Math.max(3, Number(process.env.ADMIN_LOGIN_MAX_ATTEMPTS || 8));
 const loginAttempts = new Map();
-
-function passwordMatches(candidate) {
-  const expected = Buffer.from(ADMIN_PASSWORD);
-  const actual = Buffer.from(String(candidate || ''));
-  return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
-}
 
 function createAdminSession(user) {
   const token = crypto.randomBytes(32).toString('base64url');
