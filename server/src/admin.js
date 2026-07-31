@@ -33,7 +33,7 @@ import {
 } from './services/translationEngines.js';
 import { saveUploadedMedia, listUploadedMedia, deleteUploadedMedia, updateMediaAlt } from './services/media.js';
 import { writeAudit, listAuditLogs, getAuditLog, listRecentContentUpdates, clientIp } from './services/audit.js';
-import { normalizeForCompare } from './services/translationFields.js';
+import { normalizeForCompare, collectStrings } from './services/translationFields.js';
 import {
   getCategoriesBundle,
   listProductCategories,
@@ -109,6 +109,28 @@ function cleanExpiredSessions() {
 
 function catalogNoun(kind) {
   return kind === 'products' ? '产品' : kind === 'news' ? '新闻' : '方案';
+}
+
+/**
+ * Collect the translatable strings of an object (paths + normalized values),
+ * sorted, so two snapshots can be compared for actual text changes.
+ * Skipped keys (image/cover/href/url/updatedAt/…) never appear here.
+ */
+function translatableStrings(obj) {
+  const paths = [];
+  const values = [];
+  collectStrings(obj || {}, '', paths, values, '');
+  return paths
+    .map((p, i) => `${p}\u0000${normalizeForCompare(values[i])}`)
+    .sort();
+}
+
+/** True when translatable text changed between two catalog snapshots. */
+function hasTranslatableDiff(before, after) {
+  const a = translatableStrings(before);
+  const b = translatableStrings(after);
+  if (a.length !== b.length) return true;
+  return a.some((v, i) => v !== b[i]);
 }
 
 function normalizeCatalogBody(kind, body) {
@@ -437,10 +459,15 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
   if (req.method === 'PUT' && id) {
     try {
       const body = await readBody(req);
+      const before = getCatalogItemRaw(kind, id);
       const item = updateCatalogItemRaw(kind, id, normalizeCatalogBody(kind, body));
       regenerateCatalogJs(kind, 'zh');
       generateSitemap();
-      markStale(kind);
+      // Only enqueue a translation job when translatable text actually changed.
+      // Image/link/status-only saves must not call the translation engine.
+      if (!before || hasTranslatableDiff(before, item)) {
+        markStale(kind);
+      }
       writeAudit({
         req,
         action: `${kind}.update`,

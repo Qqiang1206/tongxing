@@ -38,6 +38,9 @@ export const SKIP_KEYS = new Set([
   'mime',
   'path',
   'wechatImage',
+  // timestamps change on every save; never translatable metadata
+  'updatedAt',
+  'createdAt',
 ]);
 
 const ASSET_STRING_RE = /^(assets\/|https?:\/\/|mailto:|tel:|\/)/i;

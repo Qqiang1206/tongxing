@@ -473,5 +473,36 @@ ensureMeta('property', 'og:type', seo.type || 'website');
 
   global.TXAM.inLangDir = inLangDir;
 
+  /**
+   * Detail pages (news/product/solutions) must keep their ?id= across the
+   * ZH/EN/RU language switch. The switcher links are static bare paths in the
+   * HTML (e.g. "en/news-detail.html"); copy the current query string onto
+   * every relative detail-page link so switching languages stays on the same
+   * item instead of falling back to the first one. Canonical/alternate tags
+   * (absolute URLs) are left untouched.
+   */
+  function keepDetailQueryOnLangSwitch() {
+    var m = /(news|product|solutions)-detail\.html$/i.exec(location.pathname);
+    if (!m) return;                                   // detail page only
+    var search = location.search;
+    if (!search) return;
+    var detailRe = new RegExp(m[1] + '-detail\\.html$', 'i');
+    document.querySelectorAll('a[href]').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      if (/^https?:/i.test(href)) return;             // canonical / alternate
+      var clean = href.replace(/^(\.\.\/)+/, '');
+      if (!detailRe.test(clean)) return;              // same-kind detail link only
+      var q = href.indexOf('?');
+      var base = q >= 0 ? href.slice(0, q) : href;
+      a.setAttribute('href', base + (q >= 0 ? '&' : '?') + search.slice(1));
+    });
+  }
+
+  global.TXAM.keepDetailQueryOnLangSwitch = keepDetailQueryOnLangSwitch;
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', keepDetailQueryOnLangSwitch);
+  }
+
 })(typeof window !== 'undefined' ? window : globalThis);
 
