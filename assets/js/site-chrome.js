@@ -111,6 +111,46 @@
     btn.setAttribute('aria-controls', 'mobile-menu');
   }
 
+  /**
+   * Mobile menu toggle (open/close, icon swap, scroll lock, close on link tap / Esc).
+   * Bound here so every page gets it; index.html injects the header later via
+   * header.js, so a MutationObserver re-tries until the button exists.
+   */
+  function initMobileMenu() {
+    var btn = document.getElementById('mobile-menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    var icon = document.getElementById('menu-icon');
+    if (!btn || !menu || btn.getAttribute('data-chrome-bound') != null) return;
+    btn.setAttribute('data-chrome-bound', '1');
+
+    function open() {
+      btn.setAttribute('aria-expanded', 'true');
+      menu.classList.remove('menu-closed');
+      menu.classList.add('menu-open');
+      if (icon) icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      btn.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('menu-open');
+      menu.classList.add('menu-closed');
+      if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+      document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', function () {
+      if (btn.getAttribute('aria-expanded') === 'true') close();
+      else open();
+    });
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') close();
+    });
+  }
+
   function initNavbarScroll() {
     var navbar = document.getElementById('navbar');
     if (!navbar) return;
@@ -135,6 +175,15 @@
     fixLogoLink();
     ensureMobileMenuLabel();
     initNavbarScroll();
+    initMobileMenu();
+    if (!document.getElementById('mobile-menu-btn')) {
+      var observer = new MutationObserver(function () {
+        if (!document.getElementById('mobile-menu-btn')) return;
+        initMobileMenu();
+        observer.disconnect();
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
   }
 
   global.TXAM = global.TXAM || {};

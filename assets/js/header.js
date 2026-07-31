@@ -62,40 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Navbar scroll: site-chrome.js (throttled, null-safe)
 
-    // 移动端菜单
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = document.getElementById('menu-icon');
-    
-    if (mobileBtn && mobileMenu && menuIcon) {
-        let isMenuOpen = false;
-        mobileBtn.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            mobileBtn.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
-            if (isMenuOpen) {
-                mobileMenu.classList.remove('menu-closed');
-                mobileMenu.classList.add('menu-open');
-                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
-                document.body.style.overflow = 'hidden';
-            } else {
-                mobileMenu.classList.remove('menu-open');
-                mobileMenu.classList.add('menu-closed');
-                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        // 点击菜单链接后关闭
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                isMenuOpen = false;
-                mobileMenu.classList.remove('menu-open');
-                mobileMenu.classList.add('menu-closed');
-                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-                document.body.style.overflow = 'auto';
-            });
-        });
-    }
+    // 移动端菜单开关由 site-chrome.js（所有页面加载）统一处理
 
     // 滚动动画
     const observer = new IntersectionObserver((entries) => {

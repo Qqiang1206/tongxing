@@ -47,11 +47,13 @@
     if ((wrap.className || '').indexOf('border-l') !== -1) return true;
     var links = wrap.querySelectorAll(':scope > a');
     if (links.length !== 3) return false;
-    var hrefs = Array.prototype.map.call(links, function (a) {
-      return a.getAttribute('href') || '';
-    }).join(' ');
-    // Typical: mixes ../ /en/ /ru/ or same-folder current lang
-    return /\/en\//i.test(hrefs) || /\/ru\//i.test(hrefs) || /\.\.\//.test(hrefs);
+    // Typical: mixes ../ /en/ /ru/ or same-folder current lang.
+    // zh pages link to en/ru with "en/about.html" (no leading slash), so match
+    // each href individually with en/ru allowed at the start of the href.
+    return Array.prototype.some.call(links, function (a) {
+      var h = String(a.getAttribute('href') || '').replace(/\\/g, '/');
+      return /(^|\/)en\//i.test(h) || /(^|\/)ru\//i.test(h) || /\.\.\//.test(h);
+    });
   }
 
   function isLangSwitcherLink(a) {

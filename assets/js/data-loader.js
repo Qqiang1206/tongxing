@@ -358,6 +358,10 @@
 
     if (!mobileBtn || !mobileMenu || !menuIcon) return;
 
+    // site-chrome.js (loaded on every page) owns the toggle; skip if bound.
+    if (mobileBtn.getAttribute('data-chrome-bound') != null) return;
+    mobileBtn.setAttribute('data-chrome-bound', '1');
+
     var isMenuOpen = false;
 
     mobileBtn.addEventListener('click', function () {
@@ -505,4 +509,3 @@ ensureMeta('property', 'og:type', seo.type || 'website');
   }
 
 })(typeof window !== 'undefined' ? window : globalThis);
-
