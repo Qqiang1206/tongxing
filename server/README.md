@@ -157,6 +157,13 @@ GET /api/v1/pages/:key?lang=zh|en|ru
 
 Query `lang` defaults to `zh`. Only `published = true` rows are returned.
 
+### 访问统计（页面 PV）
+
+- 口径：每次整页加载记 1 次 PV，**未去重**（刷新、重复访问都计）；`/admin`、`/api`、静态资源与 404 不计；爬虫 UA 与本地开发 Host 默认剔除。
+- 落库：内存缓冲约 5 秒批量写入 `page_view_daily`（按北京时间日分桶）；进程硬崩溃最多丢 5 秒。
+- 环境变量：`ANALYTICS_ENABLED`（`0` 关闭统计）、`ANALYTICS_IGNORE_HOSTS`（逗号分隔，默认忽略 `localhost,127.0.0.1,::1`，**置空则所有 Host 都计**）、`ANALYTICS_MAX_HITS_PER_MIN`（每 IP 限流，默认 120）、`ANALYTICS_TZ`（日界时区，默认 `Asia/Shanghai`）。
+- 注意：`/api/v1/analytics/hit` 是无鉴权打点接口，可被脚本伪造，统计仅作内部参考。
+
 Catalog extras on public payloads:
 
 - solutions: `homeSlot` — `""` | `"hero"` | `"category"`

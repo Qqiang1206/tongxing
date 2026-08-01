@@ -69,7 +69,7 @@ PUBLIC_CACHE_TTL_MS=45000
 已包含 `/_backups/`、`/server/`、`/assets/images/uploads/_originals/` 等 **deny** 规则，以及基础安全响应头。
 证书就绪后：注释掉 HTTP server，启用文件内 HTTPS 模板（含 HSTS）。
 
-访问统计在内存攒批约 5 秒再写 SQLite；生产用单个 Node 进程（勿 PM2 cluster），backup-data 产物请再同步到 OSS。
+访问统计在内存攒批约 5 秒再写 SQLite；**默认忽略 `localhost`/`127.0.0.1`/`::1` 的 Host**（开发/QA 流量不进统计），如需本地也计数把 `ANALYTICS_IGNORE_HOSTS` 置空；`ANALYTICS_ENABLED=0` 可整体关闭。生产用单个 Node 进程（勿 PM2 cluster），backup-data 产物请再同步到 OSS。
 
 ### 图片上传（运营素材）
 

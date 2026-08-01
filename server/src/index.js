@@ -8,7 +8,7 @@ import { config, REPO_ROOT } from './config.js';
 import { catalog } from './services/catalog.js';
 import { handleAdmin } from './admin.js';
 import { getDb, dbPathForHealth } from './db.js';
-import { recordPageView, shouldTrackPageView, normalizePagePath } from './services/analytics.js';
+import { recordPageView, shouldTrackPageView, normalizePagePath, shouldRecordForHost } from './services/analytics.js';
 import { cachedPublic } from './services/publicCache.js';
 import { clientIp } from './services/audit.js';
 import { createRateLimiter } from './services/rateLimit.js';
@@ -209,7 +209,7 @@ function siteFileExists(rawPathname) {
 // Known crawler / non-browser user-agent tokens. Real browser UAs never
 // contain these, so visits from bots/scripts are excluded from page-view
 // counts to keep the analytics numbers representative of human traffic.
-const CRAWLER_UA_RE = /(googlebot|bingbot|slurp|duckduckbot|baiduspider|sogou|exabot|facebookexternalhit|twitterbot|linkedinbot|semrush|ahrefs|mj12bot|rogerbot|applebot|petalbot|dotbot|bytespider|mauibot|uptimerobot|googleinspectiontool|crawler|spider|archiver|headless|phantomjs|puppeteer|selenium|lighthouse|curl\/|wget\/|python-requests|node-fetch|go-http-client|libwww|httpclient|java\/)/i;
+const CRAWLER_UA_RE = /(googlebot|bingbot|slurp|duckduckbot|baiduspider|sogou|yandex|exabot|facebookexternalhit|facebookcatalog|twitterbot|linkedinbot|semrush|ahrefs|mj12bot|rogerbot|applebot|petalbot|dotbot|bytespider|mauibot|uptimerobot|googleinspectiontool|gptbot|chatgpt|oai-searchbot|claude|anthropic|perplexity|amazonbot|meta-externalagent|cohere|feedfetcher|newsblur|feedly|slackbot|discordbot|telegrambot|skypeuripreview|whatsapp|scrapy|python|requests|postman|insomnia|okhttp|apache-httpclient|powerbot|crawler|spider|archiver|headless|phantomjs|puppeteer|selenium|lighthouse|curl\/|wget\/|node-fetch|go-http-client|libwww|httpclient|java\/)/i;
 
 function isCrawler(userAgent) {
   const ua = String(userAgent || '').trim();
@@ -375,6 +375,7 @@ const server = http.createServer((req, res) => {
     }
     const hitPath = query.path || rawPath || '/';
     if (
+      shouldRecordForHost(req.headers.host) &&
       shouldTrackPageView(normalizePagePath(hitPath)) &&
       !isCrawler(req.headers['user-agent']) &&
       siteFileExists(hitPath)

@@ -29,6 +29,40 @@ let flushTimer = null;
 let flushHooksBound = false;
 let legacyMerged = false;
 
+/**
+ * Master switch for page-view recording (ANALYTICS_ENABLED, default on).
+ * Set to 0/false/no to keep dev or quiet environments from writing stats.
+ */
+export function analyticsRecordingEnabled() {
+  const v = String(process.env.ANALYTICS_ENABLED == null ? '1' : process.env.ANALYTICS_ENABLED).toLowerCase();
+  return !['0', 'false', 'no', 'off', 'disabled'].includes(v);
+}
+
+/**
+ * Hosts whose page views are ignored. Defaults to local dev hosts so testing
+ * traffic never pollutes the dashboard; override with ANALYTICS_IGNORE_HOSTS
+ * (comma-separated, empty string counts everyone).
+ */
+export function analyticsIgnoreHosts() {
+  const raw = process.env.ANALYTICS_IGNORE_HOSTS;
+  if (raw == null || raw === '') {
+    return new Set(['localhost', '127.0.0.1', '::1']);
+  }
+  return new Set(String(raw).split(',').map((s) => s.trim().toLowerCase()).filter(Boolean));
+}
+
+/** True when a request with this Host header should be recorded. */
+export function shouldRecordForHost(hostHeader) {
+  if (!analyticsRecordingEnabled()) return false;
+  const host = String(hostHeader || '')
+    .split(':')[0]
+    .replace(/^\[|\]$/g, '')
+    .trim()
+    .toLowerCase();
+  if (!host) return false;
+  return !analyticsIgnoreHosts().has(host);
+}
+
 function pathLabel(pagePath) {
   const languageMatch = pagePath.match(/^\/(en|ru)(?=\/|$)/);
   const language = languageMatch?.[1];
