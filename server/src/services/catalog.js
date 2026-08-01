@@ -861,15 +861,25 @@ export function updateCatalogItemRaw(kind, id, patch, beforeItem) {
   delete row.replaceId;
   delete row.replace_id;
   const db = getDb();
-  if (kind === 'solutions' || kind === 'news') {
-    guardRequiredSlotVacate(kind, cur, row, { replaceId });
+  // Validate destination capacity FIRST (may throw 409 home_slot_full) before
+  // any vacate promotion runs, and keep the whole mutation atomic so a failed
+  // save never leaves slots over-occupied.
+  db.exec('BEGIN');
+  try {
+    if (kind === 'solutions') assertSolutionHomeSlot(row, { replaceId });
+    if (kind === 'news') assertNewsHomeFeatured(row, { replaceId });
+    if (kind === 'solutions' || kind === 'news') {
+      guardRequiredSlotVacate(kind, cur, row, { replaceId });
+    }
+    if (kind === 'products') writeProductRow(db, row);
+    else if (kind === 'solutions') writeSolutionRow(db, row);
+    else if (kind === 'news') writeNewsRow(db, row);
+    else throw new Error('invalid_catalog_kind');
+    db.exec('COMMIT');
+  } catch (err) {
+    try { db.exec('ROLLBACK'); } catch (_) { /* ignore rollback failure */ }
+    throw err;
   }
-  if (kind === 'solutions') assertSolutionHomeSlot(row, { replaceId });
-  if (kind === 'news') assertNewsHomeFeatured(row, { replaceId });
-  if (kind === 'products') writeProductRow(db, row);
-  else if (kind === 'solutions') writeSolutionRow(db, row);
-  else if (kind === 'news') writeNewsRow(db, row);
-  else throw new Error('invalid_catalog_kind');
   ensureDerivedCatalogRow(kind, key, row);
   exportCatalogLang(kind, 'zh', { onlyIds: [key] });
   clearPublicCache();
@@ -881,19 +891,26 @@ export function deleteCatalogItemRaw(kind, id, opts = {}) {
   const key = String(id);
   const cur = getCatalogItemRaw(kind, key);
   if (!cur) throw new Error('not_found');
-  if (kind === 'solutions' || kind === 'news') {
-    const vacated = {
-      ...cur,
-      published: false,
-      homeSlot: '',
-      homeFeatured: false,
-    };
-    guardRequiredSlotVacate(kind, cur, vacated, opts);
-  }
-  if (kind === 'products') db.prepare('DELETE FROM products WHERE id = ?').run(key);
-  else if (kind === 'solutions') db.prepare('DELETE FROM solutions WHERE id = ?').run(key);
-  else if (kind === 'news') db.prepare('DELETE FROM news WHERE id = ?').run(key);
+  db.exec('BEGIN');
+  try {
+    if (kind === 'solutions' || kind === 'news') {
+      const vacated = {
+        ...cur,
+        published: false,
+        homeSlot: '',
+        homeFeatured: false,
+      };
+      guardRequiredSlotVacate(kind, cur, vacated, opts);
+    }
+    if (kind === 'products') db.prepare('DELETE FROM products WHERE id = ?').run(key);
+    else if (kind === 'solutions') db.prepare('DELETE FROM solutions WHERE id = ?').run(key);
+    else if (kind === 'news') db.prepare('DELETE FROM news WHERE id = ?').run(key);
     else throw new Error('invalid_catalog_kind');
+    db.exec('COMMIT');
+  } catch (err) {
+    try { db.exec('ROLLBACK'); } catch (_) { /* ignore rollback failure */ }
+    throw err;
+  }
   for (const lang of LANGS) exportCatalogLang(kind, lang);
   for (const lang of LANGS) {
     const itemPath = path.join(DATA_DIR, kind, 'items', lang, `${key}.json`);

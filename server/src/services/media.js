@@ -9,7 +9,9 @@ import {
 
 const UPLOAD_DIR = path.join(REPO_ROOT, 'assets', 'images', 'uploads');
 const ORIGINALS_DIR = path.join(UPLOAD_DIR, '_originals');
-const ALLOWED_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg']);
+// SVG is intentionally disallowed: served inline at the site origin, an
+// uploaded SVG could carry scripts (stored XSS via direct URL).
+const ALLOWED_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif']);
 
 function mediaMeta(mediaPath) {
   const normalized = String(mediaPath || '').replace(/\\/g, '/').replace(/^\//, '');
@@ -116,7 +118,6 @@ export async function saveUploadedMedia({ filename, dataBase64, mime, alt }) {
       'image/jpeg': '.jpg',
       'image/webp': '.webp',
       'image/gif': '.gif',
-      'image/svg+xml': '.svg',
     };
     ext = map[mime] || '';
   }

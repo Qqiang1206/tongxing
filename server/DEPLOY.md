@@ -73,7 +73,7 @@ PUBLIC_CACHE_TTL_MS=45000
 
 ### 图片上传（运营素材）
 
-- 后台上传 ≤8MB 的 PNG/JPG/JPEG/WebP 会自动生成 **display WebP（≤1920px）** 与 **thumb WebP**；前台只引用 display 路径。GIF/SVG 也允许上传，但**原样保存、不生成变体**（`media.js → ALLOWED_EXT`）。
+- 后台上传 ≤8MB 的 PNG/JPG/JPEG/WebP 会自动生成 **display WebP（≤1920px）** 与 **thumb WebP**；前台只引用 display 路径。GIF 允许上传但**原样保存、不生成变体**；**SVG 禁止上传**（内联返回有存储型 XSS 面，`media.js → ALLOWED_EXT`）。
 - 原图归档在 `assets/images/uploads/_originals/`（Nginx/Node 均不可公开访问）。
 - 已有旧上传：`cd server && npm run migrate:uploads`
 - 列表页数据：`npm run generate-data-js` 会生成 slim 列表 JS + `data/*/items/{lang}/{id}.json` 详情分文件。
@@ -136,6 +136,8 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 
 未配置 Key 时默认为 **echo**：默认只读不写库；仅当 `TRANSLATION_ALLOW_ECHO_WRITE=1` 时才给文案加 `[EN]`/`[RU]` 前缀写入（限本地联调，勿用于生产）。
 
+> **引擎优先级**：后台「翻译引擎」表（`translation_engine_config`）里**已激活且带 key** 的配置优先于环境变量；环境变量仅在无有效表配置时兜底。改引擎请到后台「系统管理 → 翻译引擎」，只改 `.env` 可能不生效。
+
 ---
 
 ## 6. 安全要点
@@ -147,6 +149,8 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 | CORS | 生产改为具体站点 Origin，勿长期 `*` |
 | 备份 | 后台写入前每 15 分钟自动备份；也可跑 `backup-data`。备份含 SQLite、静态数据和上传图片，`_backups` 勿暴露 Web |
 | 操作日志 | 写操作与登录写入 `admin_audit_log`；默认保留 90 天（`AUDIT_RETENTION_DAYS`）；不含密码与上传二进制 |
+
+**并发访问禁忌**：SQLite 服务运行期间，不要用其他进程直接写同一个 `txam.db`，尤其避免 WSL 与 Windows 两侧不同 SQLite 版本同时读写；备份恢复/替换数据库文件后**必须重启 Node 服务**，否则运行中的进程可能读到不一致视图（表现为 `database disk image is malformed`）。
 
 ---
 

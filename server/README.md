@@ -304,6 +304,8 @@ GET  /api/v1/admin/dashboard/recent-updates
 
 Translation engines: `TRANSLATION_PROVIDER=deepseek|openai|qianwen|echo`（实现见 `translateProvider.js`）。DeepSeek 默认 `https://api.deepseek.com` + `deepseek-v4-flash`（自动关闭 thinking）；OpenAI 默认 `gpt-4o-mini`；通义千问默认 `qwen-plus`。无 key 时回退 `echo`：**默认只读、不写库**；仅当 `TRANSLATION_ALLOW_ECHO_WRITE=1` 时才写入 `[EN]`/`[RU]` 前缀占位（限本地联调，勿用于生产）。Translation runs automatically via scheduler every 30s.
 
+> **引擎优先级**：`translation_engine_config` 表中**已激活且带 key** 的引擎配置优先于环境变量（`getTranslationConfig()` 先查表、后兜底 env）；后台「翻译引擎」页面改配置即生效，仅改 `.env` 不一定会生效。
+
 ---
 
 ## 8. Database
@@ -363,9 +365,12 @@ Production: same-origin `/api/v1` via nginx reverse proxy (see repo root `nginx.
 ## 10. Import & known data issues
 
 - `npm run import` reads `data/{products,solutions,news}/{zh,en,ru}.json`，并调用 `reconcileHomeSlots()`。
+- **import 仅用于首次建库 / 部署初始化**：它会按 seed 覆盖产品列表标记与排序（`applyProductListSeed`），也会用静态 JSON 覆盖当前内容——日常内容改动以数据库为准，**不要在运行期重复 import**，以免覆盖后台操作。
 - After adding zh-only catalog rows, run `npm run sync-catalog-i18n` so en/ru share the same ids (text stays zh until translation).
 - Slugs for solutions assigned by id map in `scripts/import-from-json.js`.
 - JSON 中的 `homeSlot` / `homeFeatured` 会写入 SQLite；勿手改与后台冲突。
+
+**并发访问禁忌**：服务运行期间勿用其他进程直接写同一 `txam.db`，尤其避免 WSL 与 Windows 两侧不同 SQLite 版本同时读写；替换/恢复数据库文件后必须重启服务（否则可能出现 `database disk image is malformed` 这类不一致视图）。
 
 ---
 
