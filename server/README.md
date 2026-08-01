@@ -83,7 +83,7 @@ User flow: `solutions.html` → `{slug}-solution.html` (hydrated from same catal
 3. **仅已发布**内容计入坑位；下架会清空占用（须先满足下一条）。
 4. **必填**：三个坑位必须始终满员。下架、取消精选、删除占用项，或从坑位撤出时，必须指定 `replaceId`（另一条**已发布且未占其他首页坑位**的同类型条目）顶替，否则 API 返回 **409** `unpublish_needs_replace`。
 5. **认领满员**：往已满坑位精选时，返回 **409** `home_slot_full`，须指定要让出的占用项 `replaceId`。
-6. 导入后会 `reconcileHomeSlots()`（清未发布上的脏标记、裁剪超额）；空库种子：方案 `31=hero`、`32/33=category`，新闻 `1`/`2` 精选。
+6. 导入后会 `reconcileHomeSlots()`（清未发布上的脏标记、裁剪超额）；空库种子：方案 `31=hero`、`32/33=category`，新闻 `1`/`3` 精选（`homeSlots.js → seedHomeSlotsIfEmpty`）。
 
 Admin：
 
@@ -127,7 +127,9 @@ Public API serves all langs; preview UI only renders zh
 
 `translation_status` values: `source` (zh), `current`, `stale`, `missing`.
 
-**Do-not-translate** list (pass to AI): product models (`TX-NS-*`), units (`±0.075mm`), brand `TXAM`, URLs, HTML tag structure in `contentHtml`.
+**翻译提示词实际保护的内容**（见 `translateProvider.js` 的 system prompt）：`contentHtml` 的 HTML 标签/属性必须原样保留；品牌 `同兴高科` 必须译为 `TXAM`（不得音译）；URL、文件路径、邮箱不得翻译。
+
+> ⚠️ 产品型号（`TX-NS-*`）、单位（`±0.075mm`）**不在**提示词的硬性保护清单里，靠术语表 + 人工抽检兜底。翻译结果若仍有中文残留，调度器只打 `console.warn`（`translateResource.js`），不会自动拒绝——上线前请抽查 en/ru。
 
 ---
 
@@ -300,7 +302,7 @@ GET  /api/v1/admin/dashboard/recent-updates
 | `home_slot_full` | 认领已满坑位 | `occupants[]`, `slot`, `action: "claim"` → 传 `replaceId` 让出占用项 |
 | `unpublish_needs_replace` | 下架/撤坑/删除占用必填坑位 | `candidates[]`, `slot`, `action: "vacate"` → 传 `replaceId` 顶替 |
 
-Translation engines: set `TRANSLATION_PROVIDER=deepseek` and `TRANSLATION_API_KEY` (or `DEEPSEEK_API_KEY`). Defaults: `https://api.deepseek.com` + `deepseek-v4-flash` (thinking off). OpenAI also works via `TRANSLATION_PROVIDER=openai`. Without a key, `echo` mode writes prefixed placeholders. Translation runs automatically via scheduler every 30s.
+Translation engines: `TRANSLATION_PROVIDER=deepseek|openai|qianwen|echo`（实现见 `translateProvider.js`）。DeepSeek 默认 `https://api.deepseek.com` + `deepseek-v4-flash`（自动关闭 thinking）；OpenAI 默认 `gpt-4o-mini`；通义千问默认 `qwen-plus`。无 key 时回退 `echo`：**默认只读、不写库**；仅当 `TRANSLATION_ALLOW_ECHO_WRITE=1` 时才写入 `[EN]`/`[RU]` 前缀占位（限本地联调，勿用于生产）。Translation runs automatically via scheduler every 30s.
 
 ---
 
@@ -311,7 +313,7 @@ Translation engines: set `TRANSLATION_PROVIDER=deepseek` and `TRANSLATION_API_KE
 - Admin/API read & write SQLite; by default also syncs `data/*.json` + companion `.js` for static/`file://` fallback (`SYNC_JSON_ON_WRITE=1`).
 - **Production optional:** PostgreSQL — use `schema/tables.sql` (same logical model; adapter not wired yet).
 
-Core tables: `admin_users`（RBAC）, `products`, `product_i18n`（含 `model`）, `solutions`（含 `home_slot`）, `solution_i18n`, `news`（含 `home_featured`）, `news_i18n`, `pages`, `site_settings`, `media`, `product_categories`, `solution_categories`, `news_categories`, `resource_translation_status`, `translation_job_store`, `translation_memory`（术语表 + 页面标题记忆）, `admin_audit_log`, `page_view_daily`.
+Core tables: `admin_users`（RBAC）, `products`, `product_i18n`（含 `model`）, `solutions`（含 `home_slot`）, `solution_i18n`, `news`（含 `home_featured`）, `news_i18n`, `pages`, `site_settings`, `media`, `product_categories`, `solution_categories`, `news_categories`, `resource_translation_status`, `translation_job_store`, `translation_jobs`, `translation_memory`（术语表 + 页面标题记忆）, `translation_engine_config`, `translation_api_log`, `admin_audit_log`, `page_view_daily`.
 
 See `schema/sqlite-init.sql` and `schema/tables.sql`.
 
@@ -416,7 +418,11 @@ server/
         ├── translationMemory.js ← 术语表 + 页面标题一致性记忆
         ├── translateResource.js ← 翻译执行（术语优先 + 快照比对 + 中文残留检测）
         ├── translationScheduler.js ← 自动翻译调度（30s 轮询）
-        ├── translationFields.js / translateProvider.js / translationJobs.js / ...
+        ├── translationFields.js / translateProvider.js / translationJobs.js
+        ├── translationEngines.js / translationMemory.js / translationSnapshot.js
+        ├── translationApiLog.js / translationStatus.js
+        ├── homeSlots.js / categories.js / adminUsers.js
+        ├── publicCache.js / rateLimit.js / imageVariants.js / detailPageRenderer.js
         ├── analytics.js / audit.js / backup.js / media.js / sitemap.js
         └── ...
 ```

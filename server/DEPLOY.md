@@ -40,9 +40,22 @@ CORS_ORIGIN=https://www.sztxgk.com
 HOST=127.0.0.1
 # 公开内容 API 内存缓存毫秒（后台写入会立即清除）
 PUBLIC_CACHE_TTL_MS=45000
+# 会话有效期（小时，默认 8）
+# ADMIN_SESSION_HOURS=8
+# admin 请求体上限（字节，默认 12MB，与 nginx client_max_body_size 对齐）
+# MAX_BODY_BYTES=12582912
+# 登录限流（每 IP 每分钟，默认 8）
+# ADMIN_LOGIN_MAX_ATTEMPTS=8
+# 访问统计打点限流（每 IP 每分钟，默认 120）
+# ANALYTICS_MAX_HITS_PER_MIN=120
+# SQLite 路径（相对 server/）与是否同步 data/* 静态快照
+# SQLITE_PATH=./data/txam.db
+# SYNC_JSON_ON_WRITE=1
+# 审计日志保留天数（0 关闭清理，默认 90）
+# AUDIT_RETENTION_DAYS=90
 ```
 
-- **切勿**把真实 `ADMIN_PASSWORD` 提交进 Git。
+- 完整环境变量清单以 `server/.env.example` 为准；**切勿**把真实 `ADMIN_PASSWORD` 提交进 Git。
 - 后台支持多账号 RBAC（4 个角色：超级管理员/内容编辑/翻译运营/只读访客）。首次启动后登录后台「系统管理 → 账号管理」创建团队成员的账号。
 - 公网部署时建议限制后台访问（VPN / IP 白名单 / Basic Auth 外层）。
 
@@ -60,7 +73,7 @@ PUBLIC_CACHE_TTL_MS=45000
 
 ### 图片上传（运营素材）
 
-- 后台上传 ≤8MB 的 PNG/JPG/WebP 会自动生成 **display WebP（≤1920px）** 与 **thumb WebP**；前台只引用 display 路径。
+- 后台上传 ≤8MB 的 PNG/JPG/JPEG/WebP 会自动生成 **display WebP（≤1920px）** 与 **thumb WebP**；前台只引用 display 路径。GIF/SVG 也允许上传，但**原样保存、不生成变体**（`media.js → ALLOWED_EXT`）。
 - 原图归档在 `assets/images/uploads/_originals/`（Nginx/Node 均不可公开访问）。
 - 已有旧上传：`cd server && npm run migrate:uploads`
 - 列表页数据：`npm run generate-data-js` 会生成 slim 列表 JS + `data/*/items/{lang}/{id}.json` 详情分文件。
@@ -71,7 +84,7 @@ PUBLIC_CACHE_TTL_MS=45000
 ## 4. 发布步骤
 
 1. 备份：`npm run backup-data`
-2. 上传/同步代码（排除 `node_modules`、`_unused-images`、`_backups`、`.git`）
+2. 上传/同步代码（排除 `node_modules`、`_unused-images`、`_backups`、`.git`）。注意：`data/`（JSON/JS 快照）与 `server/data/*.db` 按 `.gitignore` 不进 git，但**必须随整目录一起打包上传**，否则纯 git 拉取会丢失全部内容
 3. `cd server && npm run import`（JSON → SQLite；首次或数据大改用 `import:reset`）
 4. 根目录：`npm run generate-data-js` 与 `npm run generate-sitemap`（或直接 `npm run build`；DB 写入默认也会同步 JSON）
 5. 重启 Node（带 `ADMIN_PASSWORD`）
@@ -114,9 +127,14 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 # TRANSLATION_API_KEY=sk-...
 # TRANSLATION_BASE_URL=https://api.openai.com/v1
 # TRANSLATION_MODEL=gpt-4o-mini
+
+# 或通义千问
+# TRANSLATION_PROVIDER=qianwen
+# TRANSLATION_API_KEY=sk-...
+# 默认 MODEL=qwen-plus
 ```
 
-未配置 Key 时默认为 **echo**（给文案加 `[EN]`/`[RU]` 前缀，用于联调，勿用于生产）。
+未配置 Key 时默认为 **echo**：默认只读不写库；仅当 `TRANSLATION_ALLOW_ECHO_WRITE=1` 时才给文案加 `[EN]`/`[RU]` 前缀写入（限本地联调，勿用于生产）。
 
 ---
 
@@ -136,7 +154,9 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 
 自动化脚本：`ADMIN_PASSWORD=你的密码 npm run regression -- http://127.0.0.1:PORT`（需先 `npm run server:dev`）。未设 `ADMIN_PASSWORD` 时跳过后台写测，仍检查公网 API 与首页坑位。
 
-最近一次本地跑通（2026-07-21，PORT=3030）：**34 PASS / 0 FAIL**（随后已增补 home-slots 断言与上传后清理；请用当前脚本重跑）。
+最近一次后台/API 审计（2026-08-01，干净实例）：**33 PASS / 0 FAIL**（自定义审计脚本：公开 API 三语 + 后台只读端点 + 媒体上传/删除回环）。
+
+> ⚠️ `regression-check.js` 里的「改产品摘要再恢复」写测会触发 `markStale('products')`，30 秒后调度器会对全部产品发起 AI 重译——跑写测前请确认翻译环境（无 key / 测试库），并先备份 DB。
 
 - [x] `/` 首页区块正常（hero、标杆方案、三大核心类目、产品、服务、新闻）— 标杆/精选来自 `homeSlot` / `homeFeatured`，单元设备卡来自 `pages/home`
 - [x] `/about.html` 轮播、统计、文化、时间轴、资质、客户 Logo — 容器 + API timeline 4 条；视觉再确认

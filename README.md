@@ -11,10 +11,10 @@
 │   ├── js/
 │   └── images/{brand,hero,products,solutions,certifications,clients}
 ├── data/
-│   ├── products/{zh,en,ru}.json
-│   ├── solutions/{zh,en,ru}.json
-│   ├── news/{zh,en,ru}.json
-│   ├── i18n/
+│   ├── products|solutions|news/{zh,en,ru}.{json,js}   # 列表 + 详情 items/{lang}/{id}.json
+│   ├── pages/{home,about,contact,products,news,solutions}/{zh,en,ru}.{json,js}
+│   ├── i18n/{zh,en,ru}.{json,js}
+│   ├── meta/                    # 翻译状态 / 任务快照
 │   └── schema/
 ├── scripts/                      # Dev tooling (not required at runtime)
 ├── server/                       # CMS + public API（见 server/README.md、DEPLOY.md）
@@ -38,7 +38,7 @@ See [DESIGN.md](DESIGN.md) for colors, type scale, spacing, components, and page
 
 生产推荐：静态站 + Node CMS（同域反代 `/api/`、`/admin/`）。细节见 [server/DEPLOY.md](server/DEPLOY.md)。
 
-纯静态托管时上传仓库（可排除 `.git/`、`scripts/`）；需能提供 `data/*.json`（`web.config` 已配 MIME）。
+部署按**整目录打包上传**。`data/` 与 `server/data/*.db` 被 `.gitignore` 忽略（SQLite 是内容源，`data/*` 是供前台静态读取的快照），**必须随包一起上传**——纯 git 拉取会丢失全部内容。纯静态托管时需能提供 `data/*.json` 与配套 `*.js`（`web.config` 已配 MIME）。
 
 ## Backend path
 
