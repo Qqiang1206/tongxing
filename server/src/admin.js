@@ -96,6 +96,13 @@ function createAdminSession(user) {
   return { token, expiresAt: new Date(expiresAt).toISOString() };
 }
 
+/** Legacy shared-secret check: candidate must equal ADMIN_PASSWORD in env. */
+function passwordMatches(candidate) {
+  const expected = Buffer.from(process.env.ADMIN_PASSWORD || '');
+  const actual = Buffer.from(String(candidate || ''));
+  return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
+}
+
 function bearerToken(req) {
   const header = req.headers.authorization || '';
   return header.startsWith('Bearer ') ? header.slice(7) : '';
@@ -588,7 +595,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
 
       // Transition fallback: the legacy shared ADMIN_PASSWORD still grants the
       // bootstrap super_admin account, so existing deployments keep working.
-      if (!user && ADMIN_PASSWORD && passwordMatches(password)) {
+      if (!user && process.env.ADMIN_PASSWORD && passwordMatches(password)) {
         const db = getDb();
         const row = db.prepare(
           `SELECT * FROM admin_users WHERE role = 'super_admin' AND status = 'active' ORDER BY id LIMIT 1`
