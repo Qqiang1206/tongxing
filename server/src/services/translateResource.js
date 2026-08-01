@@ -4,12 +4,12 @@
 import {
   readCatalogJson,
   writeCatalogJsonAny,
-  regenerateCatalogJs,
   readPageJson,
   writePageJsonAny,
   loadSiteSettings,
   writeSiteSettingsAny,
 } from './catalog.js';
+import { getDb } from '../db.js';
 import { translateTexts, getTranslationConfig } from './translateProvider.js';
 import { getItemSnapshot, replaceSnapshotBatch } from './translationSnapshot.js';
 import {
@@ -30,6 +30,11 @@ import {
 
 const CATALOG_KINDS = new Set(['products', 'news', 'solutions']);
 const CJK_RE = /[\u4e00-\u9fff]/;
+const CATALOG_I18N = {
+  products: ['product_i18n', 'product_id'],
+  solutions: ['solution_i18n', 'solution_id'],
+  news: ['news_i18n', 'news_id'],
+};
 
 async function classifyAndTranslate(resourceKey, lang, itemId, values, paths, existingObj, jobId) {
   const snapshot = getItemSnapshot(resourceKey, lang, itemId);
@@ -154,7 +159,6 @@ export async function translateResource(resource, targetLangs, opts) {
       (results) => {
         results.forEach((result, index) => {
           writeCatalogJsonAny(resource, langs[index], result.data);
-          regenerateCatalogJs(resource, langs[index]);
         });
       }
     );
@@ -213,6 +217,16 @@ export async function translateResource(resource, targetLangs, opts) {
 async function buildTranslatedCatalog(kind, lang, jobId) {
   const source = readCatalogJson(kind, 'zh');
   const existing = readCatalogJson(kind, lang);
+  // Per-item scope: only translate rows that are stale/missing, so a zh save
+  // of one item never re-translates (and re-exports) the whole catalog.
+  const [i18nTable, idCol] = CATALOG_I18N[kind];
+  const staleRows = getDb()
+    .prepare(
+      `SELECT ${idCol} AS id FROM ${i18nTable}
+       WHERE lang = ? AND translation_status IN ('stale','missing')`
+    )
+    .all(lang);
+  const staleIds = new Set(staleRows.map((r) => String(r.id)));
   const data = {};
   const changes = [];
   const scopes = [];
@@ -220,6 +234,13 @@ async function buildTranslatedCatalog(kind, lang, jobId) {
   const ids = Object.keys(source).sort((a, b) => Number(a) - Number(b));
 
   for (const id of ids) {
+    const existingItem = existing ? existing[id] : null;
+    if (!staleIds.has(id)) {
+      // Carry over the current en/ru content untouched (fall back to zh clone).
+      data[id] = existingItem || JSON.parse(JSON.stringify(source[id]));
+      data[id].id = id;
+      continue;
+    }
     const paths = [];
     const values = [];
     collectTranslationStrings(source[id], '', paths, values, id);
@@ -233,7 +254,7 @@ async function buildTranslatedCatalog(kind, lang, jobId) {
         id,
         values,
         paths,
-        existing ? existing[id] : null,
+        existingItem,
         jobId
       );
       const applied = result.finalValues.map((value, index) => value != null ? value : values[index]);

@@ -847,14 +847,14 @@ export function createCatalogItemRaw(kind, item) {
   else if (kind === 'news') writeNewsRow(db, row);
   else throw new Error('invalid_catalog_kind');
   ensureDerivedCatalogRow(kind, id, row);
-  exportCatalogLang(kind, 'zh');
+  exportCatalogLang(kind, 'zh', { onlyIds: [id] });
   clearPublicCache();
   return getCatalogItemRaw(kind, id);
 }
 
-export function updateCatalogItemRaw(kind, id, patch) {
+export function updateCatalogItemRaw(kind, id, patch, beforeItem) {
   const key = String(id);
-  const cur = getCatalogItemRaw(kind, key);
+  const cur = beforeItem || getCatalogItemRaw(kind, key);
   if (!cur) throw new Error('not_found');
   const replaceId = patch.replaceId || patch.replace_id || null;
   const row = { ...cur, ...patch, id: key };
@@ -871,7 +871,7 @@ export function updateCatalogItemRaw(kind, id, patch) {
   else if (kind === 'news') writeNewsRow(db, row);
   else throw new Error('invalid_catalog_kind');
   ensureDerivedCatalogRow(kind, key, row);
-  exportCatalogLang(kind, 'zh');
+  exportCatalogLang(kind, 'zh', { onlyIds: [key] });
   clearPublicCache();
   return getCatalogItemRaw(kind, key);
 }
@@ -895,6 +895,12 @@ export function deleteCatalogItemRaw(kind, id, opts = {}) {
   else if (kind === 'news') db.prepare('DELETE FROM news WHERE id = ?').run(key);
     else throw new Error('invalid_catalog_kind');
   for (const lang of LANGS) exportCatalogLang(kind, lang);
+  for (const lang of LANGS) {
+    const itemPath = path.join(DATA_DIR, kind, 'items', lang, `${key}.json`);
+    try {
+      fs.rmSync(itemPath, { force: true });
+    } catch (_) { /* best-effort cleanup of the removed item's detail file */ }
+  }
   // Drop the translation snapshot for this item so a re-created id won't
   // wrongly reuse a stale translation.
   removeItemSnapshot(kind, key);
@@ -908,24 +914,43 @@ export function ensureDerivedCatalogRow(kind, id, zhRow) {
   const key = String(id);
   const clone = { ...zhRow, id: key };
   for (const lang of ['en', 'ru']) {
+    let created = false;
     if (kind === 'products') {
       const exists = db
         .prepare('SELECT 1 FROM product_i18n WHERE product_id = ? AND lang = ?')
         .get(key, lang);
-      if (!exists) upsertProductLang(db, key, lang, clone, 'missing');
+      if (!exists) { upsertProductLang(db, key, lang, clone, 'missing'); created = true; }
     } else if (kind === 'solutions') {
       const exists = db
         .prepare('SELECT 1 FROM solution_i18n WHERE solution_id = ? AND lang = ?')
         .get(key, lang);
-      if (!exists) upsertSolutionLang(db, key, lang, clone, 'missing');
+      if (!exists) { upsertSolutionLang(db, key, lang, clone, 'missing'); created = true; }
     } else if (kind === 'news') {
       const exists = db
         .prepare('SELECT 1 FROM news_i18n WHERE news_id = ? AND lang = ?')
         .get(key, lang);
-      if (!exists) upsertNewsLang(db, key, lang, clone, 'missing');
+      if (!exists) { upsertNewsLang(db, key, lang, clone, 'missing'); created = true; }
     }
-    exportCatalogLang(kind, lang);
+    // Only write static files for a language whose row was actually created;
+    // untouched en/ru content must not trigger a full re-export on zh saves.
+    if (created) exportCatalogLang(kind, lang, { onlyIds: [key] });
   }
+}
+
+/** Mark only one item's en/ru rows stale so the scheduler translates just it. */
+export function markCatalogItemStale(kind, id) {
+  const table = kind === 'products' ? 'product_i18n' :
+    kind === 'solutions' ? 'solution_i18n' :
+    kind === 'news' ? 'news_i18n' : null;
+  const col = kind === 'products' ? 'product_id' :
+    kind === 'solutions' ? 'solution_id' :
+    kind === 'news' ? 'news_id' : null;
+  if (!table || !col) return;
+  const db = getDb();
+  db.prepare(
+    `UPDATE ${table} SET translation_status='stale', updated_at=datetime('now')
+     WHERE ${col} = ? AND lang IN ('en','ru')`
+  ).run(String(id));
 }
 
 export function removeDerivedCatalogRow(kind, id) {
@@ -1034,7 +1059,7 @@ export function regeneratePageJs(pageKey, lang = 'zh') {
   return exportPageLang(pageKey, lang);
 }
 
-function exportCatalogLang(kind, lang) {
+function exportCatalogLang(kind, lang, opts = {}) {
   if (!syncJsonEnabled()) return null;
   const globalName = CATALOG_JS_GLOBALS[kind];
   if (!globalName) return null;
@@ -1051,7 +1076,11 @@ function exportCatalogLang(kind, lang) {
   fs.writeFileSync(path.join(dir, `${lang}.json`), raw, 'utf8');
   const itemsDir = path.join(dir, 'items', lang);
   fs.mkdirSync(itemsDir, { recursive: true });
+  const onlyIds = opts && opts.onlyIds
+    ? new Set((Array.isArray(opts.onlyIds) ? opts.onlyIds : [opts.onlyIds]).map(String))
+    : null;
   for (const [id, item] of Object.entries(sorted)) {
+    if (onlyIds && !onlyIds.has(id)) continue;
     fs.writeFileSync(path.join(itemsDir, `${id}.json`), JSON.stringify(item, null, 2) + '\n', 'utf8');
   }
   const slim = slimCatalogMap(kind, sorted);
@@ -1110,4 +1139,9 @@ export function validateDataFiles() {
   return warnings;
 }
 
-export { exportCatalogLang, exportSiteLang, exportPageLang, SOLUTION_SLUG_BY_ID as solutionSlugById };
+export {
+  exportCatalogLang,
+  exportSiteLang,
+  exportPageLang,
+  SOLUTION_SLUG_BY_ID as solutionSlugById,
+};

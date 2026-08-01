@@ -6,7 +6,7 @@ import {
   updateCatalogItemRaw,
   createCatalogItemRaw,
   deleteCatalogItemRaw,
-  regenerateCatalogJs,
+  markCatalogItemStale,
   regeneratePageJs,
   loadSiteSettings,
   writeSiteSettings,
@@ -139,6 +139,16 @@ function hasTranslatableDiff(before, after) {
   const b = translatableStrings(after);
   if (a.length !== b.length) return true;
   return a.some((v, i) => v !== b[i]);
+}
+
+/** True when the sitemap output could change for this edit (publish / slug / list visibility). */
+function sitemapRelevantChange(before, after) {
+  if (!before || !after) return true;
+  return (
+    Boolean(before.published) !== Boolean(after.published) ||
+    String(before.slug || '') !== String(after.slug || '') ||
+    Boolean(before.showInList) !== Boolean(after.showInList)
+  );
 }
 
 /**
@@ -452,9 +462,9 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
         kind === 'news' ? defaultNews() :
         defaultSolution();
       const item = createCatalogItemRaw(kind, normalizeCatalogBody(kind, { ...defaults, ...body }));
-      regenerateCatalogJs(kind, 'zh');
       generateSitemap();
       markStale(kind);
+      markCatalogItemStale(kind, item.id);
       // A product added to a previously empty category must surface its tab.
       try {
         if (productFilterTabsNeedSync(kind, '', item.filterKey)) {
@@ -498,13 +508,13 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
     try {
       const body = await readBody(req);
       const before = getCatalogItemRaw(kind, id);
-      const item = updateCatalogItemRaw(kind, id, normalizeCatalogBody(kind, body));
-      regenerateCatalogJs(kind, 'zh');
-      generateSitemap();
+      const item = updateCatalogItemRaw(kind, id, normalizeCatalogBody(kind, body), before);
+      if (sitemapRelevantChange(before, item)) generateSitemap();
       // Only enqueue a translation job when translatable text actually changed.
       // Image/link/status-only saves must not call the translation engine.
       if (!before || hasTranslatableDiff(before, item)) {
         markStale(kind);
+        markCatalogItemStale(kind, String(id));
       }
       // Moving a product between categories must refresh the filter tabs when
       // that flips a category between empty and non-empty.
@@ -543,7 +553,6 @@ async function handleCatalogAdmin(req, res, kind, id, origin, sendJson) {
       const replaceId = u.searchParams.get('replaceId') || null;
       const before = getCatalogItemRaw(kind, id);
       deleteCatalogItemRaw(kind, id, { replaceId });
-      regenerateCatalogJs(kind, 'zh');
       generateSitemap();
       markStale(kind);
       // Deleting the last product of a category must remove its tab.
