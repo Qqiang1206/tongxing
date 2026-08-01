@@ -17,7 +17,6 @@ import {
   exportPageLang,
   exportSiteLang,
 } from '../src/services/catalog.js';
-import { applyProductListSeed } from './product-list-seed.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const reset = process.argv.includes('--reset');
@@ -60,10 +59,6 @@ function main() {
       console.log(`imported ${kind}/${lang}: ${Object.keys(data).length}`);
     }
   }
-
-  // Apply product center list flags / order / filter keys (zh source)
-  applyProductListSeed(db);
-  console.log('seeded product list metadata');
 
   // site i18n
   for (const lang of LANGS) {

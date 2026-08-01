@@ -8,6 +8,7 @@ import { DATA_DIR, REPO_ROOT, LANGS, parseLang } from '../config.js';
 import { mapProduct, mapSolution, mapNews, toCatalogMap } from '../mappers/toApi.js';
 import { getDb } from '../db.js';
 import { removeItemSnapshot } from './translationSnapshot.js';
+import { sanitizeContentHtml } from './sanitizeHtml.js';
 import { assertSolutionHomeSlot, assertNewsHomeFeatured, reconcileHomeSlots, guardRequiredSlotVacate } from './homeSlots.js';
 import { clearPublicCache } from './publicCache.js';
 
@@ -680,6 +681,7 @@ export function readCatalogJson(kind, lang = 'zh') {
 }
 
 function upsertProductLang(db, id, lang, item, status) {
+  const contentHtml = sanitizeContentHtml(item.contentHtml || item.detail || '');
   db.prepare(
     `INSERT INTO product_i18n (product_id, lang, name, summary, content_html, specs_json, model, translation_status, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
@@ -692,7 +694,7 @@ function upsertProductLang(db, id, lang, item, status) {
     lang,
     item.name || '',
     item.summary || item.desc || '',
-    item.contentHtml || item.detail || '',
+    contentHtml,
     jsonStr(item.specs || [], '[]'),
     item.model || '',
     status
@@ -700,6 +702,7 @@ function upsertProductLang(db, id, lang, item, status) {
 }
 
 function upsertSolutionLang(db, id, lang, item, status) {
+  const contentHtml = sanitizeContentHtml(item.contentHtml || item.detail || '');
   db.prepare(
     `INSERT INTO solution_i18n (solution_id, lang, name, summary, content_html, specs_json, pain_points_json, process_json, translation_status, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
@@ -713,7 +716,7 @@ function upsertSolutionLang(db, id, lang, item, status) {
     lang,
     item.name || '',
     item.summary || item.desc || '',
-    item.contentHtml || item.detail || '',
+    contentHtml,
     jsonStr(item.specs || [], '[]'),
     item.painPoints ? jsonStr(item.painPoints) : null,
     item.process ? jsonStr(item.process) : null,
@@ -722,6 +725,7 @@ function upsertSolutionLang(db, id, lang, item, status) {
 }
 
 function upsertNewsLang(db, id, lang, item, status) {
+  const contentHtml = sanitizeContentHtml(item.contentHtml || item.content || '');
   db.prepare(
     `INSERT INTO news_i18n (news_id, lang, category, title, content_html, date_display, translation_status, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))
@@ -734,7 +738,7 @@ function upsertNewsLang(db, id, lang, item, status) {
     lang,
     item.category || '',
     item.title || '',
-    item.contentHtml || item.content || '',
+    contentHtml,
     item.date || '',
     status
   );

@@ -365,8 +365,8 @@ Production: same-origin `/api/v1` via nginx reverse proxy (see repo root `nginx.
 ## 10. Import & known data issues
 
 - `npm run import` reads `data/{products,solutions,news}/{zh,en,ru}.json`，并调用 `reconcileHomeSlots()`。
-- **import 仅用于首次建库 / 部署初始化**：它会按 seed 覆盖产品列表标记与排序（`applyProductListSeed`），也会用静态 JSON 覆盖当前内容——日常内容改动以数据库为准，**不要在运行期重复 import**，以免覆盖后台操作。
-- After adding zh-only catalog rows, run `npm run sync-catalog-i18n` so en/ru share the same ids (text stays zh until translation).
+- **import 仅用于首次建库 / 部署初始化**：它用静态 JSON 覆盖当前内容（列表标记/排序/筛选键随 JSON 写入，不再有 seed 覆盖），日常内容改动以数据库为准，**不要在运行期重复 import**，以免覆盖后台操作。
+- `sync-catalog-i18n` 是数据库之前的遗留 JSON 工具：现在新建条目由 `ensureDerivedCatalogRow` 自动补 en/ru 同 ID（`missing` 占位、调度器自动翻译），**正常流程不需要再跑它**。
 - Slugs for solutions assigned by id map in `scripts/import-from-json.js`.
 - JSON 中的 `homeSlot` / `homeFeatured` 会写入 SQLite；勿手改与后台冲突。
 
