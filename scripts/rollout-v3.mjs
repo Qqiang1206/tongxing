@@ -178,6 +178,16 @@ function transform(html, file) {
     changes.push('renderer init synced');
   }
 
+  // 3.6 引入跨页 View Transitions 样式（styles.css 链接之后）
+  if (!/tx-view-transitions\.css/.test(out)) {
+    const vtTag = `\n    <link rel="stylesheet" href="${prefix}assets/css/tx-view-transitions.css?v=${VERSION}">`;
+    const reStyles = /(<link rel="stylesheet" href="[^"]*styles\.css[^"]*">)/;
+    if (reStyles.test(out)) {
+      out = out.replace(reStyles, `$1${vtTag}`);
+      changes.push('view-transitions css linked');
+    }
+  }
+
   return { out, changes };
 }
 

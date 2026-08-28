@@ -2038,3 +2038,19 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
         animation: none;
     }
 }
+
+/* ---------- 页面载入动画（v3）----------
+ * 内容首帧直出后整体 0.35s 淡入，配合跨页 View Transitions
+ * 形成"切页不闪、载入有质感"的节奏；减少动效偏好下关闭。 */
+@keyframes tx-page-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+[data-ui="v3"] body {
+    animation: tx-page-in 0.35s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+    [data-ui="v3"] body {
+        animation: none;
+    }
+}

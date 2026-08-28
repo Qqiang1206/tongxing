@@ -1,0 +1,4 @@
+/* 跨文档 View Transitions：支持的浏览器（Chrome/Edge 126+）在页面切换时自动交叉淡化 */
+@view-transition {
+    navigation: auto;
+}
