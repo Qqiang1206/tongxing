@@ -329,3 +329,20 @@ npm run build:css
   3) robot-arm.webp 已无引用可删；automation-line.webp 无引用可删；
   4) CMS 数据待清理：zh 解决方案筛选含测试条目「爱你」(solution-s9nqazv)；
      ru 解决方案 id=36-40 filterKey 与 slug 不一致（validate-data.js WARN）。
+
+### 11.7 五页专属 hero 视频资产（第二阶段追加）
+
+| 页面 | 文件 | 来源（Mixkit，免费下载） | 时长/体积 |
+|---|---|---|---|
+| 首页 | hero-loop.mp4 | Pexels 32386532 | 19.2s / 3.5MB |
+| 解决方案 | solutions-loop.mp4 | Mixkit "Robot working in a production line" (47257) | 16s / 2.7MB |
+| 产品中心 | products-loop.mp4 | Mixkit "Mechanical machinery working close up" (17675) | 16s / 1.6MB |
+| 新闻中心 | news-loop.mp4 | Mixkit "Industrial manufacturing factory from above" (14631) | 16s / 3.5MB |
+| 关于我们 | about-loop.mp4 | Mixkit "Working in a electronics factory" (22033) | 11.5s / 2.6MB |
+
+- 全部 1280×720/30fps、正放+倒放乒乓无缝循环、≤5MB、无音频。
+- ⚠️ 授权状态：Mixkit 免费下载的 720p 产物标注 **Restricted License（仅限个人使用）**，
+  商用需向 Envato/Mixkit 购买授权或后续替换为可商用素材。站点所有者已知悉并决定先行使用。
+- 偏暗素材已在转码时做 gamma 亮度适配（products 1.8 / news 1.25 / about 1.3），
+  成片亮度 131–136，与首页（158）同属明亮基调。
+- 关于页：CMS 轮播首图作为视频海报（后台换图即换加载画面）。

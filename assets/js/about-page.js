@@ -53,24 +53,16 @@
 
     var assetUrl = global.TXAM && global.TXAM.assetUrl ? global.TXAM.assetUrl : function (u) { return u; };
 
-    media.classList.add('tx-cross-js');
-    media.innerHTML = carousel.slides.map(function (slide, i) {
-      var attrs = 'src="' + escapeHtml(assetUrl(slide.image)) + '" alt=""';
-      attrs += i === 0 ? ' fetchpriority="high"' : ' loading="lazy"';
-      return '<img ' + attrs + '>';
-    }).join('');
-
-    var imgs = media.querySelectorAll('img');
-    if (imgs.length < 2) return; // 单图：静态呈现
-
-    // 背景轮播始终运行（站点所有者选择：装饰性淡化不受系统动效偏好限制）
-    var current = 0;
-    imgs[0].classList.add('is-tx-active');
-    global.setInterval(function () {
-      imgs[current].classList.remove('is-tx-active');
-      current = (current + 1) % imgs.length;
-      imgs[current].classList.add('is-tx-active');
-    }, 8000);
+    var video = media.querySelector('video');
+    if (video) {
+      // v3：hero 已是视频，CMS 轮播首图作为视频海报（后台换图即换加载画面）
+      if (carousel.slides.length) {
+        video.setAttribute('poster', assetUrl(carousel.slides[0].image));
+      }
+      Array.prototype.forEach.call(media.querySelectorAll('picture'), function (p) {
+        p.parentNode.removeChild(p);
+      });
+    }
   }
 
   function dotClass(accent, mobile) {

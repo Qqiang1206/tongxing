@@ -183,7 +183,7 @@
    * v3 列表页章节式 hero 视频（与首页同源素材）：静音自动播放。
    */
   function initSectionHeroVideo() {
-    var video = document.querySelector('.v3-hero--section video');
+    var video = document.querySelector('.v3-hero--section video, .v3-hero--about video');
     if (!video) return;
     video.muted = true;
     var p = video.play();
