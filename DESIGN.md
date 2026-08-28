@@ -237,3 +237,78 @@ data/
 | `templates/README.md` | 页面角色与数据绑定 |
 | `scripts/unify-typography.js` | 字号统一工具（历史/维护用） |
 | `README.md` | 站点结构与部署说明 |
+
+---
+
+## 11. Design System v3 「光感单色」（2026-08，首页样板阶段）
+
+**定位**：明亮基调下的近单色高级灰白 + 光感科技白。墨黑标题、多层冷灰正文、发丝边框、
+玻璃拟态卡片、中性光晕氛围。品牌橙 `#FF6B00` 降为微交互点缀（导航激活下划线、hover、
+focus 光圈、选中文字色），不再出现在大面积色块。
+
+### 11.1 门控机制（改动红线）
+
+所有 v3 样式只在 `<html data-ui="v3">` 存在时生效：
+
+- 共享 CSS 新层全部以 `html[data-ui="v3"]` / `[data-ui="v3"]` 或 v3 专属类（`.v3-*`、
+  `.txnav-*`、`.txf-*`）实现；未打标记的页面零影响。
+- `assets/js/home-page.js` 双模式：`data-ui="v3"` 输出新组件标记，否则按 git 历史里的
+  旧模板原样输出（en/ru 首页共用该渲染器，必须保持旧观感）。
+- `header.js` / `site-footer.js` 内部按 `data-ui` 分支：v3 用 `.txnav*` 导航与 `.txf*`
+  浅色页脚；其余页面沿用旧导航/深色页脚。
+- v3 导航复用 `#navbar` / `#mobile-menu` / `#mobile-menu-btn` 契约与 `menu-open` /
+  `menu-closed` 类，滚动显影、移动端开合、三语标签水合全部由 site-chrome / site-nav
+  现有逻辑接管，不新增 JS 依赖。
+
+### 11.2 令牌（styles.css `[data-ui="v3"]` 块）
+
+| 令牌 | 值 | 用途 |
+|---|---|---|
+| `--tx-ink` | #14161B | 标题/主按钮墨黑 |
+| `--tx-ink-mid / --tx-ink-mute / --tx-ink-faint` | #39404C / #667084 / #9AA1AE | 正文/辅助/弱化 |
+| `--tx-bg` / `--tx-mist-50 / --tx-mist-100` | #FFFFFF / #F7F8FA / #F1F3F7 | 页面/交替区块 |
+| `--tx-hairline` | rgba(20,22,27,.08) | 发丝边框 |
+| `--tx-glow-a / --tx-glow-b` | 中性冷灰/暖灰 | 光晕（纯 CSS 径向渐变） |
+| `--tx-radius-card / --tx-radius-shell` | 20px / 24px | 卡片/媒体壳（门控页同时把 --radius-lg 升到 16px） |
+
+玻璃卡规范：半透明白底 + `backdrop-blur` + 1px 光边 + 三层阴影 + 顶部内高光
+（`.v3-panel` / `.v3-stat` / `.v3-feature__caption` 同族）。
+
+### 11.3 首屏 Hero（满屏视频 · 白雾压字）
+
+- 底层 `<video autoplay muted loop playsinline>`：`assets/videos/hero-loop.mp4`
+  （1080p/30fps、19.2s 正放+倒放乒乓无缝循环、3.5MB、H.264 faststart）；
+  海报回退 `assets/videos/hero-poster.webp`（同时是 LCP 预加载）。
+- 素材来源与授权：Pexels 视频 id **32386532**（"Industrial Robot Arm in High-Tech
+  Factory"），Pexels License 免费商用、无需署名；已在本地转码（正放+倒放拼循环），
+  自托管于 `assets/videos/`，不外链 CDN。
+- 白雾层 `.v3-hero__veil` 顶部 0.90 → 中部 0.26 → 底部归入 `--tx-bg`，保证明亮基调
+  与墨黑大字对比度；站点所有者明确选择：该装饰性氛围视频不受系统「减少动效」偏好影响，始终静音自动播放；该偏好仍作用于 fade-up 等入场动画（styles.css 已处理）。
+- 客户 logo 墙 `.v3-logos`（灰度 50% → hover 显色）。
+
+### 11.4 构建链（Tailwind 恢复为真实管线）
+
+```
+npm run build:css
+# tailwindcss -c tailwind.config.js -i assets/css/tailwind.src.css -o assets/css/tailwind.min.css --minify
+```
+
+- `tailwind.config.js` content 扫描 `*.html`、`en/ ru/`、`assets/js/**`、`data/**`
+  （数据 JSON 里存在动态携带的工具类）。
+- 产物覆盖 `assets/css/tailwind.min.css`，全站 `<head>` 引用无需改动；
+  改版前原文件在 git 历史中可随时比对回滚。
+- `node scripts/check-css-coverage.mjs`：抽取全站候选工具类，逐一核对产物中存在，
+  防止新增类静默失效（误报清单：styles.css 自定义类与 `group-hover:` 变体）。
+- 主题扩展只 add 不改默认：`ink/mist/accent` 色板、`rounded-card/shell/ctl`、
+  `shadow-glass-*`、`max-w-shell`、`ease-out-expo`、`animate-drift-a/b`。
+
+### 11.5 第二阶段全站铺开清单（待批准后执行）
+
+1. `en/index.html`、`ru/index.html` 加 `data-ui="v3"`，补译 header/footer/CTA 文案
+   （i18n JSON 增字段）。
+2. 其余页面逐组迁移：列表页（products/solutions/news）→ 详情模板 → 11 个方案落地页
+   → about/contact/404；每页打 `data-ui="v3"` 后把硬编码导航替换为 header.js 注入。
+3. 已知待清理素材：`assets/images/hero/automation-line.webp`（马自达停车场，与命名
+   不符）、`assets/images/hero/robot-arm.webp`（暗色旧机床，弃用）；产品卡中后段包装
+   线图片出现疑似第三方纸箱印花，铺开前建议替换素材。
+4. 每步跑 `npm run build:css` + `check-css-coverage`，浏览器三档宽度抽查。

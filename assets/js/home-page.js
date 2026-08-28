@@ -3,6 +3,11 @@
  * Slots: solutions.homeSlot = hero|category ; news.homeFeatured = true
  */
 (function (global) {
+  /* v3 「光感单色」只在 <html data-ui="v3"> 的页面启用新组件标记；
+   * 其余语言镜像（en/ru 首页）保持旧模板输出，确保零回归。 */
+  var V3 = typeof document !== 'undefined' &&
+    document.documentElement.getAttribute('data-ui') === 'v3';
+
   function escapeHtml(text) {
     return String(text || '')
       .replace(/&/g, '&amp;')
@@ -31,29 +36,42 @@
   }
 
   function renderStatItem(stat) {
-    var emphasis = stat.emphasis || '';
-    var wrapClass = 'text-center md:text-left';
-    var unitClass = 'text-3xl ml-1 text-gray-400';
-    var labelClass = 'text-xs font-bold text-[#86868B] tracking-widest uppercase';
+    if (!V3) {
+      var emphasis = stat.emphasis || '';
+      var wrapClass = 'text-center md:text-left';
+      var unitClass = 'text-3xl ml-1 text-gray-400';
+      var labelClass = 'text-xs font-bold text-[#86868B] tracking-widest uppercase';
 
-    if (emphasis === 'border') {
-      wrapClass += ' border-l-0 md:border-l-2 md:border-[#E5E5EA] md:pl-8';
-    } else if (emphasis === 'accent') {
-      wrapClass = 'pl-6 border-l-4 border-[#FF6B00]';
-      unitClass = 'text-3xl ml-1';
-      labelClass = 'text-xs font-bold text-[#1D1D1F] tracking-widest uppercase';
+      if (emphasis === 'border') {
+        wrapClass += ' border-l-0 md:border-l-2 md:border-[#E5E5EA] md:pl-8';
+      } else if (emphasis === 'accent') {
+        wrapClass = 'pl-6 border-l-4 border-[#FF6B00]';
+        unitClass = 'text-3xl ml-1';
+        labelClass = 'text-xs font-bold text-[#1D1D1F] tracking-widest uppercase';
+      }
+
+      var unitHtmlLegacy = stat.unit
+        ? '<span class="' + unitClass + '">' + escapeHtml(stat.unit) + '</span>'
+        : '';
+
+      return (
+        '<div class="' + wrapClass + '">' +
+          '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">' +
+            escapeHtml(stat.value) + unitHtmlLegacy +
+          '</div>' +
+          '<p class="' + labelClass + '">' + escapeHtml(stat.label) + '</p>' +
+        '</div>'
+      );
     }
 
     var unitHtml = stat.unit
-      ? '<span class="' + unitClass + '">' + escapeHtml(stat.unit) + '</span>'
+      ? '<span>' + escapeHtml(stat.unit) + '</span>'
       : '';
 
     return (
-      '<div class="' + wrapClass + '">' +
-        '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">' +
-          escapeHtml(stat.value) + unitHtml +
-        '</div>' +
-        '<p class="' + labelClass + '">' + escapeHtml(stat.label) + '</p>' +
+      '<div class="v3-stat">' +
+        '<div class="v3-stat__num mono-num">' + escapeHtml(stat.value) + unitHtml + '</div>' +
+        '<p class="v3-stat__label">' + escapeHtml(stat.label) + '</p>' +
       '</div>'
     );
   }
@@ -63,16 +81,18 @@
     container.innerHTML = stats.map(renderStatItem).join('');
   }
 
-  function buildCardImage(image, alt) {
+  function buildCardImage(image, alt, legacyZoom) {
     var resolved = assetUrl(image);
     var altEsc = escapeHtml(alt || '');
     if (/\.webp$/i.test(image || '')) {
       return (
         '<picture><source srcset="' + resolved + '" type="image/webp">' +
-        '<img loading="lazy" decoding="async" src="' + resolved + '" alt="' + altEsc + '" class="w-full h-full object-cover img-zoom"></picture>'
+        '<img loading="lazy" decoding="async" src="' + resolved + '" alt="' + altEsc + '"' +
+        (legacyZoom ? ' class="w-full h-full object-cover img-zoom"' : '') + '></picture>'
       );
     }
-    return '<img loading="lazy" decoding="async" src="' + resolved + '" alt="' + altEsc + '" class="w-full h-full object-cover img-zoom">';
+    return '<img loading="lazy" decoding="async" src="' + resolved + '" alt="' + altEsc + '"' +
+      (legacyZoom ? ' class="w-full h-full object-cover img-zoom"' : '') + '>';
   }
 
   function solutionToCategoryCard(sol) {
@@ -119,21 +139,44 @@
     }
 
     grid.innerHTML = cards.map(function (card) {
+      if (!V3) {
+        var legacyTags = (card.tags || []).map(function (tag) {
+          return '<span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">' +
+            escapeHtml(tag) + '</span>';
+        }).join('');
+        var legacyTagsHtml = legacyTags
+          ? '<div class="flex flex-wrap gap-2 mb-6">' + legacyTags + '</div>'
+          : '';
+
+        return (
+          '<a href="' + escapeHtml(card.href) + '" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">' +
+            '<h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">' + escapeHtml(card.title) + '</h3>' +
+            '<p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">' + escapeHtml(card.summary) + '</p>' +
+            legacyTagsHtml +
+            '<div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">' +
+              buildCardImage(card.image, card.imageAlt || card.title, true) +
+            '</div>' +
+          '</a>'
+        );
+      }
+
       var tags = (card.tags || []).map(function (tag) {
-        return '<span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">' +
-          escapeHtml(tag) + '</span>';
+        return '<span class="v3-card__tag">' + escapeHtml(tag) + '</span>';
       }).join('');
-      var tagsHtml = tags
-        ? '<div class="flex flex-wrap gap-2 mb-6">' + tags + '</div>'
-        : '';
 
       return (
-        '<a href="' + escapeHtml(card.href) + '" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">' +
-          '<h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">' + escapeHtml(card.title) + '</h3>' +
-          '<p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">' + escapeHtml(card.summary) + '</p>' +
-          tagsHtml +
-          '<div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">' +
+        '<a href="' + escapeHtml(card.href) + '" class="v3-card">' +
+          '<div class="v3-card__media">' +
             buildCardImage(card.image, card.imageAlt || card.title) +
+            '<span class="v3-card__go" aria-hidden="true">' +
+              '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>' +
+            '</span>' +
+          '</div>' +
+          '<div class="v3-card__body">' +
+            (card.eyebrow ? '<span class="v3-card__model mono-num uppercase">' + escapeHtml(card.eyebrow) + '</span>' : '') +
+            '<h3 class="v3-card__title">' + escapeHtml(card.title) + '</h3>' +
+            '<p class="v3-card__desc">' + escapeHtml(card.summary) + '</p>' +
+            (tags ? '<div class="v3-card__tags">' + tags + '</div>' : '') +
           '</div>' +
         '</a>'
       );
@@ -215,19 +258,38 @@
 
     list.innerHTML = items.map(function (item, index) {
       var featured = index === 0;
-      var catClass = featured
-        ? 'text-xs font-bold text-[#FF6B00] mb-3 tracking-widest uppercase'
-        : 'text-xs font-bold text-[#86868B] mb-3 tracking-widest uppercase';
       var summary = item._homeSummary || item.summary || excerptFromHtml(item.contentHtml, 72);
+      var href = global.TXAM.catalogDetailHref ? global.TXAM.catalogDetailHref('news', item, '') : 'news-detail.html?id=' + encodeURIComponent(item.id);
+
+      if (!V3) {
+        var catClassLegacy = featured
+          ? 'text-xs font-bold text-[#FF6B00] mb-3 tracking-widest uppercase'
+          : 'text-xs font-bold text-[#86868B] mb-3 tracking-widest uppercase';
+        return (
+          '<a href="' + href + '" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">' +
+            '<div class="flex flex-col">' +
+              '<span class="' + catClassLegacy + '">' + escapeHtml(item.category) + '</span>' +
+              '<h3 class="text-h3 text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">' + escapeHtml(item.title) + '</h3>' +
+              (summary ? '<p class="text-sm text-[#86868B]">' + escapeHtml(summary) + '</p>' : '') +
+            '</div>' +
+            '<span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">' + escapeHtml(item.date) + '</span>' +
+          '</a>'
+        );
+      }
+
+      var catClass = featured
+        ? 'text-xs font-bold text-[#FF6B00] tracking-widest uppercase'
+        : 'text-xs font-bold text-[#9AA1AE] tracking-widest uppercase';
 
       return (
-        '<a href="' + (global.TXAM.catalogDetailHref ? global.TXAM.catalogDetailHref('news', item, '') : 'news-detail.html?id=' + encodeURIComponent(item.id)) + '" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">' +
-          '<div class="flex flex-col">' +
-            '<span class="' + catClass + '">' + escapeHtml(item.category) + '</span>' +
-            '<h3 class="text-h3 text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">' + escapeHtml(item.title) + '</h3>' +
-            (summary ? '<p class="text-sm text-[#86868B]">' + escapeHtml(summary) + '</p>' : '') +
+        '<a href="' + href +
+        '" class="group py-7 border-b border-[#E7EAF0] flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-300 hover:bg-white/70 rounded-lg px-2 -mx-2">' +
+          '<div class="flex flex-col min-w-0 pr-4">' +
+            '<span class="' + catClass + ' mb-2">' + escapeHtml(item.category) + '</span>' +
+            '<h3 class="text-lg font-extrabold tracking-tight text-[#14161B] group-hover:text-[#FF6B00] transition-colors mb-1">' + escapeHtml(item.title) + '</h3>' +
+            (summary ? '<p class="text-sm text-[#667084] leading-relaxed">' + escapeHtml(summary) + '</p>' : '') +
           '</div>' +
-          '<span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">' + escapeHtml(item.date) + '</span>' +
+          '<span class="text-sm font-semibold text-[#9AA1AE] shrink-0 mono-num">' + escapeHtml(item.date) + '</span>' +
         '</a>'
       );
     }).join('');
@@ -311,6 +373,10 @@
     renderStatsGrid(document.getElementById('home-stats-grid'), about.stats);
     renderProductsSection(page.productsSection, categorySols);
     renderServiceSection(page.serviceSection);
+
+    // 收尾 CTA 的宣言沿用 Hero 标题，保持首尾呼应
+    var finalTitle = document.getElementById('home-final-title');
+    if (finalTitle && hero.title) finalTitle.textContent = hero.title;
 
     var featuredNews = catalogItems(newsMap)
       .filter(isPublished)

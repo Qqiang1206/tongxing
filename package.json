@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "private": true,
   "description": "TXAM corporate site — static front + JSON data layer",
-  "dependencies": {},
   "engines": {
     "node": ">=22.5.0"
   },
@@ -29,6 +28,7 @@
     "patch-phase3": "node scripts/patch-phase3.js",
     "ensure-data-js": "node scripts/ensure-data-js-scripts.js",
     "build": "node scripts/generate-data-js.js && node scripts/generate-sitemap.js && node scripts/build.js",
+    "build:css": "tailwindcss -c tailwind.config.js -i assets/css/tailwind.src.css -o assets/css/tailwind.min.css --minify",
     "server:import": "npm run import --prefix server",
     "server:dev": "npm run dev --prefix server",
     "sync:static": "npm run sync:static --prefix server",
@@ -36,5 +36,8 @@
     "patch-front-perf": "node scripts/patch-front-performance.mjs",
     "patch-list-page-meta": "node scripts/patch-list-page-meta.js",
     "optimize-static-images": "node scripts/optimize-static-images.mjs"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
   }
 }

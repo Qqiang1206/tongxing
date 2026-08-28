@@ -51,6 +51,44 @@
   function renderFooter(site, prefix) {
     var footer = site.footer || {};
     var tagline = formatTagline(footer.tagline || '', site.lang || detectLang());
+
+    /* v3 「光感单色」浅色页脚 — only where <html data-ui="v3"> */
+    if (global.document.documentElement.getAttribute('data-ui') === 'v3') {
+      var nav = site.nav || {};
+      var quickLinks = [
+        { href: 'about.html', name: nav.about },
+        { href: 'solutions.html', name: nav.solutions },
+        { href: 'products.html', name: nav.products },
+        { href: 'news.html', name: nav.news },
+        { href: 'contact.html', name: nav.contact },
+      ].filter(function (l) { return l.name; });
+
+      var linkList = '';
+      for (var i = 0; i < quickLinks.length; i++) {
+        linkList += '<a href="' + quickLinks[i].href + '">' + quickLinks[i].name + '</a>';
+      }
+
+      var html =
+        '<footer class="txf">' +
+        '<div class="txf__watermark" aria-hidden="true">TXAM</div>' +
+        '<div class="v3-shell relative z-10">' +
+        '<div class="txf__top">' +
+        '<div><h2 class="txf__headline">' + tagline + '</h2></div>' +
+        '<div class="flex flex-col sm:flex-row gap-8 justify-end items-start">' +
+        '<nav class="txf__meta flex flex-col gap-[0.6rem] [&_a]:font-medium">' + linkList + '</nav>' +
+        '<figure class="m-0 text-center"><img src="' + prefix + (footer.wechatImage || 'assets/images/brand/wechat-service.png') + '" alt="' + (footer.wechatAlt || 'WeChat') + '" class="txf__qr"><figcaption class="mt-2 text-xs text-[#9AA1AE]">WeChat</figcaption></figure>' +
+        '</div></div>' +
+        '<div class="txf__bottom">' +
+        '<p>' + (footer.copyright || '') + '</p>' +
+        '<a href="' + (footer.icpUrl || 'https://beian.miit.gov.cn/') + '" target="_blank" rel="noopener">' + (footer.icp || '') + '</a>' +
+        '</div></div></footer>';
+
+      global.document.querySelectorAll('[data-footer-placeholder]').forEach(function (el) {
+        el.outerHTML = html;
+      });
+      return;
+    }
+
     var html =
       '<footer class="bg-[#111111] text-[#86868B] min-h-[300px] md:h-[300px] px-6 md:px-24 py-10 md:py-0 relative overflow-hidden flex flex-col justify-center">' +
       '<div class="absolute -top-12 -left-10 text-[15rem] font-black text-white opacity-5 tracking-tighter pointer-events-none select-none">TXAM</div>' +
