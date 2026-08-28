@@ -2009,3 +2009,15 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
     border: none;
     box-shadow: 0 8px 24px rgba(16, 18, 22, 0.06), 0 40px 96px rgba(16, 18, 22, 0.13);
 }
+
+/* ---------- 列表筛选稳定性：卡片常显，禁止重新入场动画 ----------
+ * 筛选切换时 JS 重设 display，卡片若带 fade-up 会重播 1s 浮升动画，
+ * 观感为内容"跳一下跳一下"。列表卡片一律常显、无位移过渡。 */
+[data-ui="v3"] .product-item.fade-up,
+[data-ui="v3"] .news-item.fade-up,
+[data-ui="v3"] .solution-item.fade-up,
+[data-ui="v3"] .solution-item .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
