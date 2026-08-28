@@ -1060,7 +1060,9 @@ main#main-content:focus {
 .v3-kicker {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.65rem;
+    margin-bottom: 1.75rem; /* 全站统一：眉标与标题的间距 */
     font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.24em;
@@ -1576,12 +1578,14 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     box-shadow: 0 8px 32px rgba(16, 18, 22, 0.06);
 }
 .txnav__inner {
-    display: flex;
+    /* 三等分网格：logo 左 · 菜单绝对窗口居中 · CTA 右（跨页面位置恒定） */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     height: 76px;
 }
 .txnav__brand {
+    justify-self: start;
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
@@ -1597,7 +1601,8 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 .txnav__links {
     display: none;
     align-items: center;
-    gap: clamp(1.4rem, 2.4vw, 2.4rem);
+    justify-self: center;
+    gap: 2.2rem; /* 菜单项统一固定间距 */
 }
 @media (min-width: 1024px) {
     .txnav__links { display: flex; }
@@ -1608,7 +1613,8 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     color: var(--tx-ink-mid);
     font-size: 0.92rem;
     font-weight: 600;
-    padding: 0.4rem 0;
+    padding: 0;
+    white-space: nowrap;
     transition: color 0.3s var(--tx-ease);
 }
 .txnav__link::after {
@@ -1633,6 +1639,7 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     transform: scaleX(1);
 }
 .txnav__cta {
+    justify-self: end;
     display: inline-flex;
     align-items: center;
     gap: 0.9rem;
