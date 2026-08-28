@@ -51,6 +51,12 @@ function transform(html, file) {
   const prefix = isSubDir(file) ? '../' : '';
   let out = html;
 
+  // 0. 移除 scroll-smooth：返回长页面时平滑滚动回放会造成"闪一下"
+  if (/\bscroll-smooth\b/.test(out)) {
+    out = out.replace(/<html([^>]*)>/, (m0, attrs) => `<html${attrs.replace(/\s*scroll-smooth/g, '')}>`);
+    changes.push('scroll-smooth removed');
+  }
+
   // 1. data-ui 标记
   if (!/\<html[^>]*\bdata-ui="v3"/.test(out)) {
     out = out.replace(/<html(\s[^>]*)?>/, (m0, attrs) => `<html${attrs || ''} data-ui="v3">`);
