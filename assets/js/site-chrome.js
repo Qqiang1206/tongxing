@@ -154,6 +154,7 @@
   function initNavbarScroll() {
     var navbar = document.getElementById('navbar');
     if (!navbar) return;
+    var v3 = document.documentElement.getAttribute('data-ui') === 'v3';
     window.addEventListener(
       'scroll',
       function () {
@@ -161,8 +162,13 @@
         SCROLL_TICK = true;
         requestAnimationFrame(function () {
           SCROLL_TICK = false;
-          if (window.scrollY > 20) navbar.classList.add('shadow-sm');
-          else navbar.classList.remove('shadow-sm');
+          if (window.scrollY > 20) {
+            navbar.classList.add('shadow-sm');
+            if (v3) navbar.classList.add('is-scrolled');
+          } else {
+            navbar.classList.remove('shadow-sm');
+            if (v3) navbar.classList.remove('is-scrolled');
+          }
         });
       },
       { passive: true }
