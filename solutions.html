@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<html lang="zh-CN" class="scroll-smooth" data-ui="v3">
 <head>
     <meta charset="UTF-8">
     <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-sans-sc-site.woff2" crossorigin>
-    <script defer src="assets/js/lang-detect.js"></script>
+    <script src="assets/js/header.js?v=20260827v3" defer></script>
+<script defer src="assets/js/lang-detect.js"></script>
     <meta name="description" content="同兴高科行业解决方案—TV显示、冰箱、包装物流、洗衣机、电容器、空调、微波炉、咖啡机、平板、车灯、机器人等11大行业">
     <meta property="og:title" content="解决方案 | 同兴高科 TXAM">
     <meta property="og:description" content="一站式智能制造解决方案，从单机设备到整厂柔性自动化">
@@ -36,58 +37,15 @@
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 <!-- 🌐 顶部导航 (from solutions.html) -->
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <a href="index.html" class="flex items-center cursor-pointer relative z-50" aria-label="TXAM Home"><picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="TXAM 同兴高科" class="h-8 md:h-10" loading="lazy"></picture></a>
-        
-        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
-            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">首页</a>
-            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
-            <a href="solutions.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">解决方案</a>
-            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">产品中心</a>
-            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
-            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
-            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="solutions.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">ZH</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="en/solutions.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="ru/solutions.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">RU</a>
-            </div>
-        </div>
-
-        <div class="md:hidden flex items-center relative z-50">
-            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-    </nav>
+    <div data-header-placeholder></div>
 
     <!-- 📱 手机下拉菜单 -->
-    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
-        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
-            <a href="index.html" class="text-[#86868B]">首页</a>
-            <a href="about.html" class="text-[#86868B]">关于我们</a>
-            <a href="solutions.html" class="text-[#FF6B00]">解决方案</a>
-            <a href="products.html" class="text-[#86868B]">产品中心</a>
-            <a href="news.html" class="text-[#86868B]">新闻中心</a>
-            <a href="contact.html" class="text-[#86868B]">联系我们</a>
-        </div>
-        <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="solutions.html" class="px-4 py-2 text-[#FF6B00] font-bold">ZH</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="en/solutions.html" class="px-4 py-2 text-[#86868B]">EN</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="ru/solutions.html" class="px-4 py-2 text-[#86868B]">RU</a>
-        </div>
-    </div>
+    
 
     <!-- 📍 P1. 头部视觉 (from q.html) -->
 <header class="pt-40 pb-20 px-6 md:px-24 w-full text-center fade-up mt-6">
     <div class="max-w-[1000px] mx-auto">
-        <div class="text-[#FF6B00] font-bold text-xs md:text-sm tracking-[0.2em] mb-6 uppercase flex items-center justify-center">
-        </div>
+        <p class="v3-kicker mb-7">解决方案 · Solutions</p>
         <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient"><span id="list-hero-title">
             重构智造法则
         </span></h1>

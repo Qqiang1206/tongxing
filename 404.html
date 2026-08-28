@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<html lang="zh-CN" class="scroll-smooth" data-ui="v3">
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="noindex,follow">
@@ -28,11 +28,7 @@
     </style>
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-    <nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <a href="/" class="flex items-center cursor-pointer" aria-label="TXAM Home">
-            <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="assets/images/brand/logo.png" alt="TXAM" class="h-8 md:h-10"></picture>
-        </a>
-    </nav>
+    <div data-header-placeholder></div>
 
     <main>
         <div class="text-center max-w-lg">
@@ -46,5 +42,6 @@
     <footer class="text-center py-8 text-sm text-[#86868B] border-t border-[#E5E5EA]">
         &copy; 2026 TXAM. All rights reserved.
     </footer>
+<script src="assets/js/header.js?v=20260827v3" defer></script>
 </body>
 </html>
