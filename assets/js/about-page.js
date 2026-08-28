@@ -52,8 +52,6 @@
     if (!media) return;
 
     var assetUrl = global.TXAM && global.TXAM.assetUrl ? global.TXAM.assetUrl : function (u) { return u; };
-    var reduceMotion = global.matchMedia &&
-      global.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     media.classList.add('tx-cross-js');
     media.innerHTML = carousel.slides.map(function (slide, i) {
@@ -63,8 +61,9 @@
     }).join('');
 
     var imgs = media.querySelectorAll('img');
-    if (imgs.length < 2 || reduceMotion) return; // 单图/减少动效：静态呈现第一张
+    if (imgs.length < 2) return; // 单图：静态呈现
 
+    // 背景轮播始终运行（站点所有者选择：装饰性淡化不受系统动效偏好限制）
     var current = 0;
     imgs[0].classList.add('is-tx-active');
     global.setInterval(function () {
