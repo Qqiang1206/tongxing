@@ -2121,3 +2121,13 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 [data-ui="v3"] .v3-hero--about #about-hero-lead strong {
     color: var(--tx-ink);
 }
+
+/* JS 接管轮播（CMS 图源）：停用 CSS 交叉淡化关键帧，改用类切换过渡 */
+[data-ui="v3"] .v3-hero--about .v3-hero__media.tx-cross-js img {
+    animation: none !important;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+[data-ui="v3"] .v3-hero--about .v3-hero__media.tx-cross-js img.is-tx-active {
+    opacity: 1;
+}

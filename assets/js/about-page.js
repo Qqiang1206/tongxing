@@ -40,65 +40,38 @@
     }).join('');
   }
 
+  /**
+   * v3：CMS 轮播图直接作为"关于我们"页的满屏背景（多图交叉淡化）。
+   * 图源来自后台 carousel.slides —— 后台换图即换背景。
+   * 页面静态内嵌的两张图仅作无 JS 兜底；渲染器在首绘前同步替换。
+   */
   function renderCarousel(carousel) {
     if (!carousel || !carousel.slides || !carousel.slides.length) return;
 
-    var section = document.querySelector('.factory-carousel-section');
-    if (section && carousel.sectionAriaLabel) {
-      section.setAttribute('aria-label', carousel.sectionAriaLabel);
-    }
-
-    var slidesRoot = document.getElementById('factory-carousel-slides');
-    var dotsRoot = document.getElementById('factory-carousel-dots');
-    if (!slidesRoot) return;
+    var media = document.querySelector('.v3-hero--about .v3-hero__media');
+    if (!media) return;
 
     var assetUrl = global.TXAM && global.TXAM.assetUrl ? global.TXAM.assetUrl : function (u) { return u; };
+    var reduceMotion = global.matchMedia &&
+      global.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    slidesRoot.innerHTML = carousel.slides.map(function (slide, i) {
-      var active = i === 0;
-      var imgAttrs = 'src="' + escapeHtml(assetUrl(slide.image)) + '" alt="' + escapeHtml(slide.imageAlt || slide.title || '') + '" decoding="async"';
-      if (slide.width) imgAttrs += ' width="' + slide.width + '"';
-      if (slide.height) imgAttrs += ' height="' + slide.height + '"';
-      if (slide.imageSrcset) {
-        imgAttrs += ' srcset="' + escapeHtml(String(slide.imageSrcset).split(',').map(function (part) {
-          var bits = part.trim().split(/\s+/);
-          bits[0] = assetUrl(bits[0]);
-          return bits.join(' ');
-        }).join(', ')) + '"';
-      }
-      if (slide.sizes) imgAttrs += ' sizes="' + escapeHtml(slide.sizes) + '"';
-      if (slide.fetchpriority) imgAttrs += ' fetchpriority="' + escapeHtml(slide.fetchpriority) + '"';
-      else if (i > 0) imgAttrs += ' loading="lazy"';
-
-      return (
-        '<div class="factory-carousel__slide' + (active ? ' is-active' : '') + '" aria-hidden="' + (active ? 'false' : 'true') + '">' +
-          '<img ' + imgAttrs + '>' +
-          '<div class="factory-carousel__gradient"></div>' +
-          '<div class="factory-carousel__caption">' +
-            '<p class="factory-carousel__tag">' + escapeHtml(slide.tag || '') + '</p>' +
-            '<h2 class="factory-carousel__title">' + escapeHtml(slide.title || '') + '</h2>' +
-            '<p class="factory-carousel__desc">' + escapeHtml(slide.desc || '') + '</p>' +
-          '</div>' +
-        '</div>'
-      );
+    media.classList.add('tx-cross-js');
+    media.innerHTML = carousel.slides.map(function (slide, i) {
+      var attrs = 'src="' + escapeHtml(assetUrl(slide.image)) + '" alt=""';
+      attrs += i === 0 ? ' fetchpriority="high"' : ' loading="lazy"';
+      return '<img ' + attrs + '>';
     }).join('');
 
-    if (dotsRoot) {
-      dotsRoot.innerHTML = carousel.slides.map(function (slide, i) {
-        var active = i === 0;
-        return (
-          '<button type="button" class="factory-carousel__dot' + (active ? ' is-active' : '') + '" data-factory-dot role="tab" aria-selected="' + (active ? 'true' : 'false') + '" aria-label="' + escapeHtml(slide.dotAria || slide.title || '') + '">' +
-            '<span class="factory-carousel__dot-label">' + escapeHtml(slide.dotLabel || '') + '</span>' +
-            '<span class="factory-carousel__dot-mark"></span>' +
-          '</button>'
-        );
-      }).join('');
-    }
+    var imgs = media.querySelectorAll('img');
+    if (imgs.length < 2 || reduceMotion) return; // 单图/减少动效：静态呈现第一张
 
-    var prevBtn = document.querySelector('[data-factory-prev]');
-    var nextBtn = document.querySelector('[data-factory-next]');
-    if (prevBtn && carousel.prevLabel) prevBtn.setAttribute('aria-label', carousel.prevLabel);
-    if (nextBtn && carousel.nextLabel) nextBtn.setAttribute('aria-label', carousel.nextLabel);
+    var current = 0;
+    imgs[0].classList.add('is-tx-active');
+    global.setInterval(function () {
+      imgs[current].classList.remove('is-tx-active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('is-tx-active');
+    }, 8000);
   }
 
   function dotClass(accent, mobile) {
