@@ -66,6 +66,16 @@
   global.TXAM.applyCommonLabels = applyCommon;
   global.TXAM.escapeHtml = escapeHtml;
 
+  /**
+   * v3 错落网格节奏：按索引返回卡片形态。
+   * 每 6 张一组 —— #1 横版宽卡、#4 竖版宽卡，其余标准卡；
+   * 纯确定性，筛选重排后节奏依然和谐。
+   */
+  global.TXAM.mosaicMode = function (index) {
+    var m = ((Number(index) || 0) % 6 + 6) % 6;
+    return m === 0 ? 'wide-h' : m === 3 ? 'wide-v' : 'std';
+  };
+
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', function () {
       var lang = (global.TXAM && global.TXAM.detectLang && global.TXAM.detectLang()) || 'zh';

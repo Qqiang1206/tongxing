@@ -2131,3 +2131,52 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 [data-ui="v3"] .v3-hero--about .v3-hero__media.tx-cross-js img.is-tx-active {
     opacity: 1;
 }
+
+/* ---------- 三大列表页 · 错落式杂志网格（Bento, v3） ----------
+ * 节奏由 TXAM.mosaicMode(index) 决定：每 6 张一组，
+ * #1 横版宽卡（跨2列·左图右文）、#4 竖版宽卡（跨2列·16:9大图），
+ * 其余标准卡（4:3）。dense 自动填缝，筛选后重排依然和谐。 */
+[data-ui="v3"] #news-grid,
+[data-ui="v3"] #product-grid,
+[data-ui="v3"] #solutions-list {
+    grid-auto-flow: dense;
+}
+[data-ui="v3"] .tx-mos .img-container {
+    height: auto;
+    aspect-ratio: 4 / 3;
+}
+[data-ui="v3"] .tx-mos--wide-v {
+    grid-column: span 2;
+}
+[data-ui="v3"] .tx-mos--wide-v .img-container {
+    aspect-ratio: 16 / 9;
+}
+[data-ui="v3"] .tx-mos--wide-h {
+    grid-column: span 2;
+    flex-direction: row;
+    align-items: stretch;
+}
+[data-ui="v3"] .tx-mos--wide-h .img-container {
+    width: 55%;
+    flex: 0 0 55%;
+    min-height: 320px;
+    aspect-ratio: auto;
+}
+[data-ui="v3"] .tx-mos--wide-h > div:last-child {
+    flex: 1 1 auto;
+}
+@media (max-width: 767px) {
+    [data-ui="v3"] .tx-mos--wide-h,
+    [data-ui="v3"] .tx-mos--wide-v {
+        grid-column: auto;
+    }
+    [data-ui="v3"] .tx-mos--wide-h {
+        flex-direction: column;
+    }
+    [data-ui="v3"] .tx-mos--wide-h .img-container {
+        width: 100%;
+        flex-basis: auto;
+        min-height: 0;
+        aspect-ratio: 4 / 3;
+    }
+}

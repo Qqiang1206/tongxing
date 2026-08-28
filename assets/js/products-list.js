@@ -41,10 +41,13 @@
     return '<img loading="lazy" decoding="async" src="' + escapeHtml(resolved) + '" alt="' + altText + '" class="img-zoom">';
   }
 
-  function buildCard(item, lang, detailPrefix) {
+  function buildCard(item, index, lang, detailPrefix) {
+    var mode = global.TXAM && global.TXAM.mosaicMode ? global.TXAM.mosaicMode(index) : 'std';
+    var wide = mode !== 'std';
+    var mos = 'tx-mos' + (mode === 'wide-h' ? ' tx-mos--wide-h' : mode === 'wide-v' ? ' tx-mos--wide-v' : '');
     var catKey = filterKey(item, lang);
     var cover = item.image || '';
-    var specs = (item.specs || []).slice(0, 2);
+    var specs = (item.specs || []).slice(0, wide ? 3 : 2);
     var specHtml = specs
       .map(function (s) {
         return '<span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">' +
@@ -52,17 +55,23 @@
       })
       .join('');
 
+    var badge = item.category
+      ? '<div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md text-[#1D1D1F] border border-gray-100 px-4 py-1.5 radius-sm text-xs font-bold shadow-sm">' +
+        escapeHtml(item.category) + '</div>'
+      : '';
+    var summary = item.summary || '';
+
     return (
       '<a href="' + (global.TXAM.catalogDetailHref ? global.TXAM.catalogDetailHref('products', item, detailPrefix) : detailPrefix + 'product-detail.html?id=' + escapeHtml(item.id)) + '" ' +
-      'class="product-card product-item fade-up" data-category="' + catKey + '">' +
-      '<div class="img-container">' + buildProductImage(cover, item.name) + '</div>' +
-      '<div class="p-8 flex-grow flex flex-col">' +
-      '<div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 font-mono uppercase">' +
-      escapeHtml(item.model) + '</div>' +
-      '<h3 class="text-h3 text-[#1D1D1F] mb-3 tracking-tight">' + escapeHtml(item.name) + '</h3>' +
-      '<p class="text-[#86868B] text-sm leading-[1.6] mb-6 flex-grow">' + escapeHtml(item.summary || '') + '</p>' +
-      '<div class="flex flex-wrap gap-2 mt-auto">' + specHtml + '</div>' +
-      '</div></a>'
+      'class="news-card product-item fade-up ' + mos + '" data-category="' + catKey + '">' +
+      '<div class="img-container">' + buildProductImage(cover, item.name) + badge + '</div>' +
+      '<div class="p-8 flex-grow flex flex-col justify-between bg-white group"><div>' +
+      '<span class="' + (wide ? 'text-[#FF6B00]' : 'text-[#86868B]') + ' text-sm font-mono font-bold mb-4 block">' +
+      escapeHtml(item.model) + '</span>' +
+      '<h3 class="text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' + escapeHtml(item.name) + '</h3>' +
+      '<p class="text-[#86868B] ' + (wide ? 'text-base leading-[1.8] line-clamp-2 md:line-clamp-3' : 'text-sm leading-[1.6] line-clamp-2') + ' mb-4">' + escapeHtml(summary) + '</p>' +
+      (specHtml ? '<div class="flex flex-wrap gap-2 mt-auto">' + specHtml + '</div>' : '') +
+      '</div></div></a>'
     );
   }
 
@@ -188,7 +197,7 @@
         });
 
       grid.innerHTML = items
-        .map(function (item) { return buildCard(item, lang, detailPrefix); })
+        .map(function (item, i) { return buildCard(item, i, lang, detailPrefix); })
         .join('');
 
       observeFadeUps();

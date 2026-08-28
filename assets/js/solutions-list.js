@@ -103,95 +103,61 @@
     );
   }
 
-  function buildTextBlock(item, index, lang, pathPrefix) {
+  /**
+   * v3：方案卡与新闻/产品卡同构（news-card 骨架），大小按 mosaic 节奏错落。
+   */
+  function buildRow(item, index, lang, pathPrefix) {
+    if (item.id == null) return '';
+    var mode = global.TXAM && global.TXAM.mosaicMode ? global.TXAM.mosaicMode(index) : 'std';
+    var wide = mode !== 'std';
+    var mos = 'tx-mos' + (mode === 'wide-h' ? ' tx-mos--wide-h' : mode === 'wide-v' ? ' tx-mos--wide-v' : '');
     var ui = UI[lang] || UI.zh;
-    var href = solutionHref(item, pathPrefix);
     var num = String(index + 1).padStart(2, '0');
-    var odd = index % 2 === 0;
-    var textOrder = odd ? '' : ' order-1 lg:order-2';
+    var href = solutionHref(item, pathPrefix);
+    var specs = item.specs || [];
+    var kpi = specs[0] || '';
+    var feats = specs.slice(1, wide ? 4 : 3);
+    var summary = item.summary || item.desc || '';
+
+    var featHtml = feats
+      .map(function (s) {
+        return '<span class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#39404C] border border-[#E7EAF0] bg-[#F7F8FA] px-3 py-1.5 rounded-full">' +
+          '✓ ' + escapeHtml(s) + '</span>';
+      })
+      .join('');
 
     return (
-      '<div class="lg:w-5/12' +
-      textOrder +
+      '<a href="' +
+      escapeHtml(href) +
+      '" class="news-card solution-item fade-up ' + mos + '" data-category="' +
+      escapeHtml(solutionFilterKey(item)) +
       '">' +
-      '<div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-6 font-mono uppercase">' +
+      '<div class="img-container">' +
+      buildImage(item.image, item.name) +
+      (kpi
+        ? '<div class="absolute top-6 left-6 bg-[#1D1D1F] text-white border border-gray-800 px-4 py-1.5 radius-sm text-xs font-bold shadow-sm mono-num">' +
+          escapeHtml(kpi) +
+          '</div>'
+        : '') +
+      '</div>' +
+      '<div class="p-8 flex-grow flex flex-col justify-between bg-white group"><div>' +
+      '<span class="' + (wide ? 'text-[#FF6B00]' : 'text-[#86868B]') + ' text-sm font-mono font-bold mb-4 block">' +
       escapeHtml(ui.label) +
       ' ' +
       num +
-      '</div>' +
-      '<h2 class="text-h2 text-[#1D1D1F] tracking-tighter mb-6 leading-tight">' +
+      '</span>' +
+      '<h3 class="text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' +
       escapeHtml(item.name) +
-      '</h2>' +
-      '<p class="text-body-lg text-[#86868B] leading-relaxed mb-6">' +
-      escapeHtml(item.summary || item.desc || '') +
+      '</h3>' +
+      '<p class="text-[#86868B] ' + (wide ? 'text-base leading-[1.8] line-clamp-2 md:line-clamp-3' : 'text-sm leading-[1.6] line-clamp-2') + ' mb-4">' +
+      escapeHtml(summary) +
       '</p>' +
-      buildHighlightsHtml(item) +
-      '<a href="' +
-      escapeHtml(href) +
-      '" class="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B00] text-white font-bold radius-sm hover:bg-[#E55F00] transition-all duration-300 mt-8">' +
-      escapeHtml(ui.view) +
-      '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-      '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>' +
-      '</a></div>'
+      (featHtml ? '<div class="flex flex-wrap gap-2 mt-auto">' + featHtml + '</div>' : '') +
+      '</div></div></a>'
     );
   }
 
-  function buildMediaBlock(item, index, lang) {
-    var ui = UI[lang] || UI.zh;
-    var odd = index % 2 === 0;
-    var mediaOrder = odd ? '' : ' order-2 lg:order-1';
-    var mediaBg = odd ? 'bg-gray-100' : 'bg-white';
-    var kpiPos = odd ? 'bottom-6 right-6' : 'bottom-6 left-6';
-    var firstSpec = (item.specs && item.specs[0]) || '';
-    var kpi =
-      firstSpec
-        ? '<div class="absolute ' +
-          kpiPos +
-          ' bg-white/90 backdrop-blur-md px-6 py-3 radius-lg shadow-lg border border-gray-200">' +
-          '<p class="text-xs text-[#86868B] font-bold tracking-widest mb-1">' +
-          escapeHtml(ui.kpi) +
-          '</p>' +
-          '<p class="text-[#FF6B00] font-black text-2xl mono-num">' +
-          escapeHtml(firstSpec) +
-          '</p></div>'
-        : '';
-
-    return (
-      '<div class="lg:w-7/12 w-full media-h-solution ' +
-      mediaBg +
-      ' media-hero relative' +
-      mediaOrder +
-      '">' +
-      buildImage(item.image, item.name) +
-      kpi +
-      '</div>'
-    );
-  }
-
-  function buildRow(item, index, lang, pathPrefix) {
-    if (item.id == null) return '';
-    var odd = index % 2 === 0;
-    var wrapClass = odd
-      ? 'w-full border-t border-[#E5E5EA] py-32'
-      : 'w-full bg-[#F5F5F7] py-32 border-y border-[#E5E5EA]';
-
-    var text = buildTextBlock(item, index, lang, pathPrefix);
-    var media = buildMediaBlock(item, index, lang);
-    var inner = odd ? text + media : media + text;
-
-    return (
-      '<div class="' +
-      wrapClass +
-      ' solution-item" data-category="' +
-      escapeHtml(solutionFilterKey(item)) +
-      '">' +
-      '<div class="max-w-[1400px] mx-auto px-6 md:px-24 flex flex-col lg:flex-row items-center justify-between gap-16 group fade-up">' +
-      inner +
-      '</div></div>'
-    );
-  }
-
-  var fadeObserver = null;
+  var fadeObserver = null;  var fadeObserver = null;
 
   function observeFadeUps() {
     if (fadeObserver) fadeObserver.disconnect();

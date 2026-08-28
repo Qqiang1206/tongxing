@@ -70,7 +70,8 @@
     return '<img loading="lazy" decoding="async" src="' + escapeHtml(resolved) + '" alt="' + alt + '" class="img-zoom">';
   }
 
-  function buildCard(item, featured, detailPrefix) {
+  function buildCard(item, index, detailPrefix) {
+    var featured = index === 0;
 
     var catKey = categoryKey(item);
 
@@ -104,7 +105,8 @@
 
       : 'text-[#86868B] text-sm leading-[1.6] line-clamp-3';
 
-    var spanClass = featured ? 'md:col-span-2 lg:col-span-2' : '';
+    var mode = global.TXAM && global.TXAM.mosaicMode ? global.TXAM.mosaicMode(index) : 'std';
+    var spanClass = 'tx-mos' + (mode === 'wide-h' ? ' tx-mos--wide-h' : mode === 'wide-v' ? ' tx-mos--wide-v' : '');
 
     var cover = item.cover || '';
 
@@ -334,7 +336,7 @@
 
         .map(function (item, index) {
 
-          return buildCard(item, index === 0, detailPrefix);
+          return buildCard(item, index, detailPrefix);
 
         })
 
