@@ -141,24 +141,22 @@ function transform(html, file) {
     changes.push('html[data-ui=v3]');
   }
 
-  // 2. 旧硬编码 navbar 块 / placeholder → 内联 v3 导航（静态首帧直出）
+  // 2. 先删旧 mobile-menu 块，再替换 navbar（顺序不能反，否则索引错位误删新菜单）
   const navHTML = buildNav(file);
   const legacyNavStart = out.indexOf('<nav id="navbar"');
   const placeholderIdx = out.indexOf('<div data-header-placeholder></div>');
   if (legacyNavStart !== -1) {
+    const mmStart = out.indexOf('<div id="mobile-menu"', legacyNavStart);
+    if (mmStart !== -1) {
+      const mmEnd = findDivEnd(out, mmStart);
+      if (mmEnd === -1) throw new Error(`${file}: mobile-menu 未闭合`);
+      out = out.slice(0, mmStart) + out.slice(mmEnd);
+      changes.push('legacy mobile-menu removed');
+    }
     const navEnd = out.indexOf('</nav>', legacyNavStart);
     if (navEnd === -1) throw new Error(`${file}: navbar 未闭合`);
     out = out.slice(0, legacyNavStart) + navHTML + out.slice(navEnd + '</nav>'.length);
     changes.push('legacy navbar → v3 nav');
-    // 连带的旧 mobile-menu 块删除
-    const mmStart = out.indexOf('<div id="mobile-menu"', navEnd);
-    if (mmStart !== -1 && /menu-closed|bg-\[#FBFBFD\]|flex flex-col items-center/.test(out.slice(mmStart, mmStart + 400))) {
-      const mmEnd = findDivEnd(out, mmStart);
-      if (mmEnd !== -1) {
-        out = out.slice(0, mmStart) + out.slice(mmEnd);
-        changes.push('legacy mobile-menu removed');
-      }
-    }
   } else if (placeholderIdx !== -1) {
     out = out.replace('<div data-header-placeholder></div>', navHTML);
     changes.push('placeholder → v3 nav');
@@ -206,6 +204,8 @@ if (mode === '--verify') {
     if (/<script[^>]*header\.js/.test(html)) problems.push('header.js include remains');
     const mm = (html.match(/id="mobile-menu"/g) || []).length;
     if (mm !== 1) problems.push(`mobile-menu x${mm}`);
+    if (!/txnav-sheet menu-closed/.test(html)) problems.push('v3 mobile sheet missing');
+    if (/menu-closed flex flex-col items-center/.test(html)) problems.push('legacy mobile-menu remains');
     const nav = (html.match(/id="navbar"/g) || []).length;
     if (nav !== 1) problems.push(`navbar x${nav}`);
     if (problems.length) {
