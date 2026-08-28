@@ -41,11 +41,24 @@ const NAV_ITEMS = [
   ['news.html', 'news', '新闻中心'], ['contact.html', 'contact', '联系我们'],
 ];
 const CTA_LABEL = { zh: '获取方案', en: 'Get a Quote', ru: 'Получить решение' };
+const HOME_LABEL = { zh: '首页', en: 'Home', ru: 'Главная' };
+
+function navLabels(subLang) {
+  // 三语导航译名以 data/i18n/{en,ru}.json 为准，保证与水合结果一致（零位移）
+  try {
+    const raw = readFileSync(`data/i18n/${subLang}.json`, 'utf8');
+    const nav = JSON.parse(raw).nav || {};
+    if (subLang === 'zh') return NAV_ITEMS.map(([, key, zh]) => [key, zh]);
+    return NAV_ITEMS.map(([, key]) => [key, nav[key] || HOME_LABEL[subLang]]);
+  } catch (e) {
+    return NAV_ITEMS.map(([, key, zh]) => [key, zh]);
+  }
+}
 
 /** 生成与 header.js v3 模板一致的静态导航（首帧直出，无弹入） */
 function buildNav(file) {
   const norm = file.replace(/\\/g, '/');
-  const subLang = /\/en\//i.test(norm) ? 'en' : /\/ru\//i.test(norm) ? 'ru' : 'zh';
+  const subLang = /(?:^|\/)en(?:\/|$)/i.test(norm) ? 'en' : /(?:^|\/)ru(?:\/|$)/i.test(norm) ? 'ru' : 'zh';
   const prefix = isSubDir(file) ? '../' : '';
   const page = norm.split('/').pop();
   const activeKey = ACTIVE_MAP[page] || 'home';
@@ -55,6 +68,7 @@ function buildNav(file) {
     ru: { zh: '../index.html', en: '../en/index.html', ru: 'index.html' },
   }[subLang];
 
+  const labels = navLabels(subLang);
   const link = (href, key, label, i) =>
     `<a href="${href}" class="txnav__link${activeKey === key ? ' is-active' : ''}">${label}</a>`;
   const sheetLink = (href, key, label, i) =>
@@ -72,7 +86,7 @@ function buildNav(file) {
                 </a>
 
                 <div class="txnav__links">
-                    ${NAV_ITEMS.map(([href, key, label], i) => link(href, key, label, i + 1)).join('\n                    ')}
+                    ${labels.map(([key, label], i) => link(NAV_ITEMS[i][0], key, label, i + 1)).join('\n                    ')}
                 </div>
 
                 <div class="txnav__cta">
@@ -97,7 +111,7 @@ function buildNav(file) {
         <!-- 📱 移动端全屏菜单（白色玻璃） -->
         <div id="mobile-menu" class="txnav-sheet menu-closed" role="dialog" aria-label="站内导航">
             <nav class="flex flex-col w-full max-w-md mx-auto">
-                ${NAV_ITEMS.map(([href, key, label], i) => sheetLink(href, key, label, i + 1)).join('\n                ')}
+                ${labels.map(([key, label], i) => sheetLink(NAV_ITEMS[i][0], key, label, i + 1)).join('\n                ')}
             </nav>
             <div class="txnav-sheet__langs">
                 <a href="${LANG_HREFS.zh}" class="${subLang === 'zh' ? 'is-active' : ''}">ZH</a>
@@ -143,9 +157,21 @@ function transform(html, file) {
 
   // 2. 先删旧 mobile-menu 块，再替换 navbar（顺序不能反，否则索引错位误删新菜单）
   const navHTML = buildNav(file);
+  const v3NavStart = out.indexOf('<nav id="navbar" class="txnav"');
   const legacyNavStart = out.indexOf('<nav id="navbar"');
   const placeholderIdx = out.indexOf('<div data-header-placeholder></div>');
-  if (legacyNavStart !== -1) {
+  if (v3NavStart !== -1) {
+    // 已是 v3 导航：整体重新生成（更新标签/语言），幂等
+    const navEnd = out.indexOf('</nav>', v3NavStart);
+    let cursor = navEnd + '</nav>'.length;
+    const sheetStart = out.indexOf('<div id="mobile-menu" class="txnav-sheet', cursor);
+    if (sheetStart !== -1) {
+      const sheetEnd = findDivEnd(out, sheetStart);
+      if (sheetEnd !== -1) cursor = sheetEnd;
+    }
+    out = out.slice(0, v3NavStart) + navHTML + out.slice(cursor);
+    changes.push('v3 nav regenerated');
+  } else if (legacyNavStart !== -1) {
     const mmStart = out.indexOf('<div id="mobile-menu"', legacyNavStart);
     if (mmStart !== -1) {
       const mmEnd = findDivEnd(out, mmStart);
