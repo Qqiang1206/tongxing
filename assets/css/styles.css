@@ -2060,3 +2060,44 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
         animation: none;
     }
 }
+
+/* ---------- 关于页 hero：公司实景双图轮播（v3） ---------- */
+.v3-hero--about .v3-hero__media img {
+    position: absolute;
+    inset: 0;
+    will-change: opacity, transform;
+}
+.v3-hero--about .v3-hero__media img:nth-child(1) {
+    animation: tx-cross-a 16s ease-in-out infinite;
+}
+.v3-hero--about .v3-hero__media img:nth-child(2) {
+    animation: tx-cross-b 16s ease-in-out infinite;
+}
+@keyframes tx-cross-a {
+    0%, 40% { opacity: 1; transform: scale(1); }
+    50%, 90% { opacity: 0; transform: scale(1.06); }
+    100% { opacity: 1; transform: scale(1); }
+}
+@keyframes tx-cross-b {
+    0%, 40% { opacity: 0; transform: scale(1.06); }
+    50%, 90% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.06); }
+}
+/* 实景照片的白雾层比视频版更实一档，保证墨黑标题可读 */
+.v3-hero__veil--photo {
+    background:
+        linear-gradient(180deg,
+            rgba(255, 255, 255, 0.93) 0%,
+            rgba(255, 255, 255, 0.74) 30%,
+            rgba(255, 255, 255, 0.48) 60%,
+            rgba(250, 251, 253, 0.6) 82%,
+            var(--tx-bg) 100%);
+}
+@media (prefers-reduced-motion: reduce) {
+    .v3-hero--about .v3-hero__media img {
+        animation: none !important;
+    }
+    .v3-hero--about .v3-hero__media img + img {
+        opacity: 0;
+    }
+}
