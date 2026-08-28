@@ -175,6 +175,27 @@
     );
   }
 
+  /**
+   * Reveal-on-scroll for .fade-up blocks. Lives here (not header.js) since the
+   * nav is now statically inlined and header.js is no longer included.
+   */
+  function initRevealObserver() {
+    var els = document.querySelectorAll('.fade-up');
+    if (!els.length) return;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    Array.prototype.forEach.call(els, function (el) {
+      if (el.classList.contains('visible')) return;
+      observer.observe(el);
+    });
+  }
+
   function initSiteChrome() {
     injectSkipLink();
     ensureMainLandmark();
@@ -182,6 +203,7 @@
     ensureMobileMenuLabel();
     initNavbarScroll();
     initMobileMenu();
+    initRevealObserver();
     if (!document.getElementById('mobile-menu-btn')) {
       var observer = new MutationObserver(function () {
         if (!document.getElementById('mobile-menu-btn')) return;
