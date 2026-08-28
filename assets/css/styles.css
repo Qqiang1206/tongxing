@@ -2180,3 +2180,9 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
         aspect-ratio: 4 / 3;
     }
 }
+
+/* ---------- 列表页章节式 hero（复用首页视频，高度约为首页 6 成） ---------- */
+.v3-hero--section {
+    min-height: clamp(460px, 66vh, 680px);
+    justify-content: center;
+}

@@ -179,6 +179,17 @@
    * Reveal-on-scroll for .fade-up blocks. Lives here (not header.js) since the
    * nav is now statically inlined and header.js is no longer included.
    */
+  /**
+   * v3 列表页章节式 hero 视频（与首页同源素材）：静音自动播放。
+   */
+  function initSectionHeroVideo() {
+    var video = document.querySelector('.v3-hero--section video');
+    if (!video) return;
+    video.muted = true;
+    var p = video.play();
+    if (p && p.catch) p.catch(function () { /* autoplay blocked: poster remains */ });
+  }
+
   function initRevealObserver() {
     var els = document.querySelectorAll('.fade-up');
     if (!els.length) return;
@@ -203,6 +214,7 @@
     ensureMobileMenuLabel();
     initNavbarScroll();
     initMobileMenu();
+    initSectionHeroVideo();
     initRevealObserver();
     if (!document.getElementById('mobile-menu-btn')) {
       var observer = new MutationObserver(function () {
