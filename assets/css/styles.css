@@ -2087,10 +2087,10 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 .v3-hero__veil--photo {
     background:
         linear-gradient(180deg,
-            rgba(255, 255, 255, 0.93) 0%,
-            rgba(255, 255, 255, 0.74) 30%,
-            rgba(255, 255, 255, 0.48) 60%,
-            rgba(250, 251, 253, 0.6) 82%,
+            rgba(255, 255, 255, 0.96) 0%,
+            rgba(255, 255, 255, 0.86) 28%,
+            rgba(255, 255, 255, 0.66) 58%,
+            rgba(250, 251, 253, 0.72) 82%,
             var(--tx-bg) 100%);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2100,4 +2100,24 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
     .v3-hero--about .v3-hero__media img + img {
         opacity: 0;
     }
+}
+
+/* ---------- 关于页 hero 文字锐化（照片背景上不用渐变灰尾） ---------- */
+[data-ui="v3"] .v3-hero--about .text-gradient {
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: var(--tx-ink);
+    color: var(--tx-ink);
+    text-shadow:
+        0 1px 22px rgba(255, 255, 255, 0.95),
+        0 0 3px rgba(255, 255, 255, 0.65);
+}
+[data-ui="v3"] .v3-hero--about #about-hero-lead,
+[data-ui="v3"] .v3-hero--about #about-hero-lead {
+    color: var(--tx-ink-mid);
+    text-shadow: 0 1px 16px rgba(255, 255, 255, 0.95);
+}
+[data-ui="v3"] .v3-hero--about #about-hero-lead strong {
+    color: var(--tx-ink);
 }
