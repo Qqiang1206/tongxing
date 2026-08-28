@@ -1059,6 +1059,7 @@ main#main-content:focus {
 /* Section heading block */
 .v3-kicker {
     display: inline-flex;
+    vertical-align: top; /* 抵消行盒基线对齐带来的 4px 下沉，保证跨页等高 */
     align-items: center;
     justify-content: center;
     gap: 0.65rem;
@@ -1863,6 +1864,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 /* 内页 hero 统一规则：雾底 + 顶部起点标准化
  * （各页历史写法不一：pt-4/pt-40、容器 mt-6、header mt-6 —— 一律覆盖，
  *   保证眉标到导航的距离全站一致；首页满屏 hero 用 :not(.v3-hero) 排除） */
+[data-ui="v3"] main > header:first-of-type:not(.v3-hero),
 [data-ui="v3"] body > header:first-of-type:not(.v3-hero) {
     padding-top: 10rem !important;   /* 160px：导航 76px + 统一净空 */
     margin-top: 0 !important;
@@ -1870,6 +1872,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
         radial-gradient(ellipse 52% 46% at 14% 0%, var(--tx-glow-a) 0%, transparent 64%),
         radial-gradient(ellipse 46% 42% at 88% 8%, var(--tx-glow-b) 0%, transparent 62%);
 }
+[data-ui="v3"] main > header:first-of-type:not(.v3-hero) > div:first-child,
 [data-ui="v3"] body > header:first-of-type:not(.v3-hero) > div:first-child {
     margin-top: 0 !important;
 }
