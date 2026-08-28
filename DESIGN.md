@@ -312,3 +312,20 @@ npm run build:css
    不符）、`assets/images/hero/robot-arm.webp`（暗色旧机床，弃用）；产品卡中后段包装
    线图片出现疑似第三方纸箱印花，铺开前建议替换素材。
 4. 每步跑 `npm run build:css` + `check-css-coverage`，浏览器三档宽度抽查。
+
+### 11.6 全站铺开记录（第二阶段完成）
+
+- 63 页（zh 21 / en 21 / ru 21）全部完成 v3 铺开：`node scripts/rollout-v3.mjs --verify` 全绿
+  （data-ui 存在、静态 v3 导航唯一、无旧导航/旧移动菜单残留、渲染器同步化、跨页过渡已链接）。
+- 导航为**静态内联**（首帧直出，无 JS 弹入），标签按语言烘焙自 data/i18n/{lang}.json，
+  水合前后零位移；滚动玻璃态由 site-chrome.js 接管；fade-up 观察器也已迁至 site-chrome.js。
+- 首页三语结构 1:1（满屏视频 hero · 白雾压字 · 数据胶囊 · logo 墙 · 各区块），文案取自
+  data/pages/home/{lang}.json，en/ru 资源路径带 ../ 前缀。
+- 体验保障：scroll-smooth 已移除、首屏无入场动画、列表卡片 250ms 柔和淡入（过渡层）、
+  页面级 0.35s 载入动画 + 跨文档 View Transitions（Chromium 126+）。
+- 维护注意：
+  1) 列表页筛选按钮文案是 HTML 静态兜底，CMS 改名筛选分类后需重跑 rollout 或手改对齐；
+  2) 落地页 H1/lead 静态兜底已与 data/solutions/{lang}.json 对齐，CMS 改名后需再同步；
+  3) robot-arm.webp 已无引用可删；automation-line.webp 无引用可删；
+  4) CMS 数据待清理：zh 解决方案筛选含测试条目「爱你」(solution-s9nqazv)；
+     ru 解决方案 id=36-40 filterKey 与 slug 不一致（validate-data.js WARN）。

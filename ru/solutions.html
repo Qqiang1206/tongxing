@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru-RU" class="scroll-smooth">
+<html lang="ru-RU" class="" data-ui="v3">
 <head>
     <meta charset="UTF-8">
     <script defer src="../assets/js/lang-detect.js"></script>
@@ -16,7 +16,8 @@
     <link rel="alternate" hreflang="x-default" href="https://www.sztxgk.com/solutions.html">
     <meta property="og:image" content="https://www.sztxgk.com/assets/images/hero/factory-hero.webp">
     <link rel="stylesheet" href="../assets/css/tailwind.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/tx-view-transitions.css?v=20260827v3">
 
     
     
@@ -34,51 +35,58 @@
     </script>
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
-<nav id="navbar" class="w-full flex justify-between items-center px-6 md:pl-16 md:pr-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
-        <a href="index.html" class="flex items-center cursor-pointer relative z-50" aria-label="TXAM Home"><picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img decoding="async" src="../assets/images/brand/logo.png" alt="TXAM" class="h-8 md:h-10" loading="lazy"></picture></a>
-        
-        <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
-            <a href="index.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Главная</a>
-            <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">О нас</a>
-            <a href="solutions.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">Решения</a>
-            <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Продукция</a>
-            <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Новости</a>
-            <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">Контакты</a>
-            <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
-                <a href="../solutions.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">ZH</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="../en/solutions.html" class="px-2 py-1 text-[#86868B] hover:text-[#1D1D1F] text-xs transition">EN</a>
-                <span class="text-[#E5E5EA]">|</span>
-                <a href="solutions.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">RU</a>
-            </div>
+<nav id="navbar" class="txnav">
+            <div class="v3-shell txnav__inner">
+                <a href="index.html" class="txnav__brand" aria-label="TXAM 同兴高科 首页">
+                    <picture><source srcset="../assets/images/brand/logo.webp" type="image/webp"><img src="../assets/images/brand/logo.png" alt="TXAM 同兴高科 官网logo" class="txnav__logo"></picture>
+                </a>
+
+                <div class="txnav__links">
+                    <a href="index.html" class="txnav__link">Главная</a>
+                    <a href="about.html" class="txnav__link">О нас</a>
+                    <a href="solutions.html" class="txnav__link is-active">Решения</a>
+                    <a href="products.html" class="txnav__link">Продукция</a>
+                    <a href="news.html" class="txnav__link">Новости</a>
+                    <a href="contact.html" class="txnav__link">Контакты</a>
+                </div>
+
+                <div class="txnav__cta">
+                    <div class="hidden lg:flex items-center gap-1 text-xs font-bold tracking-wide">
+                        <a href="../index.html" class="px-2 py-1 text-[#667084] hover:text-[#14161B] transition-colors">ZH</a>
+                        <span class="text-[#E7EAF0]">|</span>
+                        <a href="../en/index.html" class="px-2 py-1 text-[#667084] hover:text-[#14161B] transition-colors">EN</a>
+                        <span class="text-[#E7EAF0]">|</span>
+                        <a href="index.html" class="px-2 py-1 text-[#FF6B00] is-active">RU</a>
+                    </div>
+                    <a href="contact.html" class="v3-btn v3-btn--primary txnav__cta-btn">
+                        Получить решение
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>
+                    </a>
+                    <button id="mobile-menu-btn" class="txnav__burger" type="button" aria-label="打开菜单">
+                        <i></i><i></i><i></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 📱 移动端全屏菜单（白色玻璃） -->
+        <div id="mobile-menu" class="txnav-sheet menu-closed" role="dialog" aria-label="站内导航">
+            <nav class="flex flex-col w-full max-w-md mx-auto">
+                <a href="index.html" class="txnav-sheet__link">Главная<span>01</span></a>
+                <a href="about.html" class="txnav-sheet__link">О нас<span>02</span></a>
+                <a href="solutions.html" class="txnav-sheet__link" style="color:#FF6B00">Решения<span>03</span></a>
+                <a href="products.html" class="txnav-sheet__link">Продукция<span>04</span></a>
+                <a href="news.html" class="txnav-sheet__link">Новости<span>05</span></a>
+                <a href="contact.html" class="txnav-sheet__link">Контакты<span>06</span></a>
+            </nav>
+            <div class="txnav-sheet__langs">
+                <a href="../index.html" class="">ZH</a>
+                <a href="../en/index.html" class="">EN</a>
+                <a href="index.html" class="is-active">RU</a>
+            </div>
         </div>
 
-        <div class="md:hidden flex items-center relative z-50">
-            <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-    </nav>
-
-    <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
-        <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
-            <a href="index.html" class="text-[#86868B]">Главная</a>
-            <a href="about.html" class="text-[#86868B]">О нас</a>
-            <a href="solutions.html" class="text-[#FF6B00]">Решения</a>
-            <a href="products.html" class="text-[#86868B]">Продукция</a>
-            <a href="news.html" class="text-[#86868B]">Новости</a>
-            <a href="contact.html" class="text-[#86868B]">Контакты</a>
-        </div>
-        <div class="flex items-center space-x-4 text-lg pb-12">
-            <a href="../solutions.html" class="px-4 py-2 text-[#86868B]">ZH</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="../en/solutions.html" class="px-4 py-2 text-[#86868B]">EN</a>
-            <span class="text-[#E5E5EA]">|</span>
-            <a href="solutions.html" class="px-4 py-2 text-[#FF6B00] font-bold">RU</a>
-        </div>
-    </div>
+    
 
     <header class="pt-40 pb-20 px-6 md:px-24 w-full text-center fade-up mt-6">
         <div class="max-w-[1000px] mx-auto">
@@ -131,9 +139,7 @@
     <script src="../data/pages/solutions/ru.js"></script>
     <script src="../assets/js/solutions-list.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            TXAM.initSolutionsList({ lang: "ru" });
-        });
+        TXAM.initSolutionsList({ lang: "ru" });
     </script>
     <script src="../data/i18n/ru.js"></script>
     <script src="../assets/js/site-footer.js" defer></script>
