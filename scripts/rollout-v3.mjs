@@ -15,6 +15,8 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 
+const VERSION = '20260827v3';
+
 const args = process.argv.slice(2);
 const mode = args[0];
 const files = args.slice(1).filter((f) => f.endsWith('.html'));
@@ -124,6 +126,7 @@ function findDivEnd(html, start) {
 
 function transform(html, file) {
   const changes = [];
+  const prefix = isSubDir(file) ? '../' : '';
   let out = html;
 
   // 0. 移除 scroll-smooth：返回长页面时平滑滚动回放会造成"闪一下"
