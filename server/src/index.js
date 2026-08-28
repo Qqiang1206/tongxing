@@ -137,9 +137,7 @@ function serveSiteAsset(res, pathname, origin) {
     ? 'public, max-age=31536000, immutable'
     : rel.startsWith('images/')
       ? 'public, max-age=2592000'
-      : rel.startsWith('js/')
-        ? 'no-cache'
-        : 'public, max-age=604800';
+      : 'no-cache'; /* css/js 会随改版更新，必须每次校验，避免访客端 7 天旧样式 */
   return serveRepoFile(res, ASSETS_DIR, rel, origin, cacheControl);
 }
 
