@@ -135,16 +135,8 @@
     <script src="data/pages/contact/zh.js"></script>
     <script src="assets/js/contact-page.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var navbar = document.getElementById('navbar');
-            if (navbar) {
-                window.addEventListener('scroll', function () {
-                    if (window.scrollY > 20) navbar.classList.add('shadow-sm');
-                    else navbar.classList.remove('shadow-sm');
-                });
-            }
-            if (window.TXAM && TXAM.initContactPage) TXAM.initContactPage({ lang: 'zh' });
-        });
+        /* 渲染器同步执行：避免首绘后再填充内容造成布局跳动（导航滚动态由 site-chrome.js 接管） */
+        if (window.TXAM && TXAM.initContactPage) TXAM.initContactPage({ lang: 'zh' });
     </script>
     <script src="data/i18n/zh.js"></script>
     <script src="assets/js/site-footer.js" defer></script>

@@ -170,6 +170,14 @@ function transform(html, file) {
     changes.push('header.js include removed');
   }
 
+  // 3.5 页面渲染器从 DOMContentLoaded 改为同步执行：
+  //     首绘后再填充内容会造成"骨架→内容"的布局跳动
+  const reDcl = /document\.addEventListener\((["'])DOMContentLoaded\1,\s*function\s*\(\)\s*\{\s*(TXAM\.init[A-Za-z]+\([^)]*\);?)\s*\}\s*\);?/g;
+  if (reDcl.test(out)) {
+    out = out.replace(reDcl, '$2');
+    changes.push('renderer init synced');
+  }
+
   return { out, changes };
 }
 
