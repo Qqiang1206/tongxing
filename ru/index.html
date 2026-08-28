@@ -2,47 +2,37 @@
 <html lang="ru" data-ui="v3">
 <head>
     <meta charset="UTF-8">
+    <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/noto-sans-sc-site.woff2" crossorigin>
     <script defer src="../assets/js/lang-detect.js"></script>
-    <link rel="preload" as="image" href="../assets/images/solutions/tv-flex-line.webp">
-    <meta name="description" content="TXAM - 19 лет производитель нестандартного автоматического оборудования. Умные производственные линии для TCL, Skyworth, Midea, Konka, Changhong. 98 патентов, экспорт в 15 стран.">
-    <meta property="og:title" content="TXAM - Ведущий поставщик автоматизации в Китае">
-    <meta property="og:description" content="Профессиональное проектирование и производство нестандартных автоматических производственных линий. Решения для TV-дисплеев, холодильников, кондиционеров">
-<meta property="og:type" content="website">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TXAM - Ведущий поставщик автоматизации в Китае</title>
+    <meta name="description" content="TXAM - 19-year non-standard automation equipment manufacturer serving TCL, Skyworth, Midea, Konka, Changhong and more. 98 patents, exports to 15 countries.">
+    <meta property="og:title" content="TXAM — ведущий поставщик средств автоматизации в Китае">
+    <meta property="og:description" content="Professional non-standard automation line design and manufacturing for 11 industries">
+    <meta property="og:image" content="https://www.sztxgk.com/assets/images/hero/factory-hero.webp">
+    <meta property="og:type" content="website">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXAM — ведущий поставщик средств автоматизации в Китае</title>
     <link rel="canonical" href="https://www.sztxgk.com/ru/">
     <link rel="alternate" hreflang="zh-CN" href="https://www.sztxgk.com/">
-    <link rel="alternate" hreflang="en-US" href="https://www.sztxgk.com/en/">
+    <link rel="alternate" hreflang="en-US" href="https://www.sztxgk.com/ru/">
     <link rel="alternate" hreflang="ru-RU" href="https://www.sztxgk.com/ru/">
     <link rel="alternate" hreflang="x-default" href="https://www.sztxgk.com/">
-    <meta property="og:image" content="https://www.sztxgk.com/assets/images/hero/factory-hero.webp">
-    <link rel="stylesheet" href="../assets/css/tailwind.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/tx-view-transitions.css?v=20260827v3">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/webp" href="../assets/images/brand/favicon.webp">
     <link rel="icon" type="image/png" href="../assets/images/brand/favicon.png">
     <link rel="apple-touch-icon" href="../assets/images/brand/favicon.png">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "TXAM",
-      "alternateName": "Shenzhen Tongxing Gaoke Automation Equipment Co., Ltd.",
-      "url": "https://www.sztxgk.com/ru/",
-      "logo": "https://www.sztxgk.com/assets/images/brand/logo.webp",
-      "description": "TXAM - 19 лет производитель нестандартного автоматического оборудования. Умные производственные линии для TCL, Skyworth, Midea, Konka, Changhong. 98 патентов, экспорт в 15 стран.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Шэньчжэнь",
-        "addressRegion": "Гуандун",
-        "addressCountry": "Китай"
-      }
-    }
-    </script>
+
+    <!-- Hero video poster = LCP fallback -->
+    <link rel="preload" as="image" href="../assets/videos/hero-poster.webp" type="image/webp">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/tailwind.min.css?v=20260827v3">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260827v3">
+    <link rel="stylesheet" href="../assets/css/tx-view-transitions.css?v=20260827v3">
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
 
-    <!-- 🌐 Навигация -->
+    <!-- 🌐 顶部导航 v3（静态内联，首帧直出） -->
     <nav id="navbar" class="txnav">
             <div class="v3-shell txnav__inner">
                 <a href="index.html" class="txnav__brand" aria-label="TXAM 同兴高科 首页">
@@ -94,129 +84,206 @@
             </div>
         </div>
 
-    <!-- 📱 Мобильное меню -->
-    
+    <!-- 📍 P1. 满屏沉浸 Hero：机械运动循环视频 · 白雾压字 -->
+    <header class="v3-hero">
+        <div class="v3-hero__media" aria-hidden="true">
+            <video id="home-hero-video" autoplay muted loop playsinline preload="auto"
+                   poster="assets/videos/hero-poster.webp" tabindex="-1">
+                <source src="../assets/videos/hero-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="v3-hero__veil" aria-hidden="true"></div>
+        <div class="v3-hero__grid" aria-hidden="true"></div>
+        <div class="v3-hero__aura v3-hero__aura--a" aria-hidden="true"></div>
+        <div class="v3-hero__aura v3-hero__aura--b" aria-hidden="true"></div>
 
-    <!-- 📍 P1. Главный экран -->
-    <header class="pt-40 pb-24 px-6 md:px-24 w-full relative">
-        <div class="max-w-[1400px] mx-auto flex flex-col items-center text-center fade-up mt-6">
-            
-            <h1 id="home-hero-title" class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">Точное производство, TXAM выполняет</h1>
-            
-            <p id="home-hero-lead" class="text-body-lg text-[#86868B] font-medium mb-16 max-w-3xl leading-relaxed tracking-wide">Предоставляем комплексные услуги интеллектуального оборудования для ведущих мировых предприятий. Мы успешно вошли в число поставщиков высококачественной продукции для нестандартной автоматизации, интеллектуального производства и интеграции промышленных роботов.</p>
-            
-            <div class="flex space-x-6 mb-20">
-                <a id="home-cta-primary" href="products.html" class="bg-[#1D1D1F] text-white px-10 py-4 radius-sm text-base font-bold hover:bg-[#FF6B00] transition-colors shadow-xl shadow-black/10">Изучить основную продукцию
+        <div class="v3-shell relative w-full flex flex-col items-center text-center fade-up visible pt-32 md:pt-36 pb-20 md:pb-24">
+            <h1 id="home-hero-title" class="text-gradient mb-7">Точное производство, TXAM выполняет</h1>
+
+            <p id="home-hero-lead" class="text-body-lg text-[#39404C] font-medium mb-12 max-w-3xl leading-relaxed tracking-wide">Предоставляем комплексные услуги интеллектуального оборудования для ведущих мировых предприятий. Мы успешно вошли в число поставщиков высококачественной продукции для нестандартной автоматизации, интеллектуального производства и интеграции промышленных роботов.</p>
+
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-14">
+                <a id="home-cta-primary" href="products.html" class="v3-btn v3-btn--primary">Изучить основную продукцию
+                    <svg class="v3-btn__arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>
                 </a>
-                <a id="home-cta-secondary" href="about.html" class="bg-white border border-[#E5E5EA] text-[#1D1D1F] px-10 py-4 radius-sm text-base font-bold hover:bg-gray-50 transition-colors">Узнать о возможностях предприятия
-                </a>
+                <a id="home-cta-secondary" href="about.html" class="v3-btn v3-btn--ghost">Узнать о возможностях предприятия</a>
             </div>
 
-            <a id="home-featured-link" href="tv-display-solution.html" class="w-full media-h-index w-full bg-gray-100 media-hero relative group block">
-                <picture><source srcset="../assets/images/solutions/tv-flex-line.webp" type="image/webp"><img id="home-featured-image" alt="Гибкая производственная линия для TV/коммерческих дисплеев" class="w-full h-full object-cover img-zoom" src="../assets/images/solutions/tv-flex-line.webp" fetchpriority="high"></picture>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-10 left-10 right-10 text-left">
-                    <p id="home-featured-eyebrow" class="text-[#FF6B00] text-sm font-bold tracking-widest mb-3 uppercase">Эталонные решения</p>
-                    <p id="home-featured-title" class="text-white text-h2 font-black mb-2">Линия автоматизации производства ТВ/коммерческих дисплеев</p>
-                    <p id="home-featured-subtitle" class="text-white/80 text-base md:text-lg">Совместимость с одним станком 65~110 дюймов | Полностью автоматическая сборка</p>
-                    <div id="home-featured-cta" class="mt-6 inline-flex items-center bg-[#FF6B00] text-white px-6 py-3 radius-sm text-sm font-bold">Посмотреть подробности продукта
-                    </div>
+            <!-- 玻璃数据胶囊 -->
+            <div id="home-stats-grid" class="v3-statbar w-full max-w-[1080px]">
+                <div class="v3-stat">
+                    <div class="v3-stat__num mono-num">19<span>Years</span></div>
+                    <p class="v3-stat__label">Experience in Non-Standard Automation Equipment Manufacturing</p>
                 </div>
-            </a>
+                <div class="v3-stat">
+                    <div class="v3-stat__num mono-num">98<span>Items</span></div>
+                    <p class="v3-stat__label">Core Inventions and Patents</p>
+                </div>
+                <div class="v3-stat">
+                    <div class="v3-stat__num mono-num">11<span>Major</span></div>
+                    <p class="v3-stat__label">Full coverage of key industries</p>
+                </div>
+                <div class="v3-stat">
+                    <div class="v3-stat__num mono-num">10<span>0,000 m²</span></div>
+                    <p class="v3-stat__label">Shenzhen + Huizhou Dual-Core Factory</p>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- 📍 P2. О TXAM -->
-    <section id="about" class="py-32 bg-white px-6 md:px-24">
-        <div class="max-w-[1400px] mx-auto fade-up">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-24">
-                <div class="lg:w-2/3">
-                    <h2 id="home-about-title" class="text-h1 text-[#1D1D1F] mb-8 tracking-tighter">Движущая сила мирового интеллектуального производства</h2>
-                    <div class="w-12 h-1.5 bg-[#FF6B00] mb-8"></div>
-                    <p id="home-about-body" class="text-body-lg text-[#86868B] leading-[1.8] font-light max-w-4xl"><p>TXAM была основана в Шэньчжэне, национальном центре науки и технологий. На протяжении 19 лет мы придерживаемся корпоративной философии «преданность делу, стабильное развитие, репутация превыше всего, качество превыше всего», сосредоточившись на проектировании и производстве нестандартных автоматизированных линий.<br><br>Будучи долгосрочным партнером таких крупных и средних предприятий, как <strong class="text-[#1D1D1F] font-bold">TCL, Skyworth, Midea, Konka, Changhong</strong>, мы достигли комплексной интеграции технологических исследований и разработок, производства, продаж и обслуживания.</p></p>
-                </div>
+    <!-- 📍 客户口碑墙 -->
+    <section class="bg-white py-14 border-b border-[#E7EAF0]" aria-label="Client partners">
+        <div class="v3-shell fade-up">
+            <p class="text-center text-xs font-bold tracking-[0.28em] uppercase text-[#9AA1AE] mb-9">
+                Нам доверяют ведущие производители мира
+            </p>
+            <div class="v3-logos">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/tcl.webp" alt="TCL">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/chuangwei.webp" alt="Skyworth">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/meide.webp" alt="Midea">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/kangjia.webp" alt="Konka">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/changhong.gif" alt="Changhong">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/lianxiang.webp" alt="Lenovo">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/fushikang.webp" alt="Foxconn">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/ningdeshidai.webp" alt="CATL">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/jingdongfang.webp" alt="BOE">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/zhouming.webp" alt="Unilumin">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/qunchuangguangdian.webp" alt="Innolux">
+                <img loading="lazy" decoding="async" src="../assets/images/clients/xiwo.webp" alt="Seewo">
             </div>
-            
-            <div id="home-stats-grid" class="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-[#E5E5EA] pt-16">
-                <div class="text-center md:text-left">
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">19<span class="text-3xl ml-1 text-gray-400">лет</span></div>
-                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Лет опыта в производстве автоматизации</p>
+        </div>
+    </section>
+
+    <!-- 📍 P2. Benchmark Solutions · 电影级横幅 -->
+    <section class="v3-section v3-section--mist relative overflow-hidden">
+        <div class="v3-shell fade-up">
+            <a id="home-featured-link" href="tv-display-solution.html" class="v3-feature group block h-[500px] md:h-[620px]">
+                <picture><source srcset="assets/images/solutions/tv-flex-line.webp" type="image/webp"><img id="home-featured-image" alt="TV/Commercial Display Flexible Production Line - Fully Automatic Assembly" class="w-full h-full object-cover" src="../assets/images/solutions/tv-flex-line.webp"></picture>
+                <div class="v3-feature__scrim"></div>
+                <div class="v3-feature__caption">
+                    <div class="min-w-0">
+                        <p id="home-featured-eyebrow" class="v3-feature__eyebrow">Эталонные решения</p>
+                        <p id="home-featured-title" class="v3-feature__title">Линия автоматизации производства ТВ/коммерческих дисплеев</p>
+                        <p id="home-featured-subtitle" class="v3-feature__sub">Совместимость с одним станком 65~110 дюймов | Полностью автоматическая сборка</p>
+                    </div>
+                    <span id="home-featured-cta" class="shrink-0 inline-flex items-center gap-2 rounded-[999px] bg-[#14161B] text-white text-sm font-bold px-6 py-3 transition-colors duration-300 group-hover:bg-[#FF6B00]">Посмотреть подробности продукта
+                        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>
+                    </span>
                 </div>
-                <div class="text-center md:text-left">
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">98<span class="text-3xl ml-1 text-gray-400">ед.</span></div>
-                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Ключевых изобретений и патентов</p>
-                </div>
-                <div class="text-center md:text-left">
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">11<span class="text-3xl ml-1 text-gray-400">отр.</span></div>
-                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Основных отраслей</p>
-                </div>
-                <div class="text-center md:text-left border-l-0 md:border-l-2 md:border-[#E5E5EA] md:pl-8">
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">10<span class="text-3xl ml-1 text-gray-400">тыс. м²</span></div>
-                    <p class="text-xs font-bold text-[#86868B] tracking-widest uppercase">Два завода: Шэньчжэнь + Хуэйчжоу</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- 📍 P3. About TXAM · 编辑式分栏 -->
+    <section id="about" class="v3-section bg-white relative overflow-hidden">
+        <div class="v3-shell grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center fade-up">
+            <div>
+                <p class="v3-kicker mb-7">About TXAM</p>
+                <h2 id="home-about-title" class="text-h1 text-[#14161B] mb-8 tracking-tighter">Движущая сила мирового интеллектуального производства</h2>
+                <p id="home-about-body" class="text-body-lg text-[#667084] leading-relaxed max-w-xl"><p>TXAM была основана в Шэньчжэне, национальном центре науки и технологий. На протяжении 19 лет мы придерживаемся корпоративной философии «преданность делу, стабильное развитие, репутация превыше всего, качество превыше всего», сосредоточившись на проектировании и производстве нестандартных автоматизированных линий.<br><br>Будучи долгосрочным партнером таких крупных и средних предприятий, как <strong class="text-[#1D1D1F] font-bold">TCL, Skyworth, Midea, Konka, Changhong</strong>, мы достигли комплексной интеграции технологических исследований и разработок, производства, продаж и обслуживания.</p></p></p>
+            </div>
+            <div class="relative pb-14 pl-0 sm:pl-10">
+                <figure class="v3-media aspect-[4/3] m-0">
+                    <picture><source srcset="assets/images/hero/hzgc2-960.webp" type="image/webp"><img loading="lazy" decoding="async" src="../assets/images/hero/hzgc2-960.webp" alt="Производственная база TXAM в Хуэйчжоу"></picture>
+                </figure>
+                <figure class="v3-media hidden sm:block absolute left-0 -bottom-2 w-[44%] aspect-[4/3] m-0 border-4 border-white" style="box-shadow:0 24px 64px rgba(16,18,22,.22)">
+                    <picture><source srcset="assets/images/hero/szgc1.webp" type="image/webp"><img loading="lazy" decoding="async" src="../assets/images/hero/szgc1.webp" alt="Кампус TXAM в Шэньчжэне" style="object-position:center 80%"></picture>
+                </figure>
+                <div class="v3-panel absolute top-5 right-5 px-5 py-4 text-left">
+                    <div class="font-extrabold text-xl tracking-tight text-[#14161B] mono-num">Шэньчжэнь · Хуэйчжоу</div>
+                    <div class="mt-1 text-[0.68rem] font-bold tracking-[0.16em] uppercase text-[#667084]">Две производственные базы · 100 000 м²</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 📍 P3. Центр продукции -->
-    <section id="products" class="py-32 md:py-40 bg-[#F5F5F7] px-6 md:px-24 relative">
-        <div class="max-w-[1400px] mx-auto fade-up">
-            <div class="mb-20 text-center">
-                <h2 id="home-products-title" class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Три основные категории</h2>
-                <p id="home-products-subtitle" class="text-[#86868B] text-xl">От отдельных станков до полностью гибкой автоматизации завода, предоставляем полную матрицу интеллектуального производства.</p>
+    <!-- 📍 P4. Three Core Categories -->
+    <section id="products" class="v3-section v3-section--mist">
+        <div class="v3-shell fade-up">
+            <div class="mb-16 text-center">
+                <p class="v3-kicker justify-center mb-6" style="display:inline-flex">Products</p>
+                <h2 id="home-products-title" class="text-h1 text-[#14161B] tracking-tighter mb-4">Три основные категории</h2>
+                <p id="home-products-subtitle" class="text-[#667084] text-body-lg">От отдельных станков до полностью гибкой автоматизации завода, предоставляем полную матрицу интеллектуального производства.</p>
             </div>
-            
-            <div id="home-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"></div>
+            <div id="home-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-7"></div>
         </div>
     </section>
 
-    <!-- 📍 P4. Система сервиса -->
-    <section id="service" class="py-32 bg-white px-6 md:px-24">
-        <div class="max-w-[1400px] mx-auto fade-up">
-            <div class="mb-20 text-center">
-                <h2 id="home-service-title" class="text-h1 text-[#1D1D1F] tracking-tighter mb-4">Стандартизированный процесс индивидуального обслуживания</h2>
-                <p id="home-service-subtitle" class="text-[#86868B] text-body-lg max-w-2xl mx-auto">Строгий и прозрачный поэтапный процесс, гарантирующий своевременную и качественную реализацию проекта.</p>
+    <!-- 📍 P5. 服务体系闭环 -->
+    <section id="service" class="v3-section bg-white">
+        <div class="v3-shell fade-up">
+            <div class="mb-16 text-center">
+                <p class="v3-kicker justify-center mb-6" style="display:inline-flex">Service</p>
+                <h2 id="home-service-title" class="text-h1 text-[#14161B] tracking-tighter mb-4">Стандартизированный процесс индивидуального обслуживания</h2>
+                <p id="home-service-subtitle" class="text-[#667084] text-body-lg max-w-2xl mx-auto">Строгий и прозрачный поэтапный процесс, гарантирующий своевременную и качественную реализацию проекта.</p>
             </div>
-
             <div id="home-service-flow" class="service-flow"></div>
         </div>
     </section>
 
-    <!-- 📍 P5. Новости и корпоративная культура -->
-    <section id="news" class="py-32 bg-[#FBFBFD] px-6 md:px-24 border-t border-[#E5E5EA]">
-        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between fade-up">
-            <div class="md:w-1/3 mb-12 md:mb-0 pr-10">
-                <h2 id="home-news-title" class="text-h2 text-[#1D1D1F] mb-6 tracking-tighter">Новости компании</h2>
-                <div class="mb-10">
-                    <p id="home-news-mission-title" class="text-[#1D1D1F] font-bold text-lg mb-2">Изначальная цель компании</p>
-                    <p id="home-news-mission-body" class="text-[#86868B] text-sm leading-relaxed">与客户同兴、与伙伴同心。共同以目标为核心，为达到客户的极度满意全力以赴。</p>
+    <!-- 📍 P6. 新闻与企业文化 -->
+    <section id="news" class="v3-section v3-section--mist">
+        <div class="v3-shell grid grid-cols-1 lg:grid-cols-[1fr_1.55fr] gap-14 lg:gap-20 items-start fade-up">
+            <div>
+                <p class="v3-kicker mb-7">Newsroom</p>
+                <h2 id="home-news-title" class="text-h1 text-[#14161B] mb-8 tracking-tighter">Новости компании</h2>
+                <div class="mb-10 max-w-md">
+                    <p id="home-news-mission-title" class="text-[#14161B] font-extrabold text-lg mb-3 tracking-tight">Изначальная цель компании</p>
+                    <p id="home-news-mission-body" class="text-[#667084] leading-relaxed">与客户同兴、与伙伴同心。共同以目标为核心，为达到客户的极度满意全力以赴。</p>
                 </div>
-                <a id="home-news-cta" href="news.html" class="border-2 border-[#1D1D1F] text-[#1D1D1F] px-8 py-3 radius-sm text-sm font-bold hover:bg-[#1D1D1F] hover:text-white transition-colors inline-block text-center">
-                    Перейти в раздел новостей
+                <a id="home-news-cta" href="news.html" class="v3-btn v3-btn--ghost">Посетить новостной центр
+                    <svg class="v3-btn__arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>
                 </a>
             </div>
-            
-            <div id="home-news-list" class="md:w-2/3 flex flex-col border-t-2 border-[#1D1D1F]"></div>
+            <div id="home-news-list" class="border-t border-[#E7EAF0]"></div>
         </div>
     </section>
 
-    <!-- 📍 Footer -->
+    <!-- 📍 P7. 收尾 CTA -->
+    <section class="v3-final v3-section bg-white text-center">
+        <div class="v3-final__aura" aria-hidden="true"></div>
+        <div class="v3-shell relative fade-up">
+            <h2 id="home-final-title" class="text-h1 text-gradient mx-auto">Точное производство, TXAM выполняет</h2>
+            <p class="mt-6 text-body-lg text-[#667084] max-w-2xl mx-auto">Консалтинг, проектирование, производство и сервис линий автоматизации — под ключ.</p>
+            <div class="mt-11">
+                <a href="contact.html" class="v3-btn v3-btn--primary text-base">
+                    Get a Custom Solution
+                    <svg class="v3-btn__arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <div data-footer-placeholder></div>
 
-    <!-- ⚙️ Скрипты -->
-    <!-- Мобильное меню + fade-up обрабатываются в data-loader.js -->
-    <script src="../data/i18n/ru.js"></script>    <script src="../assets/js/data-loader.js?v=20260731f"></script>
+    <!-- Scripts -->
+    <script src="../data/i18n/ru.js"></script>
+    <script src="../assets/js/data-loader.js?v=20260827v3"></script>
     <script src="../assets/js/site-seo.js"></script>
-  <script src="../assets/js/site-common.js"></script>
-  <script src="../assets/js/site-chrome.js?v=20260731f"></script>
-  <script src="../assets/js/site-nav.js?v=20260731f"></script>
+    <script src="../assets/js/site-common.js"></script>
+    <script src="../assets/js/site-chrome.js?v=20260827v3"></script>
+    <script src="../assets/js/site-nav.js?v=20260827v3"></script>
     <script src="../data/pages/home/ru.js"></script>
     <script src="../data/solutions/ru.js"></script>
     <script src="../data/news/ru.js"></script>
-    <script src="../assets/js/home-page.js"></script>
-    <script>TXAM.initГлавнаяPage({lang:'ru'});</script>
+    <script src="../assets/js/home-page.js?v=20260827v3"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            TXAM.initHomePage({ lang: 'ru' });
 
-    <script src="../assets/js/site-footer.js" defer></script>
-    <script>document.addEventListener('DOMContentLoaded',function(){if(window.TXAM&&window.TXAM.revealFadeUps)window.TXAM.revealFadeUps();else document.querySelectorAll('.fade-up').forEach(function(e){e.classList.add('visible')});});</script>
+            // 首屏为装饰性氛围视频：始终静音自动循环播放。
+            // 注：系统「减少动效」偏好不暂停它（站点所有者的明确选择），
+            // 该偏好仍会作用于 fade-up 等入场动画（styles.css 中已处理）。
+            var video = document.getElementById('home-hero-video');
+            if (video) {
+                video.muted = true;
+                var p = video.play();
+                if (p && p.catch) p.catch(function () { /* autoplay blocked: poster remains */ });
+            }
+        });
+    </script>
+
+    <script src="../assets/js/site-footer.js?v=20260827v3" defer></script>
 </body>
 </html>
