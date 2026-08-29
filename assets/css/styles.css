@@ -1870,17 +1870,11 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 /* 内页 hero 统一规则：雾底 + 顶部起点标准化
  * （各页历史写法不一：pt-4/pt-40、容器 mt-6、header mt-6 —— 一律覆盖，
  *   保证眉标到导航的距离全站一致；首页满屏 hero 用 :not(.v3-hero) 排除） */
-[data-ui="v3"] main > header:first-of-type:not(.v3-hero),
-[data-ui="v3"] body > header:first-of-type:not(.v3-hero) {
-    padding-top: 11rem !important;   /* 176px：与视频章节 hero 的 pt-44 一致 */
-    margin-top: 0 !important;
+/* 无视频的内页 hero（联系页）：同样的居中几何 + 雾底 */
+.v3-hero--section.v3-hero--plain {
     background:
         radial-gradient(ellipse 52% 46% at 14% 0%, var(--tx-glow-a) 0%, transparent 64%),
         radial-gradient(ellipse 46% 42% at 88% 8%, var(--tx-glow-b) 0%, transparent 62%);
-}
-[data-ui="v3"] main > header:first-of-type:not(.v3-hero) > div:first-child,
-[data-ui="v3"] body > header:first-of-type:not(.v3-hero) > div:first-child {
-    margin-top: 0 !important;
 }
 
 /* ---------- 过滤按钮（列表页筛选条） ---------- */
@@ -2184,7 +2178,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 /* ---------- 列表页章节式 hero（复用首页视频，高度约为首页 6 成） ---------- */
 .v3-hero--section {
     min-height: clamp(460px, 66vh, 680px);
-    justify-content: flex-start; /* 标题到导航的距离固定，不随内容高度浮动 */
+    justify-content: center; /* 大标题垂直居中于视频区域 */
 }
 
 [data-ui="v3"] .v3-hero--about .v3-hero__media video {
