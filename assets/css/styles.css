@@ -1872,7 +1872,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
  *   保证眉标到导航的距离全站一致；首页满屏 hero 用 :not(.v3-hero) 排除） */
 [data-ui="v3"] main > header:first-of-type:not(.v3-hero),
 [data-ui="v3"] body > header:first-of-type:not(.v3-hero) {
-    padding-top: 10rem !important;   /* 160px：导航 76px + 统一净空 */
+    padding-top: 11rem !important;   /* 176px：与视频章节 hero 的 pt-44 一致 */
     margin-top: 0 !important;
     background:
         radial-gradient(ellipse 52% 46% at 14% 0%, var(--tx-glow-a) 0%, transparent 64%),
@@ -2184,7 +2184,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 /* ---------- 列表页章节式 hero（复用首页视频，高度约为首页 6 成） ---------- */
 .v3-hero--section {
     min-height: clamp(460px, 66vh, 680px);
-    justify-content: center;
+    justify-content: flex-start; /* 标题到导航的距离固定，不随内容高度浮动 */
 }
 
 [data-ui="v3"] .v3-hero--about .v3-hero__media video {
