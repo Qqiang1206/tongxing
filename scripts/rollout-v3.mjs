@@ -41,6 +41,7 @@ const NAV_ITEMS = [
   ['news.html', 'news', '新闻中心'], ['contact.html', 'contact', '联系我们'],
 ];
 const CTA_LABEL = { zh: '获取方案', en: 'Get a Quote', ru: 'Получить решение' };
+const MENU_LABEL = { zh: '打开菜单', en: 'Open menu', ru: 'Открыть меню' };
 const HOME_LABEL = { zh: '首页', en: 'Home', ru: 'Главная' };
 
 function navLabels(subLang) {
@@ -101,7 +102,7 @@ function buildNav(file) {
                         ${CTA_LABEL[subLang]}
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>
                     </a>
-                    <button id="mobile-menu-btn" class="txnav__burger" type="button" aria-label="打开菜单">
+                    <button id="mobile-menu-btn" class="txnav__burger" type="button" aria-label="${MENU_LABEL[subLang]}">
                         <i></i><i></i><i></i>
                     </button>
                 </div>
