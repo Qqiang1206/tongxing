@@ -368,3 +368,11 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
 - 导出时清理已下架条目的幽灵 item 快照
 - .github/workflows/ci.yml：validate + 三套测试 + build:css + 覆盖率校验
 - scripts/deploy-init.sh：全新机器一键初始化（依赖/导入/同步/构建/校验）
+
+### 批次 6（已完成）：统一入场节奏（用户选定 B 方案）
+全站只保留一种入场语言，规则固化：
+- 首屏（导航 + 标题带 / 首页视频区）零动画，第一帧即完整；
+- 首屏以下所有区块：0.45s / 上浮 12px / 同组 +60ms 交错，滚动进入视口触发，仅一次；
+- 整页透明淡入已删除（闪屏元凶）；跨页 0.25s 交叉淡化保留；
+- prefers-reduced-motion：全部即时呈现。
+参数如需调整：styles.css 的 .fade-up 基类与 --stagger 变量。
