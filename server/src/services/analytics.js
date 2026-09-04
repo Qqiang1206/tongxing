@@ -199,8 +199,10 @@ function bindFlushHooks() {
     try { flushPendingPageViews(); } catch (_) { /* ignore shutdown flush errors */ }
   };
   process.once('beforeExit', flush);
-  process.once('SIGINT', () => { flush(); });
-  process.once('SIGTERM', () => { flush(); });
+  // 注册信号监听会移除默认终止行为：flush 后必须显式退出，否则无法停机
+  const flushAndExit = () => { flush(); process.exit(0); };
+  process.once('SIGINT', flushAndExit);
+  process.once('SIGTERM', flushAndExit);
 }
 
 export function flushPendingPageViews() {

@@ -36,11 +36,22 @@ export function sanitizeActor(raw) {
   return s || DEFAULT_ACTOR;
 }
 
+const TRUSTED_PROXY_ADDRESSES = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1']);
+
+/**
+ * 仅当请求来自本机反向代理（nginx → Node 走 127.0.0.1）时才采信
+ * X-Forwarded-For，且取最右侧一段（由可信代理追加的真实客户端地址），
+ * 防止客户端伪造第一段绕过登录限速、污染审计 IP。
+ */
 export function clientIp(req) {
   if (!req || !req.headers) return '';
-  const fwd = req.headers['x-forwarded-for'];
-  if (fwd) return String(fwd).split(',')[0].trim();
-  return (req.socket && req.socket.remoteAddress) || '';
+  const sock = String((req.socket && req.socket.remoteAddress) || '');
+  if (TRUSTED_PROXY_ADDRESSES.has(sock)) {
+    const fwd = String(req.headers['x-forwarded-for'] || '');
+    const parts = fwd.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (parts.length) return parts[parts.length - 1];
+  }
+  return sock.replace(/^::ffff:/, '');
 }
 
 function userAgent(req) {

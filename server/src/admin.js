@@ -222,8 +222,13 @@ function readBody(req) {
   });
 }
 
+const MAX_LOGIN_ATTEMPT_KEYS = 2000;
+
 function loginRateLimited(req) {
   const ip = clientIp(req) || 'unknown';
+  if (loginAttempts.size >= MAX_LOGIN_ATTEMPT_KEYS && !loginAttempts.has(ip)) {
+    return true; // Map 防伪 IP 无界膨胀：饱和时对未知来源直接限速
+  }
   const now = Date.now();
   let row = loginAttempts.get(ip);
   if (!row || row.resetAt <= now) {

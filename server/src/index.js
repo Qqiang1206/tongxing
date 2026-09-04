@@ -432,6 +432,19 @@ const server = http.createServer((req, res) => {
   sendJson(res, 404, { error: 'not_found' }, origin);
 });
 
+// 服务器超时：防慢速连接（Slowloris）与悬挂请求
+server.headersTimeout = 20000;
+server.requestTimeout = 30000;
+server.keepAliveTimeout = 10000;
+server.connectionsCheckingInterval = 30000;
+// 兜底记录（不吞错、保持进程存活的策略按小型站点权衡从宽）
+process.on('unhandledRejection', (err) => {
+  console.error('[server] unhandledRejection:', err && err.message);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[server] uncaughtException:', err && err.message);
+});
+
 server.listen(config.port, config.host, () => {
   console.log(`TXAM site  http://${config.host}:${config.port}/`);
   console.log(`TXAM API   http://${config.host}:${config.port}/api/v1/health`);
