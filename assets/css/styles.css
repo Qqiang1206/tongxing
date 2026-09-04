@@ -2188,3 +2188,17 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
     height: 100%;
     object-fit: cover;
 }
+
+/* ---------- 内页 hero 内容容器：全站统一间距 ---------- */
+/* 桌面：顶距 256px（导航 76 + 净空），标题精确落在视频区垂直中点；
+   移动端：顶距减半。不再依赖各页手写的 pt/pb 工具类。 */
+[data-ui="v3"] .v3-hero__content {
+    padding-top: 16rem;
+    padding-bottom: 4rem;
+}
+@media (max-width: 767px) {
+    [data-ui="v3"] .v3-hero__content {
+        padding-top: 9rem;
+        padding-bottom: 3rem;
+    }
+}
