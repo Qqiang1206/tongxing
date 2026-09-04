@@ -14,33 +14,6 @@ const PAGES = [
   { key: 'contact', html: 'contact.html', renderer: 'contact-page.js', heroId: 'contact-hero-title' },
 ];
 
-const EXPECTED_HERO_TITLES = {
-  zh: {
-    home: '精工制臻 同兴必达',
-    solutions: '重构智造法则',
-    products: '核心智造矩阵',
-    news: '洞察前沿智造',
-    about: '19年只做智造',
-    contact: '随时准备为您效劳。',
-  },
-  en: {
-    home: 'Precision Manufacturing, TXAM Delivers',
-    solutions: 'Redefining Intelligent Manufacturing',
-    products: 'Core Manufacturing Matrix',
-    news: 'Insights from the Frontlines of Automation',
-    about: '19 Years Focused on Intelligent Manufacturing',
-    contact: 'Ready to Serve You Anytime.',
-  },
-  ru: {
-    home: 'Точное производство, TXAM выполняет',
-    solutions: 'Переосмысление интеллектуального производства',
-    products: 'Матрица интеллектуального производства',
-    news: 'Аналитика переднего края автоматизации',
-    about: '19 лет интеллектуальное производство',
-    contact: 'Всегда готовы вам помочь.',
-  },
-};
-
 for (const lang of ['zh', 'en', 'ru']) {
   for (const page of PAGES) {
     test(`${lang}/${page.key} binds title copy to exported page data`, () => {
@@ -68,7 +41,18 @@ for (const lang of ['zh', 'en', 'ru']) {
       assert.equal(exported.lang, lang);
       assert.equal(typeof exported.seo?.title, 'string');
       assert.equal(typeof exported.hero?.title, 'string');
-      assert.equal(exported.hero.title, EXPECTED_HERO_TITLES[lang][page.key]);
+
+      // 核心不变量：HTML 静态兜底标题必须与导出的 CMS 数据逐字一致，
+      // 否则刷新瞬间会先显示旧文案再被水合覆盖（用户可见的文案跳变）。
+            const tagStart = html.indexOf('>', html.indexOf(`id="${page.heroId}"`)) + 1;
+      const tagEnd = html.indexOf('</h1>', tagStart);
+      const staticTitle = html.slice(tagStart, tagEnd);
+      const normalize = (s) => String(s || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      assert.equal(
+        normalize(staticTitle),
+        normalize(exported.hero.title),
+        `${lang}/${page.key}: 静态兜底标题与 CMS 数据不一致`
+      );
       assert.ok(companion.includes(`window.${globalName}=`), `missing ${globalName}`);
     });
   }

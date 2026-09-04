@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: 安装依赖
+        run: |
+          npm ci
+          npm ci --prefix server
+      - name: 数据校验
+        run: npm run validate
+      - name: 翻译测试
+        run: npm run test:translation
+      - name: 服务端测试
+        run: node --test server/tests/
+      - name: 构建 CSS
+        run: npm run build:css
+      - name: CSS 覆盖校验
+        run: node scripts/check-css-coverage.mjs

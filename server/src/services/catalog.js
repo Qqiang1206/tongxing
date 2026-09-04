@@ -9,7 +9,7 @@ import { mapProduct, mapSolution, mapNews, toCatalogMap } from '../mappers/toApi
 import { getDb } from '../db.js';
 import { removeItemSnapshot } from './translationSnapshot.js';
 import { sanitizeContentHtml } from './sanitizeHtml.js';
-const toJsLiteral = (value) => JSON.stringify(value).replace(/</g, '<');
+const toJsLiteral = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 
 import { assertSolutionHomeSlot, assertNewsHomeFeatured, reconcileHomeSlots, guardRequiredSlotVacate } from './homeSlots.js';
 import { clearPublicCache } from './publicCache.js';
@@ -1112,7 +1112,7 @@ function exportCatalogLang(kind, lang, opts = {}) {
       sorted[id] = data[id];
     });
   const raw = JSON.stringify(sorted, null, 2) + '\n';
-  fs.writeFileSync(path.join(dir, `${lang}.json`), raw, 'utf8');
+  writeFileSyncAtomic(path.join(dir, `${lang}.json`), raw);
   const itemsDir = path.join(dir, 'items', lang);
   fs.mkdirSync(itemsDir, { recursive: true });
   const onlyIds = opts && opts.onlyIds
@@ -1120,13 +1120,23 @@ function exportCatalogLang(kind, lang, opts = {}) {
     : null;
   for (const [id, item] of Object.entries(sorted)) {
     if (onlyIds && !onlyIds.has(id)) continue;
-    fs.writeFileSync(path.join(itemsDir, `${id}.json`), JSON.stringify(item, null, 2) + '\n', 'utf8');
+    writeFileSyncAtomic(path.join(itemsDir, `${id}.json`), JSON.stringify(item, null, 2) + '\n');
+  }
+  // 清理已下架条目的幽灵快照（catalog 中不存在的 item 文件）
+  if (!onlyIds) {
+    for (const f of fs.readdirSync(itemsDir)) {
+      if (!f.endsWith('.json')) continue;
+      const snapId = f.replace(/\.json$/, '');
+      if (!sorted[snapId]) {
+        fs.unlinkSync(path.join(itemsDir, f));
+        console.log(`[catalog] removed stale item snapshot: ${kind}/${lang}/${snapId}`);
+      }
+    }
   }
   const slim = slimCatalogMap(kind, sorted);
-  fs.writeFileSync(
+  writeFileSyncAtomic(
     path.join(dir, `${lang}.js`),
-    `/* auto-generated from sqlite (list-slim) — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${toJsLiteral(slim)};\n`,
-    'utf8'
+    `/* auto-generated from sqlite (list-slim) — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${toJsLiteral(slim)};\n`
   );
   return path.join(dir, `${lang}.js`);
 }
@@ -1136,11 +1146,10 @@ function exportSiteLang(lang) {
   const data = loadSiteSettings(lang);
   const filePath = path.join(DATA_DIR, 'i18n', `${lang}.json`);
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(
+  writeFileSyncAtomic(filePath, JSON.stringify(data, null, 2) + '\n');
+  writeFileSyncAtomic(
     path.join(DATA_DIR, 'i18n', `${lang}.js`),
-    `/* auto-generated from sqlite — do not edit */\nwindow.__TXAM_SITE_${lang.toUpperCase()}=${toJsLiteral(data)};\n`,
-    'utf8'
+    `/* auto-generated from sqlite — do not edit */\nwindow.__TXAM_SITE_${lang.toUpperCase()}=${toJsLiteral(data)};\n`
   );
   return filePath;
 }
@@ -1151,12 +1160,11 @@ function exportPageLang(pageKey, lang) {
   if (!page) return null;
   const dir = path.join(DATA_DIR, 'pages', pageKey);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, `${lang}.json`), JSON.stringify(page, null, 2) + '\n', 'utf8');
+  writeFileSyncAtomic(path.join(dir, `${lang}.json`), JSON.stringify(page, null, 2) + '\n');
   const globalName = `__TXAM_PAGE_${pageKey.toUpperCase()}`;
-  fs.writeFileSync(
+  writeFileSyncAtomic(
     path.join(dir, `${lang}.js`),
-    `/* auto-generated from sqlite — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${toJsLiteral(page)};\n`,
-    'utf8'
+    `/* auto-generated from sqlite — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${toJsLiteral(page)};\n`
   );
   return path.join(dir, `${lang}.js`);
 }
