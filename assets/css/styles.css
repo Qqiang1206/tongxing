@@ -2202,3 +2202,45 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
         padding-bottom: 3rem;
     }
 }
+
+/* ---------- 内页统一标题带（v3 hero band） ----------
+ * 五个内页共用：无视频/无大图，纯排版。左对齐、固定顶距，
+ * 由同一规则控制——五页像素级一致。 */
+.v3-hero--band {
+    padding: 176px 0 56px;
+    background:
+        radial-gradient(ellipse 52% 46% at 12% 0%, var(--tx-glow-a) 0%, transparent 64%),
+        radial-gradient(ellipse 46% 42% at 88% 10%, var(--tx-glow-b) 0%, transparent 62%),
+        var(--tx-bg);
+    border-bottom: 1px solid var(--tx-hairline);
+}
+.v3-hero--band .band-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--tx-ink-mute);
+}
+.v3-hero--band .band-kicker::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--txam-orange);
+    transform: rotate(45deg);
+}
+.v3-hero--band h1 { margin-bottom: 1.5rem; }
+.v3-hero--band [id$="-lead"],
+.v3-hero--band #contact-hero-lead {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 44rem;
+    margin-bottom: 0;
+}
+@media (max-width: 767px) {
+    .v3-hero--band { padding: 128px 0 40px; }
+}
