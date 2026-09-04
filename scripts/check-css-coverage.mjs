@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const CSS = 'assets/css/tailwind.min.css';
+const CSS_FILES = ['assets/css/tailwind.min.css', 'assets/css/styles.css'];
 
 function* walk(dir) {
   for (const name of readdirSync(dir)) {
@@ -87,7 +87,7 @@ for (const file of sources) {
   }
 }
 
-const cssRaw = readFileSync(CSS, 'utf8');
+const cssRaw = CSS_FILES.map((f) => readFileSync(f, 'utf8')).join('');
 // undo css selector escapes so '.md\:text-lg' -> '.md:text-lg'
 const cssPlain = cssRaw.replace(/\\([:./[\]%#()])/g, '$1');
 

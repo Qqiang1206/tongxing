@@ -360,3 +360,11 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
 - 新增 revokeUserSessions(userId)：账号改密/停用/角色变更时立即吊销其全部会话。
 - ⚠️ 所有者待办：当前真实 admin 密码与旧 ADMIN_PASSWORD 相同（引导种子未轮换），
   请在 后台 → 账号管理 修改密码，并同步更换 .env 的 ADMIN_PASSWORD 为强随机值。
+
+### 批次 5（已完成）：测试回绿 + 原子导出 + CI + 部署脚本
+- page-title 测试改为校验真正的不变量（HTML 静态兜底标题 = 导出的 CMS 数据），
+  3 个陈旧断言回绿（34/34）
+- catalog 导出（json/js/items）全部原子写入（.tmp + rename），杜绝发布瞬间截断
+- 导出时清理已下架条目的幽灵 item 快照
+- .github/workflows/ci.yml：validate + 三套测试 + build:css + 覆盖率校验
+- scripts/deploy-init.sh：全新机器一键初始化（依赖/导入/同步/构建/校验）
