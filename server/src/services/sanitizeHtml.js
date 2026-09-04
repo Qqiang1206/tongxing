@@ -29,14 +29,20 @@ function safeUrl(value) {
   return v;
 }
 
+const TAG_ESC_RE = /&lt;(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:\s+(?:[^&]|&(?!gt;))*?)?)(\/?)&gt;/g;
+
 export function sanitizeContentHtml(input) {
   if (typeof input !== 'string' || !input) return input || '';
-  const html = String(input)
+  let html = String(input)
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/<!DOCTYPE[^>]*>/gi, '')
     .replace(/<\?[\s\S]*?\?>/g, '');
 
-  return html.replace(TAG_RE, (whole, close, tagName, attrs, selfClose) => {
+  // 兜底：先转义全部 < 和 >，再只把「白名单的完整标签」还原为真实标签。
+  // 未闭合的 <img ... onerror=... 之类片段会保持转义，浏览器无法拼出活动标签。
+  html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  return html.replace(TAG_ESC_RE, (whole, close, tagName, attrs, selfClose) => {
     const tag = String(tagName).toLowerCase();
     if (!ALLOWED_TAGS.has(tag)) {
       // Drop disallowed tag markup; keep any text content.

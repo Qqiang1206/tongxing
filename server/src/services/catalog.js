@@ -9,6 +9,8 @@ import { mapProduct, mapSolution, mapNews, toCatalogMap } from '../mappers/toApi
 import { getDb } from '../db.js';
 import { removeItemSnapshot } from './translationSnapshot.js';
 import { sanitizeContentHtml } from './sanitizeHtml.js';
+const toJsLiteral = (value) => JSON.stringify(value).replace(/</g, '<');
+
 import { assertSolutionHomeSlot, assertNewsHomeFeatured, reconcileHomeSlots, guardRequiredSlotVacate } from './homeSlots.js';
 import { clearPublicCache } from './publicCache.js';
 
@@ -1047,13 +1049,29 @@ export function writeSiteSettingsAny(lang, data) {
   return true;
 }
 
+/** 深度净化：sections 内所有含 < 的字符串一律过白名单清洗（页面富文本与详情同等对待） */
+function sanitizeRichTextDeep(value) {
+  if (typeof value === 'string') {
+    return value.includes('<') ? sanitizeContentHtml(value) : value;
+  }
+  if (Array.isArray(value)) return value.map(sanitizeRichTextDeep);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(value)) out[k] = sanitizeRichTextDeep(v);
+    return out;
+  }
+  return value;
+}
+
 export function writePageJsonAny(pageKey, lang, data) {
   if (!LANGS.includes(lang)) throw new Error('invalid_lang');
   const db = getDb();
   const payload = { ...data, pageKey, lang };
   const seo = payload.seo || null;
-  const sections = { ...payload };
+  const sections = sanitizeRichTextDeep({ ...payload });
   delete sections.seo;
+  delete sections.pageKey;
+  delete sections.lang;
   db.prepare(
     `INSERT INTO pages (page_key, lang, seo_json, sections_json, translation_status, updated_at)
      VALUES (?, ?, ?, ?, ?, datetime('now'))
@@ -1107,7 +1125,7 @@ function exportCatalogLang(kind, lang, opts = {}) {
   const slim = slimCatalogMap(kind, sorted);
   fs.writeFileSync(
     path.join(dir, `${lang}.js`),
-    `/* auto-generated from sqlite (list-slim) — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${JSON.stringify(slim)};\n`,
+    `/* auto-generated from sqlite (list-slim) — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${toJsLiteral(slim)};\n`,
     'utf8'
   );
   return path.join(dir, `${lang}.js`);
@@ -1121,7 +1139,7 @@ function exportSiteLang(lang) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf8');
   fs.writeFileSync(
     path.join(DATA_DIR, 'i18n', `${lang}.js`),
-    `/* auto-generated from sqlite — do not edit */\nwindow.__TXAM_SITE_${lang.toUpperCase()}=${JSON.stringify(data)};\n`,
+    `/* auto-generated from sqlite — do not edit */\nwindow.__TXAM_SITE_${lang.toUpperCase()}=${toJsLiteral(data)};\n`,
     'utf8'
   );
   return filePath;
@@ -1137,7 +1155,7 @@ function exportPageLang(pageKey, lang) {
   const globalName = `__TXAM_PAGE_${pageKey.toUpperCase()}`;
   fs.writeFileSync(
     path.join(dir, `${lang}.js`),
-    `/* auto-generated from sqlite — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${JSON.stringify(page)};\n`,
+    `/* auto-generated from sqlite — do not edit */\nwindow.${globalName}_${lang.toUpperCase()}=${toJsLiteral(page)};\n`,
     'utf8'
   );
   return path.join(dir, `${lang}.js`);

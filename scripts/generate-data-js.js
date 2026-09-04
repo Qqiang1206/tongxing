@@ -75,7 +75,7 @@ for (const [kind, globalName] of Object.entries(kinds)) {
     const slim = slimCatalog(kind, full);
     const out =
       `/* auto-generated from ${lang}.json (list-slim) — do not edit */\n` +
-      `window.${globalName}_${lang.toUpperCase()}=${JSON.stringify(slim)};\n`;
+      `window.${globalName}_${lang.toUpperCase()}=${JSON.stringify(slim).replace(/</g, '<')};\n`;
     fs.writeFileSync(jsPath, out);
     console.log('wrote', path.relative(ROOT, jsPath));
   }
