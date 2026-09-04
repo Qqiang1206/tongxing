@@ -346,3 +346,17 @@ npm run build:css
 - 偏暗素材已在转码时做 gamma 亮度适配（products 1.8 / news 1.25 / about 1.3），
   成片亮度 131–136，与首页（158）同属明亮基调。
 - 关于页：CMS 轮播首图作为视频海报（后台换图即换加载画面）。
+
+## 12. 安全加固批次记录（2026-09-04 开始，按批次推进）
+
+### 批次 1（已完成，commit 5f3b07c）：静态暴露面收窄
+nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/.zcode/.playwright-cli/data/_tmp_curl；
+清理 5 组旧实验库。实测：泄漏路径 403，公开内容 200。
+更正：初判「txam.db 可公网下载」不成立（/server/ 双侧已屏蔽）。
+
+### 批次 2（已完成，commit 待查）：ADMIN_PASSWORD 登录后门移除 + 会话吊销
+- admin.js 删除「ADMIN_PASSWORD 等值即登录为 super_admin」的回退分支与 passwordMatches。
+- ADMIN_PASSWORD 保留**唯一职责**：全新数据库首次引导创建 super_admin（adminUsers.js:231）。
+- 新增 revokeUserSessions(userId)：账号改密/停用/角色变更时立即吊销其全部会话。
+- ⚠️ 所有者待办：当前真实 admin 密码与旧 ADMIN_PASSWORD 相同（引导种子未轮换），
+  请在 后台 → 账号管理 修改密码，并同步更换 .env 的 ADMIN_PASSWORD 为强随机值。

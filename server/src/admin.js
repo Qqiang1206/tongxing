@@ -96,16 +96,16 @@ function createAdminSession(user) {
   return { token, expiresAt: new Date(expiresAt).toISOString() };
 }
 
-/** Legacy shared-secret check: candidate must equal ADMIN_PASSWORD in env. */
-function passwordMatches(candidate) {
-  const expected = Buffer.from(process.env.ADMIN_PASSWORD || '');
-  const actual = Buffer.from(String(candidate || ''));
-  return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
-}
-
 function bearerToken(req) {
   const header = req.headers.authorization || '';
   return header.startsWith('Bearer ') ? header.slice(7) : '';
+}
+
+/** 按用户吊销全部会话（改密/停用/角色变更时调用） */
+function revokeUserSessions(userId) {
+  for (const [token, session] of adminSessions) {
+    if (session.user && session.user.id === Number(userId)) adminSessions.delete(token);
+  }
 }
 
 function cleanExpiredSessions() {
@@ -600,23 +600,9 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       const password = body.password || '';
 
       // Primary: authenticate against admin_users.
+      // (ADMIN_PASSWORD is no longer a login credential; it only seeds the
+      //  first super_admin on a fresh database — see adminUsers.js.)
       let user = authenticate(username, password);
-
-      // Transition fallback: the legacy shared ADMIN_PASSWORD still grants the
-      // bootstrap super_admin account, so existing deployments keep working.
-      if (!user && process.env.ADMIN_PASSWORD && passwordMatches(password)) {
-        const db = getDb();
-        const row = db.prepare(
-          `SELECT * FROM admin_users WHERE role = 'super_admin' AND status = 'active' ORDER BY id LIMIT 1`
-        ).get();
-        if (row) {
-          db.prepare(`UPDATE admin_users SET last_login_at = datetime('now') WHERE id = ?`).run(row.id);
-          user = {
-            id: row.id, username: row.username,
-            displayName: row.display_name, role: row.role,
-          };
-        }
-      }
 
       if (!user) {
         recordLoginFailure(req);
@@ -1061,6 +1047,10 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
       try {
         const body = await readBody(req);
         const account = updateAdminUser(id, body, me ? me.username : '');
+        // 改密/停用/角色变更立即吊销目标用户的全部会话
+        if (body.password != null || body.status != null || body.role != null) {
+          revokeUserSessions(id);
+        }
         writeAudit({ req, action: 'account.update', resource: 'account', resourceId: String(id), summary: `更新账号 ${account.username}` });
         sendJson(res, 200, { ok: true, account }, origin);
       } catch (err) {
@@ -1075,6 +1065,7 @@ export async function handleAdmin(req, res, pathname, origin, sendJson) {
         if (me && target.username === me.username) { sendJson(res, 400, { error: 'cannot_delete_self' }, origin); return true; }
         // Reuse disable path: deleting == disabling (soft). Hard delete not exposed.
         const account = updateAdminUser(id, { status: 'disabled' }, me ? me.username : '');
+        revokeUserSessions(id); // 停用即吊销全部会话
         writeAudit({ req, action: 'account.disable', resource: 'account', resourceId: String(id), summary: `停用账号 ${account.username}` });
         sendJson(res, 200, { ok: true, account }, origin);
       } catch (err) {
