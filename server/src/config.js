@@ -9,7 +9,7 @@ export const REPO_ROOT = path.join(ROOT, '..');
 export const DATA_DIR = path.join(REPO_ROOT, 'data');
 
 export const config = {
-  port: Number(process.env.PORT || 3000),
+  port: Number(process.env.PORT || 8204),
   host: process.env.HOST || '0.0.0.0',
   corsOrigin: process.env.CORS_ORIGIN || '*',
 };
