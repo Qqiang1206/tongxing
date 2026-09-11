@@ -11,6 +11,7 @@ import {
   invalidateCategoryMaps,
 } from './catalog.js';
 import { markStale } from './translationStatus.js';
+import { getTermTranslation } from './translationMemory.js';
 
 const PRODUCT_SEED = [
   { key: 'optical', name: '光学元件组装', nameEn: 'Optical Assembly', nameRu: 'Сборка оптики', filterKeyEn: 'optical', sortOrder: 10 },
@@ -76,14 +77,20 @@ export function ensureCategoryTables(db) {
   for (const table of ['product_categories', 'solution_categories']) {
     const cols = db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name);
     if (!cols.includes('name_ru')) db.exec(`ALTER TABLE ${table} ADD COLUMN name_ru TEXT DEFAULT ''`);
+    // name_*_src 记录"该译文是哪一个中文名的译文"。中文名一改，译文即过期，
+    // 页面筛选会回落到中文并交给翻译重新生成，避免旧英文被永久锁死。
+    if (!cols.includes('name_en_src')) db.exec(`ALTER TABLE ${table} ADD COLUMN name_en_src TEXT DEFAULT ''`);
+    if (!cols.includes('name_ru_src')) db.exec(`ALTER TABLE ${table} ADD COLUMN name_ru_src TEXT DEFAULT ''`);
   }
   seedIfEmpty(db);
   backfillNameRu(db);
+  backfillTranslationSource(db);
   if (!_pageFiltersSynced) {
     _pageFiltersSynced = true;
     try {
       syncProductPageFilters();
       syncNewsPageFilters();
+      syncSolutionPageFilters();
     } catch (_) { /* page json may not exist yet */ }
   }
 }
@@ -106,6 +113,23 @@ function backfillNameRu(db) {
     const upd = db.prepare(`UPDATE solution_categories SET name_ru = ? WHERE key = ?`);
     for (const row of SOLUTION_SEED) {
       if (row.nameRu) upd.run(row.nameRu, row.key);
+    }
+  }
+}
+
+/**
+ * 迁移：为已有译文补上"来源中文名"。既有译文视为跟随当前中文名，
+ * 这样历史数据不会被误判为过期而大面积回落中文。
+ */
+function backfillTranslationSource(db) {
+  for (const table of ['product_categories', 'solution_categories']) {
+    for (const lang of ['en', 'ru']) {
+      db.prepare(
+        `UPDATE ${table}
+            SET name_${lang}_src = name
+          WHERE (name_${lang}_src IS NULL OR name_${lang}_src = '')
+            AND name_${lang} IS NOT NULL AND name_${lang} <> ''`
+      ).run();
     }
   }
 }
@@ -151,6 +175,8 @@ function rowProduct(r) {
     name: r.name,
     nameEn: r.name_en || '',
     nameRu: r.name_ru || '',
+    nameEnSrc: r.name_en_src || '',
+    nameRuSrc: r.name_ru_src || '',
     filterKeyEn: r.filter_key_en || r.key,
     sortOrder: Number(r.sort_order) || 0,
   };
@@ -162,6 +188,8 @@ function rowSolution(r) {
     name: r.name,
     nameEn: r.name_en || '',
     nameRu: r.name_ru || '',
+    nameEnSrc: r.name_en_src || '',
+    nameRuSrc: r.name_ru_src || '',
     filterKeyEn: r.filter_key_en || r.key,
     sortOrder: Number(r.sort_order) || 0,
   };
@@ -218,6 +246,21 @@ function assertKey(key) {
   return k;
 }
 
+/**
+ * 计算译文的"来源中文名"标记。
+ * - 本次显式提供了译名 → 该译名跟随当前中文名；
+ * - 中文名被改掉且未提供新译名 → 置空，标记旧译文过期（页面回落中文后重新翻译）；
+ * - 其余情况沿用原标记。
+ */
+function srcFor(lang, input, name, prev) {
+  const provided = lang === 'en'
+    ? String(input.nameEn || '').trim()
+    : String(input.nameRu || input.name_ru || '').trim();
+  if (provided) return name;
+  if (prev && prev.name !== name) return '';
+  return (prev && prev[`name_${lang}_src`]) || '';
+}
+
 export function upsertProductCategory(input, { isNew = false } = {}) {
   const db = getDb();
   ensureCategoryTables(db);
@@ -233,11 +276,12 @@ export function upsertProductCategory(input, { isNew = false } = {}) {
     : null;
 
   db.prepare(
-    `INSERT INTO product_categories (key, name, name_en, name_ru, filter_key_en, sort_order, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO product_categories (key, name, name_en, name_ru, filter_key_en, sort_order, name_en_src, name_ru_src, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(key) DO UPDATE SET
        name=excluded.name, name_en=excluded.name_en, name_ru=excluded.name_ru,
        filter_key_en=excluded.filter_key_en,
+       name_en_src=excluded.name_en_src, name_ru_src=excluded.name_ru_src,
        sort_order=excluded.sort_order, updated_at=datetime('now')`
   ).run(
     key,
@@ -245,7 +289,9 @@ export function upsertProductCategory(input, { isNew = false } = {}) {
     String(input.nameEn || '').trim(),
     String(input.nameRu || input.name_ru || '').trim(),
     String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
-    Number(input.sortOrder != null ? input.sortOrder : input.sort_order) || 0
+    Number(input.sortOrder != null ? input.sortOrder : input.sort_order) || 0,
+    srcFor('en', input, name, prev),
+    srcFor('ru', input, name, prev)
   );
 
   // Keep product.category display name in sync when renaming
@@ -306,11 +352,12 @@ export function upsertSolutionCategory(input, { isNew = false } = {}) {
     : null;
 
   db.prepare(
-    `INSERT INTO solution_categories (key, name, name_en, name_ru, filter_key_en, sort_order, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO solution_categories (key, name, name_en, name_ru, filter_key_en, sort_order, name_en_src, name_ru_src, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(key) DO UPDATE SET
        name=excluded.name, name_en=excluded.name_en, name_ru=excluded.name_ru,
        filter_key_en=excluded.filter_key_en,
+       name_en_src=excluded.name_en_src, name_ru_src=excluded.name_ru_src,
        sort_order=excluded.sort_order, updated_at=datetime('now')`
   ).run(
     key,
@@ -318,7 +365,9 @@ export function upsertSolutionCategory(input, { isNew = false } = {}) {
     String(input.nameEn || '').trim(),
     String(input.nameRu || input.name_ru || '').trim(),
     String(input.filterKeyEn || input.filter_key_en || key).trim() || key,
-    Number(input.sortOrder != null ? input.sortOrder : input.sort_order) || 0
+    Number(input.sortOrder != null ? input.sortOrder : input.sort_order) || 0,
+    srcFor('en', input, name, prev),
+    srcFor('ru', input, name, prev)
   );
 
   if (prev && prev.name !== name) {
@@ -415,9 +464,52 @@ export function deleteNewsCategory(key) {
   return { ok: true, deleted: k };
 }
 
+/**
+ * 分类名的本地化取值。中文是后台唯一真源，en/ru 只能来自翻译产物：
+ *   1) 翻译术语库（translation_memory.term）—— 最权威，跨页面复用同一译法；
+ *   2) 分类表里跟随当前中文名的缓存译名（name_en / name_ru）；
+ *   3) 都没有 → 回落中文，让翻译调度接管。
+ * 旧实现会在 en 分支无条件沿用页面里已有的旧值，导致中文名改掉之后
+ * 英文被永久锁死（例如"冰箱"改成"家电"后英文仍是 Refrigerator）。
+ */
+function localizedCategoryName(cat, lang, oldValue) {
+  if (!cat) return '';
+  if (lang === 'zh') return cat.name || cat.key || '';
+  const term = getTermTranslation(cat.name, lang);
+  if (term) return term;
+  const cached = lang === 'en' ? cat.nameEn : cat.nameRu;
+  const src = lang === 'en' ? cat.nameEnSrc : cat.nameRuSrc;
+  if (src === cat.name) {
+    // 中文名没变：页面里已有的译名多为翻译产物，比分类表里的初始缓存更新，
+    // 优先沿用，避免把线上文案打回 seed 时代的短名。
+    return oldValue || cached || cat.name || cat.key || '';
+  }
+  // 中文名已被改掉：旧译名一律作废，回落中文让翻译重新生成。
+  return cat.name || cat.key || '';
+}
+
+/** 翻译术语库里有权威译法时，回填分类表，别让分类表停留在旧值。 */
+function backfillCategoryTranslations(table, cats) {
+  if (!cats.length) return;
+  const db = getDb();
+  for (const lang of ['en', 'ru']) {
+    const upd = db.prepare(
+      `UPDATE ${table} SET name_${lang} = ?, name_${lang}_src = ?, updated_at = datetime('now') WHERE key = ?`
+    );
+    for (const c of cats) {
+      const term = getTermTranslation(c.name, lang);
+      if (!term) continue;
+      const cached = lang === 'en' ? c.nameEn : c.nameRu;
+      const src = lang === 'en' ? c.nameEnSrc : c.nameRuSrc;
+      if (cached !== term || src !== c.name) upd.run(term, c.name, c.key);
+    }
+  }
+}
+
 /** Rewrite pages/products filters from product_categories (zh/en/ru). */
 export function syncProductPageFilters() {
   const cats = listProductCategories();
+  backfillCategoryTranslations('product_categories', cats);
   // Count published products per filter_key so categories with no visible
   // product don't get a filter tab on the products list page.
   const productCounts = {};
@@ -450,19 +542,8 @@ export function syncProductPageFilters() {
       if (!productCounts[c.key]) continue;
       if (lang === 'zh') {
         filters[c.key] = c.name;
-      } else if (lang === 'en') {
-        // en: preserve existing translation; fall back to name_en, then zh name
-        filters[c.key] = oldFilters[c.key] || c.nameEn || c.name || c.key;
       } else {
-        // ru: preserve existing ru translation; if old value is just the en
-        // fallback (equals nameEn) or the zh name, use zh name instead so
-        // translate sync picks it up from zh source rather than staying stuck.
-        var oldRu = oldFilters[c.key];
-        if (oldRu && oldRu !== c.nameEn && oldRu !== c.name) {
-          filters[c.key] = oldRu;
-        } else {
-          filters[c.key] = c.name || c.nameEn || c.key;
-        }
+        filters[c.key] = localizedCategoryName(c, lang, oldFilters[c.key]);
       }
     }
     page.filters = filters;
@@ -515,15 +596,11 @@ export function syncNewsPageFilters() {
       if (lang === 'zh') {
         filters[c.key] = c.name;
       } else {
-        // news categories have no name_en column; preserve existing
-        // translation, otherwise fall back to zh name so translate sync
-        // picks it up from the zh source.
-        var oldVal = oldFilters[c.key];
-        if (oldVal && oldVal !== c.name) {
-          filters[c.key] = oldVal;
-        } else {
-          filters[c.key] = c.name || c.key;
-        }
+        // 新闻分类没有独立的译名列：术语库优先，其次沿用已有译文，
+        // 都没有则回落中文交给翻译。
+        const oldVal = oldFilters[c.key];
+        const term = getTermTranslation(c.name, lang);
+        filters[c.key] = term || (oldVal && oldVal !== c.name ? oldVal : c.name || c.key);
       }
     }
     page.filters = filters;
@@ -539,6 +616,7 @@ export function syncNewsPageFilters() {
 
 export function syncSolutionPageFilters() {
   const cats = listSolutionCategories();
+  backfillCategoryTranslations('solution_categories', cats);
   const allLabels = { zh: '全部方案', en: 'All Solutions', ru: 'Все решения' };
   let zhFilters = null;
   for (const lang of ['zh', 'en', 'ru']) {
@@ -556,19 +634,8 @@ export function syncSolutionPageFilters() {
     for (const c of cats) {
       if (lang === 'zh') {
         filters[c.key] = c.name;
-      } else if (lang === 'en') {
-        // en: preserve existing translation; fall back to name_en, then zh name
-        filters[c.key] = oldFilters[c.key] || c.nameEn || c.name || c.key;
       } else {
-        // ru: preserve existing ru translation; if old value is just the en
-        // fallback (equals nameEn), use zh name instead so translate sync
-        // picks it up from zh source rather than staying stuck in English.
-        var oldRu = oldFilters[c.key];
-        if (oldRu && oldRu !== c.nameEn && oldRu !== c.name) {
-          filters[c.key] = oldRu;
-        } else {
-          filters[c.key] = c.name || c.nameEn || c.key;
-        }
+        filters[c.key] = localizedCategoryName(c, lang, oldFilters[c.key]);
       }
     }
     page.filters = filters;

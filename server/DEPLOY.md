@@ -206,6 +206,35 @@ npm run backup-data
 
 翻译：系统每 30 秒自动调度（无需手动操作）。中文源修改后自动标记 en/ru 为 stale，调度器依次翻译并回写。翻译前优先匹配术语表，保证同一中文译法一致。
 
+### 分类名的多语言（后台只填中文）
+
+分类（`product_categories` / `solution_categories`）的中文名是唯一真源，en/ru 按下面顺序取值，
+卡片上的分类名与筛选按钮共用同一份，不会各说各话：
+
+1. **术语表**（`translation_memory` 的 `term` 作用域）—— 权威译法，全站复用；
+2. 分类表里跟随当前中文名的缓存译名（`name_en` / `name_ru`）；
+3. 都没有 → 回落中文，标记 stale 交给翻译调度重新生成。
+
+分类表里的 `name_en_src` / `name_ru_src` 记录"这个译名是哪一个中文名的译名"。
+后台改了中文名之后旧译名会自动作废（回落到中文重新翻译），
+不会出现"中文从冰箱改成家电、英文却一直卡在 Refrigerator"的情况。
+
+需要重新对齐分类译名（例如部署到新库、或批量修正译法）时：
+
+```bash
+# 先预览会改什么，不写库
+node scripts/fix-category-i18n.mjs --check
+
+# 确认无误后执行（会先自动备份 SQLite）
+node scripts/fix-category-i18n.mjs
+
+# 校验：同步逻辑是否幂等，并打印三语分类对照
+node scripts/verify-category-i18n.mjs
+```
+
+脚本顶部的 `SOLUTION_STANDARD` / `PRODUCT_STANDARD` 就是中文 → 英/俄的标准译法表，
+新增分类时可以往里补，然后跑一次即可全站生效。
+
 ```bash
 # DeepSeek（推荐，OpenAI 兼容）
 TRANSLATION_PROVIDER=deepseek
