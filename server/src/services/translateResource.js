@@ -23,6 +23,8 @@ import {
   applyStrings as applyTranslationStrings,
   buildBeforeCommit,
   collectStrings as collectTranslationStrings,
+  getByPath,
+  lookupPath,
   normalizeForCompare,
   planTranslations,
   snapshotEntries,
@@ -35,6 +37,20 @@ const CATALOG_I18N = {
   solutions: ['solution_i18n', 'solution_id'],
   news: ['news_i18n', 'news_id'],
 };
+
+/**
+ * When the API returns nothing for a field, keep the value we already had in the
+ * target language instead of writing the Chinese source back — the latter is how
+ * untranslated Chinese leaked onto the en/ru site and got frozen by the snapshot.
+ * Falls back to the source only when there is no previous translation yet.
+ */
+function fallbackValue(existingTree, path, itemId, source) {
+  const prev = existingTree
+    ? getByPath(existingTree, lookupPath(path, itemId))
+    : undefined;
+  if (typeof prev === 'string' && prev.trim()) return prev;
+  return source;
+}
 
 async function classifyAndTranslate(resourceKey, lang, itemId, values, paths, existingObj, jobId) {
   const snapshot = getItemSnapshot(resourceKey, lang, itemId);
@@ -257,7 +273,9 @@ async function buildTranslatedCatalog(kind, lang, jobId) {
         existingItem,
         jobId
       );
-      const applied = result.finalValues.map((value, index) => value != null ? value : values[index]);
+      const applied = result.finalValues.map((value, index) =>
+        value != null ? value : fallbackValue(existingItem, paths[index], id, values[index])
+      );
       let valueIndex = 0;
       applyTranslationStrings(clone, '', () => applied[valueIndex++]);
       strings += result.strings;
@@ -291,7 +309,9 @@ async function buildTranslatedTree(source, lang, existing, jobId, resourceKey) {
     existing,
     jobId
   );
-  const applied = result.finalValues.map((value, index) => value != null ? value : values[index]);
+  const applied = result.finalValues.map((value, index) =>
+    value != null ? value : fallbackValue(existing, paths[index], null, values[index])
+  );
   let valueIndex = 0;
   applyTranslationStrings(clone, '', () => applied[valueIndex++]);
   if (clone.lang != null) clone.lang = lang;

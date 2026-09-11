@@ -45,6 +45,26 @@ export const SKIP_KEYS = new Set([
 
 const ASSET_STRING_RE = /^(assets\/|https?:\/\/|mailto:|tel:|\/)/i;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const CJK_RE = /[\u4e00-\u9fff]/;
+
+/**
+ * A stored "translation" that is identical to its Chinese source was never
+ * actually translated — this happens when a translation API call hiccups and
+ * the pipeline falls back to writing the source back (see translateResource.js).
+ * The snapshot then records that source value, so the reuse logic would treat
+ * the Chinese copy as a valid translation forever ("locked-in Chinese").
+ * Detect that case so the value is retranslated instead of reused.
+ *
+ * Only fires when the SOURCE contains Chinese: a Latin source that legitimately
+ * translates to itself (brand names, "3C", numbers) must still be reusable.
+ */
+function isUntranslatedCopy(source, candidate) {
+  return (
+    typeof candidate === 'string' &&
+    CJK_RE.test(String(source || '')) &&
+    normalizeForCompare(candidate) === normalizeForCompare(source)
+  );
+}
 
 /**
  * Normalize only formatting noise. Punctuation and symbols are intentionally
@@ -174,14 +194,22 @@ export function planTranslations({ paths, values, existingObj, snapshot, itemId 
     const path = paths[index];
     const sourceNorm = normalizeForCompare(values[index]);
     const exact = getByPath(existingObj, lookupPath(path, itemId));
-    if (snap[path] === sourceNorm && typeof exact === 'string') {
+    if (
+      snap[path] === sourceNorm &&
+      typeof exact === 'string' &&
+      !isUntranslatedCopy(values[index], exact)
+    ) {
       planned[index] = exact;
       usedOldPaths.add(path);
       continue;
     }
 
     const key = `${pathShape(path)}\u0000${sourceNorm}`;
-    const relocated = (candidates.get(key) || []).find((entry) => !usedOldPaths.has(entry.path));
+    const relocated = (candidates.get(key) || []).find(
+      (entry) =>
+        !usedOldPaths.has(entry.path) &&
+        !isUntranslatedCopy(values[index], entry.value)
+    );
     if (relocated) {
       planned[index] = relocated.value;
       usedOldPaths.add(relocated.path);

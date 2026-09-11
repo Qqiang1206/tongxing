@@ -17,6 +17,8 @@
     "import:media": "node scripts/import-site-images-to-media.js",
     "migrate:uploads": "node scripts/migrate-upload-variants.js",
     "setup": "node scripts/import-from-json.js",
-    "sync:static": "node scripts/sync-static-from-db.js"
+    "sync:static": "node scripts/sync-static-from-db.js",
+    "repair:i18n": "node scripts/repair-i18n-copies.mjs",
+    "repair:i18n:check": "node scripts/repair-i18n-copies.mjs --check"
   }
 }

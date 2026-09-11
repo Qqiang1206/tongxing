@@ -7,6 +7,19 @@ const SHARED_PAGE_TITLE_PATHS = new Set(['seo.title', 'hero.title']);
 const TERM_SCOPE = 'term';
 const TERM_MAX_SOURCE_LEN = 80;
 
+const CJK_RE = /[\u4e00-\u9fff]/;
+
+/**
+ * A cached en/ru translation must never contain Chinese. If it does, the value
+ * is a failed/partial translation that was written back verbatim — reusing it
+ * would poison every future resource that shares the same source string.
+ * Guard both the read and write paths so a bad value can neither be served nor
+ * newly stored.
+ */
+function isValidTargetText(translation) {
+  return typeof translation === 'string' && translation.trim() && !CJK_RE.test(translation);
+}
+
 /**
  * Look up a term in the global glossary. Returns the canonical translation
  * or null if not found. Only short strings (specs, labels) are glossed.
@@ -20,7 +33,8 @@ export function getTermTranslation(source, lang) {
        WHERE scope = ? AND source_norm = ? AND lang = ?`
     )
     .get(TERM_SCOPE, sourceNorm, lang);
-  return row && row.translation ? row.translation : null;
+  if (!row || !isValidTargetText(row.translation)) return null;
+  return row.translation;
 }
 
 /**
@@ -40,7 +54,7 @@ export function rememberTermTranslations(entries) {
     const sourceNorm = normalizeForCompare(source);
     if (!sourceNorm || sourceNorm.length > TERM_MAX_SOURCE_LEN) continue;
     const t = String(translation || '').trim();
-    if (!t) continue;
+    if (!isValidTargetText(t)) continue;
     count += stmt.run(TERM_SCOPE, sourceNorm, lang, t).changes || 0;
   }
   return count;
@@ -88,7 +102,7 @@ export function getSharedPageTitleTranslation(path, source, lang) {
        WHERE scope = ? AND source_norm = ? AND lang = ?`
     )
     .get(PAGE_TITLE_SCOPE, sourceNorm, lang);
-  return row && row.translation ? row.translation : null;
+  return row && isValidTargetText(row.translation) ? row.translation : null;
 }
 
 /**
@@ -110,6 +124,7 @@ export function rememberSharedPageTitleTranslations(entries) {
     if (!sourceNorm || !translation) continue;
 
     const fixed = getFixedPageTitleTranslation(entry.path, entry.source, lang);
+    if (!fixed && !isValidTargetText(translation)) continue;
     const result = fixed
       ? db.prepare(
           `INSERT INTO translation_memory

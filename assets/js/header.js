@@ -18,6 +18,19 @@ document.addEventListener("DOMContentLoaded", function() {
     const activeKey = ACTIVE_MAP[currentPage] || 'home';
     const CTA_LABEL = { zh: '获取方案', en: 'Get a Quote', ru: 'Получить решение' }[subLang];
 
+    /* Localized nav copy. Navigation is statically inlined on the real pages,
+       so this generator is a fallback — but it must never emit Chinese on /en/ or /ru/. */
+    const NAV_LABELS = {
+        zh: ['首页', '关于我们', '解决方案', '产品中心', '新闻中心', '联系我们'],
+        en: ['Home', 'About Us', 'Solutions', 'Products', 'News', 'Contact Us'],
+        ru: ['Главная', 'О нас', 'Решения', 'Продукция', 'Новости', 'Контакты'],
+    }[subLang];
+    const NAV_TEXT = {
+        zh: { brand: 'TXAM 同兴高科 首页', logo: 'TXAM 同兴高科 官网logo', menu: '打开菜单', site: '站内导航' },
+        en: { brand: 'TXAM Home', logo: 'TXAM logo', menu: 'Open menu', site: 'Site navigation' },
+        ru: { brand: 'TXAM Главная', logo: 'Логотип TXAM', menu: 'Открыть меню', site: 'Навигация по сайту' },
+    }[subLang];
+
     let headerHTML;
 
     if (V3) {
@@ -28,17 +41,17 @@ document.addEventListener("DOMContentLoaded", function() {
         <!-- 🌐 顶部导航 v3 -->
         <nav id="navbar" class="txnav">
             <div class="v3-shell txnav__inner">
-                <a href="${LANG_HREFS[subLang]}" class="txnav__brand" aria-label="TXAM 同兴高科 首页">
-                    <picture><source srcset="${P}assets/images/brand/logo.webp" type="image/webp"><img src="${P}assets/images/brand/logo.png" alt="TXAM 同兴高科 官网logo" class="txnav__logo"></picture>
+                <a href="${LANG_HREFS[subLang]}" class="txnav__brand" aria-label="${NAV_TEXT.brand}">
+                    <picture><source srcset="${P}assets/images/brand/logo.webp" type="image/webp"><img src="${P}assets/images/brand/logo.png" alt="${NAV_TEXT.logo}" class="txnav__logo"></picture>
                 </a>
 
                 <div class="txnav__links">
-                    <a href="index.html" class="txnav__link${activeKey === 'home' ? ' is-active' : ''}">首页</a>
-                    <a href="about.html" class="txnav__link${activeKey === 'about' ? ' is-active' : ''}">关于我们</a>
-                    <a href="solutions.html" class="txnav__link${activeKey === 'solutions' ? ' is-active' : ''}">解决方案</a>
-                    <a href="products.html" class="txnav__link${activeKey === 'products' ? ' is-active' : ''}">产品中心</a>
-                    <a href="news.html" class="txnav__link${activeKey === 'news' ? ' is-active' : ''}">新闻中心</a>
-                    <a href="contact.html" class="txnav__link${activeKey === 'contact' ? ' is-active' : ''}">联系我们</a>
+                    <a href="index.html" class="txnav__link${activeKey === 'home' ? ' is-active' : ''}">${NAV_LABELS[0]}</a>
+                    <a href="about.html" class="txnav__link${activeKey === 'about' ? ' is-active' : ''}">${NAV_LABELS[1]}</a>
+                    <a href="solutions.html" class="txnav__link${activeKey === 'solutions' ? ' is-active' : ''}">${NAV_LABELS[2]}</a>
+                    <a href="products.html" class="txnav__link${activeKey === 'products' ? ' is-active' : ''}">${NAV_LABELS[3]}</a>
+                    <a href="news.html" class="txnav__link${activeKey === 'news' ? ' is-active' : ''}">${NAV_LABELS[4]}</a>
+                    <a href="contact.html" class="txnav__link${activeKey === 'contact' ? ' is-active' : ''}">${NAV_LABELS[5]}</a>
                 </div>
 
                 <div class="txnav__cta">
@@ -53,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         ${CTA_LABEL}
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>
                     </a>
-                    <button id="mobile-menu-btn" class="txnav__burger" type="button" aria-label="打开菜单">
+                    <button id="mobile-menu-btn" class="txnav__burger" type="button" aria-label="${NAV_TEXT.menu}">
                         <i></i><i></i><i></i>
                     </button>
                 </div>
@@ -61,14 +74,14 @@ document.addEventListener("DOMContentLoaded", function() {
         </nav>
 
         <!-- 📱 移动端全屏菜单（白色玻璃） -->
-        <div id="mobile-menu" class="txnav-sheet menu-closed" role="dialog" aria-label="站内导航">
+        <div id="mobile-menu" class="txnav-sheet menu-closed" role="dialog" aria-label="${NAV_TEXT.site}">
             <nav class="flex flex-col w-full max-w-md mx-auto">
-                <a href="index.html" class="txnav-sheet__link${activeKey === 'home' ? '" style="color:#FF6B00' : ''}">首页<span>01</span></a>
-                <a href="about.html" class="txnav-sheet__link">关于我们<span>02</span></a>
-                <a href="solutions.html" class="txnav-sheet__link">解决方案<span>03</span></a>
-                <a href="products.html" class="txnav-sheet__link">产品中心<span>04</span></a>
-                <a href="news.html" class="txnav-sheet__link">新闻中心<span>05</span></a>
-                <a href="contact.html" class="txnav-sheet__link">联系我们<span>06</span></a>
+                <a href="index.html" class="txnav-sheet__link${activeKey === 'home' ? '" style="color:#FF6B00' : ''}">${NAV_LABELS[0]}<span>01</span></a>
+                <a href="about.html" class="txnav-sheet__link">${NAV_LABELS[1]}<span>02</span></a>
+                <a href="solutions.html" class="txnav-sheet__link">${NAV_LABELS[2]}<span>03</span></a>
+                <a href="products.html" class="txnav-sheet__link">${NAV_LABELS[3]}<span>04</span></a>
+                <a href="news.html" class="txnav-sheet__link">${NAV_LABELS[4]}<span>05</span></a>
+                <a href="contact.html" class="txnav-sheet__link">${NAV_LABELS[5]}<span>06</span></a>
             </nav>
             <div class="txnav-sheet__langs">
                 <a href="${LANG_HREFS.zh}" class="${subLang === 'zh' ? 'is-active' : ''}">ZH</a>
@@ -82,16 +95,16 @@ document.addEventListener("DOMContentLoaded", function() {
         <!-- 🌐 顶部导航 -->
         <nav id="navbar" class="w-full flex justify-between items-center px-6 md:px-16 py-6 fixed top-0 z-50 transition-all duration-500 bg-[#FBFBFD]/80 backdrop-blur-xl border-b border-[#E5E5EA]">
             <a href="index.html" class="flex items-center cursor-pointer relative z-50">
-                <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/brand/logo.png" alt="TXAM 同兴高科 官网logo" class="h-8 md:h-10"></picture>
+                <picture><source srcset="assets/images/brand/logo.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/images/brand/logo.png" alt="${NAV_TEXT.logo}" class="h-8 md:h-10"></picture>
             </a>
 
             <div class="hidden md:flex items-center space-x-12 text-[15px] font-medium tracking-wide ml-0">
-                <a href="index.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">首页</a>
-                <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">关于我们</a>
-                <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">解决方案</a>
-                <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">产品中心</a>
-                <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">新闻中心</a>
-                <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">联系我们</a>
+                <a href="index.html" class="text-[#1D1D1F] border-b-2 border-[#FF6B00] pb-1">${NAV_LABELS[0]}</a>
+                <a href="about.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">${NAV_LABELS[1]}</a>
+                <a href="solutions.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">${NAV_LABELS[2]}</a>
+                <a href="products.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">${NAV_LABELS[3]}</a>
+                <a href="news.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">${NAV_LABELS[4]}</a>
+                <a href="contact.html" class="text-[#86868B] hover:text-[#1D1D1F] transition duration-300">${NAV_LABELS[5]}</a>
                 <div class="ml-4 pl-4 border-l border-[#E5E5EA] flex items-center space-x-2">
                     <a href="index.html" class="px-2 py-1 text-[#FF6B00] font-bold text-xs">ZH</a>
                     <span class="text-[#E5E5EA]">|</span>
@@ -102,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
 
             <div class="md:hidden flex items-center relative z-50">
-                <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]" aria-label="打开菜单">
+                <button id="mobile-menu-btn" class="focus:outline-none p-2 text-[#1D1D1F]" aria-label="${NAV_TEXT.menu}">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -113,12 +126,12 @@ document.addEventListener("DOMContentLoaded", function() {
         <!-- 📱 手机下拉菜单 -->
         <div id="mobile-menu" class="fixed top-[72px] left-0 right-0 bottom-0 bg-[#FBFBFD] z-50 menu-closed flex flex-col items-center border-b border-[#E5E5EA] overflow-y-auto">
             <div class="flex flex-col space-y-8 text-center text-3xl font-black tracking-widest text-[#1D1D1F] py-12">
-                <a href="index.html" class="text-[#FF6B00]">首页</a>
-                <a href="about.html" class="text-[#86868B]">关于我们</a>
-                <a href="solutions.html" class="text-[#86868B]">解决方案</a>
-                <a href="products.html" class="text-[#86868B]">产品中心</a>
-                <a href="news.html" class="text-[#86868B]">新闻中心</a>
-                <a href="contact.html" class="text-[#86868B]">联系我们</a>
+                <a href="index.html" class="text-[#FF6B00]">${NAV_LABELS[0]}</a>
+                <a href="about.html" class="text-[#86868B]">${NAV_LABELS[1]}</a>
+                <a href="solutions.html" class="text-[#86868B]">${NAV_LABELS[2]}</a>
+                <a href="products.html" class="text-[#86868B]">${NAV_LABELS[3]}</a>
+                <a href="news.html" class="text-[#86868B]">${NAV_LABELS[4]}</a>
+                <a href="contact.html" class="text-[#86868B]">${NAV_LABELS[5]}</a>
             </div>
             <div class="flex items-center space-x-4 text-lg pb-12">
                 <a href="index.html" class="px-4 py-2 text-[#FF6B00] font-bold">ZH</a>
