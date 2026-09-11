@@ -5853,7 +5853,7 @@
     var map = {
       invalid_username: '账号格式无效（2-32 位字母数字）',
       username_taken: '账号已存在',
-      weak_password: '密码至少 6 位',
+      weak_password: '密码强度不足：至少 10 位，不能是纯数字、常见弱口令或与账号相同',
       invalid_role: '角色无效',
       last_super_admin: '不能取消最后一个超级管理员',
       cannot_disable_self: '不能停用自己的账号',
@@ -5880,7 +5880,7 @@
       '<input type="text" id="acc-username" class="input" value="' + escapeAttr(isNew ? '' : account.username) + '"' + (isNew ? '' : ' readonly style="opacity:.6"') + ' placeholder="2-32 位字母数字"></div>' +
       '<div class="field"><label>显示名</label>' +
       '<input type="text" id="acc-display" class="input" value="' + escapeAttr(isNew ? '' : account.displayName) + '"></div>' +
-      (isNew ? '<div class="field"><label>密码 *（至少 6 位）</label><input type="password" id="acc-password" class="input"></div>' : '<div class="field"><label>新密码（留空不修改）</label><input type="password" id="acc-password" class="input" placeholder="留空则不修改密码"></div>') +
+      (isNew ? '<div class="field"><label>密码 *（至少 10 位）</label><input type="password" id="acc-password" class="input" placeholder="不能纯数字/常见弱口令"></div>' : '<div class="field"><label>新密码（留空不修改）</label><input type="password" id="acc-password" class="input" placeholder="留空则不修改密码"></div>') +
       '<div class="field"><label>角色</label><select id="acc-role" class="select">' + roleOptions(isNew ? 'editor' : account.role) + '</select></div>' +
       '</div>' +
       '<div class="gl-modal-foot">' +

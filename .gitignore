@@ -37,6 +37,7 @@ sitemap.xml
 # Server runtime logs
 server/.admin_server.log
 server/.admin_server.err
+logs/
 
 # CodeBuddy session data
 .codebuddy/

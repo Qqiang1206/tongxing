@@ -41,29 +41,9 @@
   }
 
   /**
-   * v3：CMS 轮播图直接作为"关于我们"页的满屏背景（多图交叉淡化）。
-   * 图源来自后台 carousel.slides —— 后台换图即换背景。
-   * 页面静态内嵌的两张图仅作无 JS 兜底；渲染器在首绘前同步替换。
+   * v3 改版：about 页 hero 已是纯文字 title-band（无视频/轮播背景），
+   * 原 renderCarousel（CMS 轮播首图作视频 poster）随 v3-hero--about 一并移除。
    */
-  function renderCarousel(carousel) {
-    if (!carousel || !carousel.slides || !carousel.slides.length) return;
-
-    var media = document.querySelector('.v3-hero--about .v3-hero__media');
-    if (!media) return;
-
-    var assetUrl = global.TXAM && global.TXAM.assetUrl ? global.TXAM.assetUrl : function (u) { return u; };
-
-    var video = media.querySelector('video');
-    if (video) {
-      // v3：hero 已是视频，CMS 轮播首图作为视频海报（后台换图即换加载画面）
-      if (carousel.slides.length) {
-        video.setAttribute('poster', assetUrl(carousel.slides[0].image));
-      }
-      Array.prototype.forEach.call(media.querySelectorAll('picture'), function (p) {
-        p.parentNode.removeChild(p);
-      });
-    }
-  }
 
   function dotClass(accent, mobile) {
     var base = mobile ? 'w-4 h-4' : 'w-5 h-5';
@@ -261,19 +241,12 @@
       if (titleEl && page.hero) titleEl.textContent = page.hero.title || '';
       if (leadEl && page.hero) leadEl.innerHTML = page.hero.leadHtml || page.hero.lead || '';
 
-      renderCarousel(page.carousel);
       renderStatsGrid(document.getElementById('about-stats-grid'), page.stats);
       renderCulture(page.culture);
       renderTimeline(page.timeline);
       renderCredentials(page.credentials);
       renderClients(page.clients);
 
-      if (global.TXAM.initFactoryCarousel) {
-        global.TXAM.initFactoryCarousel();
-      }
-      if (global.TXAM.initPatentMarquee) {
-        global.TXAM.initPatentMarquee();
-      }
       if (global.TXAM.revealFadeUps) {
         global.TXAM.revealFadeUps();
       } else {

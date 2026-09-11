@@ -38,6 +38,21 @@ const CATALOG_JS_GLOBALS = {
   solutions: '__TXAM_SOLUTIONS',
 };
 
+/**
+ * Atomic file write: temp file in the same directory + rename, so readers
+ * never observe a partially written snapshot (batch-5 security fix).
+ */
+function writeFileSyncAtomic(filePath, data) {
+  const tmp = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+  try {
+    fs.writeFileSync(tmp, data, 'utf8');
+    fs.renameSync(tmp, filePath);
+  } catch (err) {
+    try { fs.unlinkSync(tmp); } catch { /* best effort */ }
+    throw err;
+  }
+}
+
 const SLIM_OMIT = {
   products: ['contentHtml', 'detail'],
   solutions: ['contentHtml', 'detail', 'painPoints', 'process'],
@@ -327,7 +342,7 @@ function getSlottedSolutions(lang) {
       solutionApiFromRows(
         r,
         { name: r.name, summary: r.summary, specs_json: r.specs_json },
-        { slim: true }
+        { slim: true, lang }
       )
     )
   );

@@ -12,7 +12,9 @@
 | 静态站根目录 | 仓库根（也可用 nginx 单独托管） |
 | 反向代理 | 见根目录 `nginx.conf`（生产可用 nginx 托管静态，只反代 `/api/` `/admin/`） |
 
-推荐生产用进程管理：`systemd` / `pm2`，勿直接挂交互终端长期跑。
+推荐生产用进程管理：**本项目自带的 `scripts/watchdog.mjs`**（零依赖，Windows / Linux 通用）。
+崩溃自动重启 + 每 30 秒心跳探测，详见下方「进程守护」一节。
+（Linux 也可用 `systemd` / `pm2`；本项目仓库内不含 pm2 依赖，勿直接挂交互终端长期跑。）
 
 后台新建/删除产品、新闻、方案时，会自动在 en/ru 补齐或删除同 ID（文案先用中文占位，待翻译任务更新）。
 
@@ -31,11 +33,16 @@
 
 ```bash
 PORT=3000
+# 首次启动（空库）时用它创建 super_admin；要求 ≥10 位、非纯数字、非常见弱口令
 ADMIN_PASSWORD=换成足够长的随机密码
+# 本地开发想放宽口令强度时设为 1；生产务必删除或设为 0
+# ALLOW_WEAK_CREDENTIALS=0
 # 首次启动时会自动创建 super_admin 账号，用户名默认 admin
 ADMIN_USERNAME=admin        # 可选，自定义初始管理员用户名
 ADMIN_DISPLAY_NAME=超级管理员  # 可选
-CORS_ORIGIN=https://www.sztxgk.com
+# 支持逗号分隔多个源；非白名单的请求不会拿到可用的跨域头。
+# 留空或 "*" 放行全部（生产启动时会在日志里告警）
+CORS_ORIGIN=https://www.sztxgk.com,https://sztxgk.com
 # 生产环境 Node 只监听本机，由 Nginx 反代
 HOST=127.0.0.1
 # 公开内容 API 内存缓存毫秒（后台写入会立即清除）
@@ -58,6 +65,65 @@ PUBLIC_CACHE_TTL_MS=45000
 - 完整环境变量清单以 `server/.env.example` 为准；**切勿**把真实 `ADMIN_PASSWORD` 提交进 Git。
 - 后台支持多账号 RBAC（4 个角色：超级管理员/内容编辑/翻译运营/只读访客）。首次启动后登录后台「系统管理 → 账号管理」创建团队成员的账号。
 - 公网部署时建议限制后台访问（VPN / IP 白名单 / Basic Auth 外层）。
+
+---
+
+---
+
+## 2.1 进程守护（watchdog）
+
+服务不再裸跑 `node src/index.js`。用守护脚本拉起，进程崩溃或被误杀会自动重启：
+
+```bash
+node scripts/watchdog.mjs start     # 前台运行（由 systemd / NSSM / 计划任务托管）
+node scripts/watchdog.mjs stop      # 停止守护及其子进程
+node scripts/watchdog.mjs status    # 查看运行状态与健康检查地址
+```
+
+行为说明：
+
+| 能力 | 说明 |
+|------|------|
+| 崩溃重启 | 子进程退出后 1s → 2s → 4s… 指数退避重启，上限 30s；稳定运行超过 60s 后重置退避计数 |
+| 心跳探测 | 每 30s 请求 `GET /api/v1/health`（含 `ok:true` 校验），连续 3 次失败则重启子进程 |
+| 日志 | 服务 stdout/stderr → `logs/server.log`；守护事件 → `logs/watchdog.log`（各 5MB 滚动，保留 3 代） |
+| 单实例 | `logs/watchdog.pid` 作为锁，重复启动会直接退出并提示已在运行的 PID |
+
+> `logs/` 已加入 `.gitignore`，不进版本库。
+
+**Windows 开机自启**（任选其一）：
+
+```powershell
+# A. NSSM（推荐，真正的服务，支持开机自启与自动拉起）
+nssm install TXAM-CMS "C:\Program Files\nodejs\node.exe" "H:\tongxing\scripts\watchdog.mjs"
+nssm set TXAM-CMS AppDirectory H:\tongxing
+nssm set TXAM-CMS AppStdout H:\tongxing\logs\nssm.log
+nssm set TXAM-CMS AppStderr H:\tongxing\logs\nssm.log
+nssm start TXAM-CMS
+
+# B. 计划任务（无额外软件）
+schtasks /create /tn "TXAM-CMS" /sc onstart /ru SYSTEM ^
+  /tr "\"C:\Program Files\nodejs\node.exe\" \"H:\tongxing\scripts\watchdog.mjs\" start"
+```
+
+**Linux（systemd）**：
+
+```ini
+[Unit]
+Description=TXAM CMS watchdog
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/txam
+ExecStart=/usr/bin/node scripts/watchdog.mjs start
+ExecStop=/usr/bin/node scripts/watchdog.mjs stop
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
 
 ---
 
@@ -144,9 +210,9 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 
 | 项 | 要求 |
 |----|------|
-| Admin 密码 | 强密码，仅环境变量 |
+| Admin 密码 | 强密码（≥10 位、非纯数字、非常见弱口令、不与账号同名），仅环境变量；后台建号/改密在服务端强制校验 |
 | 上传目录 | `assets/images/uploads/` 可写但勿执行脚本 |
-| CORS | 生产改为具体站点 Origin，勿长期 `*` |
+| CORS | 生产改为具体站点 Origin，支持逗号分隔多源；勿长期 `*`。非白名单请求回落到第一个允许源（浏览器会拒绝跨域读取） |
 | 备份 | 后台写入前每 15 分钟自动备份；也可跑 `backup-data`。备份含 SQLite、静态数据和上传图片，`_backups` 勿暴露 Web |
 | 操作日志 | 写操作与登录写入 `admin_audit_log`；默认保留 90 天（`AUDIT_RETENTION_DAYS`）；不含密码与上传二进制 |
 

@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { URL } from 'url';
-import { config, REPO_ROOT } from './config.js';
+import { config, resolveCorsOrigin, REPO_ROOT } from './config.js';
 import { catalog } from './services/catalog.js';
 import { handleAdmin } from './admin.js';
 import { getDb, dbPathForHealth } from './db.js';
@@ -327,7 +327,7 @@ const routes = [
 ];
 
 const server = http.createServer((req, res) => {
-  const origin = config.corsOrigin;
+  const origin = resolveCorsOrigin(req);
   if (req.method === 'OPTIONS') {
     sendJson(res, 204, {}, origin);
     return;
@@ -446,6 +446,9 @@ process.on('uncaughtException', (err) => {
 });
 
 server.listen(config.port, config.host, () => {
+  if (isProduction && config.allowedOrigins.includes('*')) {
+    console.warn('[security] CORS_ORIGIN=* in production — set CORS_ORIGIN to your real domain(s), comma separated.');
+  }
   console.log(`TXAM site  http://${config.host}:${config.port}/`);
   console.log(`TXAM API   http://${config.host}:${config.port}/api/v1/health`);
   console.log(`TXAM Admin http://${config.host}:${config.port}/admin/`);
