@@ -112,9 +112,12 @@
       relatedContainer.innerHTML = picks.map(function (id) {
         var item = allData[id];
         if (!item) return '';
-        var itemSlug = item.slug || ID_TO_SLUG[id] || id;
+        // 走统一路由：没有静态落地页的相关方案会回落到统一模板，而不是 404
+        var href = global.TXAM.solutionHref
+          ? global.TXAM.solutionHref(item, '')
+          : esc((item.slug || ID_TO_SLUG[id] || id) + '-solution.html');
         return (
-          '<a href="' + esc(itemSlug + '-solution.html') + '" class="apple-card block p-6 group">' +
+          '<a href="' + href + '" class="apple-card block p-6 group">' +
           '<div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
           '<img loading="lazy" decoding="async" src="' + esc(global.TXAM.assetUrl(item.image)) + '" alt="' + esc(item.name) + '" class="img-zoom w-full h-full object-cover">' +
           '</div>' +

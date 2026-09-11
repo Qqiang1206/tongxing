@@ -76,6 +76,50 @@
     return m === 0 ? 'wide-h' : m === 3 ? 'wide-v' : 'std';
   };
 
+  /**
+   * 方案详情页路由 —— 全站唯一入口，禁止在页面脚本里各拼一份。
+   *
+   * 已生成静态落地页（-solution.html）的 slug 走静态页：有服务端渲染的正文，
+   * 对搜索引擎友好，且是历史已收录的 URL。其余 slug 回落到统一模板
+   * solutions-detail.html，避免后台新增方案后前台链接 404。
+   *
+   * 落地页清单由 scripts/generate-solution-landings.js 维护，
+   * 用 `node scripts/generate-solution-landings.js --check` 校验与磁盘是否一致。
+   */
+  var SOLUTION_LANDING_SLUGS = [
+    'tv-display',
+    'refrigerator',
+    'packaging',
+    'washer',
+    'capacitor',
+    'ac',
+    'microwave',
+    'coffee',
+    'tablet',
+    'headlight',
+  ];
+
+  global.TXAM.solutionLandingSlugs = function () {
+    return SOLUTION_LANDING_SLUGS.slice();
+  };
+
+  global.TXAM.hasSolutionLanding = function (slug) {
+    return !!slug && SOLUTION_LANDING_SLUGS.indexOf(String(slug)) !== -1;
+  };
+
+  global.TXAM.solutionHref = function (item, pathPrefix) {
+    var prefix = pathPrefix == null ? '' : pathPrefix;
+    var slug = item && item.slug ? String(item.slug) : '';
+    if (slug) {
+      if (global.TXAM.hasSolutionLanding(slug)) return prefix + slug + '-solution.html';
+      return prefix + 'solutions-detail.html?slug=' + encodeURIComponent(slug);
+    }
+    if (item && item.id != null) {
+      return prefix + 'solutions-detail.html?id=' + encodeURIComponent(item.id);
+    }
+    return prefix + 'solutions.html';
+  };
+
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', function () {
       var lang = (global.TXAM && global.TXAM.detectLang && global.TXAM.detectLang()) || 'zh';

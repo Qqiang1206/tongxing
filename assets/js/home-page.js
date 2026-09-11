@@ -30,6 +30,8 @@
   }
 
   function solutionHref(sol) {
+    // 统一走 TXAM.solutionHref：没有静态落地页的 slug 回落到统一模板，避免 404
+    if (global.TXAM && global.TXAM.solutionHref) return global.TXAM.solutionHref(sol, '');
     if (sol && sol.slug) return sol.slug + '-solution.html';
     if (sol && sol.id) return 'solutions-detail.html?id=' + encodeURIComponent(sol.id);
     return 'solutions.html';

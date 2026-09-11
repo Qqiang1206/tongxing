@@ -14,11 +14,18 @@ import { clientIp } from './services/audit.js';
 import { createRateLimiter } from './services/rateLimit.js';
 import { startTranslationScheduler } from './services/translationScheduler.js';
 import { ensureBootstrapAdmin } from './services/adminUsers.js';
+import { startRetentionJob, dropLegacyTables } from './services/retention.js';
 
 // Open SQLite on boot
 getDb();
 // Seed the first super_admin from ADMIN_PASSWORD on a fresh database.
 ensureBootstrapAdmin();
+
+// 清掉旧 schema 残留的空表（translation_jobs 代码零引用）
+const droppedTables = dropLegacyTables();
+// 日志表保留期清理（启动 1 分钟后跑一次，之后每 12 小时）
+const retention = startRetentionJob();
+if (droppedTables.length) console.log(`[retention] 已删除空表: ${droppedTables.join(', ')}`);
 
 const isProduction = process.env.NODE_ENV === 'production' || process.env.HOST === '127.0.0.1';
 const analyticsRateLimit = createRateLimiter({
@@ -81,7 +88,7 @@ function parseQuery(url) {
   return q;
 }
 
-function serveRepoFile(req, res, rootDir, relPath, origin, cacheControl = 'no-cache') {
+function serveRepoFile(req, res, rootDir, relPath, origin, cacheControl = 'no-cache', status = 200) {
   const root = path.resolve(rootDir);
   const filePath = path.resolve(root, relPath);
   if (!filePath.startsWith(root + path.sep) && filePath !== root) {
@@ -117,7 +124,7 @@ function serveRepoFile(req, res, rootDir, relPath, origin, cacheControl = 'no-ca
     '.xml': 'application/xml; charset=utf-8',
   };
   // 流式发送：不把整个文件读进内存，避免大文件/并发时阻塞事件循环
-  res.writeHead(200, {
+  res.writeHead(status, {
     'Content-Type': types[ext] || 'application/octet-stream',
     'Access-Control-Allow-Origin': origin,
     'Cache-Control': cacheControl,
@@ -432,10 +439,16 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'GET') {
     if (serveSiteStatic(req, res, rawPath, origin)) return;
-    // 404: serve HTML page for browser requests, JSON for API
+    // 404：浏览器请求返回 404 页面，但必须带真正的 404 状态码。
+    // 返回 200 的"软 404"会被搜索引擎当成正常页面收录，刚下线的页面尤其危险。
     if (req.headers.accept && req.headers.accept.includes('text/html')) {
-      serveRepoFile(req, res, REPO_ROOT, '404.html', origin, 'no-cache');
-      return;
+      // 语言目录下优先用该语言的 404 页（en/404.html、ru/404.html）
+      const langPrefix = /^\/(en|ru)\//.exec(pathname);
+      if (langPrefix) {
+        const lang404 = langPrefix[1] + '/404.html';
+        if (serveRepoFile(req, res, REPO_ROOT, lang404, origin, 'no-cache', 404)) return;
+      }
+      if (serveRepoFile(req, res, REPO_ROOT, '404.html', origin, 'no-cache', 404)) return;
     }
   }
 

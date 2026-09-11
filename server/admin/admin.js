@@ -2848,7 +2848,10 @@
 
   function solutionPreviewHref(item) {
     if (!item || item.id == null) return '';
-    var staticSlugs = ['tv-display','refrigerator','packaging','washer','capacitor','ac','microwave','coffee','tablet','headlight','robot'];
+    // 必须与 scripts/generate-solution-landings.js 的落地页清单保持一致：
+    // 该脚本会为清单内的 slug 生成静态页，并把未发布的 slug 作为孤儿删除。
+    // `npm run landings:check` 会在两者不同步时报错。
+    var staticSlugs = ['tv-display','refrigerator','packaging','washer','capacitor','ac','microwave','coffee','tablet','headlight'];
     if (staticSlugs.indexOf(item.slug) !== -1) {
       return '/' + encodeURIComponent(item.slug) + '-solution.html';
     }

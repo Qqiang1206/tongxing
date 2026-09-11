@@ -4,35 +4,22 @@
  * even = gray band, image left / text right via order utilities.
  */
 (function (global) {
-  var ID_ORDER = ['31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41'];
-
-  var ID_TO_SLUG = {
-    '31': 'tv-display',
-    '32': 'refrigerator',
-    '33': 'packaging',
-    '34': 'washer',
-    '35': 'capacitor',
-    '36': 'ac',
-    '37': 'microwave',
-    '38': 'coffee',
-    '39': 'tablet',
-    '40': 'headlight',
-    '41': 'robot',
-  };
-
-  var STATIC_SLUGS = Object.keys(ID_TO_SLUG).map(function (id) { return ID_TO_SLUG[id]; });
-
   function solutionFilterKey(item) {
     return item.filterKey || item.slug || '';
   }
 
+  /**
+   * 方案详情页链接统一由 TXAM.solutionHref 决定（见 site-common.js）。
+   * 这里不再维护第二份 slug 映射表 —— 后台新增方案时不会再拼出 404 链接。
+   */
   function solutionHref(item, pathPrefix) {
-    var slug = item.slug || ID_TO_SLUG[String(item.id)] || '';
-    if (STATIC_SLUGS.indexOf(slug) !== -1) return pathPrefix + slug + '-solution.html';
-    if (slug) {
-      return pathPrefix + 'solutions-detail.html?slug=' + encodeURIComponent(slug);
+    if (global.TXAM && global.TXAM.solutionHref) {
+      return global.TXAM.solutionHref(item, pathPrefix);
     }
-    return pathPrefix + 'solutions-detail.html?id=' + encodeURIComponent(item.id);
+    var prefix = pathPrefix == null ? '' : pathPrefix;
+    var slug = item.slug || '';
+    if (slug) return prefix + 'solutions-detail.html?slug=' + encodeURIComponent(slug);
+    return prefix + 'solutions-detail.html?id=' + encodeURIComponent(item.id);
   }
 
   var UI = {
@@ -157,7 +144,7 @@
     );
   }
 
-  var fadeObserver = null;  var fadeObserver = null;
+  var fadeObserver = null;
 
   function observeFadeUps() {
     if (fadeObserver) fadeObserver.disconnect();
@@ -183,8 +170,9 @@
     var html = '<button type="button" id="solution-filter-all" class="' +
       normalClass + ' active text-[#1D1D1F]" data-filter="all">' +
       escapeHtml(allLabel) + '</button>';
-    categories.forEach(function (cat) {
-      var label = (pageFilters && pageFilters[cat]) ? pageFilters[cat] : cat;
+    categories.forEach(function (c) {
+      var cat = c.key;
+      var label = (pageFilters && pageFilters[cat]) ? pageFilters[cat] : c.label;
       html += '<button type="button" class="' +
         normalClass + ' text-[#86868B]" data-filter="' +
         escapeHtml(cat) + '">' +
@@ -193,15 +181,20 @@
     bar.innerHTML = html;
   }
 
+  /**
+   * 收集筛选分类。
+   * label 用数据里已本地化的 category 字段，不再直接把 filterKey（如 "washer"）
+   * 显示给用户 —— 那个键是分类标识，不是可读名称，中文站上还会露出英文。
+   * 注意 filterKey 与 slug 不同是有意为之（如 washer 属于"家电"，filterKey 为 refrigerator）。
+   */
   function collectCategories(items) {
     var seen = {};
     var result = [];
     items.forEach(function (item) {
-      var cat = solutionFilterKey(item);
-      if (cat && !seen[cat]) {
-        seen[cat] = true;
-        result.push(cat);
-      }
+      var key = solutionFilterKey(item);
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      result.push({ key: key, label: item.category || key });
     });
     return result;
   }

@@ -65,9 +65,21 @@ PUBLIC_CACHE_TTL_MS=45000
 # SQLite 路径（相对 server/）与是否同步 data/* 静态快照
 # SQLITE_PATH=./data/txam.db
 # SYNC_JSON_ON_WRITE=1
-# 审计日志保留天数（0 关闭清理，默认 90）
+# 审计日志保留天数（0 关闭清理，默认 90）—— 由 services/audit.js 执行
 # AUDIT_RETENTION_DAYS=90
+# 翻译流水表保留（0 关闭清理）。translation_api_log 每次翻译写一行，
+# translation_job_store 存任务快照，默认 90/60 天 + 行数上限兜底。
+# 清理在启动 1 分钟后跑一次，之后每 12 小时一次；RETENTION_VACUUM=0 可关掉 VACUUM。
+# RETENTION_API_LOG_DAYS=90
+# RETENTION_API_LOG_MAX_ROWS=20000
+# RETENTION_JOB_STORE_DAYS=60
+# RETENTION_JOB_STORE_MAX_ROWS=5000
+# RETENTION_INTERVAL_HOURS=12
+# RETENTION_VACUUM=1
 ```
+
+> 日志清理是"宁可多留"的保守策略；若需长期审计，把天数调大即可，
+> 但别设为 0 —— 这两张表只增不删，一年后备份体积和查询都会明显变差。
 
 - 完整环境变量清单以 `server/.env.example` 为准；**切勿**把真实 `ADMIN_PASSWORD` 提交进 Git。
 - 后台支持多账号 RBAC（4 个角色：超级管理员/内容编辑/翻译运营/只读访客）。首次启动后登录后台「系统管理 → 账号管理」创建团队成员的账号。
@@ -159,7 +171,12 @@ WantedBy=multi-user.target
 1. 备份：`npm run backup-data`
 2. 上传/同步代码（排除 `node_modules`、`_unused-images`、`_backups`、`.git`）。注意：`data/`（JSON/JS 快照）与 `server/data/*.db` 按 `.gitignore` 不进 git，但**必须随整目录一起打包上传**，否则纯 git 拉取会丢失全部内容
 3. `cd server && npm run import`（JSON → SQLite；首次或数据大改用 `import:reset`）
-4. 根目录：`npm run generate-data-js` 与 `npm run generate-sitemap`（或直接 `npm run build`；DB 写入默认也会同步 JSON）
+4. 根目录：`npm run build`
+   - `generate-data-js`：SQLite → `data/**` 快照
+   - `generate-solution-landings`：按数据重写 30 个方案落地页的 SEO 头与正文
+     （**容易漏的一步**：不跑它，后台改的方案内容不会出现在静态页里，搜索引擎看到的仍是旧文案）
+   - `generate-sitemap`：按产品/新闻/方案重写 `sitemap.xml`
+   - 只想体检不改动：`npm run landings:check`，有漂移会退出码 1
 5. 重启 Node（带 `ADMIN_PASSWORD`）
 6. 打开 `https://域名/admin/` 登录；抽查中/英/俄首页与产品详情
 7. 确认 `sitemap.xml` 可访问（域名根）；提交搜索引擎（可选）
