@@ -88,7 +88,14 @@
 
     
 
-    <header class="v3-hero--band">
+    <header class="v3-hero--band v3-hero--band-media">
+        <div class="v3-hero__media" aria-hidden="true">
+            <video autoplay muted loop playsinline preload="metadata" tabindex="-1"
+                   poster="../assets/videos/solutions-poster.webp">
+                <source src="../assets/videos/solutions-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="v3-hero__veil" aria-hidden="true"></div>
     <div class="v3-shell">
 
             <div class="text-[#FF6B00] font-bold text-xs md:text-sm tracking-[0.2em] mb-6 uppercase flex items-center justify-center">
@@ -129,13 +136,13 @@
     </section>
 
     <!-- Solution category filters -->
-    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
+    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 pt-4">
         <div class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center gap-2 pb-2" id="solutions-filter-bar"></div>
     </section>
 
     <!-- P2. Solutions matrix (data-driven) -->
     <section class="pb-32 px-6 md:px-24 min-h-[600px] bg-white">
-        <div id="solutions-list"></div>
+        <div id="solutions-list" class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </section>
 
     <div data-footer-placeholder></div>

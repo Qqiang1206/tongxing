@@ -3,6 +3,16 @@
  * Also maps known hardcoded zh/en/ru titles when attributes are missing.
  */
 (function (global) {
+  // Chrome/Edge 126+ 跨文档 View Transitions（见 tx-view-transitions.css）在过渡被
+  // 跳过/打断时，会抛出一个文档级、无调用方可 catch 的 AbortError unhandled
+  // rejection——已知无害噪音。仅静默该类拒绝，其余照常上报。
+  global.addEventListener('unhandledrejection', function (e) {
+    var r = e.reason;
+    if (r && (r.name === 'AbortError' || /transition/i.test(String(r && r.message || '')))) {
+      e.preventDefault();
+    }
+  });
+
   var FALLBACK_TEXT = {
     coreParams: ['核心参数', 'Core Specifications', 'Основные характеристики'],
     productFeatures: ['产品特点', 'Product Features', 'Особенности продукта'],
@@ -65,16 +75,6 @@
   global.TXAM.initSiteCommon = initSiteCommon;
   global.TXAM.applyCommonLabels = applyCommon;
   global.TXAM.escapeHtml = escapeHtml;
-
-  /**
-   * v3 错落网格节奏：按索引返回卡片形态。
-   * 每 6 张一组 —— #1 横版宽卡、#4 竖版宽卡，其余标准卡；
-   * 纯确定性，筛选重排后节奏依然和谐。
-   */
-  global.TXAM.mosaicMode = function (index) {
-    var m = ((Number(index) || 0) % 6 + 6) % 6;
-    return m === 0 ? 'wide-h' : m === 3 ? 'wide-v' : 'std';
-  };
 
   /**
    * 方案详情页路由 —— 全站唯一入口，禁止在页面脚本里各拼一份。

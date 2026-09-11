@@ -42,12 +42,10 @@
   }
 
   function buildCard(item, index, lang, detailPrefix) {
-    var mode = global.TXAM && global.TXAM.mosaicMode ? global.TXAM.mosaicMode(index) : 'std';
-    var wide = mode !== 'std';
-    var mos = 'tx-mos' + (mode === 'wide-h' ? ' tx-mos--wide-h' : mode === 'wide-v' ? ' tx-mos--wide-v' : '');
+    var mos = 'tx-mos';
     var catKey = filterKey(item, lang);
     var cover = item.image || '';
-    var specs = (item.specs || []).slice(0, wide ? 3 : 2);
+    var specs = (item.specs || []).slice(0, 2);
     var specHtml = specs
       .map(function (s) {
         return '<span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">' +
@@ -66,10 +64,10 @@
       'class="news-card product-item fade-up ' + mos + '" data-category="' + catKey + '">' +
       '<div class="img-container">' + buildProductImage(cover, item.name) + badge + '</div>' +
       '<div class="p-8 flex-grow flex flex-col justify-between bg-white group"><div>' +
-      '<span class="' + (wide ? 'text-[#FF6B00]' : 'text-[#86868B]') + ' text-sm font-mono font-bold mb-4 block">' +
+      '<span class="text-[#86868B] text-sm font-mono font-bold mb-4 block">' +
       escapeHtml(item.model) + '</span>' +
       '<h3 class="text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' + escapeHtml(item.name) + '</h3>' +
-      '<p class="text-[#86868B] ' + (wide ? 'text-base leading-[1.8] line-clamp-2 md:line-clamp-3' : 'text-sm leading-[1.6] line-clamp-2') + ' mb-4">' + escapeHtml(summary) + '</p>' +
+      '<p class="text-[#86868B] text-sm leading-[1.6] line-clamp-2 mb-4">' + escapeHtml(summary) + '</p>' +
       (specHtml ? '<div class="flex flex-wrap gap-2 mt-auto">' + specHtml + '</div>' : '') +
       '</div></div></a>'
     );

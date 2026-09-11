@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script defer src="../assets/js/lang-detect.js"></script>
-    <link rel="preload" as="image" href="../assets/images/products/auto-lamination-001.webp" type="image/webp">
+    <link rel="preload" as="image" href="../assets/videos/products-poster.webp" type="image/webp">
     <meta name="description" content="Центр продуктов TXAM - Дозирование, переворот, закручивание, оптические компоненты, транспортировка, упаковка. 28+ продуктов">
     <meta property="og:title" content="Продукты | TXAM">
     <meta property="og:description" content="28+ единиц автоматического оборудования для TV-дисплеев, бытовой электроники, автомобилей">
@@ -91,7 +91,14 @@
     
 
     <!-- 📍 P1. Заголовок продукции -->
-    <header class="v3-hero--band">
+    <header class="v3-hero--band v3-hero--band-media">
+        <div class="v3-hero__media" aria-hidden="true">
+            <video autoplay muted loop playsinline preload="metadata" tabindex="-1"
+                   poster="../assets/videos/products-poster.webp">
+                <source src="../assets/videos/products-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="v3-hero__veil" aria-hidden="true"></div>
     <div class="v3-shell">
             <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient"><span id="list-hero-title">
                 Матрица интеллектуального производства
@@ -105,7 +112,7 @@
 
 
     <!-- 📍 P2. Фильтр продукции -->
-    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
+    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 pt-4">
         <div id="product-filters" class="max-w-[1400px] mx-auto flex flex-wrap justify-start md:justify-center space-x-2 pb-4 gap-2"><!-- filter buttons rendered by products-list.js from page.filters --></div>
     </section>
 

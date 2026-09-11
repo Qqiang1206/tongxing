@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script defer src="../assets/js/lang-detect.js"></script>
-    <link rel="preload" as="image" href="../assets/images/hero/building-office.webp" type="image/webp">
+    <link rel="preload" as="image" href="../assets/videos/news-poster.webp" type="image/webp">
     <meta name="description" content="Новости TXAM, отраслевая информация, проекты - узнавайте о развитии автоматизации">
     <meta property="og:title" content="Новости | TXAM">
     <meta property="og:description" content="Корпоративные новости, отраслевые тенденции, проекты">
@@ -88,7 +88,14 @@
 
     
 
-    <header class="v3-hero--band">
+    <header class="v3-hero--band v3-hero--band-media">
+        <div class="v3-hero__media" aria-hidden="true">
+            <video autoplay muted loop playsinline preload="metadata" tabindex="-1"
+                   poster="../assets/videos/news-poster.webp">
+                <source src="../assets/videos/news-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="v3-hero__veil" aria-hidden="true"></div>
     <div class="v3-shell">
             <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient"><span id="list-hero-title">
                 Аналитика переднего края автоматизации
@@ -101,7 +108,7 @@
 </header>
 
 
-    <section class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
+    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 pt-4">
         <div class="max-w-[1400px] mx-auto flex justify-start md:justify-center overflow-x-auto hide-scrollbar space-x-2 md:space-x-4 pb-4">
             <button class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">Все новости</button>
             <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="company">Новости компании</button>

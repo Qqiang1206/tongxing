@@ -117,6 +117,19 @@ body {
     line-height: var(--leading-normal);
 }
 
+/* 全局滚动条：隐藏原生条（Windows 下宽轨道 + 箭头，观感廉价）。
+ * 页面仍可正常滚动（滚轮 / 触控板 / 键盘 / 拖动惯性）；仅去掉视觉条。 */
+html {
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* 旧 Edge */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;              /* Chrome / Edge / Safari */
+    width: 0;
+    height: 0;
+}
+
 /* Typography System - Fluid Type Scale
  *
  * Hierarchy (keep channel H1 largest; everything else one step quieter):
@@ -1585,12 +1598,12 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     box-shadow: 0 8px 32px rgba(16, 18, 22, 0.06);
 }
 .txnav__inner {
-    /* 三段网格：logo 左 · 菜单在剩余空间内居中 · CTA 右
-     * 菜单居中于 logo 与 CTA 的中点 —— 左右间隙恒等，三语版式一致 */
+    /* 三段网格：logo 居左 · 菜单在剩余空间内居中 · CTA 居右
+     * 菜单居中于 logo 与 CTA 的中线——左右间隙恒等，三语版式一致 */
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    height: 76px;
+    height: 88px;
 }
 .txnav__brand {
     justify-self: start;
@@ -1698,6 +1711,14 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 .txnav__burger[aria-expanded="true"] i:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .txnav__burger[aria-expanded="true"] i:nth-child(2) { opacity: 0; }
 .txnav__burger[aria-expanded="true"] i:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* 列表页筛选栏：吸附在固定导航（88px）下方，滚动时跟随；白底防止卡片透出 */
+#filter-section {
+    position: sticky;
+    top: 88px;
+    z-index: 40;
+    background-color: var(--tx-bg, #fff);
+}
 
 /* Full-screen mobile sheet */
 .txnav-sheet {
@@ -2117,53 +2138,12 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
     opacity: 1;
 }
 
-/* ---------- 三大列表页 · 错落式杂志网格（Bento, v3） ----------
- * 节奏由 TXAM.mosaicMode(index) 决定：每 6 张一组，
- * #1 横版宽卡（跨2列·左图右文）、#4 竖版宽卡（跨2列·16:9大图），
- * 其余标准卡（4:3）。dense 自动填缝，筛选后重排依然和谐。 */
-[data-ui="v3"] #news-grid,
-[data-ui="v3"] #product-grid,
-[data-ui="v3"] #solutions-list {
-    grid-auto-flow: dense;
-}
+/* ---------- 三大列表页 · 统一卡片网格（v3） ----------
+ * 全部标准卡（4:3 图 + 文案区），三列整齐等高。
+ * 历史：曾为 Bento 错落网格（TXAM.mosaicMode 决定宽卡节奏），已统一。 */
 [data-ui="v3"] .tx-mos .img-container {
     height: auto;
     aspect-ratio: 4 / 3;
-}
-[data-ui="v3"] .tx-mos--wide-v {
-    grid-column: span 2;
-}
-[data-ui="v3"] .tx-mos--wide-v .img-container {
-    aspect-ratio: 16 / 9;
-}
-[data-ui="v3"] .tx-mos--wide-h {
-    grid-column: span 2;
-    flex-direction: row;
-    align-items: stretch;
-}
-[data-ui="v3"] .tx-mos--wide-h .img-container {
-    width: 55%;
-    flex: 0 0 55%;
-    min-height: 320px;
-    aspect-ratio: auto;
-}
-[data-ui="v3"] .tx-mos--wide-h > div:last-child {
-    flex: 1 1 auto;
-}
-@media (max-width: 767px) {
-    [data-ui="v3"] .tx-mos--wide-h,
-    [data-ui="v3"] .tx-mos--wide-v {
-        grid-column: auto;
-    }
-    [data-ui="v3"] .tx-mos--wide-h {
-        flex-direction: column;
-    }
-    [data-ui="v3"] .tx-mos--wide-h .img-container {
-        width: 100%;
-        flex-basis: auto;
-        min-height: 0;
-        aspect-ratio: 4 / 3;
-    }
 }
 
 /* ---------- 列表页章节式 hero（复用首页视频，高度约为首页 6 成） ---------- */
@@ -2215,6 +2195,86 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 }
 @media (max-width: 767px) {
     .v3-hero--band { padding: 128px 0 40px; }
+}
+
+/* ---------- 内页标题带 × 主题视频（v3-hero--band-media）----------
+ * 在 band 基础上叠加满幅视频背景（复用首页 .v3-hero__media/__veil 分层），
+ * 白雾压字保持深色标题可读；接近满屏 + 内容垂直居中，对齐首页的沉浸仪式感。
+ * 视频在系统"减少动态效果"时由 site-common.js 暂停，显示 poster 静态封面。 */
+.v3-hero--band-media {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 大屏封顶：避免 4K/超长屏上首屏被拉成"巨幕"，第二屏被完全推出视口 */
+    min-height: min(86vh, 840px);
+    min-height: min(86svh, 840px);
+    padding: 120px 0 88px;
+    background: none;
+}
+/* 首屏与内容区之间的过渡呼吸：避免视频渐白后紧贴第二屏 */
+.v3-hero--band-media + section {
+    margin-top: 2.5rem;
+}
+/* 抵消内容容器自带的 Tailwind pt/pb，由 band 统一控制垂直节奏 */
+.v3-hero--band-media .v3-shell {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.v3-hero--band-media .text-display {
+    font-size: clamp(2.75rem, 7vw, 6rem);
+}
+.v3-hero--band-media h1 {
+    margin-bottom: 2.25rem;
+}
+.v3-hero--band-media [id$="-lead"] {
+    color: #55555b;
+}
+.v3-hero--band-media .v3-hero__veil {
+    /* 满屏高度下重新分配白雾：中部略透出画面，文字区保持可读，底部从容渐隐 */
+    background:
+        linear-gradient(180deg,
+            rgba(255, 255, 255, 0.88) 0%,
+            rgba(255, 255, 255, 0.56) 26%,
+            rgba(255, 255, 255, 0.32) 48%,
+            rgba(255, 255, 255, 0.46) 66%,
+            rgba(250, 251, 253, 0.78) 84%,
+            var(--tx-bg) 100%);
+}
+/* 底部滚动提示：一条呼吸的细线，暗示"向下还有内容" */
+.v3-hero--band-media::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+    width: 1px;
+    height: 44px;
+    background: linear-gradient(180deg, rgba(29, 29, 31, 0), rgba(29, 29, 31, 0.38));
+    transform: translateX(-50%);
+    animation: band-scroll-cue 2.4s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes band-scroll-cue {
+    0%, 100% { opacity: 0.35; transform: translateX(-50%) scaleY(0.9); }
+    50% { opacity: 1; transform: translateX(-50%) scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .v3-hero--band-media::after { animation: none; opacity: 0.5; }
+}
+@media (max-width: 767px) {
+    .v3-hero--band-media {
+        min-height: min(76vh, 620px);
+        min-height: min(76svh, 620px);
+        padding: 96px 0 64px;
+    }
+    .v3-hero--band-media::after { bottom: 20px; height: 32px; }
+}
+@media (max-width: 480px) {
+    .v3-hero--band-media .text-display {
+        font-size: clamp(2.1rem, 11vw, 2.75rem);
+    }
 }
 
 /* ---------- 页面过渡体系（v3，规格见 .fade-up 基类注释）---------- */

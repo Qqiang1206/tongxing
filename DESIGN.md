@@ -335,16 +335,24 @@ npm run build:css
 | 页面 | 文件 | 来源（Mixkit，免费下载） | 时长/体积 |
 |---|---|---|---|
 | 首页 | hero-loop.mp4 | Pexels 32386532 | 19.2s / 3.5MB |
-| 解决方案 | solutions-loop.mp4 | Mixkit "Robot working in a production line" (47257) | 16s / 2.7MB |
-| 产品中心 | products-loop.mp4 | Mixkit "Mechanical machinery working close up" (17675) | 16s / 1.6MB |
-| 新闻中心 | news-loop.mp4 | Mixkit "Industrial manufacturing factory from above" (14631) | 16s / 3.5MB |
-| 关于我们 | about-loop.mp4 | Mixkit "Working in a electronics factory" (22033) | 11.5s / 2.6MB |
+| 解决方案 | solutions-loop.mp4 | Mixkit "Automated machine places parts on circuit boards" (47266) | 16s / 4.2MB |
+| 产品中心 | products-loop.mp4 | Mixkit "Parcels on a conveyor belt" (20770) | 16s / 2.2MB |
+| 新闻中心 | news-loop.mp4 | 首页 hero-loop 的 720p 转码版（2026-09-11 与联系页对调） | 19.2s / 2.4MB |
+| 关于我们 | about-loop.mp4 | Mixkit "Electrical workers walking on the hallway" (23696) | 16s / 4.2MB |
+| 联系我们 | contact-loop.mp4 | Mixkit "Open office space" (914)（2026-09-11 与新闻页对调） | 16s / 3.6MB |
+
+> 2026-09-11 换素材：原 47257/17675/14631/22033 与页面主题不符（航拍化工厂用于新闻、
+> 手部特写用于产品等），经用户从候选预览页选定上述素材；同日新闻中心 ↔ 联系我们 对调
+> （新闻用产线机械臂、联系用办公场景）。旧文件备份于 `_backups/videos-20260911/`
+> （同时 git 可回滚）。
+> 同日内页白雾层 `.v3-hero--band-media .v3-hero__veil` 中部浓度 0.58 → 0.32（顶部
+> 0.92 → 0.88、其余同比下调），改善"太白发灰"、提升视频可见度，文字对比度保持。
 
 - 全部 1280×720/30fps、正放+倒放乒乓无缝循环、≤5MB、无音频。
 - ⚠️ 授权状态：Mixkit 免费下载的 720p 产物标注 **Restricted License（仅限个人使用）**，
   商用需向 Envato/Mixkit 购买授权或后续替换为可商用素材。站点所有者已知悉并决定先行使用。
-- 偏暗素材已在转码时做 gamma 亮度适配（products 1.8 / news 1.25 / about 1.3），
-  成片亮度 131–136，与首页（158）同属明亮基调。
+- 偏暗素材已在转码时做 gamma 亮度适配（solutions 2.07 / products 1.29 / news 1.31 / about 1.24），
+  成片亮度 131–150，与首页（158）同属明亮基调。
 - 关于页：CMS 轮播首图作为视频海报（后台换图即换加载画面）。
 
 ## 12. 安全加固批次记录（2026-09-04 开始，按批次推进）

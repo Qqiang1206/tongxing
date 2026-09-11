@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <script defer src="../assets/js/lang-detect.js"></script>
     <link rel="preload" as="image" type="image/webp"
-          href="../assets/images/hero/szgc1.webp"
-          imagesrcset="../assets/images/hero/szgc1-960.webp 960w, ../assets/images/hero/szgc1.webp 1600w"
-          imagesizes="(max-width: 768px) 100vw, min(1200px, 92vw)">
+          href="../assets/videos/about-poster.webp">
     <meta name="description" content="TXAM founded in Shenzhen, 19 years focused on non-standard automation equipment. One-stop smart equipment service for world-class enterprises">
 <meta property="og:title" content="About Us | TXAM">
 <meta property="og:description" content="Learn about TXAM's development history, core patents and global customer cases">
@@ -94,7 +92,14 @@
     
 
     <!-- 📍 P1. Brand Introduction -->
-    <header class="v3-hero--band">
+    <header class="v3-hero--band v3-hero--band-media">
+        <div class="v3-hero__media" aria-hidden="true">
+            <video autoplay muted loop playsinline preload="metadata" tabindex="-1"
+                   poster="../assets/videos/about-poster.webp">
+                <source src="../assets/videos/about-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="v3-hero__veil" aria-hidden="true"></div>
     <div class="v3-shell">
         <h1 id="about-hero-title" class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
                 19 Years Focused on<br>Intelligent Manufacturing

@@ -5,9 +5,7 @@
     <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-sans-sc-site.woff2" crossorigin>
 <script defer src="assets/js/lang-detect.js"></script>
     <link rel="preload" as="image" type="image/webp"
-          href="assets/images/hero/szgc1.webp"
-          imagesrcset="assets/images/hero/szgc1-960.webp 960w, assets/images/hero/szgc1.webp 1600w"
-          imagesizes="(max-width: 768px) 100vw, min(1200px, 92vw)">
+          href="assets/videos/about-poster.webp">
     <meta name="description" content="同兴高科创立于深圳，19年专注非标自动化设备制造，为世界一流企业提供智能装备一站式服务">
     <meta property="og:title" content="关于我们 | 同兴高科 TXAM">
     <meta property="og:description" content="了解同兴高科的发展历程、核心专利技术和全球客户案例">
@@ -95,7 +93,14 @@
     
 
     <!-- 📍 P1. 品牌介绍 -->
-    <header class="v3-hero--band">
+    <header class="v3-hero--band v3-hero--band-media">
+        <div class="v3-hero__media" aria-hidden="true">
+            <video autoplay muted loop playsinline preload="metadata" tabindex="-1"
+                   poster="assets/videos/about-poster.webp">
+                <source src="assets/videos/about-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="v3-hero__veil" aria-hidden="true"></div>
     <div class="v3-shell">
         <h1 id="about-hero-title" class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient">
                 19年只做智造

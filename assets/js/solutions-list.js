@@ -95,15 +95,13 @@
    */
   function buildRow(item, index, lang, pathPrefix) {
     if (item.id == null) return '';
-    var mode = global.TXAM && global.TXAM.mosaicMode ? global.TXAM.mosaicMode(index) : 'std';
-    var wide = mode !== 'std';
-    var mos = 'tx-mos' + (mode === 'wide-h' ? ' tx-mos--wide-h' : mode === 'wide-v' ? ' tx-mos--wide-v' : '');
+    var mos = 'tx-mos';
     var ui = UI[lang] || UI.zh;
     var num = String(index + 1).padStart(2, '0');
     var href = solutionHref(item, pathPrefix);
     var specs = item.specs || [];
     var kpi = specs[0] || '';
-    var feats = specs.slice(1, wide ? 4 : 3);
+    var feats = specs.slice(1, 3);
     var summary = item.summary || item.desc || '';
 
     var featHtml = feats
@@ -128,7 +126,7 @@
         : '') +
       '</div>' +
       '<div class="p-8 flex-grow flex flex-col justify-between bg-white group"><div>' +
-      '<span class="' + (wide ? 'text-[#FF6B00]' : 'text-[#86868B]') + ' text-sm font-mono font-bold mb-4 block">' +
+      '<span class="text-[#86868B] text-sm font-mono font-bold mb-4 block">' +
       escapeHtml(ui.label) +
       ' ' +
       num +
@@ -136,7 +134,7 @@
       '<h3 class="text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' +
       escapeHtml(item.name) +
       '</h3>' +
-      '<p class="text-[#86868B] ' + (wide ? 'text-base leading-[1.8] line-clamp-2 md:line-clamp-3' : 'text-sm leading-[1.6] line-clamp-2') + ' mb-4">' +
+      '<p class="text-[#86868B] text-sm leading-[1.6] line-clamp-2 mb-4">' +
       escapeHtml(summary) +
       '</p>' +
       (featHtml ? '<div class="flex flex-wrap gap-2 mt-auto">' + featHtml + '</div>' : '') +

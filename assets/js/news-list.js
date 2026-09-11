@@ -71,8 +71,6 @@
   }
 
   function buildCard(item, index, detailPrefix) {
-    var featured = index === 0;
-
     var catKey = categoryKey(item);
 
     var isIndustry = catKey === 'industry';
@@ -83,30 +81,17 @@
 
       : 'bg-white/95 backdrop-blur-md text-[#1D1D1F] border border-gray-100';
 
-    var imgHeight = featured ? 'h-64 md:h-80' : 'h-64';
+    var imgHeight = '';
 
-    var padding = featured ? 'p-8 md:p-10' : 'p-8';
+    var padding = 'p-8';
 
-    var titleClass = featured
+    var titleClass = 'text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight';
 
-      ? 'text-h3 font-bold text-[#1D1D1F] mb-4 group-hover:text-[#FF6B00] transition-colors leading-tight'
+    var dateClass = 'text-[#86868B] text-sm font-mono mb-4 block';
 
-      : 'text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight';
+    var excerptClass = 'text-[#86868B] text-sm leading-[1.6] line-clamp-3';
 
-    var dateClass = featured
-
-      ? 'text-[#FF6B00] text-sm font-mono font-bold mb-4 block'
-
-      : 'text-[#86868B] text-sm font-mono mb-4 block';
-
-    var excerptClass = featured
-
-      ? 'text-[#86868B] text-base leading-[1.8] line-clamp-2 md:line-clamp-3'
-
-      : 'text-[#86868B] text-sm leading-[1.6] line-clamp-3';
-
-    var mode = global.TXAM && global.TXAM.mosaicMode ? global.TXAM.mosaicMode(index) : 'std';
-    var spanClass = 'tx-mos' + (mode === 'wide-h' ? ' tx-mos--wide-h' : mode === 'wide-v' ? ' tx-mos--wide-v' : '');
+    var spanClass = 'tx-mos';
 
     var cover = item.cover || '';
 

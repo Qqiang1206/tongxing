@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-sans-sc-site.woff2" crossorigin>
 <script defer src="assets/js/lang-detect.js"></script>
-    <link rel="preload" as="image" href="assets/images/hero/building-office.webp" type="image/webp">
+    <link rel="preload" as="image" href="assets/videos/news-poster.webp" type="image/webp">
     <meta name="description" content="同兴高科企业动态、行业资讯、项目纪实-了解自动化行业最新发展">
     <meta property="og:title" content="新闻中心 | 同兴高科 TXAM">
     <meta property="og:description" content="企业资讯、行业动态、项目案例">
@@ -90,7 +90,14 @@
     <!-- 📱 手机下拉菜单 -->
     
 
-    <header class="v3-hero--band">
+    <header class="v3-hero--band v3-hero--band-media">
+        <div class="v3-hero__media" aria-hidden="true">
+            <video autoplay muted loop playsinline preload="metadata" tabindex="-1"
+                   poster="assets/videos/news-poster.webp">
+                <source src="assets/videos/news-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="v3-hero__veil" aria-hidden="true"></div>
     <div class="v3-shell">
             <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient"><span id="list-hero-title">
                 洞察前沿智造
@@ -104,7 +111,7 @@
 
 
     <!-- 📍 P2. 分类筛选器 -->
-    <section class="pb-4 md:pb-10 px-4 md:px-24 sticky top-[122px] z-40 bg-transparent pt-4 left-0 right-0">
+    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 pt-4">
         <div class="max-w-[1400px] mx-auto flex justify-start md:justify-center overflow-x-auto hide-scrollbar space-x-2 md:space-x-4 pb-4">
             <button class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">全部新闻</button>
             <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="company">公司新闻</button>
