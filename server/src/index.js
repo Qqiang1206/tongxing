@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { URL } from 'url';
-import { config, resolveCorsOrigin, REPO_ROOT } from './config.js';
+import { config, resolveCorsOrigin, securityHeaders, REPO_ROOT } from './config.js';
 import { catalog } from './services/catalog.js';
 import { handleAdmin } from './admin.js';
 import { getDb, dbPathForHealth } from './db.js';
@@ -70,6 +70,7 @@ function sendJson(res, status, body, origin) {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    ...securityHeaders(),
   });
   res.end(payload);
 }
@@ -80,15 +81,19 @@ function parseQuery(url) {
   return q;
 }
 
-function serveRepoFile(res, rootDir, relPath, origin, cacheControl = 'no-cache') {
+function serveRepoFile(req, res, rootDir, relPath, origin, cacheControl = 'no-cache') {
   const root = path.resolve(rootDir);
   const filePath = path.resolve(root, relPath);
   if (!filePath.startsWith(root + path.sep) && filePath !== root) {
     return false;
   }
-  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+  let stat;
+  try {
+    stat = fs.statSync(filePath);
+  } catch {
     return false;
   }
+  if (!stat.isFile()) return false;
   const ext = path.extname(filePath).toLowerCase();
   const types = {
     '.html': 'text/html; charset=utf-8',
@@ -111,18 +116,23 @@ function serveRepoFile(res, rootDir, relPath, origin, cacheControl = 'no-cache')
     '.txt': 'text/plain; charset=utf-8',
     '.xml': 'application/xml; charset=utf-8',
   };
-  const data = fs.readFileSync(filePath);
+  // 流式发送：不把整个文件读进内存，避免大文件/并发时阻塞事件循环
   res.writeHead(200, {
     'Content-Type': types[ext] || 'application/octet-stream',
     'Access-Control-Allow-Origin': origin,
     'Cache-Control': cacheControl,
-    'X-Content-Type-Options': 'nosniff',
+    'Content-Length': stat.size,
+    ...securityHeaders(req),
   });
-  res.end(data);
+  const stream = fs.createReadStream(filePath);
+  stream.on('error', () => {
+    try { res.destroy(); } catch { /* ignore */ }
+  });
+  stream.pipe(res);
   return true;
 }
 
-function serveAdminStatic(res, pathname, origin) {
+function serveAdminStatic(req, res, pathname, origin) {
   const rel = pathname === '/admin' || pathname === '/admin/'
     ? 'index.html'
     : pathname.replace(/^\/admin\//, '');
@@ -130,10 +140,10 @@ function serveAdminStatic(res, pathname, origin) {
     sendJson(res, 403, { error: 'forbidden' }, origin);
     return true;
   }
-  return serveRepoFile(res, ADMIN_DIR, rel, origin, 'no-store');
+  return serveRepoFile(req, res, ADMIN_DIR, rel, origin, 'no-store');
 }
 
-function serveSiteAsset(res, pathname, origin) {
+function serveSiteAsset(req, res, pathname, origin) {
   if (!pathname.startsWith('/assets/')) return false;
   const rel = pathname.replace(/^\/assets\//, '');
   if (rel.includes('..')) {
@@ -145,10 +155,10 @@ function serveSiteAsset(res, pathname, origin) {
     : rel.startsWith('images/')
       ? 'public, max-age=2592000'
       : 'no-cache'; /* css/js 会随改版更新，必须每次校验，避免访客端 7 天旧样式 */
-  return serveRepoFile(res, ASSETS_DIR, rel, origin, cacheControl);
+  return serveRepoFile(req, res, ASSETS_DIR, rel, origin, cacheControl);
 }
 
-function serveDataPublic(res, pathname, origin) {
+function serveDataPublic(req, res, pathname, origin) {
   if (!pathname.startsWith('/data/')) return false;
   const rel = pathname.replace(/^\/data\//, '');
   if (rel.includes('..') || rel.includes('meta/')) {
@@ -160,7 +170,7 @@ function serveDataPublic(res, pathname, origin) {
     sendJson(res, 403, { error: 'forbidden' }, origin);
     return true;
   }
-  return serveRepoFile(res, DATA_PUBLIC_DIR, rel, origin, 'no-cache');
+  return serveRepoFile(req, res, DATA_PUBLIC_DIR, rel, origin, 'no-cache');
 }
 
 function isBlockedSitePath(rel) {
@@ -169,7 +179,7 @@ function isBlockedSitePath(rel) {
 }
 
 /** Serve static corporate site from repo root (HTML, css, etc.). */
-function serveSiteStatic(res, pathname, origin) {
+function serveSiteStatic(req, res, pathname, origin) {
   let rel = pathname === '/' ? 'index.html' : pathname.replace(/^\//, '');
   if (rel.endsWith('/')) rel += 'index.html';
   if (isBlockedSitePath(rel) || rel.includes('..')) {
@@ -183,8 +193,8 @@ function serveSiteStatic(res, pathname, origin) {
   const cacheControl = (ext === '.html' || ext === '.js')
     ? 'no-cache'
     : 'public, max-age=60';
-  if (!serveRepoFile(res, REPO_ROOT, rel, origin, cacheControl)) {
-    if (!path.extname(rel) && serveRepoFile(res, REPO_ROOT, `${rel}.html`, origin, 'no-cache')) {
+  if (!serveRepoFile(req, res, REPO_ROOT, rel, origin, cacheControl)) {
+    if (!path.extname(rel) && serveRepoFile(req, res, REPO_ROOT, `${rel}.html`, origin, 'no-cache')) {
       return true;
     }
     return false;
@@ -348,19 +358,19 @@ const server = http.createServer((req, res) => {
     return;
   }
   if (rawPath === '/admin/' || rawPath.startsWith('/admin/')) {
-    if (req.method === 'GET' && serveAdminStatic(res, rawPath, origin)) return;
+    if (req.method === 'GET' && serveAdminStatic(req, res, rawPath, origin)) return;
     sendJson(res, 404, { error: 'not_found' }, origin);
     return;
   }
 
   if (pathname.startsWith('/assets/') && req.method === 'GET') {
-    if (serveSiteAsset(res, pathname, origin)) return;
+    if (serveSiteAsset(req, res, pathname, origin)) return;
     sendJson(res, 404, { error: 'not_found' }, origin);
     return;
   }
 
   if (pathname.startsWith('/data/') && req.method === 'GET') {
-    if (serveDataPublic(res, pathname, origin)) return;
+    if (serveDataPublic(req, res, pathname, origin)) return;
     sendJson(res, 404, { error: 'not_found' }, origin);
     return;
   }
@@ -421,10 +431,10 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'GET') {
-    if (serveSiteStatic(res, rawPath, origin)) return;
+    if (serveSiteStatic(req, res, rawPath, origin)) return;
     // 404: serve HTML page for browser requests, JSON for API
     if (req.headers.accept && req.headers.accept.includes('text/html')) {
-      serveRepoFile(res, REPO_ROOT, '404.html', origin, 'no-cache');
+      serveRepoFile(req, res, REPO_ROOT, '404.html', origin, 'no-cache');
       return;
     }
   }
@@ -437,12 +447,18 @@ server.headersTimeout = 20000;
 server.requestTimeout = 30000;
 server.keepAliveTimeout = 10000;
 server.connectionsCheckingInterval = 30000;
-// 兜底记录（不吞错、保持进程存活的策略按小型站点权衡从宽）
+// 兜底策略：不再"只打印后带病继续服务"。
+// uncaughtException 意味着进程状态已不可信，记录完整堆栈后主动退出，
+// 由 scripts/watchdog.mjs 在 1~30s 内重新拉起（退避重启）。
+// unhandledRejection 多数是非致命的（单个请求失败），只记录不重启，避免抖动循环。
 process.on('unhandledRejection', (err) => {
-  console.error('[server] unhandledRejection:', err && err.message);
+  console.error('[server] unhandledRejection:', err && err.stack ? err.stack : err);
 });
 process.on('uncaughtException', (err) => {
-  console.error('[server] uncaughtException:', err && err.message);
+  console.error('[server] uncaughtException:', err && err.stack ? err.stack : err);
+  try { server.close(); } catch { /* ignore */ }
+  // 给在途请求 1s 宽限期，随后强制退出；unref 保证无连接时立即退出
+  setTimeout(() => process.exit(1), 1000).unref();
 });
 
 server.listen(config.port, config.host, () => {

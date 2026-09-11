@@ -213,10 +213,21 @@
       var alt = escapeHtml(item.imageAlt || '');
       return (
         '<div class="client-card h-28 bg-white border border-[#E5E5EA] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">' +
-          '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="max-h-full max-w-full client-logo" onerror="this.parentElement.style.display=\'none\'">' +
+          '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="max-h-full max-w-full client-logo">' +
         '</div>'
       );
     }).join('');
+
+    // 加载失败的 logo 隐藏整张卡片。
+    // 这里不能用内联 onerror 属性：开启 CSP 后内联事件处理器会被浏览器拦截。
+    Array.prototype.forEach.call(grid.querySelectorAll('img.client-logo'), function (img) {
+      function hide() {
+        if (img.parentElement) img.parentElement.style.display = 'none';
+      }
+      img.addEventListener('error', hide);
+      // 图片可能在绑定监听前就已失败（缓存/404），补判一次
+      if (img.complete && img.naturalWidth === 0) hide();
+    });
   }
 
   async function initAboutPage(options) {

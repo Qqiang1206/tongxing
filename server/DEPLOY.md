@@ -37,6 +37,13 @@ PORT=3000
 ADMIN_PASSWORD=换成足够长的随机密码
 # 本地开发想放宽口令强度时设为 1；生产务必删除或设为 0
 # ALLOW_WEAK_CREDENTIALS=0
+# CSP 模式：enforce（默认，正式拦截）/ report（只上报不阻断，上线前先观察一轮）
+#          / off（等价 CSP_ENABLED=0，完全不下发 CSP 头）
+# CSP_MODE=report
+# 需要额外外部资源时追加源，多个空格分隔
+# CSP_EXTRA=https://example.com
+# 覆盖 X-Frame-Options（默认 SAMEORIGIN）
+# FRAME_OPTIONS=SAMEORIGIN
 # 首次启动时会自动创建 super_admin 账号，用户名默认 admin
 ADMIN_USERNAME=admin        # 可选，自定义初始管理员用户名
 ADMIN_DISPLAY_NAME=超级管理员  # 可选
@@ -213,7 +220,37 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 | Admin 密码 | 强密码（≥10 位、非纯数字、非常见弱口令、不与账号同名），仅环境变量；后台建号/改密在服务端强制校验 |
 | 上传目录 | `assets/images/uploads/` 可写但勿执行脚本 |
 | CORS | 生产改为具体站点 Origin，支持逗号分隔多源；勿长期 `*`。非白名单请求回落到第一个允许源（浏览器会拒绝跨域读取） |
+| 安全响应头 | Node 与 IIS 双层下发 `nosniff` / `Referrer-Policy` / `X-Frame-Options` / `Permissions-Policy` / CSP；HSTS 待 HTTPS 就绪后开启 |
 | 备份 | 后台写入前每 15 分钟自动备份；也可跑 `backup-data`。备份含 SQLite、静态数据和上传图片，`_backups` 勿暴露 Web |
+
+### 响应头与 CSP 注意事项
+
+- **两层都要配**：IIS 直接托管 HTML/CSS/JS（不经过 Node），所以安全头在 `web.config` 的
+  `<httpProtocol><customHeaders>` 里也下发了一份；`/api`、`/admin` 经 ARR 反代由 Node 下发。
+  两边取值保持一致，改一处记得改另一处。
+- **CSP 已放行高德地图**：`contact.html`（中/英/俄）加载 `webapi.amap.com`，
+  地图还会拉瓦片图、接口和字体，因此 `script-src/img-src/connect-src/font-src/style-src`
+  都放行了 `webapi.amap.com`、`*.amap.com`、`*.autonavi.com`。**若以后换地图供应商，CSP 要同步改。**
+- **内联事件属性不能用**：CSP 的 `'unsafe-inline'` 只覆盖 `<script>`/`<style>`，
+  **不覆盖 `onclick="…"`、`onerror="…"` 这类内联事件属性**（会被拦截）。
+  例如 `about-page.js` 里客户 Logo 的失败隐藏已改成 `addEventListener('error', …)`。
+  新写代码请一律用事件绑定。
+- **上线前建议先跑一轮 `CSP_MODE=report`**：只上报不拦截，浏览器控制台能看到被拦的资源，
+  确认无误后再切回默认的 `enforce`。出问题可以 `CSP_ENABLED=0` 一键关闭。
+- **HSTS 默认只在确认 HTTPS 后下发**（依据 `x-forwarded-proto`），避免 HTTP 环境把站点锁死。
+  `web.config` 里的 HSTS 行是注释状态，证书就绪后再放开。
+
+### IIS 静态缓存
+
+`web.config` 的 `<staticContent>` 给静态文件设了 365 天缓存，这会让改版后访客端一直拿到旧页面。
+已用 `outboundRules` 对 `.html` / `.js` 覆盖为 `no-cache`；图片、字体、CSS 仍走长缓存。
+若发现改版不生效，优先检查这条规则是否生效（也可直接在 IIS 管理器里看响应头）。
+
+### 高德地图 Key
+
+`contact.html`（含 `/en/`、`/ru/`）硬编码了高德 Web 端 Key。Web 端 Key 暴露在前端属于正常用法，
+但**务必在高德开放平台后台配置域名白名单和每日调用配额**，否则被他人盗用会产生费用。
+（历史告警：该 Key 明文出现在三个页面的 HTML 里。）
 | 操作日志 | 写操作与登录写入 `admin_audit_log`；默认保留 90 天（`AUDIT_RETENTION_DAYS`）；不含密码与上传二进制 |
 
 **并发访问禁忌**：SQLite 服务运行期间，不要用其他进程直接写同一个 `txam.db`，尤其避免 WSL 与 Windows 两侧不同 SQLite 版本同时读写；备份恢复/替换数据库文件后**必须重启 Node 服务**，否则运行中的进程可能读到不一致视图（表现为 `database disk image is malformed`）。
