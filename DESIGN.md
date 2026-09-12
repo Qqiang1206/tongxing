@@ -433,6 +433,15 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
   - 获取要点：`upload.wikimedia.org` 直链易触发 429，用
     `https://commons.wikimedia.org/wiki/Special:FilePath/<文件名>` 更稳；
     Commons 偶有 UTF-16 编码 SVG，sharp 不识别，需先转 UTF-8。
+- **Logo 尺寸统一（二次修正）**：用户反馈"大大小小不一致"。根因是 `object-fit: contain`
+  下宽 logo 被容器宽度限制而变矮（Skyworth 比例 7.2 → 字高只有窄 logo 的 60%）。
+  解法：把所有 logo 预渲染到**统一画布 720×100**（宽高比 = 最宽 logo 比例），每个 logo
+  占满画布高度、水平居中。画布尺寸一致 ⇒ `contain` 在任何容器里都等比渲染 ⇒ 字高全站一致。
+  配套：首页磁贴 `height:46px` + `padding:.7rem .9rem`（内容区比例 ≈7.08，接近画布 7.2）；
+  移动端改 2 列（3 列时字高只剩 ~11px）。
+  注意：堆叠式方形 logo（如 HUAKETEK）字高与其他一致，但视觉面积天然偏小，属正常。
+- **缓存穿透**：素材沿用同名文件时浏览器会继续用旧图（用户反馈"还是旧方块"）。
+  首页 12 个 `<img>` 与 about 页数据均加 `?v=20260912`（`patch-client-logos.mjs` 负责后者）。
 - band hero 正文：`#55555b` → `--tx-ink-mid` + 白色柔光 text-shadow（视频底更亮）；
   内容区补 `text-align:center`，与首页 hero 对齐。移动端 hero 双 CTA 等宽。
 - 修 bug：6 个根页 `../assets/css/tx-view-transitions.css` 越出根目录 404 → `assets/css/...`。

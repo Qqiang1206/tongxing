@@ -1352,16 +1352,17 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 }
 
 /* Client logo wall — uniform tiles so 12 mixed-shape logos read as one grid.
- * Source logos are opaque (some are solid colour blocks, aspect 0.9–8.2),
- * so each sits in an equal mist tile and is contained inside it. */
+ * Assets are pre-normalised onto a shared 720x100 canvas (identical letter
+ * height + identical aspect), so object-fit:contain renders every logo at the
+ * same visual height in any container. */
 .v3-logos {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.7rem;
 }
 @media (min-width: 640px) {
     .v3-logos {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0.85rem;
     }
 }
@@ -1374,9 +1375,10 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 .v3-logos img {
     box-sizing: border-box;
     width: 100%;
-    height: 68px;
-    padding: 0.95rem 0.9rem;
+    height: 46px;
+    padding: 0.7rem 0.9rem;
     object-fit: contain;
+    object-position: center;
     background: var(--tx-mist-50);
     border: 1px solid var(--tx-hairline);
     border-radius: 14px;
@@ -1390,6 +1392,13 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     opacity: 1;
     background: #fff;
     border-color: rgba(255, 107, 0, 0.35);
+}
+
+/* 关于页客户墙：同一套画布资源，白卡片内保持等比 */
+.client-logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }
 
 /* ---------- Glass surfaces ---------- */
