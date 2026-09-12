@@ -284,7 +284,7 @@ focus 光圈、选中文字色），不再出现在大面积色块。
   自托管于 `assets/videos/`，不外链 CDN。
 - 白雾层 `.v3-hero__veil` 顶部 0.90 → 中部 0.26 → 底部归入 `--tx-bg`，保证明亮基调
   与墨黑大字对比度；站点所有者明确选择：该装饰性氛围视频不受系统「减少动效」偏好影响，始终静音自动播放；该偏好仍作用于 fade-up 等入场动画（styles.css 已处理）。
-- 客户 logo 墙 `.v3-logos`（灰度 50% → hover 显色）。
+- 客户 logo 墙 `.v3-logos`（品牌原色，悬浮式无边框；hover 轻微上浮）。
 
 ### 11.4 构建链（Tailwind 恢复为真实管线）
 
@@ -415,8 +415,9 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
   美的内边距极大。处理：
   1) **素材归一化**（sharp 原地处理，原图备份 `_backups/clients-original/`）：flatten 白底 →
      `trim(threshold:12)` 去白边 → 高度统一到 96px（只缩不放，避免 GIF 放大失真）；
-  2) 首页改为**等大磁贴网格**（68px 高、mist 底 + 发丝描边、`object-fit:contain`、
-     灰度 + 0.74 透明，hover 恢复彩色），3/4/6 列响应式——形状差异被网格节奏吸收；
+  2) 首页改为**等大磁贴网格**（`object-fit:contain`），3/4/6 列响应式——形状差异被网格节奏吸收；
+     2026-09-12 用户反馈后调整为**品牌原色 + 无边框无底块**（此前灰度 + mist 底 + 发丝描边，
+     用户觉得"不吉利"且过于方正）：现为悬浮式彩色 logo，hover 轻微上浮；
   3) 关于页客户墙 14 个 logo 原为 6 列网格（末行只剩 2 个左对齐），改 flex 居中，
      移动 2 列 / 平板 3 列 / 桌面 5 列，末行自动居中。
   ⚠️ 素材写入注意：本机 Node `fs.writeFileSync/copyFileSync` 覆盖 `clients/*.webp` 会报

@@ -1379,13 +1379,7 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     padding: 0.7rem 0.9rem;
     object-fit: contain;
     object-position: center;
-    background: var(--tx-mist-50);
-    border: 1px solid var(--tx-hairline);
-    border-radius: 14px;
-    filter: grayscale(1) contrast(1.04);
-    opacity: 0.74;
-    transition: opacity 0.4s var(--tx-ease), filter 0.4s var(--tx-ease),
-        border-color 0.4s var(--tx-ease), background-color 0.4s var(--tx-ease);
+    transition: transform 0.4s var(--tx-ease);
 }
 @media (min-width: 640px) {
     .v3-logos img {
@@ -1398,10 +1392,7 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     }
 }
 .v3-logos img:hover {
-    filter: none;
-    opacity: 1;
-    background: #fff;
-    border-color: rgba(255, 107, 0, 0.35);
+    transform: translateY(-3px);
 }
 
 /* 关于页客户墙：同一套画布资源，白卡片内保持等比 */
