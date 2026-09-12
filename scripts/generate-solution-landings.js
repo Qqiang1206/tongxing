@@ -165,8 +165,8 @@ function painPointsHtml(points, indent) {
         indent + '    <div class="w-12 h-12 bg-[#FF6B00]/10 radius-sm flex items-center justify-center mb-4">',
         indent + '        <svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
         indent + '    </div>',
-        indent + '    <h4 class="font-bold text-[#1D1D1F] mb-2">' + escapeHtml(p.title) + '</h4>',
-        indent + '    <p class="text-sm text-[#86868B]">' + escapeHtml(p.desc) + '</p>',
+        indent + '    <h4 class="font-bold text-[#14161B] mb-2">' + escapeHtml(p.title) + '</h4>',
+        indent + '    <p class="text-sm text-[#667084]">' + escapeHtml(p.desc) + '</p>',
         indent + '</div>',
       ].join('\n');
     })
@@ -182,8 +182,8 @@ function processCardsHtml(steps, indent) {
         indent + '        <span class="text-white font-black text-xl mono-num">' +
           escapeHtml(String(p.step == null ? '' : p.step).padStart(2, '0')) + '</span>',
         indent + '    </div>',
-        indent + '    <h4 class="font-bold text-[#1D1D1F] mb-2">' + escapeHtml(p.title) + '</h4>',
-        indent + '    <p class="text-sm text-[#86868B]">' + escapeHtml(p.desc) + '</p>',
+        indent + '    <h4 class="font-bold text-[#14161B] mb-2">' + escapeHtml(p.title) + '</h4>',
+        indent + '    <p class="text-sm text-[#667084]">' + escapeHtml(p.desc) + '</p>',
         indent + '</div>',
       ].join('\n');
     })
@@ -200,8 +200,8 @@ function relatedHtml(picks, prefix, indent) {
         indent + '    <div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">',
         indent + '        <picture><source srcset="' + escapeAttr(img) + '" type="image/webp"><img loading="lazy" decoding="async" src="' + escapeAttr(img) + '" alt="' + escapeAttr(item.name) + '" class="img-zoom"></picture>',
         indent + '    </div>',
-        indent + '    <h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">' + escapeHtml(item.name) + '</h4>',
-        indent + '    <p class="text-sm text-[#86868B] line-clamp-2">' + escapeHtml(truncate(item.summary, 90)) + '</p>',
+        indent + '    <h4 class="font-bold text-[#14161B] mb-2 group-hover:text-[#FF6B00] transition-colors">' + escapeHtml(item.name) + '</h4>',
+        indent + '    <p class="text-sm text-[#667084] line-clamp-2">' + escapeHtml(truncate(item.summary, 90)) + '</p>',
         indent + '</a>',
       ].join('\n');
     })
@@ -339,7 +339,7 @@ function buildPage(lang, item, all, src) {
   /* ---- 侧栏「方案特点」正文 ---- */
   const sideAt = html.indexOf('detail-sidebar__label mb-4');
   if (sideAt !== -1) {
-    const pRe = /<p class="text-\[#86868B\] leading-\[1\.8\]">[\s\S]*?<\/p>/;
+    const pRe = /<p class="text-\[#667084\] leading-\[1\.8\]">[\s\S]*?<\/p>/;
     const pm = pRe.exec(html.slice(sideAt));
     if (pm) {
       const absStart = sideAt + pm.index;
@@ -347,7 +347,7 @@ function buildPage(lang, item, all, src) {
       html =
         html.slice(0, absStart) +
         rebuildLines(pm[0], [
-          '<p class="text-[#86868B] leading-[1.8]">',
+          '<p class="text-[#667084] leading-[1.8]">',
           ind + '    ' + escapeHtml(item.summary || ''),
           ind + '</p>',
         ]) +

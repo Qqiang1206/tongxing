@@ -19,7 +19,7 @@
     <meta property="og:image" content="https://www.sztxgk.com/assets/images/hero/factory-hero.webp">
     <link rel="stylesheet" href="assets/css/tailwind.min.css">
     <link rel="stylesheet" href="assets/css/styles.css?v=20260829">
-    <link rel="stylesheet" href="../assets/css/tx-view-transitions.css">
+    <link rel="stylesheet" href="assets/css/tx-view-transitions.css">
             <link rel="icon" type="image/webp" href="assets/images/brand/favicon.webp">
             <link rel="icon" type="image/png" href="assets/images/brand/favicon.png">
             <link rel="apple-touch-icon" href="assets/images/brand/favicon.png">
@@ -92,17 +92,17 @@
 
     <header class="v3-hero--band v3-hero--band-media">
         <div class="v3-hero__media" aria-hidden="true">
-            <video autoplay muted loop playsinline preload="metadata" tabindex="-1"
+            <video autoplay muted loop playsinline preload="auto" tabindex="-1"
                    poster="assets/videos/news-poster.webp">
                 <source src="assets/videos/news-loop.mp4" type="video/mp4">
             </video>
         </div>
         <div class="v3-hero__veil" aria-hidden="true"></div>
     <div class="v3-shell">
-            <h1 class="hero-title text-display text-[#1D1D1F] mb-8 text-gradient"><span id="list-hero-title">
+            <h1 class="hero-title text-display text-[#14161B] mb-8 text-gradient"><span id="list-hero-title">
                 洞察前沿智造
             </span></h1>
-            <p id="list-hero-lead" class="text-body-lg text-[#86868B] font-medium mb-16 max-w-3xl mx-auto leading-[1.6] tracking-wide">
+            <p id="list-hero-lead" class="text-body-lg text-[#667084] font-medium mb-16 max-w-3xl mx-auto leading-[1.6] tracking-wide">
                 在这里，了解同兴高科的企业动态、全球交付纪实<br class="hidden md:block">以及非标自动化行业的深度观察。
             </p>
         
@@ -111,18 +111,18 @@
 
 
     <!-- 📍 P2. 分类筛选器 -->
-    <section id="filter-section" class="pb-4 md:pb-10 px-4 md:px-24 pt-4">
-        <div class="max-w-[1400px] mx-auto flex justify-start md:justify-center overflow-x-auto hide-scrollbar space-x-2 md:space-x-4 pb-4">
-            <button class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#1D1D1F] hover:border-[#1D1D1F]" data-filter="all">全部新闻</button>
-            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="company">公司新闻</button>
-            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="project">项目故事</button>
-            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold text-[#86868B] hover:border-[#1D1D1F] hover:text-[#1D1D1F]" data-filter="industry">行业洞察</button>
+    <section id="filter-section" class="pb-4 md:pb-10 pt-4">
+        <div class="v3-shell flex justify-start md:justify-center overflow-x-auto hide-scrollbar space-x-2 md:space-x-4 pb-4">
+            <button class="filter-btn active whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E7EAF0] bg-white text-xs md:text-sm font-bold text-[#14161B] hover:border-[#14161B]" data-filter="all">全部新闻</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E7EAF0] bg-white text-xs md:text-sm font-bold text-[#667084] hover:border-[#14161B] hover:text-[#14161B]" data-filter="company">公司新闻</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E7EAF0] bg-white text-xs md:text-sm font-bold text-[#667084] hover:border-[#14161B] hover:text-[#14161B]" data-filter="project">项目故事</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5  border border-[#E7EAF0] bg-white text-xs md:text-sm font-bold text-[#667084] hover:border-[#14161B] hover:text-[#14161B]" data-filter="industry">行业洞察</button>
         </div>
     </section>
 
     <!-- 📍 P3. 新闻网格 -->
-    <section class="pb-32 px-6 md:px-24 min-h-[800px]">
-        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
+    <section class="pb-32 min-h-[800px]">
+        <div class="v3-shell grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
         </div>
 
     </section>

@@ -17,12 +17,12 @@
       var emphasis = stat.emphasis || '';
       var wrapClass = '';
       var unitClass = 'text-3xl ml-1 text-gray-300';
-      var labelClass = 'text-xs font-bold text-[#86868B] tracking-widest uppercase';
+      var labelClass = 'text-xs font-bold text-[#667084] tracking-widest uppercase';
 
       if (emphasis === 'accent') {
         wrapClass = 'pl-6 border-l-4 border-[#FF6B00]';
         unitClass = 'text-3xl ml-1';
-        labelClass = 'text-xs font-bold text-[#1D1D1F] tracking-widest uppercase';
+        labelClass = 'text-xs font-bold text-[#14161B] tracking-widest uppercase';
       }
 
       var unitHtml = stat.unit
@@ -31,7 +31,7 @@
 
       return (
         '<div class="' + wrapClass + '">' +
-          '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">' +
+          '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">' +
             escapeHtml(stat.value) + unitHtml +
           '</div>' +
           '<p class="' + labelClass + '">' + escapeHtml(stat.label) + '</p>' +
@@ -48,8 +48,8 @@
   function dotClass(accent, mobile) {
     var base = mobile ? 'w-4 h-4' : 'w-5 h-5';
     return accent
-      ? base + ' bg-[#FF6B00] rounded-full border-4 border-[#F5F5F7] shadow-md shadow-orange-500/30'
-      : base + ' bg-[#1D1D1F] rounded-full border-4 border-[#F5F5F7] shadow-md';
+      ? base + ' bg-[#FF6B00] rounded-full border-4 border-[#F7F8FA] shadow-md shadow-orange-500/30'
+      : base + ' bg-[#14161B] rounded-full border-4 border-[#F7F8FA] shadow-md';
   }
 
   function renderCulture(culture) {
@@ -62,9 +62,9 @@
 
     grid.innerHTML = culture.pillars.map(function (pillar) {
       return (
-        '<div class="bg-white/5 p-10 radius-lg border border-white/10 hover:border-[#FF6B00]/50 transition-colors">' +
+        '<div class="apple-card p-10">' +
           '<h3 class="text-[#FF6B00] font-black text-h3 mb-6 tracking-widest uppercase">' + escapeHtml(pillar.title || '') + '</h3>' +
-          '<p class="text-gray-300 text-body-lg leading-relaxed font-light">' + (pillar.bodyHtml || '') + '</p>' +
+          '<p class="text-[#667084] text-body-lg leading-relaxed font-light">' + (pillar.bodyHtml || '') + '</p>' +
         '</div>'
       );
     }).join('');
@@ -85,16 +85,16 @@
     if (desktop) {
       desktop.innerHTML = timeline.events.map(function (ev, i) {
         var isLast = i === timeline.events.length - 1;
-        var mb = isLast ? '' : ' mb-16';
+        var mb = isLast ? '' : ' mb-12';
         var yearClass = ev.yearAccent
           ? 'text-h2 text-[#FF6B00] mb-3 mono-num'
-          : 'text-h2 text-[#1D1D1F] mb-3 mono-num';
+          : 'text-h2 text-[#14161B] mb-3 mono-num';
         var body = '';
         if (ev.leadHtml) {
-          body += '<p class="text-[#1D1D1F] font-bold text-sm leading-relaxed mb-2">' + ev.leadHtml + '</p>';
+          body += '<p class="text-[#14161B] font-bold text-sm leading-relaxed mb-2">' + ev.leadHtml + '</p>';
         }
         if (ev.bodyHtml) {
-          body += '<p class="text-[#86868B] text-sm leading-relaxed">' + ev.bodyHtml + '</p>';
+          body += '<p class="text-[#667084] text-sm leading-relaxed">' + ev.bodyHtml + '</p>';
         }
         var content = '<h3 class="' + yearClass + '">' + escapeHtml(ev.year) + '</h3>' + body;
 
@@ -123,13 +123,13 @@
         var mb = isLast ? '' : ' mb-10';
         var yearClass = ev.yearAccent
           ? 'text-3xl font-black text-[#FF6B00] mb-2 mono-num'
-          : 'text-3xl font-black text-[#1D1D1F] mb-2 mono-num';
+          : 'text-3xl font-black text-[#14161B] mb-2 mono-num';
         var text = ev.mobileBody || ev.bodyHtml || '';
         return (
           '<div class="' + mb + ' ml-8 relative">' +
             '<div class="absolute -left-[41px] top-1 ' + dotClass(ev.accent, true) + '"></div>' +
             '<h3 class="' + yearClass + '">' + escapeHtml(ev.year) + '</h3>' +
-            '<p class="text-[#86868B] text-sm leading-relaxed">' + text + '</p>' +
+            '<p class="text-[#667084] text-sm leading-relaxed">' + text + '</p>' +
           '</div>'
         );
       }).join('');
@@ -167,7 +167,7 @@
         }).join('');
         return (
           '<div class="' + wrapClass + '">' +
-            '<h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">' + escapeHtml(group.title || '') + '</h3>' +
+            '<h3 class="text-h3 text-[#14161B] mb-8 border-l-4 border-[#FF6B00] pl-4">' + escapeHtml(group.title || '') + '</h3>' +
             '<div class="patent-marquee" style="--marquee-duration: ' + escapeHtml(group.marqueeDuration || '40s') + '">' +
               '<div class="patent-marquee__track" data-patent-marquee>' + cards + '</div>' +
             '</div>' +
@@ -190,7 +190,7 @@
 
       return (
         '<div class="' + wrapClass + '">' +
-          '<h3 class="text-h3 text-[#1D1D1F] mb-8 border-l-4 border-[#FF6B00] pl-4">' + escapeHtml(group.title || '') + '</h3>' +
+          '<h3 class="text-h3 text-[#14161B] mb-8 border-l-4 border-[#FF6B00] pl-4">' + escapeHtml(group.title || '') + '</h3>' +
           '<div class="grid grid-cols-2 md:grid-cols-4 gap-6">' + grid + '</div>' +
         '</div>'
       );
@@ -212,7 +212,7 @@
       var src = escapeHtml(assetUrl(item.image));
       var alt = escapeHtml(item.imageAlt || '');
       return (
-        '<div class="client-card h-28 bg-white border border-[#E5E5EA] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">' +
+        '<div class="client-card h-28 bg-white border border-[#E7EAF0] radius-lg flex items-center justify-center p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">' +
           '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="max-h-full max-w-full client-logo">' +
         '</div>'
       );

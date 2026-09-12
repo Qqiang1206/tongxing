@@ -277,10 +277,10 @@ focus 光圈、选中文字色），不再出现在大面积色块。
 ### 11.3 首屏 Hero（满屏视频 · 白雾压字）
 
 - 底层 `<video autoplay muted loop playsinline>`：`assets/videos/hero-loop.mp4`
-  （1080p/30fps、19.2s 正放+倒放乒乓无缝循环、3.5MB、H.264 faststart）；
+  （1080p/30fps、8.4s 交叉淡化无缝循环、2.1MB、H.264 faststart）；
   海报回退 `assets/videos/hero-poster.webp`（同时是 LCP 预加载）。
 - 素材来源与授权：Pexels 视频 id **32386532**（"Industrial Robot Arm in High-Tech
-  Factory"），Pexels License 免费商用、无需署名；已在本地转码（正放+倒放拼循环），
+  Factory"），Pexels License 免费商用、无需署名；已在本地转码（交叉淡化循环），
   自托管于 `assets/videos/`，不外链 CDN。
 - 白雾层 `.v3-hero__veil` 顶部 0.90 → 中部 0.26 → 底部归入 `--tx-bg`，保证明亮基调
   与墨黑大字对比度；站点所有者明确选择：该装饰性氛围视频不受系统「减少动效」偏好影响，始终静音自动播放；该偏好仍作用于 fade-up 等入场动画（styles.css 已处理）。
@@ -334,12 +334,12 @@ npm run build:css
 
 | 页面 | 文件 | 来源（Mixkit，免费下载） | 时长/体积 |
 |---|---|---|---|
-| 首页 | hero-loop.mp4 | Pexels 32386532 | 19.2s / 3.5MB |
-| 解决方案 | solutions-loop.mp4 | Mixkit "Automated machine places parts on circuit boards" (47266) | 16s / 4.2MB |
-| 产品中心 | products-loop.mp4 | Mixkit "Parcels on a conveyor belt" (20770) | 16s / 2.2MB |
-| 新闻中心 | news-loop.mp4 | 首页 hero-loop 的 720p 转码版（2026-09-11 与联系页对调） | 19.2s / 2.4MB |
-| 关于我们 | about-loop.mp4 | Mixkit "Electrical workers walking on the hallway" (23696) | 16s / 4.2MB |
-| 联系我们 | contact-loop.mp4 | Mixkit "Open office space" (914)（2026-09-11 与新闻页对调） | 16s / 3.6MB |
+| 首页 | hero-loop.mp4 | Pexels 32386532 | 8.4s / 2.1MB |
+| 解决方案 | solutions-loop.mp4 | Mixkit "Automated machine places parts on circuit boards" (47266) | 7.8s / 2.2MB |
+| 产品中心 | products-loop.mp4 | Mixkit "Parcels on a conveyor belt" (20770) | 7.0s / 1.0MB |
+| 新闻中心 | news-loop.mp4 | 首页 hero-loop 的正向段（2026-09-11 与联系页对调） | 8.4s / 1.2MB |
+| 关于我们 | about-loop.mp4 | Mixkit "Electrical workers walking on the hallway" (23696) | 7.8s / 2.5MB |
+| 联系我们 | contact-loop.mp4 | Mixkit "Open office space" (914)（2026-09-11 与新闻页对调） | 7.8s / 1.9MB |
 
 > 2026-09-11 换素材：原 47257/17675/14631/22033 与页面主题不符（航拍化工厂用于新闻、
 > 手部特写用于产品等），经用户从候选预览页选定上述素材；同日新闻中心 ↔ 联系我们 对调
@@ -347,8 +347,11 @@ npm run build:css
 > （同时 git 可回滚）。
 > 同日内页白雾层 `.v3-hero--band-media .v3-hero__veil` 中部浓度 0.58 → 0.32（顶部
 > 0.92 → 0.88、其余同比下调），改善"太白发灰"、提升视频可见度，文字对比度保持。
+> 同日循环方式变更：全部 6 条循环视频由**正放+倒放乒乓**改为**交叉淡化循环**
+> （crossfade：结尾 1.0–1.2s 与开头柔和混合，xfade transition=fade），消除用户反馈的
+> "倒退再前进"观感；内页视频 `preload` 同步由 metadata 改 auto，减少载入停顿。
 
-- 全部 1280×720/30fps、正放+倒放乒乓无缝循环、≤5MB、无音频。
+- 全部 1280×720/30fps（首页 1080p）、交叉淡化无缝循环、≤2.5MB、无音频。
 - ⚠️ 授权状态：Mixkit 免费下载的 720p 产物标注 **Restricted License（仅限个人使用）**，
   商用需向 Envato/Mixkit 购买授权或后续替换为可商用素材。站点所有者已知悉并决定先行使用。
 - 偏暗素材已在转码时做 gamma 亮度适配（solutions 2.07 / products 1.29 / news 1.31 / about 1.24），
@@ -384,3 +387,59 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
 - 整页透明淡入已删除（闪屏元凶）；跨页 0.25s 交叉淡化保留；
 - prefers-reduced-motion：全部即时呈现。
 参数如需调整：styles.css 的 .fade-up 基类与 --stagger 变量。
+
+### 11.8 全站视觉统一（2026-09-12）
+
+用户定位"高档、大气、有格调"，审计后发现根因是**两套设计系统并存**：首页用 v3 令牌，
+内页/详情页把 Apple 灰阶（`#1D1D1F/#86868B/#F5F5F7/#E5E5EA/#6E6E73/#FBFBFD`）硬编码
+在 class 里绕过令牌，容器用 `px-6 md:px-24` 而非 `v3-shell`。本批次统一到 v3。
+
+**表现层（前端）**
+- 全站硬编码 Apple 色值 → v3 令牌值（68 文件 / 1561 处），含 solution 落地页生成器
+  `scripts/generate-solution-landings.js`，避免重新生成时回退。
+- `[data-ui="v3"]` 补齐 `--text-muted` 重定向（此前 `.service-flow__detail` 等仍用旧灰）。
+- 容器统一：`px-6 md:px-24` + `max-w-[1400px] mx-auto` → `v3-shell`；详情页窄栏用新增
+  `.v3-shell--narrow`（1200px）。51 个文件脚本化，`solutions.html` 手工处理。
+- 关于页深色带（`bg-[#1D1D1F] py-32`）→ `v3-section v3-section--mist` 浅色；文化柱卡片
+  由 `bg-white/5` 改 `apple-card`，正文 `text-gray-300` → `--tx-ink-mute`。
+- 列表卡片徽标统一为白玻璃（新闻的行业深色徽标、方案的深色 KPI 徽标 → 白玻璃）；
+  产品卡片标签 chip 对齐方案的 token 化 chip。
+- 客户 Logo 墙重做（用户反馈"很丑"）：根因是素材本身——14 个 logo 全部**无透明通道**
+  （白底或彩色底），长宽比 0.9–8.2 悬殊，康佳/联想还是**红色实心方块**（灰度化后变灰块），
+  美的内边距极大。处理：
+  1) **素材归一化**（sharp 原地处理，原图备份 `_backups/clients-original/`）：flatten 白底 →
+     `trim(threshold:12)` 去白边 → 高度统一到 96px（只缩不放，避免 GIF 放大失真）；
+  2) 首页改为**等大磁贴网格**（68px 高、mist 底 + 发丝描边、`object-fit:contain`、
+     灰度 + 0.74 透明，hover 恢复彩色），3/4/6 列响应式——形状差异被网格节奏吸收；
+  3) 关于页客户墙 14 个 logo 原为 6 列网格（末行只剩 2 个左对齐），改 flex 居中，
+     移动 2 列 / 平板 3 列 / 桌面 5 列，末行自动居中。
+  ⚠️ 素材写入注意：本机 Node `fs.writeFileSync/copyFileSync` 覆盖 `clients/*.webp` 会报
+  `UNKNOWN errno -4094`（PowerShell 正常），归一化脚本改为"输出到暂存目录 + PowerShell 覆盖"。
+- band hero 正文：`#55555b` → `--tx-ink-mid` + 白色柔光 text-shadow（视频底更亮）；
+  内容区补 `text-align:center`，与首页 hero 对齐。移动端 hero 双 CTA 等宽。
+- 修 bug：6 个根页 `../assets/css/tx-view-transitions.css` 越出根目录 404 → `assets/css/...`。
+
+**内容层（DB 为准，后台可管）**
+- 新增一次性补丁 `server/scripts/patch-v3-unify.mjs`：用与后台同源的
+  `writePageJsonAny/writeSiteSettingsAny` 写库并导出静态文件（三语言一次完成）。
+- 首页服务流程 `badgeStyle`：`start/mid/accent` → 统一 `neutral`（四步同款深色）；
+  **后台同步改**：`server/admin/admin.js` 的 `collectHomeServiceSteps()` 现固定生成
+  `neutral`（原先按位置自动生成 start/accent，保存会覆盖前端改动）；
+  CSS 新增 `.service-flow__badge--neutral`。
+- 首页类目眉标本地化：zh「单机单元」/ ru「Отдельные машины」（原三语都是 "Single Machines"）。
+- 页脚新增 `phone/email/addressShenzhen/addressHuizhou`（取值沿用联系页），
+  `site-footer.js` 渲染联系方式列 + 双基地地址行；**后台同步改**：
+  `SITE_FOOTER_LABELS` 增 4 字段（全站设置→网站底部可直接编辑）。
+- 页脚水印由 `clamp(7rem,18vw,15rem)` 越界裁切改为 `clamp(4.5rem,11vw,9rem)` 完整可见。
+- 首页"企业动态"由 2 条改 3 条：精选不足时用最新发布补齐（`home-page.js`）。
+
+**素材**
+- 首页"关于同兴"主图原为 CGI 效果图 `hzgc2-960.webp`，与真实企业形象冲突；
+  与真实厂房照 `szgc1.webp`（含"同兴高科"门头）**对调主次**——真实照作主图，
+  效果图缩小作"惠州基地（效果图）"配图（三语言 alt 同步）。
+- 联系页高德地图加 `mapStyle:'amap://styles/whitesmoke'` + `features:['bg','road','building']`，
+  去除酒店/钓鱼场等 POI 噪声。
+
+> 维护红线：内容改动必须走 DB（`writePageJsonAny/writeSiteSettingsAny` 或后台），
+> 直接改 `data/**` 会被 `sync:static` 或后台保存覆盖；若改动涉及后台自动生成的字段
+> （如 badgeStyle），必须同步修改 `server/admin/admin.js` 的生成/收集逻辑。

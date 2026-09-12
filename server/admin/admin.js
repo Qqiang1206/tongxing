@@ -3247,7 +3247,7 @@
     return rows.map(function (row, i) {
       return {
         badge: String(i + 1).padStart(2, '0'),
-        badgeStyle: i === 0 ? 'start' : (i === rows.length - 1 ? 'accent' : 'mid'),
+        badgeStyle: 'neutral',
         title: (row.querySelector('.hs-title') || {}).value || '',
         items: ((row.querySelector('.hs-items') || {}).value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
       };
@@ -4099,6 +4099,8 @@
   };
   var SITE_FOOTER_LABELS = {
     tagline: '页脚标语', copyright: '版权文案', icp: '备案号', wechatAlt: '二维码说明',
+    phone: '联系电话', email: '官方邮箱',
+    addressShenzhen: '深圳基地地址', addressHuizhou: '惠州基地地址',
   };
   var DEFAULT_WECHAT_IMAGE = 'assets/images/brand/wechat-service.png';
 

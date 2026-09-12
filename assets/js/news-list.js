@@ -73,23 +73,17 @@
   function buildCard(item, index, detailPrefix) {
     var catKey = categoryKey(item);
 
-    var isIndustry = catKey === 'industry';
-
-    var badgeClass = isIndustry
-
-      ? 'bg-[#1D1D1F] text-white border border-gray-800'
-
-      : 'bg-white/95 backdrop-blur-md text-[#1D1D1F] border border-gray-100';
+    var badgeClass = 'bg-white/95 backdrop-blur-md text-[#14161B] border border-[#E7EAF0]';
 
     var imgHeight = '';
 
     var padding = 'p-8';
 
-    var titleClass = 'text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight';
+    var titleClass = 'text-h3 text-[#14161B] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight';
 
-    var dateClass = 'text-[#86868B] text-sm font-mono mb-4 block';
+    var dateClass = 'text-[#667084] text-sm font-mono mb-4 block';
 
-    var excerptClass = 'text-[#86868B] text-sm leading-[1.6] line-clamp-3';
+    var excerptClass = 'text-[#667084] text-sm leading-[1.6] line-clamp-3';
 
     var spanClass = 'tx-mos';
 
@@ -148,12 +142,12 @@
       counts[key] = (counts[key] || 0) + 1;
     });
 
-    var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
+    var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-8 md:py-2.5 border border-[#E7EAF0] bg-white text-xs md:text-sm font-bold hover:border-[#14161B] hover:text-[#14161B]';
     filterRoot.innerHTML = Object.keys(page.filters)
       .filter(function (key) { return key === 'all' || counts[key] > 0; })
       .map(function (key) {
         var active = key === 'all';
-        return '<button class="' + normalClass + (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') +
+        return '<button class="' + normalClass + (active ? ' active text-[#14161B]' : ' text-[#667084]') +
           '" data-filter="' + escapeHtml(key) + '">' + escapeHtml(page.filters[key]) + '</button>';
       }).join('');
   }
@@ -174,15 +168,15 @@
 
         filterBtns.forEach(function (b) {
 
-          b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+          b.classList.remove('active', 'bg-[#14161B]', 'text-white', 'border-[#14161B]');
 
-          b.classList.add('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+          b.classList.add('bg-white', 'text-[#667084]', 'border-[#E7EAF0]');
 
         });
 
-        btn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
+        btn.classList.add('active', 'bg-[#14161B]', 'text-white', 'border-[#14161B]');
 
-        btn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+        btn.classList.remove('bg-white', 'text-[#667084]', 'border-[#E7EAF0]');
 
 
 

@@ -78,16 +78,16 @@
 
     
 
-    <article class="detail-page pt-40 pb-32 px-6 md:px-24">
-        <div class="detail-page__inner max-w-[1200px] mx-auto">
-            <nav class="breadcrumb text-sm text-[#86868B] mb-8 flex items-center flex-wrap" aria-label="Breadcrumb" data-breadcrumb></nav>
+    <article class="detail-page pt-40 pb-32">
+        <div class="detail-page__inner v3-shell v3-shell--narrow">
+            <nav class="breadcrumb text-sm text-[#667084] mb-8 flex items-center flex-wrap" aria-label="Breadcrumb" data-breadcrumb></nav>
 
             <header class="mb-12 fade-up">
                 <div class="flex items-center gap-3 mb-4">
                     <span id="product-category" class="detail-eyebrow text-[#FF6B00] font-bold text-xs tracking-widest uppercase">Single Machines</span>
                     <span id="product-model" class="detail-meta-mono"></span>
                 </div>
-                <h1 id="product-name" class="detail-title hero-title text-h1 text-[#1D1D1F] text-gradient">
+                <h1 id="product-name" class="detail-title hero-title text-h1 text-[#14161B] text-gradient">
                     Full-Auto High-Precision Laminating Machine
                 </h1>
             </header>
@@ -176,18 +176,18 @@
                 var ns = document.getElementById('nav-solutions');
                 var np = document.getElementById('nav-products');
                 if (ns && np) {
-                    ns.classList.remove('text-[#86868B]');
-                    ns.classList.add('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
-                    np.classList.remove('text-[#1D1D1F]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
-                    np.classList.add('text-[#86868B]');
+                    ns.classList.remove('text-[#667084]');
+                    ns.classList.add('text-[#14161B]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
+                    np.classList.remove('text-[#14161B]', 'border-b-2', 'border-[#FF6B00]', 'pb-1');
+                    np.classList.add('text-[#667084]');
                 }
                 var mns = document.getElementById('mobile-nav-solutions');
                 var mnp = document.getElementById('mobile-nav-products');
                 if (mns && mnp) {
-                    mns.classList.remove('text-[#86868B]');
+                    mns.classList.remove('text-[#667084]');
                     mns.classList.add('text-[#FF6B00]');
                     mnp.classList.remove('text-[#FF6B00]');
-                    mnp.classList.add('text-[#86868B]');
+                    mnp.classList.add('text-[#667084]');
                 }
             }
 

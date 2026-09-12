@@ -74,13 +74,13 @@
         .map(function (p) {
           return (
             '<div class="flex items-start">' +
-            '<div class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>' +
+            '<div class="w-6 h-6 rounded-full bg-[#14161B] text-white flex items-center justify-center font-bold text-xs mt-1 mr-4 shrink-0">✓</div>' +
             '<div>' +
-            '<h4 class="font-bold text-[#1D1D1F] mb-1">' +
+            '<h4 class="font-bold text-[#14161B] mb-1">' +
             escapeHtml(p.title) +
             '</h4>' +
             (p.desc
-              ? '<p class="text-sm text-[#86868B]">' + escapeHtml(p.desc) + '</p>'
+              ? '<p class="text-sm text-[#667084]">' + escapeHtml(p.desc) + '</p>'
               : '') +
             '</div></div>'
           );
@@ -120,21 +120,21 @@
       '<div class="img-container">' +
       buildImage(item.image, item.name) +
       (kpi
-        ? '<div class="absolute top-6 left-6 bg-[#1D1D1F] text-white border border-gray-800 px-4 py-1.5 radius-sm text-xs font-bold shadow-sm mono-num">' +
+        ? '<div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md text-[#14161B] border border-[#E7EAF0] px-4 py-1.5 radius-sm text-xs font-bold shadow-sm mono-num">' +
           escapeHtml(kpi) +
           '</div>'
         : '') +
       '</div>' +
       '<div class="p-8 flex-grow flex flex-col justify-between bg-white group"><div>' +
-      '<span class="text-[#86868B] text-sm font-mono font-bold mb-4 block">' +
+      '<span class="text-[#667084] text-sm font-mono font-bold mb-4 block">' +
       escapeHtml(ui.label) +
       ' ' +
       num +
       '</span>' +
-      '<h3 class="text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' +
+      '<h3 class="text-h3 text-[#14161B] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' +
       escapeHtml(item.name) +
       '</h3>' +
-      '<p class="text-[#86868B] text-sm leading-[1.6] line-clamp-2 mb-4">' +
+      '<p class="text-[#667084] text-sm leading-[1.6] line-clamp-2 mb-4">' +
       escapeHtml(summary) +
       '</p>' +
       (featHtml ? '<div class="flex flex-wrap gap-2 mt-auto">' + featHtml + '</div>' : '') +
@@ -163,16 +163,16 @@
     var bar = document.getElementById('solutions-filter-bar');
     if (!bar) return;
     var normalClass =
-      'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
+      'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E7EAF0] bg-white text-xs md:text-sm font-bold hover:border-[#14161B] hover:text-[#14161B]';
     var allLabel = (lang === 'en') ? 'All' : (lang === 'ru') ? 'Все' : '全部方案';
     var html = '<button type="button" id="solution-filter-all" class="' +
-      normalClass + ' active text-[#1D1D1F]" data-filter="all">' +
+      normalClass + ' active text-[#14161B]" data-filter="all">' +
       escapeHtml(allLabel) + '</button>';
     categories.forEach(function (c) {
       var cat = c.key;
       var label = (pageFilters && pageFilters[cat]) ? pageFilters[cat] : c.label;
       html += '<button type="button" class="' +
-        normalClass + ' text-[#86868B]" data-filter="' +
+        normalClass + ' text-[#667084]" data-filter="' +
         escapeHtml(cat) + '">' +
         escapeHtml(label) + '</button>';
     });
@@ -206,11 +206,11 @@
       if (!targetBtn) return;
 
       filterBtns.forEach(function (b) {
-        b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-        b.classList.add('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+        b.classList.remove('active', 'bg-[#14161B]', 'text-white', 'border-[#14161B]');
+        b.classList.add('bg-white', 'text-[#667084]', 'border-[#E7EAF0]');
       });
-      targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-      targetBtn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+      targetBtn.classList.add('active', 'bg-[#14161B]', 'text-white', 'border-[#14161B]');
+      targetBtn.classList.remove('bg-white', 'text-[#667084]', 'border-[#E7EAF0]');
 
       document.querySelectorAll('.solution-item').forEach(function (item) {
         var match = filterValue === 'all' || item.getAttribute('data-category') === filterValue;

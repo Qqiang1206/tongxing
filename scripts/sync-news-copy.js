@@ -56,7 +56,7 @@ newsZh = newsZh
   )
   // dates
   .replace(
-    /(news-detail\.html\?id=2[\s\S]*?<span class="text-\[#86868B\] text-sm font-mono mb-4 block">)2026\.02\.18/,
+    /(news-detail\.html\?id=2[\s\S]*?<span class="text-\[#667084\] text-sm font-mono mb-4 block">)2026\.02\.18/,
     `$1${zh['2'].date}`
   )
   // categories on cards
@@ -103,7 +103,7 @@ newsEn = newsEn
     en['2'].title
   )
   .replace(
-    /(news-detail\.html\?id=2[\s\S]*?<span class="text-\[#86868B\] text-sm font-mono mb-4 block">)2026\.02\.18/,
+    /(news-detail\.html\?id=2[\s\S]*?<span class="text-\[#667084\] text-sm font-mono mb-4 block">)2026\.02\.18/,
     `$1${en['2'].date}`
   );
 fs.writeFileSync(path.join(ROOT, 'en/news.html'), newsEn);
@@ -127,7 +127,7 @@ indexZh = indexZh
     `$1${zh['1'].title}$2`
   )
   .replace(
-    /(<a href="news-detail\.html\?id=1"[\s\S]*?<span class="text-sm font-bold text-\[#86868B\] mt-4 md:mt-0">)[^<]+/,
+    /(<a href="news-detail\.html\?id=1"[\s\S]*?<span class="text-sm font-bold text-\[#667084\] mt-4 md:mt-0">)[^<]+/,
     `$1${zh['1'].date}`
   )
   .replace(

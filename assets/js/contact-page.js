@@ -14,7 +14,7 @@
     if (hover === 'whatsapp') {
       return 'group-hover:bg-[#25D366] group-hover:border-[#25D366]';
     }
-    return 'group-hover:bg-[#1D1D1F] group-hover:border-[#1D1D1F]';
+    return 'group-hover:bg-[#14161B] group-hover:border-[#14161B]';
   }
 
   function valueHoverClass(hover) {
@@ -36,11 +36,11 @@
         '<div class="flex flex-col md:flex-row md:items-end justify-between">' +
         '<div><div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 uppercase">' +
         escapeHtml(ch.eyebrow) + '</div>' +
-        '<h3 class="text-xl font-bold text-[#86868B] mb-2">' + escapeHtml(ch.title) + '</h3>' +
-        '<p class="text-2xl md:text-3xl font-black text-[#1D1D1F] tracking-tight ' +
+        '<h3 class="text-xl font-bold text-[#667084] mb-2">' + escapeHtml(ch.title) + '</h3>' +
+        '<p class="text-2xl md:text-3xl font-black text-[#14161B] tracking-tight ' +
         valueHoverClass(ch.hover) + ' transition-colors">' + escapeHtml(ch.value) + '</p>' +
-        '<p class="text-sm text-[#86868B] mt-2">' + escapeHtml(ch.hint) + '</p></div>' +
-        '<div class="mt-6 md:mt-0 text-[#1D1D1F] font-bold text-sm bg-gray-50 px-4 py-2 radius-sm border border-gray-200 group-hover:bg-[#1D1D1F] group-hover:text-white transition-colors">' +
+        '<p class="text-sm text-[#667084] mt-2">' + escapeHtml(ch.hint) + '</p></div>' +
+        '<div class="mt-6 md:mt-0 text-[#14161B] font-bold text-sm bg-gray-50 px-4 py-2 radius-sm border border-gray-200 group-hover:bg-[#14161B] group-hover:text-white transition-colors">' +
         escapeHtml(ch.cta) + '</div></div></a>'
       );
     }
@@ -53,10 +53,10 @@
       '<span class="group-hover:scale-110 transition-transform">' + ch.icon + '</span></div>' +
       '<div><div class="text-[#FF6B00] font-bold text-xs tracking-widest mb-2 uppercase">' +
       escapeHtml(ch.eyebrow) + '</div>' +
-      '<h3 class="text-xl font-bold text-[#86868B] mb-2">' + escapeHtml(ch.title) + '</h3>' +
-      '<p class="text-2xl font-black text-[#1D1D1F] mono-num tracking-tight ' +
+      '<h3 class="text-xl font-bold text-[#667084] mb-2">' + escapeHtml(ch.title) + '</h3>' +
+      '<p class="text-2xl font-black text-[#14161B] mono-num tracking-tight ' +
       valueHoverClass(ch.hover) + ' transition-colors">' + escapeHtml(ch.value) + '</p>' +
-      '<p class="text-sm text-[#86868B] mt-2">' + escapeHtml(ch.hint) + '</p></div></a>'
+      '<p class="text-sm text-[#667084] mt-2">' + escapeHtml(ch.hint) + '</p></div></a>'
     );
   }
 
@@ -65,7 +65,7 @@
       ? '<span class="ml-3 bg-[#FF6B00]/10 text-xs px-2 py-1 rounded text-[#FF6B00] font-bold">' +
         escapeHtml(loc.badge) + '</span>'
       : '';
-    var hr = index > 0 ? '<hr class="border-[#E5E5EA] mb-10">' : '';
+    var hr = index > 0 ? '<hr class="border-[#E7EAF0] mb-10">' : '';
     var wrapClass = index === 0 ? 'mb-10' : '';
 
     return (
@@ -73,10 +73,10 @@
       '<div class="' + wrapClass + '">' +
       '<div class="flex items-center mb-4">' +
       '<span class="w-3 h-3 rounded-full border-2 border-white shadow-sm mr-3" style="background:' +
-      escapeHtml(loc.dotColor || '#1D1D1F') + '"></span>' +
-      '<h3 class="text-h3 font-bold text-[#1D1D1F]">' + escapeHtml(loc.name) + '</h3>' +
+      escapeHtml(loc.dotColor || '#14161B') + '"></span>' +
+      '<h3 class="text-h3 font-bold text-[#14161B]">' + escapeHtml(loc.name) + '</h3>' +
       badge + '</div>' +
-      '<p class="text-[#86868B] text-sm leading-[1.8] mb-4">' + escapeHtml(loc.address) + '</p>' +
+      '<p class="text-[#667084] text-sm leading-[1.8] mb-4">' + escapeHtml(loc.address) + '</p>' +
       '<a href="' + escapeHtml(loc.navUrl) + '" target="_blank" rel="noopener" class="text-[#FF6B00] text-sm font-bold hover:text-orange-600 transition-colors flex items-center">' +
       escapeHtml(loc.navLabel) + ' <span class="ml-1">↗</span></a></div>'
     );
@@ -131,6 +131,8 @@
         zoom: zoom,
         center: center,
         viewMode: '2D',
+        mapStyle: 'amap://styles/whitesmoke',
+        features: ['bg', 'road', 'building'],
       });
       var dot = 'data:image/svg+xml,' + encodeURIComponent(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FF6B00"/></svg>'

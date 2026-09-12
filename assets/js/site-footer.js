@@ -2,6 +2,24 @@
  * Unified footer + breadcrumb (auto-detects zh / en / ru from URL).
  */
 (function (global) {
+  function escapeHtml(text) {
+    return String(text == null ? '' : text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function escapeAttr(text) {
+    return escapeHtml(text).replace(/'/g, '&#39;');
+  }
+
+  var ADDRESS_LABELS = {
+    zh: { shenzhen: '深圳总部工厂', huizhou: '惠州智能制造基地' },
+    en: { shenzhen: 'Shenzhen HQ', huizhou: 'Huizhou Base' },
+    ru: { shenzhen: 'Шэньчжэнь (штаб)', huizhou: 'Хуэйчжоу (база)' },
+  };
+
   function detectLang() {
     var pathNorm = (location.pathname || '').replace(/\\/g, '/');
     var currentPage = pathNorm.split('/').pop() || 'index.html';
@@ -68,6 +86,31 @@
         linkList += '<a href="' + quickLinks[i].href + '">' + quickLinks[i].name + '</a>';
       }
 
+      var lang = site.lang || detectLang();
+      var contactList = '';
+      if (footer.phone) {
+        contactList +=
+          '<a href="tel:' + escapeAttr(String(footer.phone).replace(/[^+\d]/g, '')) + '">' +
+          escapeHtml(footer.phone) + '</a>';
+      }
+      if (footer.email) {
+        contactList +=
+          '<a href="mailto:' + escapeAttr(footer.email) + '">' + escapeHtml(footer.email) + '</a>';
+      }
+
+      var labels = ADDRESS_LABELS[lang] || ADDRESS_LABELS.zh;
+      var addrItems = '';
+      if (footer.addressShenzhen) {
+        addrItems +=
+          '<div class="txf__addr"><span class="txf__addr-label">' + labels.shenzhen + '</span>' +
+          '<span>' + escapeHtml(footer.addressShenzhen) + '</span></div>';
+      }
+      if (footer.addressHuizhou) {
+        addrItems +=
+          '<div class="txf__addr"><span class="txf__addr-label">' + labels.huizhou + '</span>' +
+          '<span>' + escapeHtml(footer.addressHuizhou) + '</span></div>';
+      }
+
       var html =
         '<footer class="txf">' +
         '<div class="txf__watermark" aria-hidden="true">TXAM</div>' +
@@ -76,8 +119,12 @@
         '<div><h2 class="txf__headline">' + tagline + '</h2></div>' +
         '<div class="flex flex-col sm:flex-row gap-8 justify-end items-start">' +
         '<nav class="txf__meta flex flex-col gap-[0.6rem] [&_a]:font-medium">' + linkList + '</nav>' +
+        (contactList
+          ? '<div class="txf__meta flex flex-col gap-[0.6rem]">' + contactList + '</div>'
+          : '') +
         '<figure class="m-0 text-center"><img src="' + prefix + (footer.wechatImage || 'assets/images/brand/wechat-service.png') + '" alt="' + (footer.wechatAlt || 'WeChat') + '" class="txf__qr"><figcaption class="mt-2 text-xs text-[#9AA1AE]">WeChat</figcaption></figure>' +
         '</div></div>' +
+        (addrItems ? '<div class="txf__addresses">' + addrItems + '</div>' : '') +
         '<div class="txf__bottom">' +
         '<p>' + (footer.copyright || '') + '</p>' +
         '<a href="' + (footer.icpUrl || 'https://beian.miit.gov.cn/') + '" target="_blank" rel="noopener">' + (footer.icp || '') + '</a>' +
@@ -90,7 +137,7 @@
     }
 
     var html =
-      '<footer class="bg-[#111111] text-[#86868B] min-h-[300px] md:h-[300px] px-6 md:px-24 py-10 md:py-0 relative overflow-hidden flex flex-col justify-center">' +
+      '<footer class="bg-[#111111] text-[#667084] min-h-[300px] md:h-[300px] px-6 md:px-24 py-10 md:py-0 relative overflow-hidden flex flex-col justify-center">' +
       '<div class="absolute -top-12 -left-10 text-[15rem] font-black text-white opacity-5 tracking-tighter pointer-events-none select-none">TXAM</div>' +
       '<div class="max-w-[1600px] mx-auto relative z-10 w-full">' +
       '<div class="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">' +
@@ -183,7 +230,7 @@
       });
       // Home alone on homepage
       if (cleaned.length === 1 && cleaned[0].page === indexPage && currentPage === indexPage) {
-        pathContainer.innerHTML = '<span class="text-[#1D1D1F] font-medium">' + cleaned[0].name + '</span>';
+        pathContainer.innerHTML = '<span class="text-[#14161B] font-medium">' + cleaned[0].name + '</span>';
         return;
       }
       var html = '';
@@ -191,7 +238,7 @@
         var p = cleaned[i];
         var isLast = i === cleaned.length - 1;
         if (isLast) {
-          html += '<span class="text-[#1D1D1F] font-medium">' + p.name + '</span>';
+          html += '<span class="text-[#14161B] font-medium">' + p.name + '</span>';
         } else {
           html += '<a href="' + p.page + '" class="hover:text-[#FF6B00] transition-colors">' +
             p.name + '</a><span class="mx-2 text-[#C7C7CC]">›</span>';

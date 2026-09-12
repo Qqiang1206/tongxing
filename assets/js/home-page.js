@@ -42,14 +42,14 @@
       var emphasis = stat.emphasis || '';
       var wrapClass = 'text-center md:text-left';
       var unitClass = 'text-3xl ml-1 text-gray-400';
-      var labelClass = 'text-xs font-bold text-[#86868B] tracking-widest uppercase';
+      var labelClass = 'text-xs font-bold text-[#667084] tracking-widest uppercase';
 
       if (emphasis === 'border') {
-        wrapClass += ' border-l-0 md:border-l-2 md:border-[#E5E5EA] md:pl-8';
+        wrapClass += ' border-l-0 md:border-l-2 md:border-[#E7EAF0] md:pl-8';
       } else if (emphasis === 'accent') {
         wrapClass = 'pl-6 border-l-4 border-[#FF6B00]';
         unitClass = 'text-3xl ml-1';
-        labelClass = 'text-xs font-bold text-[#1D1D1F] tracking-widest uppercase';
+        labelClass = 'text-xs font-bold text-[#14161B] tracking-widest uppercase';
       }
 
       var unitHtmlLegacy = stat.unit
@@ -58,7 +58,7 @@
 
       return (
         '<div class="' + wrapClass + '">' +
-          '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#1D1D1F] mono-num leading-none mb-2">' +
+          '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">' +
             escapeHtml(stat.value) + unitHtmlLegacy +
           '</div>' +
           '<p class="' + labelClass + '">' + escapeHtml(stat.label) + '</p>' +
@@ -143,7 +143,7 @@
     grid.innerHTML = cards.map(function (card) {
       if (!V3) {
         var legacyTags = (card.tags || []).map(function (tag) {
-          return '<span class="inline-block bg-gray-50 text-[#1D1D1F] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">' +
+          return '<span class="inline-block bg-gray-50 text-[#14161B] font-medium text-xs px-3 py-1 radius-sm border border-gray-200">' +
             escapeHtml(tag) + '</span>';
         }).join('');
         var legacyTagsHtml = legacyTags
@@ -152,10 +152,10 @@
 
         return (
           '<a href="' + escapeHtml(card.href) + '" class="apple-card p-8 flex flex-col group bg-white no-underline overflow-hidden hover:border-[#FF6B00] transition-all duration-500">' +
-            '<h3 class="text-h3 font-bold text-[#1D1D1F] mb-4">' + escapeHtml(card.title) + '</h3>' +
-            '<p class="text-[#86868B] text-sm leading-relaxed mb-6 flex-grow">' + escapeHtml(card.summary) + '</p>' +
+            '<h3 class="text-h3 font-bold text-[#14161B] mb-4">' + escapeHtml(card.title) + '</h3>' +
+            '<p class="text-[#667084] text-sm leading-relaxed mb-6 flex-grow">' + escapeHtml(card.summary) + '</p>' +
             legacyTagsHtml +
-            '<div class="w-full h-48 radius-sm overflow-hidden border border-[#E5E5EA]">' +
+            '<div class="w-full h-48 radius-sm overflow-hidden border border-[#E7EAF0]">' +
               buildCardImage(card.image, card.imageAlt || card.title, true) +
             '</div>' +
           '</a>'
@@ -205,7 +205,7 @@
       return (
         '<div class="service-flow__step">' +
           '<div class="' + badgeClass + '">' + escapeHtml(step.badge) + '</div>' +
-          '<h3 class="text-h3 text-[#1D1D1F] mb-4">' + escapeHtml(step.title) + '</h3>' +
+          '<h3 class="text-h3 text-[#14161B] mb-4">' + escapeHtml(step.title) + '</h3>' +
           '<ul class="service-flow__detail">' + items + '</ul>' +
         '</div>'
       );
@@ -268,15 +268,15 @@
       if (!V3) {
         var catClassLegacy = featured
           ? 'text-xs font-bold text-[#FF6B00] mb-3 tracking-widest uppercase'
-          : 'text-xs font-bold text-[#86868B] mb-3 tracking-widest uppercase';
+          : 'text-xs font-bold text-[#667084] mb-3 tracking-widest uppercase';
         return (
-          '<a href="' + href + '" class="group py-8 border-b border-[#E5E5EA] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">' +
+          '<a href="' + href + '" class="group py-8 border-b border-[#E7EAF0] flex flex-col md:flex-row md:items-center justify-between hover:px-6 hover:bg-white transition-all duration-300 rounded-lg">' +
             '<div class="flex flex-col">' +
               '<span class="' + catClassLegacy + '">' + escapeHtml(item.category) + '</span>' +
-              '<h3 class="text-h3 text-[#1D1D1F] group-hover:text-[#FF6B00] transition-colors mb-2">' + escapeHtml(item.title) + '</h3>' +
-              (summary ? '<p class="text-sm text-[#86868B]">' + escapeHtml(summary) + '</p>' : '') +
+              '<h3 class="text-h3 text-[#14161B] group-hover:text-[#FF6B00] transition-colors mb-2">' + escapeHtml(item.title) + '</h3>' +
+              (summary ? '<p class="text-sm text-[#667084]">' + escapeHtml(summary) + '</p>' : '') +
             '</div>' +
-            '<span class="text-sm font-bold text-[#86868B] mt-4 md:mt-0">' + escapeHtml(item.date) + '</span>' +
+            '<span class="text-sm font-bold text-[#667084] mt-4 md:mt-0">' + escapeHtml(item.date) + '</span>' +
           '</a>'
         );
       }
@@ -386,10 +386,22 @@
     var finalTitle = document.getElementById('home-final-title');
     if (finalTitle && hero.title) finalTitle.textContent = hero.title;
 
-    var featuredNews = catalogItems(newsMap)
-      .filter(isPublished)
-      .filter(function (n) { return !!n.homeFeatured; })
-      .slice(0, 2);
+    // 企业动态：优先首页精选，不足 3 条时用最新发布补齐
+    var publishedNews = catalogItems(newsMap).filter(isPublished);
+    var featuredNews = publishedNews.filter(function (n) { return !!n.homeFeatured; });
+    if (featuredNews.length < 3) {
+      var picked = {};
+      featuredNews.forEach(function (n) { picked[String(n.id)] = true; });
+      publishedNews
+        .slice()
+        .sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); })
+        .forEach(function (n) {
+          if (featuredNews.length >= 3 || picked[String(n.id)]) return;
+          picked[String(n.id)] = true;
+          featuredNews.push(n);
+        });
+    }
+    featuredNews = featuredNews.slice(0, 3);
     renderNewsSection(page.newsSection, featuredNews, newsMap);
   }
 

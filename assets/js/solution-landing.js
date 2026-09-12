@@ -44,8 +44,8 @@
         '<svg class="w-6 h-6 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
         '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
         '</div>' +
-        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + esc(p.title) + '</h4>' +
-        '<p class="text-sm text-[#86868B]">' + esc(p.desc) + '</p></div>';
+        '<h4 class="font-bold text-[#14161B] mb-2">' + esc(p.title) + '</h4>' +
+        '<p class="text-sm text-[#667084]">' + esc(p.desc) + '</p></div>';
     }).join('');
   }
 
@@ -55,8 +55,8 @@
       return '<div class="apple-card p-6 text-center">' +
         '<div class="w-16 h-16 bg-[#FF6B00] rounded-full flex items-center justify-center mx-auto mb-4">' +
         '<span class="text-white font-black text-xl mono-num">' + esc(p.step) + '</span></div>' +
-        '<h4 class="font-bold text-[#1D1D1F] mb-2">' + esc(p.title) + '</h4>' +
-        '<p class="text-sm text-[#86868B]">' + esc(p.desc) + '</p></div>';
+        '<h4 class="font-bold text-[#14161B] mb-2">' + esc(p.title) + '</h4>' +
+        '<p class="text-sm text-[#667084]">' + esc(p.desc) + '</p></div>';
     }).join('');
   }
 
@@ -121,8 +121,8 @@
           '<div class="w-full h-40 radius-sm overflow-hidden bg-gray-100 mb-4">' +
           '<img loading="lazy" decoding="async" src="' + esc(global.TXAM.assetUrl(item.image)) + '" alt="' + esc(item.name) + '" class="img-zoom w-full h-full object-cover">' +
           '</div>' +
-          '<h4 class="font-bold text-[#1D1D1F] mb-2 group-hover:text-[#FF6B00] transition-colors">' + esc(item.name) + '</h4>' +
-          '<p class="text-sm text-[#86868B] line-clamp-2">' + esc(item.summary || item.desc || '') + '</p></a>'
+          '<h4 class="font-bold text-[#14161B] mb-2 group-hover:text-[#FF6B00] transition-colors">' + esc(item.name) + '</h4>' +
+          '<p class="text-sm text-[#667084] line-clamp-2">' + esc(item.summary || item.desc || '') + '</p></a>'
         );
       }).join('');
     }

@@ -48,13 +48,13 @@
     var specs = (item.specs || []).slice(0, 2);
     var specHtml = specs
       .map(function (s) {
-        return '<span class="bg-gray-50 border border-gray-200 text-[#1D1D1F] text-xs px-3 py-1 rounded-md font-medium">' +
+        return '<span class="border border-[#E7EAF0] bg-[#F7F8FA] text-[#39404C] text-xs px-3 py-1.5 rounded-full font-semibold">' +
           escapeHtml(s) + '</span>';
       })
       .join('');
 
     var badge = item.category
-      ? '<div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md text-[#1D1D1F] border border-gray-100 px-4 py-1.5 radius-sm text-xs font-bold shadow-sm">' +
+      ? '<div class="absolute top-6 left-6 bg-white/95 backdrop-blur-md text-[#14161B] border border-[#E7EAF0] px-4 py-1.5 radius-sm text-xs font-bold shadow-sm">' +
         escapeHtml(item.category) + '</div>'
       : '';
     var summary = item.summary || '';
@@ -64,10 +64,10 @@
       'class="news-card product-item fade-up ' + mos + '" data-category="' + catKey + '">' +
       '<div class="img-container">' + buildProductImage(cover, item.name) + badge + '</div>' +
       '<div class="p-8 flex-grow flex flex-col justify-between bg-white group"><div>' +
-      '<span class="text-[#86868B] text-sm font-mono font-bold mb-4 block">' +
+      '<span class="text-[#667084] text-sm font-mono font-bold mb-4 block">' +
       escapeHtml(item.model) + '</span>' +
-      '<h3 class="text-h3 text-[#1D1D1F] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' + escapeHtml(item.name) + '</h3>' +
-      '<p class="text-[#86868B] text-sm leading-[1.6] line-clamp-2 mb-4">' + escapeHtml(summary) + '</p>' +
+      '<h3 class="text-h3 text-[#14161B] mb-3 group-hover:text-[#FF6B00] transition-colors leading-tight">' + escapeHtml(item.name) + '</h3>' +
+      '<p class="text-[#667084] text-sm leading-[1.6] line-clamp-2 mb-4">' + escapeHtml(summary) + '</p>' +
       (specHtml ? '<div class="flex flex-wrap gap-2 mt-auto">' + specHtml + '</div>' : '') +
       '</div></div></a>'
     );
@@ -100,13 +100,13 @@
       counts[key] = (counts[key] || 0) + 1;
     });
 
-    var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E5E5EA] bg-white text-xs md:text-sm font-bold hover:border-[#1D1D1F] hover:text-[#1D1D1F]';
+    var normalClass = 'filter-btn whitespace-nowrap px-3 py-1.5 md:px-6 md:py-2.5 border border-[#E7EAF0] bg-white text-xs md:text-sm font-bold hover:border-[#14161B] hover:text-[#14161B]';
     root.innerHTML = Object.keys(page.filters)
       .filter(function (key) { return key === 'all' || counts[key] > 0; })
       .map(function (key) {
         var active = key === 'all';
         return '<button id="filter-' + escapeHtml(key) + '" class="' + normalClass +
-          (active ? ' active text-[#1D1D1F]' : ' text-[#86868B]') + '" data-filter="' + escapeHtml(key) + '">' +
+          (active ? ' active text-[#14161B]' : ' text-[#667084]') + '" data-filter="' + escapeHtml(key) + '">' +
           escapeHtml(page.filters[key]) + '</button>';
       }).join('');
   }
@@ -118,11 +118,11 @@
       if (!targetBtn) return;
 
       filterBtns.forEach(function (b) {
-        b.classList.remove('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-        b.classList.add('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+        b.classList.remove('active', 'bg-[#14161B]', 'text-white', 'border-[#14161B]');
+        b.classList.add('bg-white', 'text-[#667084]', 'border-[#E7EAF0]');
       });
-      targetBtn.classList.add('active', 'bg-[#1D1D1F]', 'text-white', 'border-[#1D1D1F]');
-      targetBtn.classList.remove('bg-white', 'text-[#86868B]', 'border-[#E5E5EA]');
+      targetBtn.classList.add('active', 'bg-[#14161B]', 'text-white', 'border-[#14161B]');
+      targetBtn.classList.remove('bg-white', 'text-[#667084]', 'border-[#E7EAF0]');
 
       document.querySelectorAll('.product-item').forEach(function (item) {
         var match = filterValue === 'all' || item.getAttribute('data-category') === filterValue;

@@ -451,6 +451,12 @@ html[lang^="ru"] #list-hero-lead {
     color: #fff;
     box-shadow: 0 4px 14px rgba(255, 107, 0, 0.26);
 }
+/* 统一编号样式：四步同款中性深色（橙色仅保留给页面其他强调元素） */
+.service-flow__badge--neutral {
+    background: var(--txam-dark);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(29, 29, 31, 0.16);
+}
 .service-flow__detail {
     list-style: none;
     margin: 0;
@@ -1034,6 +1040,7 @@ main#main-content:focus {
     --color-surface-alt: var(--tx-mist-50);
     --border-light: #E7EAF0;
     --txam-dark: var(--tx-ink);
+    --text-muted: var(--tx-ink-mute);
 }
 
 html[data-ui="v3"] {
@@ -1062,6 +1069,10 @@ html[data-ui="v3"] {
     margin-right: auto;
     padding-left: clamp(1.5rem, 5vw, 6rem);
     padding-right: clamp(1.5rem, 5vw, 6rem);
+}
+
+.v3-shell--narrow {
+    max-width: 1200px;
 }
 
 .v3-section {
@@ -1175,6 +1186,14 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 }
 .v3-btn:hover .v3-btn__arrow {
     transform: translateX(4px);
+}
+
+/* Hero CTAs: equal, centered buttons on small screens */
+@media (max-width: 767px) {
+    .v3-hero .v3-btn {
+        width: 100%;
+        max-width: 22rem;
+    }
 }
 
 /* ---------- Hero (full-screen video · white fog) ---------- */
@@ -1332,25 +1351,45 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     color: var(--tx-ink-mute);
 }
 
-/* Client logo wall */
+/* Client logo wall — uniform tiles so 12 mixed-shape logos read as one grid.
+ * Source logos are opaque (some are solid colour blocks, aspect 0.9–8.2),
+ * so each sits in an equal mist tile and is contained inside it. */
 .v3-logos {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    column-gap: clamp(1.75rem, 4vw, 3.25rem);
-    row-gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+}
+@media (min-width: 640px) {
+    .v3-logos {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.85rem;
+    }
+}
+@media (min-width: 1024px) {
+    .v3-logos {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1rem;
+    }
 }
 .v3-logos img {
-    height: 26px;
-    width: auto;
-    filter: grayscale(1);
-    opacity: 0.5;
-    transition: opacity 0.4s var(--tx-ease), filter 0.4s var(--tx-ease);
+    box-sizing: border-box;
+    width: 100%;
+    height: 68px;
+    padding: 0.95rem 0.9rem;
+    object-fit: contain;
+    background: var(--tx-mist-50);
+    border: 1px solid var(--tx-hairline);
+    border-radius: 14px;
+    filter: grayscale(1) contrast(1.04);
+    opacity: 0.74;
+    transition: opacity 0.4s var(--tx-ease), filter 0.4s var(--tx-ease),
+        border-color 0.4s var(--tx-ease), background-color 0.4s var(--tx-ease);
 }
 .v3-logos img:hover {
-    filter: grayscale(0.15);
-    opacity: 0.95;
+    filter: none;
+    opacity: 1;
+    background: #fff;
+    border-color: rgba(255, 107, 0, 0.35);
 }
 
 /* ---------- Glass surfaces ---------- */
@@ -1790,12 +1829,12 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 }
 .txf__watermark {
     position: absolute;
-    right: -1rem;
-    bottom: -2.4rem;
-    font-size: clamp(7rem, 18vw, 15rem);
+    right: 0;
+    bottom: 0.2rem;
+    font-size: clamp(4.5rem, 11vw, 9rem);
     font-weight: 900;
     letter-spacing: -0.05em;
-    color: rgba(20, 22, 27, 0.035);
+    color: rgba(20, 22, 27, 0.032);
     pointer-events: none;
     user-select: none;
     line-height: 1;
@@ -1832,6 +1871,47 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 }
 .txf__meta a:hover {
     color: var(--txam-orange);
+}
+.txf__addresses {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem 2.5rem;
+    padding: 0 0 2.6rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--tx-ink-mute);
+}
+@media (min-width: 768px) {
+    .txf__addresses {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+.txf__addr {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+.txf__addr-label {
+    flex: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--tx-ink);
+}
+
+/* 关于页客户墙：flex 居中，避免 14 个 logo 在 6 列网格里末行只剩 2 个左对齐 */
+.client-card {
+    width: calc(50% - 0.5rem);
+}
+@media (min-width: 768px) {
+    .client-card {
+        width: calc(33.333% - 1rem);
+    }
+}
+@media (min-width: 1024px) {
+    .client-card {
+        width: calc(20% - 1.2rem);
+    }
 }
 .txf__qr {
     width: 108px;
@@ -1891,7 +1971,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 [data-ui="v3"] #list-hero-lead,
 [data-ui="v3"] #about-hero-lead,
 [data-ui="v3"] #contact-hero-lead {
-    color: var(--tx-ink-mute);
+    color: var(--tx-ink-mid);
 }
 
 /* 内页 hero 统一规则：雾底 + 顶部起点标准化
@@ -2007,7 +2087,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 [data-ui="v3"] [data-breadcrumb] a {
     color: var(--tx-ink-mute);
 }
-[data-ui="v3"] [data-breadcrumb] .text-\[\#1D1D1F\] {
+[data-ui="v3"] [data-breadcrumb] .text-\[\#14161B\] {
     color: var(--tx-ink) !important;
 }
 
@@ -2222,6 +2302,7 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 .v3-hero--band-media .v3-shell {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    text-align: center;
 }
 .v3-hero--band-media .text-display {
     font-size: clamp(2.75rem, 7vw, 6rem);
@@ -2230,7 +2311,8 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
     margin-bottom: 2.25rem;
 }
 .v3-hero--band-media [id$="-lead"] {
-    color: #55555b;
+    /* 视频底比纯雾底更亮，加一层白色柔光把正文从画面里"托"起来 */
+    text-shadow: 0 1px 18px rgba(255, 255, 255, 0.9);
 }
 .v3-hero--band-media .v3-hero__veil {
     /* 满屏高度下重新分配白雾：中部略透出画面，文字区保持可读，底部从容渐隐 */
