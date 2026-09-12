@@ -1351,31 +1351,30 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     color: var(--tx-ink-mute);
 }
 
-/* Client logo wall — uniform tiles so 12 mixed-shape logos read as one grid.
- * Assets are pre-normalised onto a shared 720x150 canvas: wordmarks occupy the
- * middle 100 units (identical letter height), compact/stacked marks may occupy
- * the full 150 for optical balance. object-fit:contain then renders every logo
- * at the same visual height in any container. */
+/* Client logo wall — data-driven from the About clients list (admin-managed).
+ * Assets sit on a shared 720x150 canvas: wordmarks occupy the middle 100 units
+ * (identical letter height), compact/stacked marks may use the full 150.
+ * flex + fixed tile width keeps partial rows centred for any item count. */
 .v3-logos {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 0.7rem;
 }
 @media (min-width: 640px) {
     .v3-logos {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0.85rem;
     }
 }
 @media (min-width: 1024px) {
     .v3-logos {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
         gap: 1rem;
     }
 }
 .v3-logos img {
     box-sizing: border-box;
-    width: 100%;
+    flex: 0 0 auto;
+    width: calc((100% - 0.7rem) / 2);
     height: 58px;
     padding: 0.7rem 0.9rem;
     object-fit: contain;
@@ -1387,6 +1386,16 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     opacity: 0.74;
     transition: opacity 0.4s var(--tx-ease), filter 0.4s var(--tx-ease),
         border-color 0.4s var(--tx-ease), background-color 0.4s var(--tx-ease);
+}
+@media (min-width: 640px) {
+    .v3-logos img {
+        width: calc((100% - 1.7rem) / 3);
+    }
+}
+@media (min-width: 1024px) {
+    .v3-logos img {
+        width: calc((100% - 4rem) / 5);
+    }
 }
 .v3-logos img:hover {
     filter: none;

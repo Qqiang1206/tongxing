@@ -447,6 +447,18 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
   素材 `huake.webp` 同步删除；现关于页客户墙 13 个（5+5+3，末行居中）。
 - **缓存穿透**：素材沿用同名文件时浏览器会继续用旧图（用户反馈"还是旧方块"）。
   首页 12 个 `<img>` 与 about 页数据均加 `?v=20260912`（`patch-client-logos.mjs` 负责后者）。
+- **首页 logo 墙接入后台（2026-09-12）**：原先首页那排 logo 是**硬编码**在 `index.html`
+  里的（12 个 `<img>`），后台无入口，因此与关于页列表不一致（少了惠科 HKC）。
+  改造为**复用「关于我们 → 合作客户」同一份数据**：
+  - `index.html` 三语：硬编码列表 → `<div class="v3-logos" id="home-clients"></div>`，
+    并在脚本区引入 `data/pages/about/{lang}.js`
+  - `home-page.js`：新增 `renderClientsSection` / `hydrateClients`，两个渲染分支
+    （bundle 与静态）都调用
+  - `styles.css`：`.v3-logos` 由 grid 改 flex-wrap + 固定磁贴宽度（2/3/5 列），
+    末行自动居中，任意数量都不出现孤项；桌面 5 列使 13 个排成 5+5+3
+  - 后台维护路径：**关于我们 → 合作客户 → Logo 列表**（增删、媒体库选图、客户名称），
+    保存后首页与关于页同步更新
+  - 现状：两页共用 13 个客户（含 HKC 惠科）
 - band hero 正文：`#55555b` → `--tx-ink-mid` + 白色柔光 text-shadow（视频底更亮）；
   内容区补 `text-align:center`，与首页 hero 对齐。移动端 hero 双 CTA 等宽。
 - 修 bug：6 个根页 `../assets/css/tx-view-transitions.css` 越出根目录 404 → `assets/css/...`。

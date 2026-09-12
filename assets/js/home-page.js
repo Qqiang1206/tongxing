@@ -405,6 +405,33 @@
     renderNewsSection(page.newsSection, featuredNews, newsMap);
   }
 
+  // 客户 logo 墙：复用「关于我们 → 合作客户」列表（后台一处维护，两页同步）
+  function renderClientsSection(aboutPage) {
+    var grid = document.getElementById('home-clients');
+    if (!grid) return;
+    var items = (aboutPage && aboutPage.clients && aboutPage.clients.items) || [];
+    if (!items.length) return;
+    var assetUrl = global.TXAM && global.TXAM.assetUrl ? global.TXAM.assetUrl : function (u) { return u; };
+    grid.innerHTML = items
+      .filter(function (item) { return item && item.image; })
+      .map(function (item) {
+        return (
+          '<img loading="lazy" decoding="async" src="' + escapeHtml(assetUrl(item.image)) +
+          '" alt="' + escapeHtml(item.imageAlt || '') + '">'
+        );
+      })
+      .join('');
+  }
+
+  async function hydrateClients(lang) {
+    if (!document.getElementById('home-clients')) return;
+    try {
+      renderClientsSection(await global.TXAM.loadPage('about', lang));
+    } catch (err) {
+      console.warn('[TXAM] clients load failed', err);
+    }
+  }
+
   async function initHomePage(options) {
     options = options || {};
     var lang = options.lang || (global.TXAM && global.TXAM.detectLang()) || 'zh';
@@ -415,6 +442,7 @@
         var bundle = await global.TXAM.loadHome(lang);
         if (bundle && bundle.page) {
           renderHome(bundle.page, bundle.solutions, bundle.news);
+          await hydrateClients(lang);
           return;
         }
       }
@@ -428,6 +456,7 @@
       var solutionsMap = loaded[1];
       var newsMap = loaded[2];
       if (page) renderHome(page, solutionsMap, newsMap);
+      await hydrateClients(lang);
     } catch (err) {
       console.error(err);
     }
