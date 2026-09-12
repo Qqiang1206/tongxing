@@ -1352,9 +1352,10 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 }
 
 /* Client logo wall — uniform tiles so 12 mixed-shape logos read as one grid.
- * Assets are pre-normalised onto a shared 720x100 canvas (identical letter
- * height + identical aspect), so object-fit:contain renders every logo at the
- * same visual height in any container. */
+ * Assets are pre-normalised onto a shared 720x150 canvas: wordmarks occupy the
+ * middle 100 units (identical letter height), compact/stacked marks may occupy
+ * the full 150 for optical balance. object-fit:contain then renders every logo
+ * at the same visual height in any container. */
 .v3-logos {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1375,7 +1376,7 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 .v3-logos img {
     box-sizing: border-box;
     width: 100%;
-    height: 46px;
+    height: 58px;
     padding: 0.7rem 0.9rem;
     object-fit: contain;
     object-position: center;
