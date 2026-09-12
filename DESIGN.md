@@ -397,6 +397,12 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
 **表现层（前端）**
 - 全站硬编码 Apple 色值 → v3 令牌值（68 文件 / 1561 处），含 solution 落地页生成器
   `scripts/generate-solution-landings.js`，避免重新生成时回退。
+- ⚠️ **Tailwind 必须重编译**：`assets/css/tailwind.min.css` 是预编译产物，任意值类
+  （`bg-[#E7EAF0]`、`border-[#14161B]` 等）只有在构建时被扫描到才会生成。色值替换引入了
+  新类名但未重编译，导致时间轴竖线（`bg-[#E7EAF0]`）等元素丢失样式。
+  **规则：凡改动 Tailwind 任意值类，必须执行 `npm run build:css`**（配置 `tailwind.config.js`
+  的 content 已覆盖 `*.html` / `en|ru/**` / `assets/js/**` / `data/**` / `server/admin/**`）。
+  本次已重编译（28,992 → 26,408 字节；新增 11 类、移除 57 个确认未被引用的旧类）。
 - `[data-ui="v3"]` 补齐 `--text-muted` 重定向（此前 `.service-flow__detail` 等仍用旧灰）。
 - 容器统一：`px-6 md:px-24` + `max-w-[1400px] mx-auto` → `v3-shell`；详情页窄栏用新增
   `.v3-shell--narrow`（1200px）。51 个文件脚本化，`solutions.html` 手工处理。
