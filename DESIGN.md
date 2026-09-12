@@ -421,6 +421,18 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
      移动 2 列 / 平板 3 列 / 桌面 5 列，末行自动居中。
   ⚠️ 素材写入注意：本机 Node `fs.writeFileSync/copyFileSync` 覆盖 `clients/*.webp` 会报
   `UNKNOWN errno -4094`（PowerShell 正常），归一化脚本改为"输出到暂存目录 + PowerShell 覆盖"。
+- **Logo 素材整体换源**（用户反馈"素材确实不太行"）：原素材全部无透明通道、比例 0.9–8.2、
+  康佳/联想是红底实心方块。重新找源并统一处理：
+  - 来源：Wikimedia Commons 矢量/透明图 10 个（TCL / Skyworth / Midea / Changhong / Lenovo /
+    Foxconn / CATL / BOE / Unilumin / Innolux）；希沃取官网 `seewo.com/images/logo.svg`（原为纯白，
+    改色 `#fff→#14161B`）；康佳取中文维基 `康佳商标.jpg`；HKC / HUAKETEK 暂无更好源，沿用归一化旧图。
+  - 处理管线：栅格化（SVG density 400）→ 白底 → **alpha = 255 − min(R,G,B)**（离白距离去底，
+    保留彩色与抗锯齿）→ trim → 统一高 96px（只缩不放）→ webp（alphaQuality 100）。
+  - 长虹由 `changhong.gif` 改为 `changhong.webp`：更新首页三语引用 + 运行
+    `server/scripts/patch-client-logos.mjs` 改 about 页数据（DB 为准）。
+  - 获取要点：`upload.wikimedia.org` 直链易触发 429，用
+    `https://commons.wikimedia.org/wiki/Special:FilePath/<文件名>` 更稳；
+    Commons 偶有 UTF-16 编码 SVG，sharp 不识别，需先转 UTF-8。
 - band hero 正文：`#55555b` → `--tx-ink-mid` + 白色柔光 text-shadow（视频底更亮）；
   内容区补 `text-align:center`，与首页 hero 对齐。移动端 hero 双 CTA 等宽。
 - 修 bug：6 个根页 `../assets/css/tx-view-transitions.css` 越出根目录 404 → `assets/css/...`。
