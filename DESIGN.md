@@ -441,8 +441,10 @@ nginx `/data/` 白名单化；双端黑名单补齐 output/docs/templates/nginx/
   配套：首页磁贴 `height:58px` + `padding:.7rem .9rem`（内容区比例 ≈4.69，略窄于画布 4.8，
   宽度受限→画布铺满宽度）；关于页卡片 `h-28 p-5` → `h-20 p-4`（logo 占卡片比例 36%→52%）；
   移动端 2 列（3 列时字高仅 ~11px）。
-  注意：HUAKETEK / HKC 无公开矢量源（官网域名不可达），沿用旧位图，HKC 已是字标形态、
-  HUAKETEK 为方形堆叠形态，字高与其他一致但视觉面积天然偏小，属正常。
+  注意：HUAKETEK / HKC 无公开矢量源（官网域名不可达），沿用旧位图。
+  2026-09-12 按用户要求**移除 HUAKETEK**（方形堆叠形态在字标墙里观感不协调）：
+  `patch-client-logos.mjs` 会从 about 页 clients 中删除该项（三语言，幂等），
+  素材 `huake.webp` 同步删除；现关于页客户墙 13 个（5+5+3，末行居中）。
 - **缓存穿透**：素材沿用同名文件时浏览器会继续用旧图（用户反馈"还是旧方块"）。
   首页 12 个 `<img>` 与 about 页数据均加 `?v=20260912`（`patch-client-logos.mjs` 负责后者）。
 - band hero 正文：`#55555b` → `--tx-ink-mid` + 白色柔光 text-shadow（视频底更亮）；
