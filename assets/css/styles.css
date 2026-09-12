@@ -1909,7 +1909,7 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     color: var(--tx-ink);
 }
 
-/* 关于页客户墙：flex 居中，避免 14 个 logo 在 6 列网格里末行只剩 2 个左对齐 */
+/* 关于页客户墙：与首页同源的悬浮式（无卡片底/描边），flex 居中 + 末行自动居中 */
 .client-card {
     width: calc(50% - 0.5rem);
 }
@@ -1921,6 +1921,36 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 @media (min-width: 1024px) {
     .client-card {
         width: calc(20% - 1.2rem);
+    }
+}
+
+/* 砖砌咬合：桌面端相邻行横向错开半格（奇数行左移、偶数行右移各 1/4 节距）。
+ * 用 translate 属性而非 transform —— 不影响 flex 换行，也不与 hover 的
+ * transform: translateY 冲突（两者独立叠加）。 */
+@media (min-width: 1024px) {
+    .v3-logos img:nth-child(10n + 1),
+    .v3-logos img:nth-child(10n + 2),
+    .v3-logos img:nth-child(10n + 3),
+    .v3-logos img:nth-child(10n + 4),
+    .v3-logos img:nth-child(10n + 5),
+    #client-logos-grid > .client-card:nth-child(10n + 1),
+    #client-logos-grid > .client-card:nth-child(10n + 2),
+    #client-logos-grid > .client-card:nth-child(10n + 3),
+    #client-logos-grid > .client-card:nth-child(10n + 4),
+    #client-logos-grid > .client-card:nth-child(10n + 5) {
+        translate: -27% 0;
+    }
+    .v3-logos img:nth-child(10n + 6),
+    .v3-logos img:nth-child(10n + 7),
+    .v3-logos img:nth-child(10n + 8),
+    .v3-logos img:nth-child(10n + 9),
+    .v3-logos img:nth-child(10n),
+    #client-logos-grid > .client-card:nth-child(10n + 6),
+    #client-logos-grid > .client-card:nth-child(10n + 7),
+    #client-logos-grid > .client-card:nth-child(10n + 8),
+    #client-logos-grid > .client-card:nth-child(10n + 9),
+    #client-logos-grid > .client-card:nth-child(10n) {
+        translate: 27% 0;
     }
 }
 .txf__qr {

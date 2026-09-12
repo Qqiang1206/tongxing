@@ -212,7 +212,7 @@
       var src = escapeHtml(assetUrl(item.image));
       var alt = escapeHtml(item.imageAlt || '');
       return (
-        '<div class="client-card h-20 bg-white border border-[#E7EAF0] radius-lg flex items-center justify-center p-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">' +
+        '<div class="client-card h-20 flex items-center justify-center p-4 hover:-translate-y-1 transition-transform duration-300">' +
           '<img loading="lazy" decoding="async" src="' + src + '" alt="' + alt + '" class="max-h-full max-w-full client-logo">' +
         '</div>'
       );
