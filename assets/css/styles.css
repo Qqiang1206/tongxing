@@ -1320,12 +1320,13 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     }
 }
 .v3-stat {
-    background: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.72);
+    /* 原本是 1px 纯白实线 + 顶部白色内高光，两条白线叠在半透明卡片上就是一圈「白胶带」，
+       在偏浅的 hero 背景上既糊又脏。改成极淡的深色 hairline，轮廓清楚但不抢眼。 */
+    border: 1px solid rgba(16, 18, 22, 0.06);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    box-shadow: 0 1px 2px rgba(16, 18, 22, 0.04), 0 12px 32px rgba(16, 18, 22, 0.07),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: 0 1px 2px rgba(16, 18, 22, 0.04), 0 12px 32px rgba(16, 18, 22, 0.07);
     border-radius: var(--tx-radius-card);
     padding: 1.1rem 1.4rem;
 }
