@@ -474,6 +474,32 @@ async function main() {
     else fail('页脚 CTA 揭示登记', 'guard=' + guard + ' wired=' + wired);
   }
 
+  // 18. 导航高亮：详情页 / 方案落地页不能一律高亮「首页」
+  //     导航在每个 HTML 里静态写死，批量生成时极易把 active 抄成首页。
+  {
+    const cases = [
+      ['/news-detail.html?id=4', 'news.html'],
+      ['/product-detail.html?id=1', 'products.html'],
+      ['/solutions-detail.html', 'solutions.html'],
+      ['/washer-solution.html', 'solutions.html'],
+      ['/en/news-detail.html', 'news.html'],
+      ['/ru/solutions-detail.html', 'solutions.html'],
+    ];
+    const bad = [];
+    for (const [u, exp] of cases) {
+      const r = await fetch(u);
+      const box = r.text && /<div class="txnav__links">([\s\S]*?)<\/div>/.exec(r.text);
+      const act = box
+        ? [...box[1].matchAll(/<a href="([^"]+)" class="txnav__link( is-active)?"/g)]
+            .filter((m) => m[2])
+            .map((m) => m[1])
+        : [];
+      if (act.length !== 1 || act[0] !== exp) bad.push(u + ' → ' + (act.join(',') || '无高亮'));
+    }
+    if (bad.length === 0) pass('导航高亮与当前栏目一致', cases.length + ' 个页面抽查');
+    else fail('导航高亮错位', bad.join(' | '));
+  }
+
   printSummary();
   process.exit(results.some((x) => x.ok === false) ? 1 : 0);
 }
