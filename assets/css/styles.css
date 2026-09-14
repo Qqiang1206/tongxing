@@ -1837,17 +1837,25 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
         #FBFCFE;
     color: var(--tx-ink-mid);
 }
+/* 页脚品牌字标水印：用 logo 的轮廓做 mask、填成单色，铺满整条页脚宽度贴底。
+   做法对齐 workbuddy.cn 的页脚字标（水印铺到两端、浅灰、压在内容之下）。
+   用 mask 而不是直接放图，是为了把带橙色的 logo 收成纯灰、且浓度可调。
+   形状用 **SVG 轮廓** 而不是 logo.png：位图当 mask 被放大时，浏览器会对 alpha
+   做双线性插值 —— 源图 500px 宽铺到 1424px 是 2.85 倍，边缘糊开一片，就是"发虚"。
+   SVG 由 `scripts/png-to-svg-mask.mjs` 从 logo.png 描摹而来（改 logo 后重跑生成）。
+   浓度取 0.09：0.06 在实机上太淡、轮廓发虚，0.11（≈workbuddy 的 #E1E1E1）
+   又跟我们更密的页脚内容打架，故取中间值。 */
 .txf__watermark {
     position: absolute;
+    left: 0;
     right: 0;
-    bottom: 0.2rem;
-    font-size: clamp(4.5rem, 11vw, 9rem);
-    font-weight: 900;
-    letter-spacing: -0.05em;
-    color: rgba(20, 22, 27, 0.032);
+    bottom: 0;
+    aspect-ratio: 500 / 85;
+    background: rgba(20, 22, 27, 0.09);
+    -webkit-mask: url("../images/brand/logo-mask.svg") no-repeat center / contain;
+    mask: url("../images/brand/logo-mask.svg") no-repeat center / contain;
     pointer-events: none;
     user-select: none;
-    line-height: 1;
 }
 .txf__grid {
     display: grid;
@@ -1985,7 +1993,6 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
     justify-content: space-between;
     gap: 0.75rem;
     padding: 1.4rem 0 1.6rem;
-    border-top: 1px solid var(--tx-hairline);
     font-size: 0.8rem;
     color: var(--tx-ink-faint);
 }
@@ -2186,6 +2193,69 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
     border: 1px solid var(--tx-hairline);
     box-shadow: 0 1px 2px rgba(16, 18, 22, 0.04), 0 10px 28px rgba(16, 18, 22, 0.07);
     border-radius: 14px;
+}
+
+/* ---------- 关于页：数据带（19年 / 98项 / 11大 / 10万㎡） ----------
+ * 列数由 --stat-cols 决定，由 about-page.js 按实际条数写入。
+ * 曾经写死 md:grid-cols-5，而数据只剩 4 条 → 第 5 列空着、整条数据带往左缩，
+ * 看起来像"没对齐"。列数跟着条数走，加减项都不会再错位。
+ * 每项居中、项间一条发丝竖线，读起来是一条完整的"数据带"。 */
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 1rem;
+}
+@media (min-width: 768px) {
+    .about-stats {
+        grid-template-columns: repeat(var(--stat-cols, 4), minmax(0, 1fr));
+        gap: 0;
+    }
+}
+.about-stat {
+    position: relative;
+    min-width: 0;
+    padding: 0 1.25rem;
+    text-align: center;
+}
+@media (min-width: 768px) {
+    /* 只在"项与项之间"画分隔线，首项左侧不加，末项右侧自然也没有 */
+    .about-stat + .about-stat::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.4rem;
+        bottom: 0.4rem;
+        width: 1px;
+        background: #E7EAF0;
+    }
+}
+.about-stat__num {
+    margin-bottom: 0.75rem;
+    font-size: clamp(2.5rem, 1.6vw + 3.1rem, 4.5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #14161B;
+}
+.about-stat.is-accent .about-stat__num {
+    color: var(--txam-orange);
+}
+.about-stat__unit {
+    margin-left: 0.18em;
+    font-size: 0.42em;
+    font-weight: 800;
+    letter-spacing: 0;
+    color: #C7CCD6;
+}
+.about-stat__label {
+    max-width: 24ch;
+    margin: 0 auto;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #667084;
 }
 
 /* ---------- 详情页/落地页通用媒体壳（media-hero 家族） ---------- */

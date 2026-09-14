@@ -25,7 +25,8 @@
     "server:dev": "npm run dev --prefix server",
     "sync:static": "npm run sync:static --prefix server",
     "regression": "node scripts/regression-check.js",
-    "optimize-static-images": "node scripts/optimize-static-images.mjs"
+    "optimize-static-images": "node scripts/optimize-static-images.mjs",
+    "logo-mask": "node scripts/png-to-svg-mask.mjs assets/images/brand/logo.png assets/images/brand/logo-mask.svg"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.19"

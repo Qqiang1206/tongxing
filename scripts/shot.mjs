@@ -42,7 +42,9 @@ if (mode === 'dom') {
   fs.mkdirSync(path.join(os.tmpdir(), 'txam-verify'), { recursive: true });
   fs.writeFileSync(path.join(os.tmpdir(), 'txam-verify', 'dump.html'), dom, 'utf8');
   // 只输出关键片段，避免刷屏
-  const probe = /<div id="probe">([\s\S]*?)<\/div>/.exec(dom);
+  // 探针容器兼容 <div>/<pre> 两种写法（预览页用 <pre>，保持等宽可读）
+  const probe = /<(?:div|pre) id="probe"[^>]*>([\s\S]*?)<\/(?:div|pre)>/.exec(dom);
+  if (!probe) console.log('(未找到 #probe 探针：该页可能没有探针，或探针失败)');
   if (probe) console.log(probe[1].replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').trim());
   for (const m of dom.matchAll(/<section class="v3-final[^>]*>[\s\S]{0,600}?<\/section>/g)) {
     console.log('--- v3-final section ---');

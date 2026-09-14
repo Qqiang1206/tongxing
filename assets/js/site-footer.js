@@ -231,9 +231,11 @@
           '<span class="txf__addr-text">' + escapeHtml(footer.addressHuizhou) + '</span></div>';
       }
 
+      /* 品牌字标水印：形状由 styles.css 里 .txf__watermark 的 mask 提供（logo 轮廓），
+         这里不放文字 —— 原来那句 "TXAM" 已被整条字标取代。 */
       var html =
         '<footer class="txf">' +
-        '<div class="txf__watermark" aria-hidden="true">TXAM</div>' +
+        '<div class="txf__watermark" aria-hidden="true"></div>' +
         '<div class="v3-shell relative z-10">' +
         '<div class="txf__grid">' +
         '<div class="txf__col">' +

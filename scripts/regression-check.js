@@ -112,6 +112,31 @@ async function main() {
     else fail('/about.html', 'status=' + r.status);
   }
 
+  // 3b. 关于页数据带（19年/98项/…）：列数必须自适应，不能再写死
+  // 事故：数据里 columns:5 但只剩 4 条 → 网格第 5 列空着，整条数据带往左缩。
+  {
+    const langs = [
+      ['/about.html', 4],
+      ['/en/about.html', 4],
+      ['/ru/about.html', 4],
+    ];
+    const bad = [];
+    for (const [path, expect] of langs) {
+      const r = await fetch(path);
+      if (r.status !== 200) {
+        bad.push(path + ' status=' + r.status);
+        continue;
+      }
+      const tag = /<div id="about-stats-grid"[^>]*>/.exec(r.text);
+      const n = (r.text.match(/class="about-stat"/g) || []).length;
+      if (!tag) bad.push(path + ' 缺 about-stats-grid');
+      else if (/grid-cols/.test(tag[0])) bad.push(path + ' 容器仍写死列数');
+      else if (n !== expect) bad.push(path + ' 条数=' + n + ' 期望=' + expect);
+    }
+    if (!bad.length) pass('关于页数据带：列数自适应、条数与数据一致（三语）');
+    else fail('关于页数据带', bad.join('; '));
+  }
+
   // 4. Contact — no form POST target for leads
   {
     const r = await fetch('/contact.html');
@@ -498,6 +523,20 @@ async function main() {
     }
     if (bad.length === 0) pass('导航高亮与当前栏目一致', cases.length + ' 个页面抽查');
     else fail('导航高亮错位', bad.join(' | '));
+  }
+
+  // 19. 页脚水印遮罩：必须是可访问的 SVG（不是位图）
+  //     位图当 mask 放大 2.85 倍会把 alpha 插值糊开，视觉上"发虚"；
+  //     而且遮罩一旦 404，整个水印会消失（mask 图加载失败 = 元素不渲染）。
+  {
+    const svg = await fetch('/assets/images/brand/logo-mask.svg');
+    const okType = /svg/.test(svg.headers['content-type'] || '');
+    const okBody = svg.status === 200 && svg.text.startsWith('<svg') && /fill-rule="evenodd"/.test(svg.text);
+    const css = await fetch('/assets/css/styles.css');
+    const used =
+      css.status === 200 && /\.txf__watermark\s*\{[^}]*mask:\s*url\(["']?[^"')]*logo-mask\.svg/.test(css.text);
+    if (okBody && okType && used) pass('页脚水印用 SVG 遮罩且可访问');
+    else fail('页脚水印遮罩', `status=${svg.status} type=${svg.headers['content-type']} body=${okBody} cssUsed=${used}`);
   }
 
   printSummary();

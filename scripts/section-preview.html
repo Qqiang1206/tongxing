@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<title>区块裁切预览</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #fff; }
+  #clip { position: relative; overflow: hidden; }
+  #frame { position: absolute; left: 0; top: 0; border: 0; display: block; }
+  #probe {
+    position: fixed; left: 0; bottom: 0; margin: 0; z-index: 9;
+    font: 11px/1.5 ui-monospace, Consolas, monospace;
+    background: rgba(0, 0, 0, .82); color: #fff;
+    padding: 6px 9px; white-space: pre; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div id="clip"></div>
+<pre id="probe">loading…</pre>
+<script>
+/**
+ * 区块裁切预览（由 scripts/preview-section.mjs 从本模板生成，勿手改生成物）
+ * query：src / sel / w / h / pad
+ *   src  嵌入哪个真实页面（默认 index.html）
+ *   sel  要框住的选择器；给了 sel 时按元素定位，否则裁页面底部
+ *   w    iframe 宽度（默认 1440）—— 必须显式给，否则 Chrome 最小窗口宽会污染栅格
+ *   h    无 sel 时的裁切高度
+ *   pad  目标元素上下各留多少像素上下文（默认 40）
+ */
+(function () {
+  var q = new URLSearchParams(location.search);
+  var src = q.get('src') || 'index.html';
+  var w = parseInt(q.get('w') || '1440', 10);
+  var h = parseInt(q.get('h') || '700', 10);
+  var pad = parseInt(q.get('pad') || '40', 10);
+  var sel = q.get('sel') || '';
+  // 允许省略前缀：sel=about-stats-grid 视作 #about-stats-grid
+  if (sel && sel[0] !== '#' && sel[0] !== '.' && sel[0] !== '[') sel = '#' + sel;
+  var probe = document.getElementById('probe');
+  // 截图时用 &noprobe=1 隐藏探针（它贴在左下角，会挡住内容）
+  if (q.get('noprobe') === '1') probe.style.display = 'none';
+
+  var clip = document.getElementById('clip');
+  clip.style.width = w + 'px';
+  clip.style.height = h + 'px';
+
+  var frame = document.createElement('iframe');
+  frame.id = 'frame';
+  frame.src = src;
+  frame.style.width = w + 'px';
+  frame.setAttribute('scrolling', 'no');
+
+  frame.addEventListener('load', function () {
+    var doc;
+    try { doc = frame.contentDocument; } catch (e) {
+      probe.textContent = '跨源读取失败：' + e.message;
+      return;
+    }
+
+    // iframe 里的 IntersectionObserver 通常不触发，fade-up 会停在 opacity:0 变成空白，
+    // 这里强制揭示，否则截出来的图永远缺内容。
+    var ups = doc.querySelectorAll('.fade-up');
+    for (var i = 0; i < ups.length; i++) ups[i].classList.add('visible');
+
+    // 必须用 setTimeout 而非 rAF：headless 的 --virtual-time-budget 会快进定时器，
+    // 但不会快进 rAF（依赖合成器帧），用 rAF 探针会永远停在 "loading…"。
+    setTimeout(function () {
+      var full = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
+      frame.style.height = full + 'px';
+
+      var lines = [];
+      var targetTop, targetH;
+
+      if (sel) {
+        var el = doc.querySelector(sel);
+        if (!el) { probe.textContent = '未找到 ' + sel; return; }
+        var r = el.getBoundingClientRect();
+        var cs = getComputedStyle(el);
+        targetTop = r.top + (doc.documentElement.scrollTop || 0);
+        targetH = r.height;
+        lines.push('sel=' + sel + ' top=' + Math.round(targetTop) + ' h=' + Math.round(targetH));
+        lines.push('border T/R/B/L=' + cs.borderTopWidth + ' ' + cs.borderRightWidth + ' '
+          + cs.borderBottomWidth + ' ' + cs.borderLeftWidth + '  (' + cs.borderTopColor + ')');
+        lines.push('padding=' + cs.paddingTop + ' ' + cs.paddingRight + ' '
+          + cs.paddingBottom + ' ' + cs.paddingLeft + '  bg=' + cs.backgroundColor);
+        var prev = el.previousElementSibling;
+        if (prev) lines.push('prev=<' + prev.tagName.toLowerCase() + '> .'
+          + (prev.className || '').toString().split(' ').join('.'));
+        var par = el.parentElement;
+        if (par) {
+          var pcs = getComputedStyle(par);
+          lines.push('parent=<' + par.tagName.toLowerCase() + '> pad=' + pcs.paddingTop
+            + '/' + pcs.paddingBottom + ' h=' + Math.round(par.getBoundingClientRect().height));
+        }
+        var sec = el.closest('section');
+        if (sec) {
+          var scs = getComputedStyle(sec);
+          lines.push('section pad=' + scs.paddingTop + ' h='
+            + Math.round(sec.getBoundingClientRect().height));
+        }
+
+        // 子元素清单：位置 / 尺寸 / 伪元素，用来看栅格有没有空列、分隔线画了几条
+        var kids = el.children;
+        lines.push('-> 子元素 ' + kids.length + ' 个');
+        var cols = getComputedStyle(el).gridTemplateColumns;
+        if (cols && cols !== 'none') lines.push('   grid-cols=' + cols);
+        for (var k = 0; k < kids.length && k < 14; k++) {
+          var kr = kids[k].getBoundingClientRect();
+          var kb = getComputedStyle(kids[k], '::before');
+          var ktxt = (kb.content || '').replace(/^"|"$/g, '');
+          lines.push('   #' + (k + 1) + ' <' + kids[k].tagName.toLowerCase() + '>'
+            + ' x=' + Math.round(kr.left - r.left) + ' w=' + Math.round(kr.width)
+            + ' h=' + Math.round(kr.height)
+            + ' ::before=' + JSON.stringify(ktxt)
+            + (ktxt ? ' ' + kb.backgroundColor : ''));
+        }
+      } else {
+        targetTop = full - h;
+        targetH = h;
+      }
+
+      var clipH = Math.round(targetH + pad * 2);
+      clip.style.height = clipH + 'px';
+      frame.style.top = '-' + Math.round(Math.max(0, targetTop - pad)) + 'px';
+      probe.textContent = lines.join('\n') + '\nclip=' + w + 'x' + clipH + ' (pad ' + pad + ')';
+      window.__ready = true;
+    }, 300);
+  });
+
+  clip.appendChild(frame);
+  document.body.appendChild(clip);
+})();
+</script>
+</body>
+</html>

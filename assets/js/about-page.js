@@ -13,28 +13,24 @@
   function renderStatsGrid(container, statsBlock) {
     if (!container || !statsBlock || !statsBlock.items || !statsBlock.items.length) return;
 
-    container.innerHTML = statsBlock.items.map(function (stat) {
-      var emphasis = stat.emphasis || '';
-      var wrapClass = '';
-      var unitClass = 'text-3xl ml-1 text-gray-300';
-      var labelClass = 'text-xs font-bold text-[#667084] tracking-widest uppercase';
+    var items = statsBlock.items;
 
-      if (emphasis === 'accent') {
-        wrapClass = 'pl-6 border-l-4 border-[#FF6B00]';
-        unitClass = 'text-3xl ml-1';
-        labelClass = 'text-xs font-bold text-[#14161B] tracking-widest uppercase';
-      }
+    // 列数跟着实际条数走，不读 statsBlock.columns：
+    // 数据里曾经是 columns:5 但只剩 4 条，网格第 5 列空着、整条数据带往左缩。
+    container.style.setProperty('--stat-cols', String(items.length));
 
+    container.innerHTML = items.map(function (stat) {
+      var cellClass = 'about-stat' + (stat.emphasis === 'accent' ? ' is-accent' : '');
       var unitHtml = stat.unit
-        ? '<span class="' + unitClass + '">' + escapeHtml(stat.unit) + '</span>'
+        ? '<span class="about-stat__unit">' + escapeHtml(stat.unit) + '</span>'
         : '';
 
       return (
-        '<div class="' + wrapClass + '">' +
-          '<div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">' +
+        '<div class="' + cellClass + '">' +
+          '<div class="about-stat__num mono-num">' +
             escapeHtml(stat.value) + unitHtml +
           '</div>' +
-          '<p class="' + labelClass + '">' + escapeHtml(stat.label) + '</p>' +
+          '<p class="about-stat__label">' + escapeHtml(stat.label) + '</p>' +
         '</div>'
       );
     }).join('');

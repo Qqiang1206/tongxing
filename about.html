@@ -20,7 +20,7 @@
     <meta property="og:image" content="https://www.sztxgk.com/assets/images/hero/factory-hero.webp">
     <!-- 引入 Tailwind CSS 框架 -->
     <link rel="stylesheet" href="assets/css/tailwind.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260916">
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260921">
     <link rel="stylesheet" href="assets/css/tx-view-transitions.css">
             <link rel="icon" type="image/webp" href="assets/images/brand/favicon.webp">
             <link rel="icon" type="image/png" href="assets/images/brand/favicon.png">
@@ -119,26 +119,22 @@
     <!-- 📍 P2. 核心数据展示 -->
     <section class="py-20 bg-white">
         <div class="v3-shell fade-up">
-            <div id="about-stats-grid" class="grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-[#E7EAF0] pt-16">
-                <div>
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">19<span class="text-3xl ml-1 text-gray-300">年</span></div>
-                    <p class="text-xs font-bold text-[#667084] tracking-widest uppercase">非标自动化设备制造经验</p>
+            <div id="about-stats-grid" class="about-stats">
+                <div class="about-stat">
+                    <div class="about-stat__num mono-num">19<span class="about-stat__unit">年</span></div>
+                    <p class="about-stat__label">非标自动化设备制造经验</p>
                 </div>
-                <div>
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">98<span class="text-3xl ml-1 text-gray-300">项</span></div>
-                    <p class="text-xs font-bold text-[#667084] tracking-widest uppercase">核心发明与专利</p>
+                <div class="about-stat">
+                    <div class="about-stat__num mono-num">98<span class="about-stat__unit">项</span></div>
+                    <p class="about-stat__label">核心发明与专利</p>
                 </div>
-                <div>
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">11<span class="text-3xl ml-1 text-gray-300">大</span></div>
-                    <p class="text-xs font-bold text-[#667084] tracking-widest uppercase">重点行业全覆盖</p>
+                <div class="about-stat">
+                    <div class="about-stat__num mono-num">11<span class="about-stat__unit">大</span></div>
+                    <p class="about-stat__label">重点行业全覆盖</p>
                 </div>
-                <div>
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">15<span class="text-3xl ml-1 text-gray-300">国</span></div>
-                    <p class="text-xs font-bold text-[#667084] tracking-widest uppercase">跨国出口国家与地区</p>
-                </div>
-                <div class="pl-6 border-l-4 border-[#FF6B00]">
-                    <div class="text-[3.5rem] md:text-[4.5rem] font-black text-[#14161B] mono-num leading-none mb-2">10<span class="text-3xl ml-1">万㎡</span></div>
-                    <p class="text-xs font-bold text-[#14161B] tracking-widest uppercase">深圳+惠州双核工厂</p>
+                <div class="about-stat">
+                    <div class="about-stat__num mono-num">10<span class="about-stat__unit">万㎡</span></div>
+                    <p class="about-stat__label">深圳+惠州双核工厂</p>
                 </div>
             </div>
         </div>
@@ -209,6 +205,6 @@
     <script src="assets/js/about-page.js"></script>
     <script>TXAM.initAboutPage({lang:'zh'});</script>
 
-    <script src="assets/js/site-footer.js?v=20260917" defer></script>
+    <script src="assets/js/site-footer.js?v=20260919" defer></script>
 </body>
 </html>
