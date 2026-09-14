@@ -1224,6 +1224,17 @@ html[data-ui="v3"][lang^="ru"] #home-hero-title {
 .v3-hero__media img {
     transform: scale(1.02);
 }
+/* hero 双路视频：两路叠放做交叉溶解，抹平原生 loop 的接缝跳变（见 assets/js/hero-video.js）。
+   这里**不能**给 opacity 加 transition —— 透明度由 JS 逐帧驱动，换场结束时底层要瞬时归零，
+   带上过渡会在那一帧露出背景，反而闪一下。 */
+.v3-hero__media video[data-hero-video] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+.v3-hero__media video[data-hero-video].is-live {
+    opacity: 1;
+}
 [data-ui="v3"] .v3-hero.kb-active .v3-hero__media img {
     animation: kenburns-v3 26s ease-in-out infinite alternate;
     transform-origin: 60% 40%;
@@ -2426,7 +2437,9 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 /* ---------- 内页标题带 × 主题视频（v3-hero--band-media）----------
  * 在 band 基础上叠加满幅视频背景（复用首页 .v3-hero__media/__veil 分层），
  * 白雾压字保持深色标题可读；接近满屏 + 内容垂直居中，对齐首页的沉浸仪式感。
- * 视频在系统"减少动态效果"时由 site-common.js 暂停，显示 poster 静态封面。 */
+ * 与首页一样是「双路同源视频交替交叉溶解」（assets/js/hero-video.js），因为各内页
+ * 主题视频的原生 loop 接缝同样肉眼可见（实测跳变幅度是帧间中位差的 1.4～2.7 倍）。
+ * 「减少动态效果」时不做溶解，退回单路原生循环；视频本身照常自动播放。 */
 .v3-hero--band-media {
     position: relative;
     overflow: hidden;

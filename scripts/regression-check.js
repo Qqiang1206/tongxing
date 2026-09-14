@@ -539,6 +539,34 @@ async function main() {
     else fail('页脚水印遮罩', `status=${svg.status} type=${svg.headers['content-type']} body=${okBody} cssUsed=${used}`);
   }
 
+  // 20. 首屏视频：必须挂上双路 + 交叉溶解脚本
+  //     原生 loop 的接缝是看得见的。逐帧实测「末帧→首帧」画面差 ÷ 帧间中位差：
+  //       hero 3.48× / about 2.22× / contact 2.72× / news 3.45× / products 2.19× / solutions 1.36×
+  //     六路里五路跳变明显；且 hero 全片 251 帧找不到任何一对重复画面，绕不开，只能靠过渡抹平。
+  //     首批只修了首页，但 about/contact/news/products/solutions 的首屏带同样是满幅视频，
+  //     接缝一样在，所以 6 类落地页 × 3 语 = 18 页统一挂上。
+  //     退化表现：有人把第二路删了、或漏了脚本引用 → 接缝跳变立刻回来。
+  {
+    const js = await fetch('/assets/js/hero-video.js');
+    const okJs =
+      js.status === 200 && /data-hero-video/.test(js.text) && /beginCrossfade/.test(js.text);
+    const PAGES = [];
+    for (const lang of ['', 'en/', 'ru/']) {
+      for (const name of ['index', 'about', 'contact', 'news', 'products', 'solutions']) {
+        PAGES.push(`/${lang}${name}.html`);
+      }
+    }
+    const bad = [];
+    for (const p of PAGES) {
+      const r = await fetch(p);
+      const n = (r.text.match(/data-hero-video/g) || []).length;
+      const linked = /hero-video\.js\?v=\d+/.test(r.text);
+      if (!(n === 2 && linked)) bad.push(`${p}(双路=${n} 脚本引用=${linked})`);
+    }
+    if (okJs && bad.length === 0) pass(`首屏双路视频 + 交叉溶解已挂载（${PAGES.length} 页 / 三语六类）`);
+    else fail('首屏视频溶解', `js=${okJs} ${bad.join(' | ')}`);
+  }
+
   printSummary();
   process.exit(results.some((x) => x.ok === false) ? 1 : 0);
 }

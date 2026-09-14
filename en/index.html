@@ -27,7 +27,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="../assets/css/tailwind.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260922">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260923">
     <link rel="stylesheet" href="../assets/css/tx-view-transitions.css">
 </head>
 <body class="antialiased selection:bg-[#FF6B00] selection:text-white">
@@ -87,7 +87,13 @@
     <!-- 📍 P1. 满屏沉浸 Hero：机械运动循环视频 · 白雾压字 -->
     <header class="v3-hero">
         <div class="v3-hero__media" aria-hidden="true">
-            <video id="home-hero-video" autoplay muted loop playsinline preload="auto"
+            <video class="is-live" data-hero-video autoplay muted loop playsinline preload="auto"
+                   poster="../assets/videos/hero-poster.webp" tabindex="-1">
+                <source src="../assets/videos/hero-loop.mp4" type="video/mp4">
+            </video>
+            <!-- 第二路：与第一路交替做交叉溶解，抹平原生 loop 的接缝跳变（见 assets/js/hero-video.js）。
+                 同一份视频不会重复下载 —— 浏览器对同源同 URL 的媒体请求会复用缓存。 -->
+            <video data-hero-video muted playsinline preload="auto"
                    poster="../assets/videos/hero-poster.webp" tabindex="-1">
                 <source src="../assets/videos/hero-loop.mp4" type="video/mp4">
             </video>
@@ -256,19 +262,13 @@
     <script src="../data/solutions/en.js"></script>
     <script src="../data/news/en.js"></script>
     <script src="../assets/js/home-page.js"></script>
+    <script src="../assets/js/hero-video.js?v=20260923"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             TXAM.initHomePage({ lang: 'en' });
 
-            // 首屏为装饰性氛围视频：始终静音自动循环播放。
-            // 注：系统「减少动效」偏好不暂停它（站点所有者的明确选择），
-            // 该偏好仍会作用于 fade-up 等入场动画（styles.css 中已处理）。
-            var video = document.getElementById('home-hero-video');
-            if (video) {
-                video.muted = true;
-                var p = video.play();
-                if (p && p.catch) p.catch(function () { /* autoplay blocked: poster remains */ });
-            }
+            // 首屏氛围视频的播放与循环调度已移到 assets/js/hero-video.js：
+            // 双路交叉溶解，抹掉原生 loop 的接缝跳变（末帧与首帧画面差是帧间中位数的 3.5 倍）。
         });
     </script>
 
