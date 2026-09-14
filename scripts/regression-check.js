@@ -539,14 +539,16 @@ async function main() {
     else fail('页脚水印遮罩', `status=${svg.status} type=${svg.headers['content-type']} body=${okBody} cssUsed=${used}`);
   }
 
-  // 20. 首屏循环视频：单路原生 loop，且素材自带溶解（不再有第二路 / 不再有调度脚本）
-  //     历史：曾用「两路同源 <video> 交替交叉溶解」（assets/js/hero-video.js）来抹平接缝，
-  //     但那套方案有三个问题 ——
-  //       ① 同一个 mp4 被下载两遍（实测每页两次 200，体积翻倍，弱网下首屏视频容易只停在 poster）；
-  //       ② live.loop 被 JS 关掉，失去原生循环兜底，rAF 被节流或 play() 被拦时画面会冻住；
-  //       ③ reduced-motion 分支直接跳过溶解 → 接缝又回来了。
-  //     现在改为在素材层解决：assets/videos/*-loop.mp4 出厂即把「末 0.8s ↔ 首 0.8s」交叉溶解
-  //     烘进文件，循环点落在两个天然相邻帧之间。前端只剩单路 <video loop>，零 JS。
+  // 20. 首屏循环视频：单路原生 loop，接缝用「焦点虚化桥」烘进素材（不再有第二路 / 不再有调度脚本）
+  //     历史三代方案 ——
+  //     ① 原生 loop 硬切：末帧→首帧姿态跳变，用户感知“倒回去再重播”；
+  //     ② 两路同源 <video> JS 交叉溶解（assets/js/hero-video.js）：同 mp4 下载两遍、loop 被 JS 关掉
+  //        后 rAF 被节流会冻帧、reduced-motion 分支失效 —— 已废弃；
+  //     ③ 素材层烘入「末 0.8s ↔ 首 0.8s」交叉淡化：无硬切但首帧即鬼影帧（两个半透明机械臂），
+  //        用户仍感知“倒回去再重播” —— 已废弃。
+  //     现行：素材层烘入「焦点虚化桥」（rack-focus bridge）：正文后尾段 0.5s 渐虚，
+  //     内容切换发生在两侧均最大虚化处，首段 0.5s 由虚转实，循环点落在两个天然相邻帧上。
+  //     首帧 = 清晰动作起手帧。前端只剩单路 <video loop>，零 JS。
   //     退化表现：有人把 -loop.mp4 换回未处理的版本、或去掉 loop / 丢掉 ?v= 版本号。
   {
     const PAGES = [];
@@ -570,7 +572,7 @@ async function main() {
     }
     const deadJs = await fetch('/assets/js/hero-video.js');
     const jsGone = deadJs.status === 404;
-    if (bad.length === 0 && jsGone) pass(`首屏单路原生循环 + 素材自带溶解（${PAGES.length} 页 / 三语六类）`);
+    if (bad.length === 0 && jsGone) pass(`首屏单路原生循环 + 素材自带虚化桥（${PAGES.length} 页 / 三语六类）`);
     else fail('首屏循环视频', `${bad.join(' | ')}${jsGone ? '' : ' | hero-video.js 仍在（应为 404）'}`);
   }
 

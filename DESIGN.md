@@ -277,10 +277,10 @@ focus 光圈、选中文字色），不再出现在大面积色块。
 ### 11.3 首屏 Hero（满屏视频 · 白雾压字）
 
 - 底层 `<video autoplay muted loop playsinline>`：`assets/videos/hero-loop.mp4`
-  （1080p/30fps、8.4s 交叉淡化无缝循环、2.1MB、H.264 faststart）；
+  （1080p/30fps、8.4s 焦点虚化无缝循环、2.1MB、H.264 faststart）；
   海报回退 `assets/videos/hero-poster.webp`（同时是 LCP 预加载）。
 - 素材来源与授权：Pexels 视频 id **32386532**（"Industrial Robot Arm in High-Tech
-  Factory"），Pexels License 免费商用、无需署名；已在本地转码（交叉淡化循环），
+  Factory"），Pexels License 免费商用、无需署名；已在本地转码（焦点虚化循环，见 11.7），
   自托管于 `assets/videos/`，不外链 CDN。
 - 白雾层 `.v3-hero__veil` 顶部 0.90 → 中部 0.26 → 底部归入 `--tx-bg`，保证明亮基调
   与墨黑大字对比度；站点所有者明确选择：该装饰性氛围视频不受系统「减少动效」偏好影响，始终静音自动播放；该偏好仍作用于 fade-up 等入场动画（styles.css 已处理）。
@@ -337,7 +337,7 @@ npm run build:css
 | 首页 | hero-loop.mp4 | Pexels 32386532 | 8.4s / 2.1MB |
 | 解决方案 | solutions-loop.mp4 | Mixkit "Automated machine places parts on circuit boards" (47266) | 7.8s / 2.2MB |
 | 产品中心 | products-loop.mp4 | Mixkit "Parcels on a conveyor belt" (20770) | 7.0s / 1.0MB |
-| 新闻中心 | news-loop.mp4 | 首页 hero-loop 的正向段（2026-09-11 与联系页对调） | 8.4s / 1.2MB |
+| 新闻中心 | news-loop.mp4 | Mixkit "Robot working in an electronics manufacturing facility" (47258)，2026-09-14 起换入（原为首页 hero 同源正向段，用户反馈与首页重复） | 5.2s / 0.8MB |
 | 关于我们 | about-loop.mp4 | Mixkit "Electrical workers walking on the hallway" (23696) | 7.8s / 2.5MB |
 | 联系我们 | contact-loop.mp4 | Mixkit "Open office space" (914)（2026-09-11 与新闻页对调） | 7.8s / 1.9MB |
 
@@ -350,12 +350,34 @@ npm run build:css
 > 同日循环方式变更：全部 6 条循环视频由**正放+倒放乒乓**改为**交叉淡化循环**
 > （crossfade：结尾 1.0–1.2s 与开头柔和混合，xfade transition=fade），消除用户反馈的
 > "倒退再前进"观感；内页视频 `preload` 同步由 metadata 改 auto，减少载入停顿。
+> 2026-09-14 循环接缝再迭代：**交叉淡化 → 焦点虚化桥（rack-focus bridge）**。
+> 交叉淡化虽消除了硬切，但把「末段 ↔ 首段」叠在一起会产生 0.8s 的双影鬼影
+> （机械臂出现两个半透明轮廓，用户仍感知为"倒回去再重播"，且首帧即鬼影帧）。
+> 逐帧扫描证实该素材全片不存在任何相似帧对（最佳帧对差值仍达帧间中位差 2.1 倍），
+> 无法硬切无缝循环，遂改用虚化过渡：
+> 文件结构 = 正文 V[15..N-16] ++ 尾段 V[N-15..N-1] 渐虚（gblur σ 0→σmax，smoothstep）
+> ++ 首段 V[0..14] 由虚转实（σ σmax→0）；**内容切换发生在两侧均处于最大虚化的一帧之间**，
+> 循环点（文件末帧 V[14] → 文件首帧 V[15]）落在两个天然相邻帧上。
+> 观感为每圈一次有意的「焦点呼吸」，无叠影、无跳变、无相位倒退感；
+> σmax 1080p=16 / 720p=11，桥总长 1.0s；首帧=清晰动作起手帧，与海报衔接。
+> 按原码率两遍 ABR 重编码（libx264 high faststart），6 条体积 1.0–2.5MB 不等。
+> 逐帧差验证：6 条桥内最大帧间差均低于各自素材的自然运动水平，
+> 循环点差值 0.28–2.05 倍中位差（旧交叉淡化方案该处为 3–7 倍且伴鬼影）。
+> 旧文件备份于 `_backups/videos-20260914-blendbaked/`。
+> 2026-09-14 新闻中心换素材：用户反馈新闻与首页同源重复，换入 Mixkit 47258
+> （电子制造车间内的机械臂循环作业，固定机位）。逐帧扫描发现该素材机械臂每 5.2s
+> 回到相同姿态（V[561]→V[691] 差值仅 0.86 倍帧间中位差，低于正常运动），
+> 故**不需要虚化桥，直接取 V[561..690] 硬切天然无缝循环**；25fps 原生帧率保留，
+> gamma 1.10 提亮（成片亮度 136），两遍 ABR 1300k。海报同步换为新首帧并给
+> news 页三处引用补 ？v=20260927（含 preload/LCP）。
 
-- 全部 1280×720/30fps（首页 1080p）、交叉淡化无缝循环、≤2.5MB、无音频。
+- 全部 1280×720/30fps（首页 1080p）、焦点虚化无缝循环、≤2.6MB、无音频
+  （新闻中心 2026-09-14 起为 25fps 天然循环硬切，见上）。
 - ⚠️ 授权状态：Mixkit 免费下载的 720p 产物标注 **Restricted License（仅限个人使用）**，
   商用需向 Envato/Mixkit 购买授权或后续替换为可商用素材。站点所有者已知悉并决定先行使用。
-- 偏暗素材已在转码时做 gamma 亮度适配（solutions 2.07 / products 1.29 / news 1.31 / about 1.24），
-  成片亮度 131–150，与首页（158）同属明亮基调。
+- 偏暗素材已在转码时做 gamma 亮度适配（solutions 2.07 / products 1.29 / news 1.31〔旧 hero 段〕、
+  新新闻素材 1.10〔2026-09-14〕 / about 1.24），
+  成片亮度 131–158，同属明亮基调。
 - 关于页：CMS 轮播首图作为视频海报（后台换图即换加载画面）。
 
 ## 12. 安全加固批次记录（2026-09-04 开始，按批次推进）
