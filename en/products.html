@@ -17,7 +17,7 @@
     <link rel="alternate" hreflang="x-default" href="https://www.sztxgk.com/products.html">
     <meta property="og:image" content="https://www.sztxgk.com/assets/images/hero/factory-hero.webp">
     <link rel="stylesheet" href="../assets/css/tailwind.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260923">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260925">
     <link rel="stylesheet" href="../assets/css/tx-view-transitions.css">
             <link rel="icon" type="image/webp" href="../assets/images/brand/favicon.webp">
             <link rel="icon" type="image/png" href="../assets/images/brand/favicon.png">
@@ -93,15 +93,9 @@
     <!-- 📍 P1. Products Header -->
     <header class="v3-hero--band v3-hero--band-media">
         <div class="v3-hero__media" aria-hidden="true">
-            <video class="is-live" data-hero-video autoplay muted loop playsinline preload="auto" tabindex="-1"
+            <video autoplay muted loop playsinline preload="auto" tabindex="-1"
                    poster="../assets/videos/products-poster.webp">
-                <source src="../assets/videos/products-loop.mp4" type="video/mp4">
-            </video>
-            <!-- 第二路：与第一路交替做交叉溶解，抹平原生 loop 的接缝跳变（见 assets/js/hero-video.js）。
-                 同一份视频不会重复下载 —— 浏览器对同源同 URL 的媒体请求会复用缓存。 -->
-            <video data-hero-video muted playsinline preload="auto" tabindex="-1"
-                   poster="../assets/videos/products-poster.webp">
-                <source src="../assets/videos/products-loop.mp4" type="video/mp4">
+                <source src="../assets/videos/products-loop.mp4?v=20260925" type="video/mp4">
             </video>
         </div>
         <div class="v3-hero__veil" aria-hidden="true"></div>
@@ -144,7 +138,6 @@
         TXAM.initProductsList({ lang: 'en' });
     </script>
     <script src="../data/i18n/en.js"></script>
-            <script src="../assets/js/hero-video.js?v=20260923"></script>
     <script src="../assets/js/site-footer.js?v=20260919" defer></script>
 </body>
 </html>

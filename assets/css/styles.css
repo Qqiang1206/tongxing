@@ -2437,9 +2437,9 @@ html[data-ui="v3"][lang^="ru"] #contact-hero-title {
 /* ---------- 内页标题带 × 主题视频（v3-hero--band-media）----------
  * 在 band 基础上叠加满幅视频背景（复用首页 .v3-hero__media/__veil 分层），
  * 白雾压字保持深色标题可读；接近满屏 + 内容垂直居中，对齐首页的沉浸仪式感。
- * 与首页一样是「双路同源视频交替交叉溶解」（assets/js/hero-video.js），因为各内页
- * 主题视频的原生 loop 接缝同样肉眼可见（实测跳变幅度是帧间中位差的 1.4～2.7 倍）。
- * 「减少动态效果」时不做溶解，退回单路原生循环；视频本身照常自动播放。 */
+ * 循环接缝已在素材层解决：assets/videos/*-loop.mp4 出厂即把「末 0.8s ↔ 首 0.8s」
+ * 交叉溶解烘进文件（循环点落在两个天然相邻帧之间），所以前端只要单路 <video loop>，
+ * 不需要第二路视频、不需要 JS 调度 —— 减少动效偏好、JS 未执行时行为完全一致。 */
 .v3-hero--band-media {
     position: relative;
     overflow: hidden;

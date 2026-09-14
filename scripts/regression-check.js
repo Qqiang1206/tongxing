@@ -539,17 +539,16 @@ async function main() {
     else fail('页脚水印遮罩', `status=${svg.status} type=${svg.headers['content-type']} body=${okBody} cssUsed=${used}`);
   }
 
-  // 20. 首屏视频：必须挂上双路 + 交叉溶解脚本
-  //     原生 loop 的接缝是看得见的。逐帧实测「末帧→首帧」画面差 ÷ 帧间中位差：
-  //       hero 3.48× / about 2.22× / contact 2.72× / news 3.45× / products 2.19× / solutions 1.36×
-  //     六路里五路跳变明显；且 hero 全片 251 帧找不到任何一对重复画面，绕不开，只能靠过渡抹平。
-  //     首批只修了首页，但 about/contact/news/products/solutions 的首屏带同样是满幅视频，
-  //     接缝一样在，所以 6 类落地页 × 3 语 = 18 页统一挂上。
-  //     退化表现：有人把第二路删了、或漏了脚本引用 → 接缝跳变立刻回来。
+  // 20. 首屏循环视频：单路原生 loop，且素材自带溶解（不再有第二路 / 不再有调度脚本）
+  //     历史：曾用「两路同源 <video> 交替交叉溶解」（assets/js/hero-video.js）来抹平接缝，
+  //     但那套方案有三个问题 ——
+  //       ① 同一个 mp4 被下载两遍（实测每页两次 200，体积翻倍，弱网下首屏视频容易只停在 poster）；
+  //       ② live.loop 被 JS 关掉，失去原生循环兜底，rAF 被节流或 play() 被拦时画面会冻住；
+  //       ③ reduced-motion 分支直接跳过溶解 → 接缝又回来了。
+  //     现在改为在素材层解决：assets/videos/*-loop.mp4 出厂即把「末 0.8s ↔ 首 0.8s」交叉溶解
+  //     烘进文件，循环点落在两个天然相邻帧之间。前端只剩单路 <video loop>，零 JS。
+  //     退化表现：有人把 -loop.mp4 换回未处理的版本、或去掉 loop / 丢掉 ?v= 版本号。
   {
-    const js = await fetch('/assets/js/hero-video.js');
-    const okJs =
-      js.status === 200 && /data-hero-video/.test(js.text) && /beginCrossfade/.test(js.text);
     const PAGES = [];
     for (const lang of ['', 'en/', 'ru/']) {
       for (const name of ['index', 'about', 'contact', 'news', 'products', 'solutions']) {
@@ -559,12 +558,20 @@ async function main() {
     const bad = [];
     for (const p of PAGES) {
       const r = await fetch(p);
-      const n = (r.text.match(/data-hero-video/g) || []).length;
-      const linked = /hero-video\.js\?v=\d+/.test(r.text);
-      if (!(n === 2 && linked)) bad.push(`${p}(双路=${n} 脚本引用=${linked})`);
+      const vids = r.text.match(/<video\b[^>]*>/g) || [];
+      const one = vids.length === 1;
+      const loops = one && /\bloop\b/.test(vids[0]);
+      const mutedAuto = one && /autoplay/.test(vids[0]) && /muted/.test(vids[0]) && /playsinline/.test(vids[0]);
+      const srcVersioned = /-loop\.mp4\?v=\d+/.test(r.text);
+      const noLegacy = !/data-hero-video/.test(r.text) && !/hero-video\.js/.test(r.text);
+      if (!(one && loops && mutedAuto && srcVersioned && noLegacy)) {
+        bad.push(`${p}(单路=${one} loop=${loops} 静音自动=${mutedAuto} 版本号=${srcVersioned} 无旧残留=${noLegacy})`);
+      }
     }
-    if (okJs && bad.length === 0) pass(`首屏双路视频 + 交叉溶解已挂载（${PAGES.length} 页 / 三语六类）`);
-    else fail('首屏视频溶解', `js=${okJs} ${bad.join(' | ')}`);
+    const deadJs = await fetch('/assets/js/hero-video.js');
+    const jsGone = deadJs.status === 404;
+    if (bad.length === 0 && jsGone) pass(`首屏单路原生循环 + 素材自带溶解（${PAGES.length} 页 / 三语六类）`);
+    else fail('首屏循环视频', `${bad.join(' | ')}${jsGone ? '' : ' | hero-video.js 仍在（应为 404）'}`);
   }
 
   printSummary();
