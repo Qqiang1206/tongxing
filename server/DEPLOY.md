@@ -280,6 +280,34 @@ TRANSLATION_API_KEY=sk-...          # 或 DEEPSEEK_API_KEY
 
 ---
 
+### 收尾 CTA（页脚上方的转化区块）
+
+`assets/js/site-footer.js` 里的 `syncClosingCta()` 负责全站统一的收尾 CTA：
+
+- **首页三语**：HTML 里已静态内联 `.v3-final`（首屏直出，SEO 友好），脚本只同步文案、不重复插入。
+- **其余页面**：没有静态 CTA，脚本在页脚占位符前动态注入同一区块。
+
+文案存在 `site_settings.settings_json → common` 的三个键里，**中文是唯一源**：
+
+| 键 | 中文 |
+|---|---|
+| `finalCtaTitle` | 精工制臻 同兴必达 |
+| `finalCtaSub` | 非标自动化产线的咨询、设计、制造与售后，一站式托付。 |
+| `finalCtaButton` | 获取定制方案 |
+
+数据库不进 Git，换环境重建库时会缺这段文案（表现为全站收尾 CTA 不渲染）。用播种脚本补齐：
+
+```bash
+npm run seed:cta:check   # 只报告缺哪些
+npm run seed:cta         # 补齐缺失项（en/ru 现翻，译法写入术语库）
+npm run sync:static      # 补完务必重新导出 data/
+```
+
+> 页脚本身的列标题（快速链接 / 联系我们 / 微信咨询等）是界面固定文案，
+> 写在 `site-footer.js` 的 `UI_LABELS` 里，不进后台 —— 新增语言时在那儿补一组。
+
+---
+
 ## 6. 安全要点
 
 | 项 | 要求 |

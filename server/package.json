@@ -19,6 +19,8 @@
     "setup": "node scripts/import-from-json.js",
     "sync:static": "node scripts/sync-static-from-db.js",
     "repair:i18n": "node scripts/repair-i18n-copies.mjs",
-    "repair:i18n:check": "node scripts/repair-i18n-copies.mjs --check"
+    "repair:i18n:check": "node scripts/repair-i18n-copies.mjs --check",
+    "seed:cta": "node scripts/seed-closing-cta.mjs",
+    "seed:cta:check": "node scripts/seed-closing-cta.mjs --check"
   }
 }

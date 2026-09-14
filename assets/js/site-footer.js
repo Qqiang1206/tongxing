@@ -20,6 +20,39 @@
     ru: { shenzhen: 'Шэньчжэнь (штаб)', huizhou: 'Хуэйчжоу (база)' },
   };
 
+  /* 页脚界面固定文案（非内容，不进后台；新增语言时在此补一组即可） */
+  var UI_LABELS = {
+    zh: {
+      quickLinks: '快速链接',
+      contactUs: '联系我们',
+      wechat: '微信咨询',
+      qrCaption: '扫码添加微信客服',
+      backToTop: '回到顶部',
+      contactHref: 'contact.html',
+    },
+    en: {
+      quickLinks: 'Quick links',
+      contactUs: 'Contact us',
+      wechat: 'WeChat',
+      qrCaption: 'Scan to add us on WeChat',
+      backToTop: 'Back to top',
+      contactHref: 'contact.html',
+    },
+    ru: {
+      quickLinks: 'Быстрые ссылки',
+      contactUs: 'Связаться с нами',
+      wechat: 'WeChat',
+      qrCaption: 'Отсканируйте, чтобы добавить в WeChat',
+      backToTop: 'Наверх',
+      contactHref: 'contact.html',
+    },
+  };
+
+  var ARROW_SVG =
+    '<svg class="v3-btn__arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg>';
+
   function detectLang() {
     var pathNorm = (location.pathname || '').replace(/\\/g, '/');
     var currentPage = pathNorm.split('/').pop() || 'index.html';
@@ -32,16 +65,14 @@
     return /\/(en|ru)(\/|$)/i.test((location.pathname || '').replace(/\\/g, '/')) ? '../' : '';
   }
 
-  function formatTagline(text, lang) {
+  /**
+   * 标语排版：后台写 \n 或 <br> 才换行，其余交给浏览器自然折行。
+   * （旧实现按「，/ , 」强制断行，俄文等长句会被切得莫名其妙。）
+   */
+  function formatTagline(text) {
     if (!text) return '';
-    if (text.indexOf('\n') >= 0) return text.split('\n').join('<br>');
-    if (lang === 'zh') {
-      var zhIdx = text.indexOf('，');
-      if (zhIdx > 0) return text.slice(0, zhIdx + 1) + '<br>' + text.slice(zhIdx + 1);
-    }
-    var idx = text.indexOf(', ');
-    if (idx > 0) return text.slice(0, idx + 1) + '<br>' + text.slice(idx + 2);
-    return text;
+    if (text.indexOf('\n') >= 0) return escapeHtml(text).split('\n').join('<br>');
+    return escapeHtml(text);
   }
 
   async function resolveSite(lang) {
@@ -66,12 +97,79 @@
     };
   }
 
+  function setCtaButtonText(btn, text) {
+    for (var i = 0; i < btn.childNodes.length; i++) {
+      var n = btn.childNodes[i];
+      if (n.nodeType === 3 && n.nodeValue.trim()) {
+        n.nodeValue = text;
+        return;
+      }
+    }
+    btn.insertBefore(global.document.createTextNode(text), btn.firstChild);
+  }
+
+  /**
+   * 收尾 CTA：首页已静态内联 .v3-final（首屏直出），此处只同步文案；
+   * 其余页面按需注入同一区块，全站转化位统一，不在页脚内重复。
+   * 文案取自 site_settings.common（中文为源，en/ru 由翻译链路镜像）。
+   */
+  function syncClosingCta(site) {
+    if (global.document.documentElement.getAttribute('data-ui') !== 'v3') return;
+    var common = site.common || {};
+    var title = common.finalCtaTitle || '';
+    var sub = common.finalCtaSub || '';
+    var btnText = common.finalCtaButton || '';
+    if (!title && !sub && !btnText) return;
+
+    var lang = site.lang || detectLang();
+    var ui = UI_LABELS[lang] || UI_LABELS.zh;
+    var sec = global.document.querySelector('.v3-final');
+
+    if (!sec) {
+      var ph = global.document.querySelector('[data-footer-placeholder]');
+      if (!ph) return;
+      sec = global.document.createElement('section');
+      sec.className = 'v3-final v3-section bg-white text-center';
+      sec.innerHTML =
+        '<div class="v3-final__aura" aria-hidden="true"></div>' +
+        '<div class="v3-shell relative fade-up">' +
+        '<h2 class="text-h1 text-gradient mx-auto">' + escapeHtml(title) + '</h2>' +
+        '<p class="mt-6 text-body-lg text-[#667084] max-w-2xl mx-auto">' + escapeHtml(sub) + '</p>' +
+        '<div class="mt-11"><a href="' + ui.contactHref + '" class="v3-btn v3-btn--primary text-base">' +
+        escapeHtml(btnText) + ARROW_SVG + '</a></div>' +
+        '</div>';
+      ph.parentNode.insertBefore(sec, ph);
+      return;
+    }
+
+    var h2 = sec.querySelector('h2');
+    if (h2 && title) h2.textContent = title;
+    var p = sec.querySelector('p');
+    if (p && sub) p.textContent = sub;
+    var btn = sec.querySelector('.v3-btn');
+    if (btn && btnText) setCtaButtonText(btn, btnText);
+  }
+
+  function bindBackToTop() {
+    global.document.querySelectorAll('[data-scroll-top]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        try {
+          global.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (e) {
+          global.scrollTo(0, 0);
+        }
+      });
+    });
+  }
+
   function renderFooter(site, prefix) {
     var footer = site.footer || {};
-    var tagline = formatTagline(footer.tagline || '', site.lang || detectLang());
+    var lang = site.lang || detectLang();
+    var tagline = formatTagline(footer.tagline || '');
 
     /* v3 「光感单色」浅色页脚 — only where <html data-ui="v3"> */
     if (global.document.documentElement.getAttribute('data-ui') === 'v3') {
+      var ui = UI_LABELS[lang] || UI_LABELS.zh;
       var nav = site.nav || {};
       var quickLinks = [
         { href: 'about.html', name: nav.about },
@@ -83,10 +181,9 @@
 
       var linkList = '';
       for (var i = 0; i < quickLinks.length; i++) {
-        linkList += '<a href="' + quickLinks[i].href + '">' + quickLinks[i].name + '</a>';
+        linkList += '<a href="' + quickLinks[i].href + '">' + escapeHtml(quickLinks[i].name) + '</a>';
       }
 
-      var lang = site.lang || detectLang();
       var contactList = '';
       if (footer.phone) {
         contactList +=
@@ -102,37 +199,53 @@
       var addrItems = '';
       if (footer.addressShenzhen) {
         addrItems +=
-          '<div class="txf__addr"><span class="txf__addr-label">' + labels.shenzhen + '</span>' +
-          '<span>' + escapeHtml(footer.addressShenzhen) + '</span></div>';
+          '<div class="txf__addr-block"><span class="txf__addr-label">' + escapeHtml(labels.shenzhen) + '</span>' +
+          '<span class="txf__addr-text">' + escapeHtml(footer.addressShenzhen) + '</span></div>';
       }
       if (footer.addressHuizhou) {
         addrItems +=
-          '<div class="txf__addr"><span class="txf__addr-label">' + labels.huizhou + '</span>' +
-          '<span>' + escapeHtml(footer.addressHuizhou) + '</span></div>';
+          '<div class="txf__addr-block"><span class="txf__addr-label">' + escapeHtml(labels.huizhou) + '</span>' +
+          '<span class="txf__addr-text">' + escapeHtml(footer.addressHuizhou) + '</span></div>';
       }
 
       var html =
         '<footer class="txf">' +
         '<div class="txf__watermark" aria-hidden="true">TXAM</div>' +
         '<div class="v3-shell relative z-10">' +
-        '<div class="txf__top">' +
-        '<div><h2 class="txf__headline">' + tagline + '</h2></div>' +
-        '<div class="flex flex-col sm:flex-row gap-8 justify-end items-start">' +
-        '<nav class="txf__meta flex flex-col gap-[0.6rem] [&_a]:font-medium">' + linkList + '</nav>' +
-        (contactList
-          ? '<div class="txf__meta flex flex-col gap-[0.6rem]">' + contactList + '</div>'
-          : '') +
-        '<figure class="m-0 text-center"><img src="' + prefix + (footer.wechatImage || 'assets/images/brand/wechat-service.png') + '" alt="' + (footer.wechatAlt || 'WeChat') + '" class="txf__qr"><figcaption class="mt-2 text-xs text-[#9AA1AE]">WeChat</figcaption></figure>' +
-        '</div></div>' +
-        (addrItems ? '<div class="txf__addresses">' + addrItems + '</div>' : '') +
+        '<div class="txf__grid">' +
+        '<div class="txf__col">' +
+        '<a href="index.html" class="txf__brand"><img src="' + prefix + 'assets/images/brand/logo.png" alt="" class="txf__logo"></a>' +
+        '<p class="txf__tagline">' + tagline + '</p>' +
+        '</div>' +
+        '<div class="txf__col">' +
+        '<h3 class="txf__col-title">' + escapeHtml(ui.quickLinks) + '</h3>' +
+        '<nav class="txf__list">' + linkList + '</nav>' +
+        '</div>' +
+        '<div class="txf__col">' +
+        '<h3 class="txf__col-title">' + escapeHtml(ui.contactUs) + '</h3>' +
+        '<div class="txf__list">' + contactList + '</div>' +
+        addrItems +
+        '</div>' +
+        '<div class="txf__col">' +
+        '<h3 class="txf__col-title">' + escapeHtml(ui.wechat) + '</h3>' +
+        '<figure class="txf__qr-fig">' +
+        '<img src="' + prefix + (footer.wechatImage || 'assets/images/brand/wechat-service.png') + '" alt="' + escapeAttr(footer.wechatAlt || ui.wechat) + '" class="txf__qr">' +
+        '<figcaption class="txf__qr-cap">' + escapeHtml(ui.qrCaption) + '</figcaption>' +
+        '</figure>' +
+        '</div>' +
+        '</div>' +
         '<div class="txf__bottom">' +
-        '<p>' + (footer.copyright || '') + '</p>' +
-        '<a href="' + (footer.icpUrl || 'https://beian.miit.gov.cn/') + '" target="_blank" rel="noopener">' + (footer.icp || '') + '</a>' +
+        '<p>' + escapeHtml(footer.copyright || '') + '</p>' +
+        '<div class="txf__bottom-right">' +
+        '<a href="' + escapeAttr(footer.icpUrl || 'https://beian.miit.gov.cn/') + '" target="_blank" rel="noopener">' + escapeHtml(footer.icp || '') + '</a>' +
+        '<button type="button" class="txf__totop" data-scroll-top>' + escapeHtml(ui.backToTop) + '</button>' +
+        '</div>' +
         '</div></div></footer>';
 
       global.document.querySelectorAll('[data-footer-placeholder]').forEach(function (el) {
         el.outerHTML = html;
       });
+      bindBackToTop();
       return;
     }
 
@@ -281,6 +394,7 @@
       return;
     }
     site.lang = lang;
+    syncClosingCta(site);
     renderFooter(site, prefix);
     initBreadcrumb(lang, site);
   }
