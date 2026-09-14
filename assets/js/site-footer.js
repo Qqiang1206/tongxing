@@ -109,6 +109,22 @@
   }
 
   /**
+   * 注入的 CTA 带 .fade-up（起始 opacity:0），必须手动登记揭示。
+   * 页面统一的揭示器只在 DOMContentLoaded 时扫一遍 .fade-up，而本区块是在
+   * 之后的异步 boot 里插进来的，谁也观察不到它 —— 结果整段 CTA 变成页脚
+   * 上方一条什么都没有的空白带。
+   */
+  function revealInjected(sec) {
+    if (global.TXAM && typeof global.TXAM.revealFadeUps === 'function') {
+      global.TXAM.revealFadeUps(sec);
+      return;
+    }
+    // 没加载 data-loader 时的兜底：直接判定为已揭示，宁可无动画也不能空白
+    var el = sec.querySelector('.fade-up');
+    if (el) el.classList.add('visible');
+  }
+
+  /**
    * 收尾 CTA：首页已静态内联 .v3-final（首屏直出），此处只同步文案；
    * 其余页面按需注入同一区块，全站转化位统一，不在页脚内重复。
    * 文案取自 site_settings.common（中文为源，en/ru 由翻译链路镜像）。
@@ -139,6 +155,7 @@
         escapeHtml(btnText) + ARROW_SVG + '</a></div>' +
         '</div>';
       ph.parentNode.insertBefore(sec, ph);
+      revealInjected(sec);
       return;
     }
 

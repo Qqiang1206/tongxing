@@ -323,7 +323,15 @@
     }
     return pool.slice(0, count);
   }
-  function revealFadeUps() {
+  /**
+   * 揭示 .fade-up（透明度由 0 → 1）。可重复调用。
+   * @param {Element|Document} [root] 只扫描该子树；省略则扫整个文档。
+   *        异步注入的节点（如页脚脚本插入的收尾 CTA）必须传 root 再调一次，
+   *        否则它们赶不上首个 DOMContentLoaded 的扫描，会永远停在 opacity:0。
+   */
+  function revealFadeUps(root) {
+    var scope = root || document;
+    var nodes = scope.querySelectorAll ? scope.querySelectorAll('.fade-up') : [];
     // Use IntersectionObserver for scroll-triggered fade-in
     if (typeof IntersectionObserver !== 'undefined') {
       var observer = new IntersectionObserver(function (entries) {
@@ -334,12 +342,13 @@
           }
         });
       }, { threshold: 0.1 });
-      document.querySelectorAll('.fade-up').forEach(function (el) {
+      Array.prototype.forEach.call(nodes, function (el) {
+        if (el.classList.contains('visible')) return; // 已揭示的不重复观察
         observer.observe(el);
       });
     } else {
       // Fallback for older browsers
-      document.querySelectorAll('.fade-up').forEach(function (el) {
+      Array.prototype.forEach.call(nodes, function (el) {
         el.classList.add('visible');
       });
     }

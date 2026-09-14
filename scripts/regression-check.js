@@ -104,7 +104,7 @@ async function main() {
         'about-page.js',
         'about-timeline-desktop',
         'about-stats-grid',
-        'factory-carousel',
+        'about-culture-pillars', // P1.5「深惠双核」轮播已下线，改校企业文化容器
         'client-logos-grid',
       ]) &&
       !r.text.includes('observer.observe(el));\n\n                });');
@@ -456,6 +456,22 @@ async function main() {
     if (r.status === 200 && sample && typeof sample.showInList === 'boolean') {
       pass('products API showInList', 'id1=' + sample.showInList);
     } else fail('products API showInList');
+  }
+
+  // 17. 页脚注入的收尾 CTA 必须登记揭示
+  //     .fade-up 起始 opacity:0，页面揭示器只在 DOMContentLoaded 扫一遍；
+  //     异步注入的节点若不手动登记，整段 CTA 会永远停在透明状态（空白带）。
+  {
+    const js = await fetch('/assets/js/site-footer.js');
+    const page = await fetch('/about.html');
+    const guard =
+      js.status === 200 && /insertBefore\(sec, ph\);\r?\n\s*revealInjected\(sec\);/.test(js.text);
+    const wired =
+      page.status === 200 &&
+      page.text.includes('data-footer-placeholder') &&
+      /site-footer\.js\?v=\d+/.test(page.text);
+    if (guard && wired) pass('页脚 CTA 注入后已登记揭示（防空白带）');
+    else fail('页脚 CTA 揭示登记', 'guard=' + guard + ' wired=' + wired);
   }
 
   printSummary();
