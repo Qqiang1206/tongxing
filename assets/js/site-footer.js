@@ -66,13 +66,19 @@
   }
 
   /**
-   * 标语排版：后台写 \n 或 <br> 才换行，其余交给浏览器自然折行。
-   * （旧实现按「，/ , 」强制断行，俄文等长句会被切得莫名其妙。）
+   * 标语排版：后台显式写 \n 的优先（最可控）；
+   * 否则在「第一个逗号」后断一次 —— 标语多是「以卓越品质，／不负每一份信任。」
+   * 这类对仗句，逗号就是语义分界。交给浏览器按宽度自动折，会切在词中间
+   * （「…不负每一份信／任。」），语义被拦腰截断。
+   * 只认第一处逗号、且前半句限长，避免长句被反复切碎。
    */
   function formatTagline(text) {
     if (!text) return '';
-    if (text.indexOf('\n') >= 0) return escapeHtml(text).split('\n').join('<br>');
-    return escapeHtml(text);
+    var raw = String(text);
+    if (raw.indexOf('\n') >= 0) return escapeHtml(raw).split('\n').join('<br>');
+    var m = /^([^,，]{1,40}[,，])\s*([\s\S]+)$/.exec(raw);
+    if (m) return escapeHtml(m[1]) + '<br>' + escapeHtml(m[2].trim());
+    return escapeHtml(raw);
   }
 
   async function resolveSite(lang) {
