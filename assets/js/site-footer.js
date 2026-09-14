@@ -231,8 +231,8 @@
         '<div class="v3-shell relative z-10">' +
         '<div class="txf__grid">' +
         '<div class="txf__col">' +
-        '<a href="index.html" class="txf__brand"><img src="' + prefix + 'assets/images/brand/logo.png" alt="" class="txf__logo"></a>' +
-        '<p class="txf__tagline">' + tagline + '</p>' +
+        /* 品牌区只留标语，不放 logo —— 导航栏已常驻 logo，页脚再放一个重复 */
+        '<h2 class="txf__tagline">' + tagline + '</h2>' +
         '</div>' +
         '<div class="txf__col">' +
         '<h3 class="txf__col-title">' + escapeHtml(ui.quickLinks) + '</h3>' +

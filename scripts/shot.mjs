@@ -24,12 +24,16 @@ const COMMON = ['--headless=new', '--disable-gpu', '--no-first-run', '--virtual-
 
 const [, , mode, url, name, w = '1440', h = '6400'] = process.argv;
 if (!mode || !url) {
-  console.error('usage: node scripts/shot.mjs dom <url> | img <url> <name> [w] [h]');
+  console.error('usage: node scripts/shot.mjs dom <url> [w] [h] | img <url> <name> [w] [h]');
   process.exit(1);
 }
 
 if (mode === 'dom') {
-  const r = spawnSync(CHROME, [...COMMON, '--dump-dom', url], {
+  // 注意：dump-dom 默认视口只有 800x600，不传 --window-size 量到的是移动端栅格。
+  // 用法：dom <url> [宽] [高]，宽高都要是纯数字。
+  const vw = name && /^\d+$/.test(name) ? name : '1440';
+  const vh = w && /^\d+$/.test(w) ? w : '1250';
+  const r = spawnSync(CHROME, [...COMMON, `--window-size=${vw},${vh}`, '--dump-dom', url], {
     encoding: 'utf8',
     timeout: 90000,
     maxBuffer: 64 * 1024 * 1024,
@@ -38,6 +42,8 @@ if (mode === 'dom') {
   fs.mkdirSync(path.join(os.tmpdir(), 'txam-verify'), { recursive: true });
   fs.writeFileSync(path.join(os.tmpdir(), 'txam-verify', 'dump.html'), dom, 'utf8');
   // 只输出关键片段，避免刷屏
+  const probe = /<div id="probe">([\s\S]*?)<\/div>/.exec(dom);
+  if (probe) console.log(probe[1].replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').trim());
   for (const m of dom.matchAll(/<section class="v3-final[^>]*>[\s\S]{0,600}?<\/section>/g)) {
     console.log('--- v3-final section ---');
     console.log(m[0].replace(/\s+/g, ' ').slice(0, 700));
