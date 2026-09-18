@@ -176,36 +176,65 @@
     return inset;
   }
 
-  function markerBBox(map, entries) {
+  /*
+   * 每个标记的「实际占地」= 圆点 + 常驻标签（标签悬在圆点上方，宽 ~230、
+   * 高按实测；用 offsetWidth/offsetHeight 量——它们不受地图平移缩放的
+   * transform 影响，而 getBoundingClientRect 会，混用就会量到旧位置）。
+   * 画布是 overflow:hidden 的，占地不把标签算进去，标签就会被顶边裁一半
+   * （真实发生过：惠州标签只露出下半截）。
+   */
+  function footprintOf(map, entries, el) {
+    var labels = el.querySelectorAll('.amap-marker-label');
     var pts = entries.map(function (e) { return map.lngLatToContainer(e.marker.getPosition()); });
     var xs = pts.map(function (p) { return p.x; });
     var ys = pts.map(function (p) { return p.y; });
+    var extTop = 0;
+    var extSide = 0;
+    entries.forEach(function (e, i) {
+      var lab = labels[i]; /* 标签与标记同序创建 */
+      if (!lab) return;
+      extTop = Math.max(extTop, 14 + lab.offsetHeight);
+      extSide = Math.max(extSide, lab.offsetWidth / 2);
+    });
     var minX = Math.min.apply(null, xs);
     var maxX = Math.max.apply(null, xs);
     var minY = Math.min.apply(null, ys);
     var maxY = Math.max.apply(null, ys);
-    return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, w: maxX - minX, h: maxY - minY };
+    return {
+      minX: minX - extSide, maxX: maxX + extSide,
+      minY: minY - extTop, maxY: maxY + 11,
+      distX: maxX - minX, distY: maxY - minY,
+    };
   }
 
   /*
-   * 把两块基地都放进「可视区」（画布减去卡片浮层）并居中。
-   * setFitView 只按整个画布算，所以跨城（深惠）时会有一个点被浮层压住、
-   * 甚至被推出画布——这里按可视区再校验一次，不够就逐级缩一级。
-   * 只依赖投影换算与 setCenter，不依赖 panBy 的方向语义；重复调用幂等。
+   * 把两块基地的「完整占地」（圆点 + 常驻标签）都放进「可视区」（画布减去
+   * 卡片浮层）并居中。setFitView 只按整个画布算，所以跨城（深惠）时会
+   * 有一个点被浮层压住、标签被顶边裁掉。
+   *
+   * 实现要点：标记间距每降一级缩放减半，而标签占地是固定像素——所以
+   * 需要降几级可以直接算出来（一步 setZoom），不要循环试错：循环里
+   * 「算出来的点位置」与「标签 DOM 的真实位置」更新节奏不一致，会把
+   * 地图缩到全国视野（真实事故）。居中仍用反算中心点的 setCenter，
+   * 不依赖 panBy 的方向语义；重复调用幂等（残差 ≤2px 不动）。
    */
   function adjustView(map, entries, el) {
     if (entries.length < 2) return;
     var ins = visibleInsets(el);
     var availW = el.clientWidth - ins.left - FIT_PAD * 2;
     var availH = el.clientHeight - ins.top - FIT_PAD * 2;
-    for (var i = 0; i < 4; i++) {
-      var box = markerBBox(map, entries);
-      if ((box.w <= availW && box.h <= availH) || map.getZoom() <= 3) break;
-      map.setZoom(map.getZoom() - 1, true);
-    }
-    var b = markerBBox(map, entries);
-    var dx = ins.left + (el.clientWidth - ins.left) / 2 - b.cx;
-    var dy = ins.top + (el.clientHeight - ins.top) / 2 - b.cy;
+
+    var f = footprintOf(map, entries, el);
+    var kx = f.distX > 0 && f.distX + f.extSide * 2 > availW
+      ? Math.ceil(Math.log2(f.distX / Math.max(1, availW - f.extSide * 2))) : 0;
+    var ky = f.distY > 0 && f.distY + f.extTop + 11 > availH
+      ? Math.ceil(Math.log2(f.distY / Math.max(1, availH - f.extTop - 11))) : 0;
+    var k = Math.min(6, Math.max(0, kx, ky));
+    if (k > 0) map.setZoom(map.getZoom() - k, true);
+
+    f = footprintOf(map, entries, el);
+    var dx = ins.left + (el.clientWidth - ins.left) / 2 - (f.minX + f.maxX) / 2;
+    var dy = ins.top + (el.clientHeight - ins.top) / 2 - (f.minY + f.maxY) / 2;
     if (Math.abs(dx) <= 2 && Math.abs(dy) <= 2) return;
     map.setCenter(map.containerToLngLat(
       new AMap.Pixel(el.clientWidth / 2 - dx, el.clientHeight / 2 - dy)
