@@ -151,12 +151,15 @@
     });
   }
 
-  function infoHtml(loc) {
-    return '<div style="min-width:180px;max-width:260px;padding:2px 4px">' +
-      '<strong style="display:block;font-size:14px;color:#14161B;margin-bottom:6px">' +
+  /* 常驻标签：名称 + 地址，始终显示在标记上方（不用点击） */
+  function labelHtml(loc) {
+    return '<div style="white-space:normal;width:max-content;max-width:230px;padding:8px 11px;' +
+      'background:#FFFFFF;border:1px solid #E7EAF0;border-radius:10px;' +
+      'box-shadow:0 10px 28px rgba(20,22,27,.14);text-align:left">' +
+      '<strong style="display:block;font-size:13px;color:#14161B;line-height:1.4;margin-bottom:2px">' +
       escapeHtml(loc.name || '') + '</strong>' +
-      '<p style="margin:0;font-size:12px;line-height:1.7;color:#667084">' +
-      escapeHtml(loc.address || '') + '</p></div>';
+      '<span style="display:block;font-size:12px;color:#667084;line-height:1.6">' +
+      escapeHtml(loc.address || '') + '</span></div>';
   }
 
   var FIT_PAD = 48; /* 标记距可视区边缘的最小留白 */
@@ -222,7 +225,12 @@
     setTimeout(function () { adjustView(map, entries, el); }, 300);
   }
 
-  /* 点左侧卡片上的圆点 → 地图定位到该基地并弹出信息窗 */
+  /* 点卡片圆点或图上标记 → 放大定位到该基地 */
+  function focusMarker(map, entry) {
+    if (!entry) return;
+    map.setZoomAndCenter(Math.max(map.getZoom(), 16), entry.marker.getPosition());
+  }
+
   function bindLocationFocus(map, entries) {
     var byIndex = {};
     entries.forEach(function (e) { byIndex[e.index] = e; });
@@ -230,13 +238,20 @@
       document.querySelectorAll('#contact-locations .loc-focus'),
       function (btn) {
         btn.addEventListener('click', function () {
-          var entry = byIndex[Number(btn.getAttribute('data-loc-index'))];
-          if (!entry) return;
-          map.setZoomAndCenter(16, entry.marker.getPosition());
-          if (entry.info) entry.info.open(map, entry.marker.getPosition());
+          focusMarker(map, byIndex[Number(btn.getAttribute('data-loc-index'))]);
         });
       }
     );
+  }
+
+  /* 高德默认给标签加了灰边框/内边距，会破坏卡片观感，这里去掉 */
+  function ensureMarkerLabelStyle() {
+    if (document.getElementById('txam-amap-label-style')) return;
+    var s = document.createElement('style');
+    s.id = 'txam-amap-label-style';
+    s.textContent = '#amap-container .amap-marker-label{border:0!important;background:transparent!important;' +
+      'padding:0!important;box-shadow:none!important;white-space:normal}';
+    document.head.appendChild(s);
   }
 
   function initAmap(page) {
@@ -249,34 +264,38 @@
     var center = (page.map && page.map.center) || [114.316297, 22.726056];
     var zoom = (page.map && page.map.zoom) || 14;
     try {
+      ensureMarkerLabelStyle();
+      /* 不设 mapStyle：用高德默认配色（明亮有色彩）。
+         之前的 amap://styles/whitesmoke 灰白样式是异步应用的，
+         时有时无，用户观感「地图一会儿彩色一会儿发灰」——按需求去掉。 */
       var map = new AMap.Map('amap-container', {
         zoom: zoom,
         center: center,
         viewMode: '2D',
-        mapStyle: 'amap://styles/whitesmoke',
         features: ['bg', 'road', 'building'],
       });
 
       var entries = [];
       (page.locations || []).forEach(function (loc, i) {
         if (!hasLngLat(loc)) return;
+        /* 常驻标签：地址不用点击就可见 */
         var marker = new AMap.Marker({
           position: [Number(loc.lnglat[0]), Number(loc.lnglat[1])],
           map: map,
           zIndex: 110 + i,
           offset: new AMap.Pixel(-11, -11),
           icon: dotIcon(loc.dotColor || (i === 0 ? '#14161B' : '#FF6B00'), 22),
+          label: { direction: 'top', offset: new AMap.Pixel(0, -14), content: labelHtml(loc) },
         });
-        var info = new AMap.InfoWindow({ content: infoHtml(loc), offset: new AMap.Pixel(0, -14) });
-        marker.on('click', function () { info.open(map, marker.getPosition()); });
-        entries.push({ index: i, marker: marker, info: info });
+        var entry = { index: i, marker: marker };
+        marker.on('click', function () { focusMarker(map, entry); });
+        entries.push(entry);
       });
 
       /* 一个坐标都没配时，退回原来「在 map.center 打一个点」的行为 */
       if (!entries.length) {
         entries.push({
           index: -1,
-          info: null,
           marker: new AMap.Marker({
             position: center,
             map: map,
