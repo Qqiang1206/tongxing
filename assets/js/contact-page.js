@@ -153,12 +153,12 @@
 
   /* 常驻标签：名称 + 地址，始终显示在标记上方（不用点击） */
   function labelHtml(loc) {
-    return '<div style="white-space:normal;width:max-content;max-width:230px;padding:8px 11px;' +
-      'background:#FFFFFF;border:1px solid #E7EAF0;border-radius:10px;' +
-      'box-shadow:0 10px 28px rgba(20,22,27,.14);text-align:left">' +
-      '<strong style="display:block;font-size:13px;color:#14161B;line-height:1.4;margin-bottom:2px">' +
+    return '<div style="white-space:normal;width:max-content;max-width:180px;padding:5px 8px;' +
+      'background:#FFFFFF;border:1px solid #E7EAF0;border-radius:8px;' +
+      'box-shadow:0 6px 18px rgba(20,22,27,.12);text-align:left">' +
+      '<strong style="display:block;font-size:12px;color:#14161B;line-height:1.35;margin-bottom:1px">' +
       escapeHtml(loc.name || '') + '</strong>' +
-      '<span style="display:block;font-size:12px;color:#667084;line-height:1.6">' +
+      '<span style="display:block;font-size:11px;color:#667084;line-height:1.5">' +
       escapeHtml(loc.address || '') + '</span></div>';
   }
 
@@ -202,7 +202,7 @@
     var maxY = Math.max.apply(null, ys);
     return {
       minX: minX - extSide, maxX: maxX + extSide,
-      minY: minY - extTop, maxY: maxY + 11,
+      minY: minY - extTop, maxY: maxY + 8,
       distX: maxX - minX, distY: maxY - minY,
     };
   }
@@ -227,8 +227,8 @@
     var f = footprintOf(map, entries, el);
     var kx = f.distX > 0 && f.distX + f.extSide * 2 > availW
       ? Math.ceil(Math.log2(f.distX / Math.max(1, availW - f.extSide * 2))) : 0;
-    var ky = f.distY > 0 && f.distY + f.extTop + 11 > availH
-      ? Math.ceil(Math.log2(f.distY / Math.max(1, availH - f.extTop - 11))) : 0;
+    var ky = f.distY > 0 && f.distY + f.extTop + 8 > availH
+      ? Math.ceil(Math.log2(f.distY / Math.max(1, availH - f.extTop - 8))) : 0;
     var k = Math.min(6, Math.max(0, kx, ky));
     if (k > 0) map.setZoom(map.getZoom() - k, true);
 
@@ -248,7 +248,7 @@
       return;
     }
     /* immediately=true：动画没结束就量投影会量到旧位置 */
-    map.setFitView(entries.map(function (e) { return e.marker; }), true, [72, 72, 72, 72], 15);
+    map.setFitView(entries.map(function (e) { return e.marker; }), true, [72, 72, 72, 72], 13);
     adjustView(map, entries, el);
     /* 首次布局/字体未就绪时再校一次（幂等） */
     setTimeout(function () { adjustView(map, entries, el); }, 300);
@@ -257,7 +257,7 @@
   /* 点卡片圆点或图上标记 → 放大定位到该基地 */
   function focusMarker(map, entry) {
     if (!entry) return;
-    map.setZoomAndCenter(Math.max(map.getZoom(), 16), entry.marker.getPosition());
+    map.setZoomAndCenter(Math.max(map.getZoom(), 13), entry.marker.getPosition());
   }
 
   function bindLocationFocus(map, entries) {
@@ -312,9 +312,9 @@
           position: [Number(loc.lnglat[0]), Number(loc.lnglat[1])],
           map: map,
           zIndex: 110 + i,
-          offset: new AMap.Pixel(-11, -11),
-          icon: dotIcon(loc.dotColor || (i === 0 ? '#14161B' : '#FF6B00'), 22),
-          label: { direction: 'top', offset: new AMap.Pixel(0, -14), content: labelHtml(loc) },
+          offset: new AMap.Pixel(-8, -8),
+          icon: dotIcon(loc.dotColor || (i === 0 ? '#14161B' : '#FF6B00'), 16),
+          label: { direction: 'top', offset: new AMap.Pixel(0, -12), content: labelHtml(loc) },
         });
         var entry = { index: i, marker: marker };
         marker.on('click', function () { focusMarker(map, entry); });
@@ -328,8 +328,8 @@
           marker: new AMap.Marker({
             position: center,
             map: map,
-            offset: new AMap.Pixel(-12, -12),
-            icon: dotIcon('#FF6B00', 24),
+            offset: new AMap.Pixel(-10, -10),
+            icon: dotIcon('#FF6B00', 20),
           }),
         });
       }
