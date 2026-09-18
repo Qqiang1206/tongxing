@@ -25,9 +25,11 @@ for (const lang of ['zh', 'en', 'ru']) {
 
       assert.ok(html.includes(`id="${page.heroId}"`), `missing #${page.heroId}`);
       assert.ok(html.includes(`src="${dataSrc}"`), `missing ${dataSrc}`);
-      assert.ok(html.includes(`src="${rendererSrc}"`), `missing ${rendererSrc}`);
+      // 渲染器允许带 ?v= 缓存版本号（如 src="assets/js/contact-page.js?v=20260918"）
+      const rendererTag = `src="${rendererSrc}`;
+      assert.ok(html.includes(rendererTag), `missing ${rendererSrc}`);
       assert.ok(
-        html.indexOf(`src="${dataSrc}"`) < html.indexOf(`src="${rendererSrc}"`),
+        html.indexOf(`src="${dataSrc}"`) < html.indexOf(rendererTag),
         'page data must load before its renderer'
       );
 
