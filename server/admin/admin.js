@@ -3829,10 +3829,12 @@
       items.map(function (loc, i) {
         return '<div class="repeater-row" data-source-index="' + i + '">' +
           '<div class="repeater-row-head"><strong>公司地址 ' + (i + 1) + '</strong>' +
-          '<span class="help">导航按钮和标记颜色由系统处理</span></div><div class="form-grid">' +
+          '<span class="help">坐标留空则不在地图上标记；导航按钮和标记颜色由系统处理</span></div><div class="form-grid">' +
           '<div class="field"><label>基地名称</label><input class="loc-name" type="text" value="' + escapeAttr(loc.name || '') + '"></div>' +
           '<div class="field"><label>状态徽章（可选）</label><input class="loc-badge" type="text" value="' + escapeAttr(loc.badge || '') + '"></div>' +
           '<div class="field full"><label>详细地址</label><input class="loc-address" type="text" value="' + escapeAttr(loc.address || '') + '"></div>' +
+          '<div class="field full"><label>地图坐标（可选）</label><input class="loc-lnglat" type="text" placeholder="经度, 纬度（如 114.316297, 22.726056）" value="' +
+            escapeAttr((loc.lnglat || []).join(', ')) + '"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button></div>';
       }).join('') +
       '<button type="button" class="btn btn-ghost btn-sm rep-add-loc">＋ 添加地址</button></div>';
@@ -3847,10 +3849,11 @@
         var row = document.createElement('div');
         row.className = 'repeater-row';
         row.innerHTML = '<div class="repeater-row-head"><strong>新公司地址</strong>' +
-          '<span class="help">导航按钮和标记颜色由系统处理</span></div><div class="form-grid">' +
+          '<span class="help">坐标留空则不在地图上标记；导航按钮和标记颜色由系统处理</span></div><div class="form-grid">' +
           '<div class="field"><label>基地名称</label><input class="loc-name" type="text"></div>' +
           '<div class="field"><label>状态徽章（可选）</label><input class="loc-badge" type="text"></div>' +
           '<div class="field full"><label>详细地址</label><input class="loc-address" type="text"></div>' +
+          '<div class="field full"><label>地图坐标（可选）</label><input class="loc-lnglat" type="text" placeholder="经度, 纬度（如 114.316297, 22.726056）"></div>' +
           '</div><button type="button" class="btn btn-ghost btn-sm rep-remove">删除</button>';
         root.insertBefore(row, t);
       }
@@ -3868,6 +3871,10 @@
       var prev = prevItems[rowSourceIndex(row, i)] || {};
       var address = (row.querySelector('.loc-address') || {}).value || '';
       var badge = (row.querySelector('.loc-badge') || {}).value || '';
+      var lnglat = ((row.querySelector('.loc-lnglat') || {}).value || '')
+        .split(/[,，\s]+/)
+        .map(Number)
+        .filter(function (n) { return !isNaN(n); });
       var loc = Object.assign({}, prev, {
         name: (row.querySelector('.loc-name') || {}).value || '',
         address: address,
@@ -3875,6 +3882,8 @@
         navUrl: prev.navUrl || ('https://uri.amap.com/search?keyword=' + encodeURIComponent(address)),
         dotColor: prev.dotColor || (i === 0 ? '#1D1D1F' : '#FF6B00'),
       });
+      if (lnglat.length >= 2) loc.lnglat = [lnglat[0], lnglat[1]];
+      else delete loc.lnglat;
       if (badge) loc.badge = badge;
       else delete loc.badge;
       return loc;
@@ -3887,7 +3896,8 @@
     var mapAdvanced = advancedBlock(
       field('map-center', '地图中心坐标', center, 'full') +
       field('map-zoom', '地图缩放级别', map.zoom != null ? map.zoom : 14) +
-      '<div class="field full"><p class="field-help">一般无需修改；后续会升级为地图选点。</p></div>');
+      field('map-focus-label', '地图定位按钮文案', map.focusLabel || '', 'full') +
+      '<div class="field full"><p class="field-help">中心坐标仅在地址未填地图坐标时作为默认视角；地址的地图坐标用于在地图上打点。</p></div>');
     var sections = [
       { key: 'seo', label: '搜索设置', html: seoBlock(page) },
       {
@@ -3928,6 +3938,7 @@
         title: val('f-map-title'),
         center: centerRaw.length >= 2 ? [centerRaw[0], centerRaw[1]] : (prevMap.center || [114.316297, 22.726056]),
         zoom: Number(val('f-map-zoom')) || prevMap.zoom || 14,
+        focusLabel: val('f-map-focus-label') || prevMap.focusLabel || '',
       },
       locations: collectLocations(prev.locations || []),
     };
