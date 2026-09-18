@@ -56,15 +56,42 @@ for (const lang of LANGS) {
   }
 }
 
-// 4. filterKey === slug check for solutions
+// 4. solutions filterKey
+//    分类键与条目 slug 是两回事，不相等是**有意设计**（见 solution_categories 表：
+//    key=washer 实为「3C数码」、key=ac 实为「汽车」、key=refrigerator 为「家电」），
+//    所以不能拿 slug 去比。真正要守的不变量是：
+//    (a) 同一 id 的分类键必须跨语言一致，否则该语言的筛选页签会错位；
+//    (b) 分类键必须出现在 pages/solutions/<lang>.json 的 filters 里，
+//        否则前端拿不到可读标签（会退化成露出 washer 这类内部键）。
+const pageFilters = {};
+for (const lang of LANGS) {
+  const p = path.join(root, 'data', 'pages', 'solutions', lang + '.json');
+  pageFilters[lang] = fs.existsSync(p)
+    ? Object.keys(JSON.parse(fs.readFileSync(p, 'utf8')).filters || {})
+    : [];
+}
+
+const filterKeys = {};
 for (const lang of LANGS) {
   const loaded = loadJson('solutions', lang);
   if (!loaded) continue;
+  filterKeys[lang] = {};
   for (const [id, item] of Object.entries(loaded.data)) {
     if (!/^\d+$/.test(id)) continue;
-    const fk = item.filterKey || item.filterKeyEn;
-    if (fk && fk !== item.slug) {
-      console.warn(`WARN: solutions ${lang} id=${id} filterKey "${fk}" !== slug "${item.slug}"`);
+    const fk = item.filterKey || item.filterKeyEn || '';
+    filterKeys[lang][id] = fk;
+    if (fk && pageFilters[lang].length > 0 && !pageFilters[lang].includes(fk)) {
+      console.warn(`WARN: solutions ${lang} id=${id} filterKey "${fk}" 未在 pages/solutions/${lang}.json 的 filters 中声明`);
+    }
+  }
+}
+
+for (const lang of ['en', 'ru']) {
+  for (const [id, fk] of Object.entries(filterKeys.zh || {})) {
+    const other = (filterKeys[lang] || {})[id];
+    if (other !== undefined && other !== fk) {
+      console.error(`ERROR: solutions filterKey ${lang} id=${id} 为 "${other}"，与 zh 的 "${fk}" 不一致（分类键必须跨语言一致）`);
+      ok = false;
     }
   }
 }
