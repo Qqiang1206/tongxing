@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# 推送前本地守门。
+#
+# 为什么需要：本仓库唯一远端是 Gitee，`.github/workflows/ci.yml` 只在 GitHub
+# 上生效，等于 CI 从来没跑过（`node --test server/tests/` 那处错误因此长期没被发现）。
+# 这个钩子把同样的检查搬到本地，且全部是纯 Node、无依赖、秒级完成。
+#
+# 安装（每台机器一次）：npm run hooks:install
+# 临时跳过：git push --no-verify
+#
+# 检查项与 CI 对齐：数据校验 / 落地页与数据一致性 / 翻译测试 / CSS 覆盖。
+# 其中 landings:check 是本站最有用的一道闸——data/** 快照与生成出来的
+# HTML 一旦漂移，前台就会出现「页面与后台不一致」。
+
+run() {
+  name="$1"
+  shift
+  out=$("$@" 2>&1)
+  status=$?
+  if [ "$status" -ne 0 ]; then
+    printf '\n[pre-push] ✗ %s\n%s\n\n推送已中止。确需跳过：git push --no-verify\n' "$name" "$out"
+    exit 1
+  fi
+  printf '[pre-push] ✓ %s\n' "$name"
+}
+
+printf '[pre-push] 推送前校验（跳过：git push --no-verify）\n'
+run "数据校验 validate" npm --silent run validate
+run "落地页与数据一致性 landings:check" npm --silent run landings:check
+run "翻译测试 test:translation" npm --silent run test:translation
+run "CSS 覆盖 check-css-coverage" node scripts/check-css-coverage.mjs
+printf '[pre-push] 全部通过，继续推送\n'

@@ -34,6 +34,19 @@ See [DESIGN.md](DESIGN.md) for colors, type scale, spacing, components, and page
 - `data/**/*.json` + 配套 `.js`：由 CMS 写入同步，供静态 / `file://` 回退；勿与后台并行手改同一条
 - 布局壳：`/`、`/en/`、`/ru/` 下 HTML；样式：`assets/css/styles.css`
 
+## 本地校验（推送前守门）
+
+仓库唯一远端是 Gitee，`.github/workflows/ci.yml` 只在 GitHub Actions 上生效，
+所以本地装了等效的 pre-push 钩子：
+
+```bash
+npm run hooks:install    # 每台机器装一次：core.hooksPath → .githooks
+```
+
+推送前依次跑数据校验、落地页与数据一致性、翻译测试、CSS 覆盖（约 3 秒，
+纯 Node 无依赖）。其中 `landings:check` 最关键——`data/**` 快照与生成出来的
+HTML 一漂移，前台就会「页面与后台不一致」。确需跳过：`git push --no-verify`。
+
 ## Deploy
 
 生产推荐：静态站 + Node CMS（同域反代 `/api/`、`/admin/`）。细节见 [server/DEPLOY.md](server/DEPLOY.md)。

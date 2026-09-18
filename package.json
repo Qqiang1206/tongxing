@@ -11,6 +11,7 @@
     "generate-landings": "node scripts/generate-solution-landings.js",
     "landings:check": "node scripts/generate-solution-landings.js --check",
     "validate": "node scripts/validate-data.js",
+    "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/pre-push",
     "translation:snapshot-baseline": "node server/scripts/seed-translation-snapshot.js",
     "test:translation": "node --test server/tests/*.test.js",
     "translation:restore-main-page-copy": "node server/scripts/restore-main-page-copy.js",
