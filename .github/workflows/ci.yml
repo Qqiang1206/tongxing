@@ -22,7 +22,7 @@ jobs:
       - name: 翻译测试
         run: npm run test:translation
       - name: 服务端测试
-        run: node --test server/tests/
+        run: node --test server/tests/*.test.js
       - name: 构建 CSS
         run: npm run build:css
       - name: CSS 覆盖校验
