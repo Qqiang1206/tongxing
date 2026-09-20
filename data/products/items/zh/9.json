@@ -1,0 +1,22 @@
+{
+  "id": "9",
+  "category": "翻转检测",
+  "model": "TXM-B-105 系列 / 205A",
+  "name": "180度重载翻转机",
+  "image": "assets/images/products/turnover-180.webp",
+  "specs": [
+    "15-55s 节拍",
+    "一键操作",
+    "强载重",
+    "多型号"
+  ],
+  "summary": "专为翻转大型或重型产品而设计，实现180度精准翻转。解决因工艺要求造成的、人工翻转困难等问题。",
+  "contentHtml": "<p>180度重载翻转机是同兴高科为大型重型产品翻转需求而研发的核心设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备采用精密机械结构配合伺服驱动系统，实现一键180度翻转。翻转过程平稳，定位精准，有效解决人工翻转的困难及安全隐患。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>翻转节拍15-55秒，效率高</li>\n                        <li>一键操作，简单便捷</li>\n                        <li>强载重能力，适用于电视、教育显示器等大型产品</li>\n                        <li>多种型号TXM-B-105系列（A/B/C）及205A可选</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 5,
+  "filterKey": "flip",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

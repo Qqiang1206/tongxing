@@ -1,0 +1,22 @@
+{
+  "id": "30",
+  "category": "Robot Integration",
+  "model": "TX-NS-RAHC Series",
+  "name": "Robotic Automatic Overhead Conveyor Loading",
+  "image": "assets/images/products/robot-auto-hanging.webp",
+  "specs": [
+    "Automatic Chain Loading",
+    "Overhead Conveying",
+    "Robotic Collaboration",
+    "Highly Automated"
+  ],
+  "summary": "Automated equipment that works with robots to automatically mount products onto an overhead conveyor chain.",
+  "contentHtml": "<p>The robot automatic hanging chain machine is an automated equipment developed by TXAM for overhead conveying.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment works with a six-axis robot to automatically pick up products and mount them onto the overhead conveyor chain, enabling automatic product loading for overhead conveying.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Robotic automatic loading, high efficiency</li>\n                        <li>Overhead conveying, saves floor space</li>\n                        <li>High level of automation, reduces labor</li>\n                        <li>Perfect integration with production lines</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 25,
+  "filterKey": "robot",
+  "filterKeyEn": "robot",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

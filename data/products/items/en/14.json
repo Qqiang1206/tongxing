@@ -1,0 +1,22 @@
+{
+  "id": "14",
+  "category": "End-of-Line Packaging",
+  "model": "TX-NS Series",
+  "name": "Robotic Uprighting Unit",
+  "image": "assets/images/products/robot-clamp-unit.webp",
+  "specs": [
+    "CCD Vision Guidance",
+    "Smooth & Efficient",
+    "Labor Saving",
+    "Customizable"
+  ],
+  "summary": "Automatically converts products from horizontal to vertical orientation. Uses CCD vision to determine product position, and robots automatically pick and place to complete the vertical action.",
+  "contentHtml": "<p>The robotic verticalization unit is an automated equipment developed by TXAM for product posture conversion.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a CCD vision system to automatically determine product position, guiding a six-axis robot to pick up the product and complete the posture conversion from horizontal to vertical. The verticalization process is smooth, effectively protecting product safety.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>CCD vision guidance for accurate positioning</li>\n                        <li>Smooth verticalization process to avoid product damage</li>\n                        <li>Significantly reduces labor and improves efficiency</li>\n                        <li>Customizable according to different product characteristics</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 21,
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

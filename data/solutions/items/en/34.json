@@ -1,0 +1,89 @@
+{
+  "id": "34",
+  "category": "Home Appliances",
+  "name": "Washing Machine Production Line Solution",
+  "image": "assets/images/uploads/20260731072831--7-display.webp",
+  "specs": [
+    "Whole-Line Automation",
+    "Flexible Manufacturing",
+    "Multi-Model Compatibility",
+    "Turnkey Project"
+  ],
+  "summary": "Full-line automation solutions for washing machine manufacturers, covering the entire process from assembly to packaging.",
+  "contentHtml": "<p>The washing machine production line solution is a full-line automation solution provided by TXAM for washing machine manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process, including component supply, inner drum assembly, shell assembly, electrical installation, shock absorber installation, online inspection, automatic packaging, and intelligent warehousing.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High level of full-line automation, reducing manual intervention</li>\n<li>Flexible switching between multiple models with short changeover time</li>\n<li>Online inspection system ensures product quality</li>\n<li>Intelligent data collection enables lean production</li>\n<li>Integration with MES system for full traceability</li>\n<li>Turnkey project with one-stop service</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "washer",
+  "sortOrder": 34,
+  "homeSlot": "",
+  "filterKey": "refrigerator",
+  "filterKeyEn": "refrigerator",
+  "updatedAt": "2026-07-31 07:29:02",
+  "painPoints": [
+    {
+      "title": "Complex Assembly Processes",
+      "desc": "Washing machine assembly involves multiple components with complex processes, making manual assembly difficult"
+    },
+    {
+      "title": "Long changeover time",
+      "desc": "Long changeover and debugging time during multi-model production affects capacity"
+    },
+    {
+      "title": "Numerous inspection items",
+      "desc": "Washing machines have many inspection items, and manual inspection is inefficient and prone to missed checks"
+    },
+    {
+      "title": "Slow logistics turnover",
+      "desc": "Inter-process logistics relies on manual handling, making it difficult to coordinate takt time"
+    },
+    {
+      "title": "Significant quality fluctuations",
+      "desc": "Inconsistent manual operations lead to unstable product quality"
+    },
+    {
+      "title": "Difficult data collection",
+      "desc": "Production data is manually recorded, lacking real-time capability and difficult to analyze"
+    }
+  ],
+  "process": [
+    {
+      "title": "Component supply",
+      "desc": "Automated feeding system enables automatic component supply.",
+      "step": "01"
+    },
+    {
+      "title": "Inner drum assembly",
+      "desc": "Robots complete precision assembly of the inner drum to ensure dynamic balance",
+      "step": "02"
+    },
+    {
+      "title": "Outer shell assembly",
+      "desc": "Automated assembly system completes precise assembly of the outer shell and inner drum.",
+      "step": "03"
+    },
+    {
+      "title": "Electrical installation",
+      "desc": "Automated wiring systems complete electrical installation such as motors and circuits",
+      "step": "04"
+    },
+    {
+      "title": "Shock absorption installation",
+      "desc": "Specialized equipment ensures precision installation of the shock absorption system.",
+      "step": "05"
+    },
+    {
+      "title": "Online inspection",
+      "desc": "Multi-functional test stations complete comprehensive inspections covering performance and safety",
+      "step": "06"
+    },
+    {
+      "title": "Automatic packaging",
+      "desc": "Automated packaging system achieves efficient, standardized packaging.",
+      "step": "07"
+    },
+    {
+      "title": "Intelligent inbound storage",
+      "desc": "Integration with MES system enables full traceability of production data",
+      "step": "08"
+    }
+  ]
+}

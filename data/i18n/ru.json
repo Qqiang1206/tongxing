@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "Главная",
+    "about": "О нас",
+    "solutions": "Решения",
+    "products": "Продукция",
+    "news": "Новости",
+    "contact": "Контакты"
+  },
+  "lang": {
+    "zh": "ZH",
+    "en": "EN",
+    "ru": "RU"
+  },
+  "common": {
+    "relatedProducts": "Связанные продукты",
+    "relatedSolutions": "Связанные решения",
+    "relatedArticles": "Связанные статьи",
+    "coreParams": "Основные характеристики",
+    "productFeatures": "Особенности продукта",
+    "detailTitle": "Подробное описание",
+    "backToProducts": "Назад к продукции",
+    "backToSolutions": "Назад к решениям",
+    "breadcrumbHome": "Главная",
+    "industryPainPoints": "Отраслевые проблемы",
+    "coreProcess": "Основной технологический процесс",
+    "applicationAreas": "Области применения",
+    "techAdvantages": "Технические преимущества",
+    "finalCtaTitle": "Точное производство, TXAM выполняет",
+    "finalCtaSub": "Консультация, проектирование, производство и послепродажное обслуживание нестандартных автоматизированных линий — всё под ключ.",
+    "finalCtaButton": "Получить индивидуальное решение"
+  },
+  "footer": {
+    "tagline": "Превосходное качество, доверие в каждой поставке.",
+    "wechatAlt": "WeChat",
+    "copyright": "© 2007-2026 ООО «Гуандун Тунсин Гаоко Интеллектуальное оборудование».",
+    "icp": "Регистрация ICP Гуандун № 16101583-1",
+    "icpUrl": "https://beian.miit.gov.cn/",
+    "wechatImage": "assets/images/brand/wechat-service.png",
+    "phone": "+86 136 3264 3748",
+    "email": "txgk@sztxgk.com",
+    "addressShenzhen": "№2, зона 1, дер. Сякэн, р-н Баолун, р-н Лунган, Шэньчжэнь (корп. A-C)",
+    "addressHuizhou": "Хуэйчжоу (умный производственный комплекс 60 000 м², полный запуск к концу 2026 г.)"
+  }
+}

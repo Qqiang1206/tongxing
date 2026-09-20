@@ -1,0 +1,14 @@
+{
+  "id": "2",
+  "category": "Project Stories",
+  "categoryKey": "project",
+  "title": "High-Precision Robotic Assembly Line Successfully Deployed at a Leading Home Appliance Manufacturer",
+  "date": "2026.01.15",
+  "cover": "assets/images/uploads/20260731040524-xinwen-display.webp",
+  "contentHtml": "<p>TXAM has successfully completed the installation and commissioning of a high-precision robotic assembly line customized for a well-known home appliance manufacturer, and it has officially entered production operation.</p>\n<h2>Project Background</h2>\n<p>This home appliance manufacturer operates multiple modern production lines both domestically and internationally, with extremely stringent requirements for the precision and stability of automation equipment. Leveraging 19 years of industry experience and technical expertise, TXAM won the bid and undertook the design and delivery of this major project.</p>\n<h2>Technical Highlights</h2>\n<p>The entire line utilizes TXAM's independently developed UVW vision alignment platform, combined with six-axis industrial robots, achieving assembly precision at the &plusmn;0.1mm level. With the CAD-import one-click changeover function, the entire line can complete product switching within 15 minutes, greatly enhancing production flexibility.</p>\n<p>After project delivery, the customer's single-line production cycle time was reduced to 12 seconds per unit, with a yield rate exceeding 99.9%, earning high recognition from the customer.</p>",
+  "published": true,
+  "sortOrder": 2,
+  "slug": "",
+  "homeFeatured": false,
+  "updatedAt": "2026-07-31 06:11:26"
+}

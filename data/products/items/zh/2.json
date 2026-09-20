@@ -1,0 +1,22 @@
+{
+  "id": "2",
+  "category": "光学元件组装",
+  "model": "TXM-A 系列",
+  "name": "OC智能贴合系统",
+  "image": "assets/images/products/oc-lamination-unit.webp",
+  "specs": [
+    "UVW视觉对位",
+    "±0.15mm 精度",
+    "25s 节拍",
+    "零碎屏"
+  ],
+  "summary": "全自动Open Cell及背光模组精密组装。采用UVW视觉对位平台，彻底解决人工贴合造成的碎屏问题。",
+  "contentHtml": "<p>OC智能贴合系统是同兴高科为显示面板生产核心工艺而研发的自动化设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备采用UVW视觉对位平台，自动识别产品位置，引导机器人完成精密OC及背光模组组装。全自动工艺包括自动上料、泡棉收集、空箱收集等。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>贴合精度达±0.15mm～±0.4mm</li>\n                        <li>固定节拍时间25秒，保障生产节奏</li>\n                        <li>彻底解决人工贴合造成的碎屏问题</li>\n                        <li>一键产品切换，缩短换型时间</li>\n                    </ul>\n                    <h3>型号说明</h3>\n                    <p>TXM-A系列包括151B、201B、401B等型号，主要区别在于兼容产品尺寸及贴合精度。</p>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 2,
+  "filterKey": "optical",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

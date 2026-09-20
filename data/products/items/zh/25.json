@@ -1,0 +1,22 @@
+{
+  "id": "25",
+  "category": "机器人集成",
+  "model": "TX-NS-PL 系列",
+  "name": "包装与物流自动化设备",
+  "image": "assets/images/solutions/pkg-logistics-line.webp",
+  "specs": [
+    "自动化包装",
+    "物流输送",
+    "高效分拣",
+    "系统集成"
+  ],
+  "summary": "涵盖产线后段包装、输送、分拣全流程的物流自动化系统集成解决方案。",
+  "contentHtml": "<p>包装与物流自动化设备是同兴高科为后段物流而研发的系统集成解决方案。</p>\n                    <h3>系统组成</h3>\n                    <p>系统涵盖自动包装设备、输送线、分拣设备以及仓储管理系统，实现产线后段物流全流程自动化。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>系统集成，物流全流程自动化</li>\n                        <li>高效分拣，提高物流效率</li>\n                        <li>智能化管理，数字化透明</li>\n                        <li>可根据客户需求定制</li>\n                    </ul>",
+  "published": true,
+  "showInList": false,
+  "sortOrder": 25,
+  "filterKey": "robot",
+  "filterKeyEn": "robot",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

@@ -1,0 +1,89 @@
+{
+  "id": "32",
+  "category": "Home Appliances",
+  "name": "Refrigerator Production Line Solution",
+  "image": "assets/images/uploads/20260731073335--1-4--display.webp",
+  "specs": [
+    "Full-Line Automation",
+    "Flexible Production",
+    "Multi-Model Compatibility",
+    "Turnkey Project"
+  ],
+  "summary": "Full-line automation solutions for refrigerator manufacturers, covering the entire process from assembly to packaging.",
+  "contentHtml": "<p>The refrigerator production line solution is a full-line automation solution provided by TXAM for refrigerator manufacturers.</p>\n<h3>Solution Components</h3>\n<p>The full line covers the entire process including component loading, compressor installation, panel assembly, piping connection, electrical wiring, online inspection, vacuum evacuation and refrigerant charging, automatic packaging, and intelligent palletizing.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High level of full-line automation, reducing reliance on manual labor</li>\n<li>Flexible switching between multiple models, improving equipment utilization</li>\n<li>Online inspection system ensures product quality</li>\n<li>Automated logistics conveying with matched process cycle times</li>\n<li>Intelligent data collection for lean production</li>\n<li>Turnkey engineering services with one-stop delivery</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+  "published": true,
+  "slug": "refrigerator",
+  "sortOrder": 32,
+  "homeSlot": "category",
+  "filterKey": "refrigerator",
+  "filterKeyEn": "refrigerator",
+  "updatedAt": "2026-07-31 07:33:46",
+  "painPoints": [
+    {
+      "title": "Complex Assembly Processes",
+      "desc": "Refrigerator assembly involves multiple processes, and manual assembly is inefficient and costly"
+    },
+    {
+      "title": "Difficult Model Switching",
+      "desc": "Long changeover times during multi-model production result in low equipment utilization"
+    },
+    {
+      "title": "Lack of Inspection Steps",
+      "desc": "Traditional production lines lack online inspection, making quality difficult to guarantee"
+    },
+    {
+      "title": "Complex Material Handling",
+      "desc": "Material flow between processes relies on manual labor, making cycle time matching difficult"
+    },
+    {
+      "title": "Inconsistent Packaging Standards",
+      "desc": "Manual packaging lacks consistency, resulting in uneven packaging quality"
+    },
+    {
+      "title": "Low Digitalization Level",
+      "desc": "Production data collection is difficult, preventing refined management"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Component Feeding",
+      "desc": "Automated logistics systems enable automatic component supply, reducing manual handling"
+    },
+    {
+      "step": "02",
+      "title": "Compressor Installation",
+      "desc": "Robots automatically install compressors with high precision and efficiency"
+    },
+    {
+      "step": "03",
+      "title": "Panel Assembly",
+      "desc": "Automated assembly systems complete precision assembly of panels, piping, and other components"
+    },
+    {
+      "step": "04",
+      "title": "Electrical Wiring",
+      "desc": "Automated wiring systems ensure reliable electrical connections"
+    },
+    {
+      "step": "05",
+      "title": "In-line Inspection",
+      "desc": "Multi-functional inspection equipment provides comprehensive testing of performance, safety, and more"
+    },
+    {
+      "step": "06",
+      "title": "Vacuum Pumping & Refrigerant Charging",
+      "desc": "Automated vacuum evacuation and refrigerant charging ensure sealing integrity"
+    },
+    {
+      "step": "07",
+      "title": "Automatic Packaging",
+      "desc": "Automated packaging systems achieve efficient and standardized packaging"
+    },
+    {
+      "step": "08",
+      "title": "Intelligent Palletizing",
+      "desc": "Robot palletizing system enables automatic palletizing and warehousing of finished products"
+    }
+  ]
+}

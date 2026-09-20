@@ -1,0 +1,22 @@
+{
+  "id": "27",
+  "category": "End-of-Line Packaging",
+  "model": "TX-NS-AUFE Series",
+  "name": "Auxiliary Infeed Flipping Unit",
+  "image": "assets/images/products/upper-flip-unit.webp",
+  "specs": [
+    "Automatic Flipping",
+    "Infeed Assistance",
+    "Efficient Synergy",
+    "Quality Assurance"
+  ],
+  "summary": "Auxiliary flipping device for product loading stations, working with the main equipment to achieve automated loading and unloading.",
+  "contentHtml": "<p>The auxiliary loading turnover unit is an auxiliary turnover device developed by TXAM for production line loading stations.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment works in conjunction with the main production line to achieve automatic turnover and positioning of products at the loading station, preparing for the next process.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Automatic turnover improves loading efficiency</li>\n                        <li>Efficient coordination with main equipment</li>\n                        <li>Quality assurance reduces product damage</li>\n                        <li>Easy operation and low maintenance costs</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 22,
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

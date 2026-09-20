@@ -1,0 +1,22 @@
+{
+  "id": "10",
+  "category": "Optical Component Assembly",
+  "model": "TX-NS-ACTGR-01/02",
+  "name": "Automatic Tempered Glass Bezel Installation Machine",
+  "image": "assets/images/products/auto-glass-holder.webp",
+  "specs": [
+    "±0.15mm Accuracy",
+    "Vision Positioning",
+    "Automatic Installation",
+    "Suitable for Educational Monitors"
+  ],
+  "summary": "Automatically installs tempered glass frames for educational displays. Uses vision positioning with accuracy up to ±0.15mm.",
+  "contentHtml": "<p>The automatic tempered glass frame installation machine is an automated assembly unit developed by TXAM for educational display products.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a CCD vision system to automatically identify product positions and guides the robot to complete precise tempered glass frame installation. The positioning accuracy is as high as ±0.15mm.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Positioning accuracy of ±0.15mm, leading the industry</li>\n                        <li>Vision-based positioning for strong adaptability</li>\n                        <li>TX-NS-ACTGR-02 model offers faster cycle times</li>\n                        <li>Specifically designed for educational display products</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 18,
+  "filterKey": "optical",
+  "filterKeyEn": "optical",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

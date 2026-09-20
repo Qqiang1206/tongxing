@@ -1,0 +1,22 @@
+{
+  "id": "12",
+  "category": "机器人集成",
+  "model": "TX-NS-AET 系列",
+  "name": "产线末端正装包装自动装箱系统",
+  "image": "assets/images/products/auto-boxing.webp",
+  "specs": [
+    "20s/件",
+    "自动托盘堆叠",
+    "机械定位",
+    "全兼容"
+  ],
+  "summary": "集成自动托盘码垛（skid）、拆箱、成型及整机装箱。机械刚性定位全兼容，20秒完成单skid定心。",
+  "contentHtml": "<p>产线末端正装包装自动装箱系统是同兴高科为后段包装工序而研发的自动化设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备集成自动码垛机、拆箱机、成型机及装箱机，实现产线后段包装全流程自动化。一键操作，自动完成托盘堆叠及定心。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>托盘定心节拍仅20秒/件</li>\n                        <li>机械刚性定位，兼容性更强</li>\n                        <li>允许一定范围的托盘偏移</li>\n                        <li>多种型号TX-NS-AET-01/02/03可选</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 7,
+  "filterKey": "robot",
+  "filterKeyEn": "logistics",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

@@ -1,0 +1,121 @@
+{
+  "hero": {
+    "title": "精工制臻 同兴必达",
+    "lead": "为世界一流企业提供智能装备的一站式服务。现已成功跻身非标自动化、智能制造及工业机器人集成配套的高端产品供应商之列。",
+    "primaryCta": {
+      "label": "探索核心产品",
+      "href": "products.html"
+    },
+    "secondaryCta": {
+      "label": "了解企业实力",
+      "href": "about.html"
+    }
+  },
+  "featured": {
+    "eyebrow": "标杆方案",
+    "subtitle": "一机兼容 65~110寸 | 全自动装配",
+    "cta": "查看产品详情 →"
+  },
+  "aboutSection": {
+    "title": "驱动世界一流智造",
+    "bodyHtml": "<p>广东同兴高科智能装备有限公司创立于国家科技中心城市深圳。19 年来，我们始终坚守\"敬业、稳步发展、信誉第一、品质至上\"的企业理念，专注于非标自动化产线的设计与制造。<br><br>作为 <strong class=\"text-[#14161B] font-bold\">TCL、创维、美的、康佳、长虹</strong> 等大中型企业的长期合作伙伴，我们已实现技术研发、生产、销售和服务的综合一体化经营。</p>",
+    "stats": [
+      {
+        "value": "19",
+        "unit": "年",
+        "label": "非标自动化设备制造经验"
+      },
+      {
+        "value": "98",
+        "unit": "项",
+        "label": "核心发明与专利"
+      },
+      {
+        "value": "11",
+        "unit": "大",
+        "label": "重点行业全覆盖"
+      },
+      {
+        "value": "10",
+        "unit": "万㎡",
+        "label": "深圳+惠州双核工厂",
+        "emphasis": "border"
+      }
+    ]
+  },
+  "productsSection": {
+    "title": "三大核心类目",
+    "subtitle": "从单机设备到整厂柔性自动化，提供全方位智造矩阵。",
+    "unitCard": {
+      "eyebrow": "单机单元",
+      "title": "单机设备",
+      "summary": "解决特定工艺瓶颈的高柔性系统。如：高精度机器人点胶机（±0.2mm）、180度翻转单元、以及采用 UVW 平台的 OC 卡合机组。支持 CAD 导图一键换型。",
+      "tags": [
+        "高精度点胶",
+        "180度翻转",
+        "UVW对位"
+      ],
+      "href": "products.html",
+      "image": "assets/images/hero/robot-unit.webp",
+      "imageAlt": "单机设备"
+    }
+  },
+  "serviceSection": {
+    "title": "标准化定制服务流程",
+    "subtitle": "严谨透明的流程式推进，保障项目如期高品质落地。",
+    "steps": [
+      {
+        "badge": "01",
+        "badgeStyle": "neutral",
+        "title": "解决方案",
+        "items": [
+          "调研交流 · 方案规划",
+          "方案确认 · 商务合作"
+        ]
+      },
+      {
+        "badge": "02",
+        "badgeStyle": "neutral",
+        "title": "设计",
+        "items": [
+          "机械设计 · 电气设计",
+          "软件开发 · 设计评审"
+        ]
+      },
+      {
+        "badge": "03",
+        "badgeStyle": "neutral",
+        "title": "制造",
+        "items": [
+          "图纸下发 · 生产制造",
+          "品质检验 · 设备交付"
+        ]
+      },
+      {
+        "badge": "04",
+        "badgeStyle": "neutral",
+        "title": "售后服务",
+        "items": [
+          "365*7*24 · 驻场服务",
+          "培训交接 · 永久售后"
+        ]
+      }
+    ]
+  },
+  "newsSection": {
+    "title": "企业动态",
+    "missionTitle": "企业初心",
+    "missionBody": "与客户同兴、与伙伴同心。共同以目标为核心，为达到客户的极度满意全力以赴。",
+    "cta": {
+      "label": "访问新闻中心",
+      "href": "news.html"
+    }
+  },
+  "pageKey": "home",
+  "lang": "zh",
+  "seo": {
+    "title": "同兴高科 TXAM - 中国领先的自动化品牌供应商",
+    "description": "同兴高科(TXAM)-19年非标自动化设备制造商，为TCL、创维、美的、康佳、长虹等提供智能生产线解决方案。拥有98项专利，产品出口15国。",
+    "image": ""
+  }
+}

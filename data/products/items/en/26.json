@@ -1,0 +1,22 @@
+{
+  "id": "26",
+  "category": "Material Handling & Transfer",
+  "model": "TX-NS-RCU Series",
+  "name": "Robotic Unit Equipment",
+  "image": "assets/images/solutions/robot-unit.webp",
+  "specs": [
+    "Modular Design",
+    "Flexible Configuration",
+    "Easy Integration",
+    "Efficient & Reliable"
+  ],
+  "summary": "Modular unit equipment centered around robots, flexibly configurable and integrable according to process requirements.",
+  "contentHtml": "<p>Robot cell equipment is modular automation equipment developed by TXAM for flexible production.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment is centered around a six-axis robot, paired with various end-of-arm tools and auxiliary devices to form a modular cell. It can be flexibly configured according to different process requirements, enabling multi-purpose use of a single machine.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Modular design, flexible configuration</li>\n                        <li>Multi-purpose use, improving equipment utilization</li>\n                        <li>Easy integration into existing production lines</li>\n                        <li>Efficient and reliable, easy maintenance</li>\n                    </ul>",
+  "published": true,
+  "showInList": false,
+  "sortOrder": 26,
+  "filterKey": "transfer",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

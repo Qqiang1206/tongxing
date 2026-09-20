@@ -1,0 +1,22 @@
+{
+  "id": "11",
+  "category": "机器人集成",
+  "model": "TX-NS-PR 系列",
+  "name": "六轴机器人智能码垛系统",
+  "image": "assets/images/products/robot-palletizing.webp",
+  "specs": [
+    "±0.5mm 精度",
+    "12s/件",
+    "模拟机码垛",
+    "子母托盘兼容"
+  ],
+  "summary": "完美解决重型成品码垛难题。支持模拟机码垛及子母托盘，精度控制在±0.5mm以内，速度高达12秒/件。",
+  "contentHtml": "<p>六轴机器人智能码垛系统是同兴高科为产线后段物流自动化而研发的核心设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备采用六轴工业机器人（可选ABB、安川等），配合智能控制系统实现产品自动码垛。支持模拟机码垛及子母托盘，兼容性极强。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>码垛精度±0.5mm，码放整齐稳固</li>\n                        <li>效率高达12秒/件</li>\n                        <li>支持模拟机码垛及子母托盘</li>\n                        <li>可兼容不同尺寸和形状的产品</li>\n                    </ul>\n                    <h3>型号说明</h3>\n                    <p>TX-NS-PR系列（01/02/03）及一体化码垛TX-NS-RIP-001，后者功能更强大，包含子母托堆叠、自动垫板放置、扫描等。</p>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 4,
+  "filterKey": "robot",
+  "filterKeyEn": "logistics",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

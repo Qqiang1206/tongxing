@@ -1,0 +1,22 @@
+{
+  "id": "22",
+  "category": "End-of-Line Packaging",
+  "model": "TX-NS-SE Series",
+  "name": "Auxiliary Bag Sealing Machine",
+  "image": "assets/images/products/retainer-sealer.webp",
+  "specs": [
+    "Automatic Bag Sealing",
+    "Heat Sealing Technology",
+    "High Efficiency",
+    "Stable Quality Control"
+  ],
+  "summary": "Automated sealing equipment for product packaging bags, utilizing heat sealing technology for aesthetically pleasing and secure seals.",
+  "contentHtml": "<p>The auxiliary bag sealing machine is an automated device developed by TXAM for the packaging and sealing process.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses heat sealing technology to automatically seal product packaging bags. Combined with an automatic feeding system, it achieves full automation of the sealing process.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Heat sealing technology, producing neat and strong seals</li>\n                        <li>High level of automation and efficiency</li>\n                        <li>Stable quality control, consistent sealing results</li>\n                        <li>Easy operation and low maintenance costs</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 12,
+  "filterKey": "packaging",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

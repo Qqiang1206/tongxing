@@ -1,0 +1,22 @@
+{
+  "id": "16",
+  "category": "End-of-Line Packaging",
+  "model": "TX-NS Series",
+  "name": "Automatic Pressure Holding Unit",
+  "image": "assets/images/products/auto-press-unit.webp",
+  "specs": [
+    "Constant Pressure Control",
+    "Extended Pressure Holding Duration",
+    "Highly Adaptable",
+    "Quality Assurance"
+  ],
+  "summary": "Apply and maintain constant pressure on assembled components to ensure bonding or assembly process quality. Precise pressure control with extended pressure-holding duration.",
+  "contentHtml": "<p>The automatic pressure-holding unit is an automated device developed by TXAM for bonding processes.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment applies constant pressure to products that have completed processes such as dispensing and lamination, ensuring the adhesive is fully cured and assembly quality remains stable and consistent.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Precise pressure control, ensuring bonding quality</li>\n                        <li>Long pressure-holding time, adapting to different process requirements</li>\n                        <li>High adaptability, compatible with a variety of products</li>\n                        <li>Automated operation, reducing manual intervention</li>\n                    </ul>",
+  "published": true,
+  "showInList": false,
+  "sortOrder": 16,
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

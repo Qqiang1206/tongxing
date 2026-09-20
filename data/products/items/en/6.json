@@ -1,0 +1,22 @@
+{
+  "id": "6",
+  "category": "Optical Component Assembly",
+  "model": "TX-NS-ALPS Series",
+  "name": "Automatic Light Diffuser Bracket Placing Machine",
+  "image": "assets/images/products/auto-light-bracket.webp",
+  "specs": [
+    "±0.2mm Positioning",
+    "1s/Piece",
+    "Vibratory Bowl Feeder",
+    "10-20 Pieces/Batch"
+  ],
+  "summary": "Precisely picks and places diffusion support brackets, providing stable support for display device optical components. Accurate positioning and high-speed picking.",
+  "contentHtml": "<p>The automatic lamp holder placement machine is used to precisely place diffuser bracket posts during the product assembly process.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment automatically feeds materials through a vibratory bowl feeder, and the robot precisely grips the bracket posts and places them at designated positions. Positioning accuracy reaches ±0.2mm, with a gripping speed of 1 second per piece.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Positioning accuracy of ±0.2mm ensures assembly precision</li>\n                        <li>High-speed gripping, completing thousands per hour</li>\n                        <li>Vibratory bowl automatic feeding reduces manual intervention</li>\n                        <li>Multiple models TX-NS-ALPS-01/02/03 to accommodate different sizes and production requirements</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 16,
+  "filterKey": "optical",
+  "filterKeyEn": "optical",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

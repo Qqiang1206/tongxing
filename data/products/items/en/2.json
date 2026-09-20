@@ -1,0 +1,22 @@
+{
+  "id": "2",
+  "category": "Optical Component Assembly",
+  "model": "TXM-A Series",
+  "name": "OC Intelligent Lamination System",
+  "image": "assets/images/products/oc-lamination-unit.webp",
+  "specs": [
+    "UVW Vision Alignment",
+    "±0.15mm Accuracy",
+    "25s Cycle Time",
+    "Zero Screen Breakage"
+  ],
+  "summary": "Fully automatic precision assembly of Open Cell and backlight modules. Utilizes UVW vision alignment platform to completely solve the screen cracking issue caused by manual lamination.",
+  "contentHtml": "<p>The OC intelligent lamination system is an automated equipment developed by TXAM for the core processes of display panel production.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a UVW vision alignment platform to automatically identify product positions and guide robots to complete precision OC and backlight module assembly. The fully automated process includes automatic loading, foam collection, and empty box collection.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Lamination accuracy reaches ±0.15mm to ±0.4mm</li>\n                        <li>Fixed cycle time of 25 seconds ensures production rhythm</li>\n                        <li>Completely solves the screen cracking issue caused by manual lamination</li>\n                        <li>One-click product changeover reduces model switching time</li>\n                    </ul>\n                    <h3>Model Description</h3>\n                    <p>The TXM-A series includes models such as 151B, 201B, and 401B, with the main differences being compatible product sizes and lamination accuracy.</p>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 2,
+  "filterKey": "optical",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

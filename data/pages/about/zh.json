@@ -1,0 +1,290 @@
+{
+  "hero": {
+    "title": "19年只做智造",
+    "leadHtml": "<p>广东同兴高科智能装备有限公司（简称\"同兴高科\"），1998年技术发源，2007年正式创立于国家科技中心城市深圳。我们始终坚守<strong class=\"text-[#14161B] font-bold\">\"敬业、稳步发展、信誉第一、品质至上\"</strong>的企业理念，致力于为世界一流企业提供智能装备的一站式交付服务。</p>"
+  },
+  "carousel": {
+    "sectionAriaLabel": "深惠双核智造基地",
+    "prevLabel": "上一基地",
+    "nextLabel": "下一基地",
+    "slides": [
+      {
+        "image": "assets/images/uploads/20260727000742-gc2-display.webp",
+        "imageAlt": "深圳总部工厂",
+        "fetchpriority": "high",
+        "tag": "Shenzhen HQ",
+        "title": "深圳总部工厂",
+        "desc": "研发 · 制造 · 总部职能 · 19年智造根基",
+        "dotLabel": "深圳",
+        "dotAria": "深圳总部工厂"
+      },
+      {
+        "image": "assets/images/uploads/20260727233953-gc-display.webp",
+        "imageAlt": "惠州智能制造基地",
+        "tag": "Huizhou Base",
+        "title": "惠州智能制造基地",
+        "desc": "6万㎡ 产能扩展 · 支撑全球规模化交付",
+        "dotLabel": "惠州",
+        "dotAria": "惠州智能制造基地"
+      }
+    ]
+  },
+  "stats": {
+    "columns": 5,
+    "items": [
+      {
+        "value": "19",
+        "unit": "年",
+        "label": "非标自动化设备制造经验"
+      },
+      {
+        "value": "98",
+        "unit": "项",
+        "label": "核心发明与专利"
+      },
+      {
+        "value": "11",
+        "unit": "大",
+        "label": "重点行业全覆盖"
+      },
+      {
+        "value": "10",
+        "unit": "万㎡",
+        "label": "深圳+惠州双核工厂"
+      }
+    ]
+  },
+  "culture": {
+    "headlineHtml": "为世界一流企业<br>提供卓越的智能装备。",
+    "pillars": [
+      {
+        "title": "【 企业愿景 】",
+        "bodyHtml": "打造极具国际竞争力的<br>自动化标杆企业。"
+      },
+      {
+        "title": "【 企业使命 】",
+        "bodyHtml": "引领中国智造时代，<br>重塑全球产业交付标准。"
+      },
+      {
+        "title": "【 核心价值观 】",
+        "bodyHtml": "以客户为中心，协同伙伴，共赢同兴。<br>确保安全第一，追求效率第一。"
+      }
+    ]
+  },
+  "timeline": {
+    "title": "发展历程",
+    "subtitle": "稳扎稳打，步步为营的智造进化史。",
+    "events": [
+      {
+        "year": "1998/2007",
+        "side": "left",
+        "accent": true,
+        "yearAccent": false,
+        "leadHtml": "",
+        "bodyHtml": "技术团队雏形诞生，2007年正式于深圳注册成立&quot;广东同兴高科智能装备有限公司&quot;，开启非标自动化产线的探索与智造之路。",
+        "mobileBody": "注册成立&quot;广东同兴高科&quot;，开启非标自动化产线的智造之路。"
+      },
+      {
+        "year": "2015",
+        "side": "right",
+        "accent": false,
+        "yearAccent": false,
+        "leadHtml": "",
+        "bodyHtml": "业务版图全面扩张，凭借卓越的品质，正式成为 TCL、创维、美的、康佳、长虹等大型家电与商显头部企业的核心智造供应商，奠定行业领军地位。",
+        "mobileBody": "成为 TCL、创维、美的、康佳、长虹等大型企业的核心供应商。"
+      },
+      {
+        "year": "2023",
+        "side": "left",
+        "accent": false,
+        "yearAccent": false,
+        "leadHtml": "",
+        "bodyHtml": "成立新能源智能装备研发团队，携自研的&quot;循环式自动提升机&quot;等核心设备惊艳亮相 CIBF 国际电池展，全面进军新能源及立体仓储物流赛道。",
+        "mobileBody": "成立新能源装备研发团队，携核心设备亮相 CIBF 电池展。"
+      },
+      {
+        "year": "NOW",
+        "side": "right",
+        "accent": true,
+        "yearAccent": true,
+        "leadHtml": "10万㎡ 深惠双基地格局全面成型。",
+        "bodyHtml": "自主研发的 UVW平台标定、超大屏抬升等核心技术斩获 98 项专利，设备远销北美、欧洲及东南亚等 15 个国家与地区。",
+        "mobileBody": "10万㎡深惠双基地格局成型，斩获98项专利，设备远销15国。"
+      }
+    ]
+  },
+  "credentials": {
+    "title": "企业资质与核心专利",
+    "subtitle": "真金不怕火炼，用实打实的荣誉证书与 98 项专利图纸证明实力。",
+    "groups": [
+      {
+        "id": "honors",
+        "title": "荣誉资质",
+        "layout": "grid",
+        "items": [
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp",
+            "imageAlt": "高新技术企业证书"
+          },
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-chuangxinxingzhongxiaoqiye.jpg",
+            "imageAlt": "创新型中小企业"
+          },
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp",
+            "imageAlt": "专精特新中小企业"
+          }
+        ]
+      },
+      {
+        "id": "quality",
+        "title": "质量资质",
+        "layout": "marquee",
+        "marqueeDuration": "40s",
+        "items": [
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114404_97_27.jpg",
+            "imageAlt": "质量资质"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114503_107_27.jpg",
+            "imageAlt": "质量资质"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114504_108_27.jpg",
+            "imageAlt": "质量资质"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114505_109_27.jpg",
+            "imageAlt": "质量资质"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114506_110_27.jpg",
+            "imageAlt": "质量资质"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114507_111_27.jpg",
+            "imageAlt": "质量资质"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114508_112_27.jpg",
+            "imageAlt": "质量资质"
+          }
+        ]
+      },
+      {
+        "id": "patents",
+        "title": "专利资质",
+        "layout": "marquee",
+        "marqueeDuration": "60s",
+        "items": [
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114513_117_27.jpg",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114515_119_27.jpg",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114516_121_27.jpg",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114517_122_27.jpg",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114518_123_27.jpg",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_124_27.jpg",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_125_27.jpg",
+            "imageAlt": "专利证书"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114520_126_27.jpg",
+            "imageAlt": "专利证书"
+          }
+        ]
+      }
+    ]
+  },
+  "clients": {
+    "title": "合作客户",
+    "subtitle": "世界一流制造企业的一致选择。",
+    "items": [
+      {
+        "image": "assets/images/clients/tcl.webp?v=20260912",
+        "imageAlt": "TCL"
+      },
+      {
+        "image": "assets/images/clients/chuangwei.webp?v=20260912",
+        "imageAlt": "创维"
+      },
+      {
+        "image": "assets/images/clients/meide.webp?v=20260912",
+        "imageAlt": "美的"
+      },
+      {
+        "image": "assets/images/clients/fushikang.webp?v=20260912",
+        "imageAlt": "富士康"
+      },
+      {
+        "image": "assets/images/clients/jingdongfang.webp?v=20260912",
+        "imageAlt": "京东方"
+      },
+      {
+        "image": "assets/images/clients/ningdeshidai.webp?v=20260912",
+        "imageAlt": "宁德时代"
+      },
+      {
+        "image": "assets/images/clients/zhouming.webp?v=20260912",
+        "imageAlt": "洲明"
+      },
+      {
+        "image": "assets/images/clients/qunchuangguangdian.webp?v=20260912",
+        "imageAlt": "群创光电"
+      },
+      {
+        "image": "assets/images/clients/lianxiang.webp?v=20260912",
+        "imageAlt": "联想"
+      },
+      {
+        "image": "assets/images/clients/huike.webp?v=20260912",
+        "imageAlt": "惠科"
+      },
+      {
+        "image": "assets/images/clients/xiwo.webp?v=20260912",
+        "imageAlt": "希沃"
+      },
+      {
+        "image": "assets/images/clients/kangjia.webp?v=20260912",
+        "imageAlt": "康佳"
+      },
+      {
+        "image": "assets/images/clients/changhong.webp?v=20260912",
+        "imageAlt": "长虹"
+      }
+    ]
+  },
+  "pageKey": "about",
+  "lang": "zh",
+  "seo": {
+    "title": "关于我们 | 同兴高科 TXAM - 中国领先的自动化品牌供应商",
+    "description": "同兴高科创立于深圳，19年专注非标自动化设备制造，为世界一流企业提供智能装备一站式服务",
+    "image": ""
+  }
+}

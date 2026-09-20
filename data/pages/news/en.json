@@ -1,0 +1,19 @@
+{
+  "hero": {
+    "title": "Insights from the Frontlines of Automation",
+    "lead": "Stay informed with TXAM's corporate updates, global delivery stories,<br class=\"hidden md:block\">and in-depth analysis of non-standard automation industry trends."
+  },
+  "filters": {
+    "all": "All News",
+    "company": "Company News",
+    "project": "Project Stories",
+    "industry": "Industry Insights"
+  },
+  "pageKey": "news",
+  "lang": "en",
+  "seo": {
+    "title": "News | TXAM - China's Leading Automation Equipment Supplier",
+    "description": "TXAM Corporate News, Industry Information, Project Updates - Stay informed about automation industry developments",
+    "image": ""
+  }
+}

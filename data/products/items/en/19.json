@@ -1,0 +1,22 @@
+{
+  "id": "19",
+  "category": "Material Handling & Transfer",
+  "model": "TX-NS-LG Series",
+  "name": "Lifting Unit",
+  "image": "assets/images/products/lift-unit.webp",
+  "specs": [
+    "Smooth Lifting",
+    "High Load Capacity",
+    "Automated Control",
+    "Production Line Compatible"
+  ],
+  "summary": "Lifting and conveying equipment used to transfer products between workstations at different heights, enabling seamless integration of production lines.",
+  "contentHtml": "<p>The lifting unit is an automated conveying equipment developed by TXAM for seamless integration of production lines.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment adopts a servo drive system, combined with precision guide rails to achieve smooth lifting and lowering of products. It is suitable for product transfer between workstations at different heights, enabling seamless connection of the production line.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Smooth lifting and lowering with strong load capacity</li>\n                        <li>Automated control, perfectly coordinated with the production line</li>\n                        <li>Stable structure with long service life</li>\n                        <li>Customizable stroke and load</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 9,
+  "filterKey": "transfer",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

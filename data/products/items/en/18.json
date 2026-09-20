@@ -1,0 +1,22 @@
+{
+  "id": "18",
+  "category": "Material Handling & Transfer",
+  "model": "TX-NS-RT Series",
+  "name": "Rotary Table",
+  "image": "assets/images/products/turntable.webp",
+  "specs": [
+    "Precision Positioning",
+    "Multi-station",
+    "Automatic Rotation",
+    "High Adaptability"
+  ],
+  "summary": "Precision rotary equipment for multi-station processing or inspection of products, enabling multi-angle automated handling.",
+  "contentHtml": "<p>The rotary table is an automated unit equipment developed by TXAM for multi-station processing needs.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a precision servo drive system to achieve multi-angle rotation and positioning of products. Combined with an automated loading and unloading system, it can complete processes such as multi-station machining, inspection, and assembly.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Precise positioning with high repeatability</li>\n                        <li>Multi-station design improves production efficiency</li>\n                        <li>High level of automation reduces manual intervention</li>\n                        <li>Strong adaptability, compatible with a variety of products</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 8,
+  "filterKey": "transfer",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

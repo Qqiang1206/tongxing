@@ -1,0 +1,22 @@
+{
+  "id": "28",
+  "category": "End-of-Line Packaging",
+  "model": "TX-NS-ADFE Series",
+  "name": "Auxiliary Outfeed Flipping Unit",
+  "image": "assets/images/products/lower-flip-unit.webp",
+  "specs": [
+    "Automatic Flipping",
+    "Outfeed Assistance",
+    "Efficient Synergy",
+    "Quality Assurance"
+  ],
+  "summary": "Auxiliary flipping equipment for product offloading stations, working with the main equipment to achieve automated unloading.",
+  "contentHtml": "<p>The auxiliary off-line flipping unit is an auxiliary flipping device developed by TXAM for the off-line workstation of the production line.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment works in conjunction with the main production line to achieve automatic flipping and collection of products at the off-line workstation, preparing them for downstream packaging.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Automatic flipping improves off-line efficiency</li>\n                        <li>Efficient coordination with main equipment</li>\n                        <li>Quality assurance, reducing product damage</li>\n                        <li>Easy operation and low maintenance costs</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 23,
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

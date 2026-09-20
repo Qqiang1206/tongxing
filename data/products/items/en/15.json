@@ -1,0 +1,22 @@
+{
+  "id": "15",
+  "category": "Flip Inspection",
+  "model": "TXM-A Series",
+  "name": "Auxiliary Vision Inspection Unit",
+  "image": "assets/images/products/auxiliary-clamp-unit.webp",
+  "specs": [
+    "Automatic Flipping",
+    "Reduces Physical Strain",
+    "Enhances Inspection Efficiency",
+    "Minimizes Errors"
+  ],
+  "summary": "Through automatic flipping and image recognition, it assists or replaces manual inspection of product appearance quality, solving the difficulty of manually flipping heavy products.",
+  "contentHtml": "<p>The auxiliary visual inspection unit is an automated auxiliary device developed by TXAM for product quality inspection.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment automatically flips products and works with the image recognition system to assist in completing product appearance quality inspection. It effectively solves the difficulty of manually flipping heavy products.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Automatic flipping function, solving the difficulty of flipping heavy products</li>\n                        <li>Works with vision systems to improve inspection accuracy</li>\n                        <li>Significantly enhances appearance inspection efficiency</li>\n                        <li>Reduces employee labor intensity</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 19,
+  "filterKey": "flip",
+  "filterKeyEn": "flip",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

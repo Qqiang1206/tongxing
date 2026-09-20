@@ -1,0 +1,892 @@
+{
+  "31": {
+    "id": "31",
+    "category": "TV / Commercial Display",
+    "name": "TV/Commercial Display Production Line Solutions",
+    "image": "assets/images/uploads/20260731060953--3-display.webp",
+    "specs": [
+      "Full-Line Automation",
+      "Flexible Production",
+      "Compatible with 65-110 Inch Sizes",
+      "Turnkey Project"
+    ],
+    "summary": "Turnkey automated production line solutions for TV, commercial display, education conference all-in-one, and digital signage manufacturers, covering the entire process of dispensing, lamination, flipping, inspection, bagging, and palletizing.",
+    "contentHtml": "<p>The TV/Commercial Display Flexible Assembly Line is TXAM's turnkey automated production line solution for TV, commercial display, education conference all-in-one, and digital signage manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The entire line covers the full process of dispensing, bracket placement, lamination, flip inspection, and final bagging and palletizing, achieving fully automated production from raw materials to finished products.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>One-click compatibility with 65~110 inch multi-size products, solving ultra-large size production challenges</li>\n<li>Full-process robotic automation, greatly improving production efficiency</li>\n<li>CAD import for one-click changeover, short commissioning time, minimal capacity loss</li>\n<li>High line yield rate and consistent product quality</li>\n<li>Self-developed WMS/WCS system, breaking information silos</li>\n<li>True turnkey project with one-stop service</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service, truly delivering a turnkey project.</p>",
+    "published": true,
+    "slug": "tv-display",
+    "sortOrder": 31,
+    "homeSlot": "hero",
+    "filterKey": "tv-display",
+    "filterKeyEn": "tv-display",
+    "updatedAt": "2026-07-31 06:10:15",
+    "painPoints": [
+      {
+        "title": "Challenges in Large-Screen Assembly",
+        "desc": "Manual assembly of ultra-large display devices above 65 inches is difficult, inefficient, and prone to damage"
+      },
+      {
+        "title": "Complex Multi-Model Changeovers",
+        "desc": "Long changeover times and high commissioning costs for multi-model production, making flexible manufacturing difficult"
+      },
+      {
+        "title": "High Risks in Manual Flipping",
+        "desc": "Large-size product flipping relies on manual labor, posing safety hazards and risking product damage"
+      },
+      {
+        "title": "Insufficient Dispensing Precision",
+        "desc": "Traditional dispensing equipment has low precision, excessive bubbles, and cannot guarantee sealing performance"
+      },
+      {
+        "title": "Low Packaging Efficiency",
+        "desc": "The downstream packaging process is cumbersome, with high labor costs and slow cycle times for manual bagging and palletizing"
+      },
+      {
+        "title": "Severe Information Silos",
+        "desc": "No information sharing between equipment, making digital management and quality traceability difficult"
+      }
+    ],
+    "process": [
+      {
+        "title": "Automated Dispensing",
+        "desc": "High-precision robotic dispensing with ±0.2mm positioning accuracy and multi-nozzle matrix coordination",
+        "step": "01"
+      },
+      {
+        "title": "Precision Lamination",
+        "desc": "Constant-pressure controlled lamination with ±0.15mm accuracy, bubble-free and misalignment-free",
+        "step": "02"
+      },
+      {
+        "title": "Safe Flipping Mechanism",
+        "desc": "180-degree heavy-duty flipping with one-button operation, solving large-size product flipping challenges",
+        "step": "03"
+      },
+      {
+        "title": "Visual Inspection",
+        "desc": "AI vision system for automatic inspection, online quality control, ensuring product consistency",
+        "step": "04"
+      },
+      {
+        "title": "Automatic Bagging",
+        "desc": "Robotic automatic bagging and packaging, saving labor and improving packaging efficiency",
+        "step": "05"
+      },
+      {
+        "title": "Intelligent Palletizing",
+        "desc": "Six-axis robotic intelligent palletizing with ±0.5mm accuracy and 12 seconds/piece efficient palletizing",
+        "step": "06"
+      },
+      {
+        "title": "One-Click Changeover",
+        "desc": "CAD drawing import for rapid product model changeover, greatly reducing commissioning time",
+        "step": "07"
+      },
+      {
+        "title": "Data Traceability",
+        "desc": "WMS/WCS system enables transparent production data and full quality traceability",
+        "step": "08"
+      }
+    ]
+  },
+  "32": {
+    "id": "32",
+    "category": "Home Appliances",
+    "name": "Refrigerator Production Line Solution",
+    "image": "assets/images/uploads/20260731073335--1-4--display.webp",
+    "specs": [
+      "Full-Line Automation",
+      "Flexible Production",
+      "Multi-Model Compatibility",
+      "Turnkey Project"
+    ],
+    "summary": "Full-line automation solutions for refrigerator manufacturers, covering the entire process from assembly to packaging.",
+    "contentHtml": "<p>The refrigerator production line solution is a full-line automation solution provided by TXAM for refrigerator manufacturers.</p>\n<h3>Solution Components</h3>\n<p>The full line covers the entire process including component loading, compressor installation, panel assembly, piping connection, electrical wiring, online inspection, vacuum evacuation and refrigerant charging, automatic packaging, and intelligent palletizing.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High level of full-line automation, reducing reliance on manual labor</li>\n<li>Flexible switching between multiple models, improving equipment utilization</li>\n<li>Online inspection system ensures product quality</li>\n<li>Automated logistics conveying with matched process cycle times</li>\n<li>Intelligent data collection for lean production</li>\n<li>Turnkey engineering services with one-stop delivery</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+    "published": true,
+    "slug": "refrigerator",
+    "sortOrder": 32,
+    "homeSlot": "category",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
+    "updatedAt": "2026-07-31 07:33:46",
+    "painPoints": [
+      {
+        "title": "Complex Assembly Processes",
+        "desc": "Refrigerator assembly involves multiple processes, and manual assembly is inefficient and costly"
+      },
+      {
+        "title": "Difficult Model Switching",
+        "desc": "Long changeover times during multi-model production result in low equipment utilization"
+      },
+      {
+        "title": "Lack of Inspection Steps",
+        "desc": "Traditional production lines lack online inspection, making quality difficult to guarantee"
+      },
+      {
+        "title": "Complex Material Handling",
+        "desc": "Material flow between processes relies on manual labor, making cycle time matching difficult"
+      },
+      {
+        "title": "Inconsistent Packaging Standards",
+        "desc": "Manual packaging lacks consistency, resulting in uneven packaging quality"
+      },
+      {
+        "title": "Low Digitalization Level",
+        "desc": "Production data collection is difficult, preventing refined management"
+      }
+    ],
+    "process": [
+      {
+        "step": "01",
+        "title": "Component Feeding",
+        "desc": "Automated logistics systems enable automatic component supply, reducing manual handling"
+      },
+      {
+        "step": "02",
+        "title": "Compressor Installation",
+        "desc": "Robots automatically install compressors with high precision and efficiency"
+      },
+      {
+        "step": "03",
+        "title": "Panel Assembly",
+        "desc": "Automated assembly systems complete precision assembly of panels, piping, and other components"
+      },
+      {
+        "step": "04",
+        "title": "Electrical Wiring",
+        "desc": "Automated wiring systems ensure reliable electrical connections"
+      },
+      {
+        "step": "05",
+        "title": "In-line Inspection",
+        "desc": "Multi-functional inspection equipment provides comprehensive testing of performance, safety, and more"
+      },
+      {
+        "step": "06",
+        "title": "Vacuum Pumping & Refrigerant Charging",
+        "desc": "Automated vacuum evacuation and refrigerant charging ensure sealing integrity"
+      },
+      {
+        "step": "07",
+        "title": "Automatic Packaging",
+        "desc": "Automated packaging systems achieve efficient and standardized packaging"
+      },
+      {
+        "step": "08",
+        "title": "Intelligent Palletizing",
+        "desc": "Robot palletizing system enables automatic palletizing and warehousing of finished products"
+      }
+    ]
+  },
+  "33": {
+    "id": "33",
+    "category": "Logistics & Packaging",
+    "name": "Packaging & Logistics Automation Production Line",
+    "image": "assets/images/uploads/20260731071831--4-2--display.webp",
+    "specs": [
+      "Automated Packaging",
+      "Logistics Conveying",
+      "Efficient Sorting",
+      "System Integration"
+    ],
+    "summary": "Logistics automation system integration solutions covering the entire process of post-production packaging, conveying, and sorting.",
+    "contentHtml": "<p>Packaging and logistics automation production lines are system integration solutions provided by TXAM for post-production logistics.</p>\n<h3>Solution Components</h3>\n<p>The system covers the entire process including automatic case opening, packing, case sealing, labeling, sorting, conveying, palletizing, and warehouse integration.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Full-process automation, greatly improving logistics efficiency</li>\n<li>High-speed sorting system with sorting accuracy above 99.9%</li>\n<li>Intelligent conveying scheduling for high equipment utilization</li>\n<li>Seamless integration with WMS system for transparent information</li>\n<li>Modular design for flexible expansion</li>\n<li>Complete line integration with one-stop delivery</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, system integration, installation and commissioning to after-sales service.</p>",
+    "published": true,
+    "slug": "packaging",
+    "sortOrder": 33,
+    "homeSlot": "category",
+    "filterKey": "packaging",
+    "filterKeyEn": "packaging",
+    "updatedAt": "2026-07-31 07:18:44",
+    "painPoints": [
+      {
+        "title": "Packaging Efficiency Bottleneck",
+        "desc": "Manual packaging is slow and cannot meet the takt time requirements of high-speed production lines"
+      },
+      {
+        "title": "Insufficient Sorting Accuracy",
+        "desc": "Manual sorting has a high error rate, resulting in low logistics efficiency"
+      },
+      {
+        "title": "Conveying Process Discontinuity",
+        "desc": "Poor conveying between production lines and warehouses creates logistics bottlenecks"
+      },
+      {
+        "title": "Fragmented Information Systems",
+        "desc": "Packaging, conveying, and sorting systems operate independently with no information sharing"
+      },
+      {
+        "title": "Low Space Utilization",
+        "desc": "Traditional logistics layouts occupy large spaces and result in low warehouse efficiency"
+      },
+      {
+        "title": "Limited Scalability",
+        "desc": "Difficult to adapt to capacity fluctuations and business expansion needs"
+      }
+    ],
+    "process": [
+      {
+        "title": "Automatic Case Erecting",
+        "desc": "Automatic case opener forms cartons automatically, improving efficiency",
+        "step": "01"
+      },
+      {
+        "title": "Automatic Cartoning",
+        "desc": "Robots automatically pick products and place them into cases with high precision",
+        "step": "02"
+      },
+      {
+        "title": "Automatic Case Sealing",
+        "desc": "Heat sealing or tape sealing ensures secure and aesthetically pleasing packaging",
+        "step": "03"
+      },
+      {
+        "title": "Automatic Labeling",
+        "desc": "Vision system positioning enables precise labeling with traceable information",
+        "step": "04"
+      },
+      {
+        "title": "Intelligent Sorting",
+        "desc": "High-speed sorting system enables multi-directional automatic sorting",
+        "step": "05"
+      },
+      {
+        "title": "Automatic Conveying",
+        "desc": "Conveyors enable automatic product transfer between processes",
+        "step": "06"
+      },
+      {
+        "title": "Automatic Palletizing",
+        "desc": "Robot palletizing system achieves neat and stable stacking",
+        "step": "07"
+      },
+      {
+        "title": "Warehouse System Integration",
+        "desc": "Integration with WMS system enables automatic warehouse entry management",
+        "step": "08"
+      }
+    ]
+  },
+  "34": {
+    "id": "34",
+    "category": "Home Appliances",
+    "name": "Washing Machine Production Line Solution",
+    "image": "assets/images/uploads/20260731072831--7-display.webp",
+    "specs": [
+      "Whole-Line Automation",
+      "Flexible Manufacturing",
+      "Multi-Model Compatibility",
+      "Turnkey Project"
+    ],
+    "summary": "Full-line automation solutions for washing machine manufacturers, covering the entire process from assembly to packaging.",
+    "contentHtml": "<p>The washing machine production line solution is a full-line automation solution provided by TXAM for washing machine manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process, including component supply, inner drum assembly, shell assembly, electrical installation, shock absorber installation, online inspection, automatic packaging, and intelligent warehousing.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High level of full-line automation, reducing manual intervention</li>\n<li>Flexible switching between multiple models with short changeover time</li>\n<li>Online inspection system ensures product quality</li>\n<li>Intelligent data collection enables lean production</li>\n<li>Integration with MES system for full traceability</li>\n<li>Turnkey project with one-stop service</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+    "published": true,
+    "slug": "washer",
+    "sortOrder": 34,
+    "homeSlot": "",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
+    "updatedAt": "2026-07-31 07:29:02",
+    "painPoints": [
+      {
+        "title": "Complex Assembly Processes",
+        "desc": "Washing machine assembly involves multiple components with complex processes, making manual assembly difficult"
+      },
+      {
+        "title": "Long changeover time",
+        "desc": "Long changeover and debugging time during multi-model production affects capacity"
+      },
+      {
+        "title": "Numerous inspection items",
+        "desc": "Washing machines have many inspection items, and manual inspection is inefficient and prone to missed checks"
+      },
+      {
+        "title": "Slow logistics turnover",
+        "desc": "Inter-process logistics relies on manual handling, making it difficult to coordinate takt time"
+      },
+      {
+        "title": "Significant quality fluctuations",
+        "desc": "Inconsistent manual operations lead to unstable product quality"
+      },
+      {
+        "title": "Difficult data collection",
+        "desc": "Production data is manually recorded, lacking real-time capability and difficult to analyze"
+      }
+    ],
+    "process": [
+      {
+        "title": "Component supply",
+        "desc": "Automated feeding system enables automatic component supply.",
+        "step": "01"
+      },
+      {
+        "title": "Inner drum assembly",
+        "desc": "Robots complete precision assembly of the inner drum to ensure dynamic balance",
+        "step": "02"
+      },
+      {
+        "title": "Outer shell assembly",
+        "desc": "Automated assembly system completes precise assembly of the outer shell and inner drum.",
+        "step": "03"
+      },
+      {
+        "title": "Electrical installation",
+        "desc": "Automated wiring systems complete electrical installation such as motors and circuits",
+        "step": "04"
+      },
+      {
+        "title": "Shock absorption installation",
+        "desc": "Specialized equipment ensures precision installation of the shock absorption system.",
+        "step": "05"
+      },
+      {
+        "title": "Online inspection",
+        "desc": "Multi-functional test stations complete comprehensive inspections covering performance and safety",
+        "step": "06"
+      },
+      {
+        "title": "Automatic packaging",
+        "desc": "Automated packaging system achieves efficient, standardized packaging.",
+        "step": "07"
+      },
+      {
+        "title": "Intelligent inbound storage",
+        "desc": "Integration with MES system enables full traceability of production data",
+        "step": "08"
+      }
+    ]
+  },
+  "35": {
+    "id": "35",
+    "category": "Energy Storage",
+    "name": "Capacitor Production Line Solution",
+    "image": "assets/images/uploads/20260731072835--1-3--display.webp",
+    "specs": [
+      "Precision winding",
+      "Automated assembly",
+      "Aging test",
+      "Quality assurance"
+    ],
+    "summary": "Full-line automation solutions for capacitor manufacturers, covering winding, assembly, sealing, aging, and final inspection and packaging.",
+    "contentHtml": "<p>The capacitor production line solution is TXAM's full-line automation solution for capacitor manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process including winding, assembly, impregnation, sealing, aging testing, visual inspection, performance testing, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>High-speed precision winding, achieving industry-leading winding accuracy</li>\n<li>Automated assembly, reducing manual intervention and improving consistency</li>\n<li>Vacuum impregnation system, ensuring stable insulation performance</li>\n<li>Intelligent aging testing, greatly improving testing efficiency</li>\n<li>Vision inspection system, with high defect recognition accuracy</li>\n<li>Moisture-proof packaging system, ensuring product shelf life</li>\n</ul>\n<h3>Service Content</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning, to after-sales service.</p>",
+    "published": true,
+    "slug": "capacitor",
+    "sortOrder": 35,
+    "homeSlot": "",
+    "filterKey": "capacitor",
+    "filterKeyEn": "capacitor",
+    "updatedAt": "2026-07-31 07:29:18",
+    "painPoints": [
+      {
+        "title": "High winding accuracy requirements",
+        "desc": "Capacitor winding accuracy requirements are extremely high, making manual operation difficult to guarantee"
+      },
+      {
+        "title": "Complex assembly processes",
+        "desc": "Capacitor assembly involves multiple precision steps."
+      },
+      {
+        "title": "Sealing performance is hard to control",
+        "desc": "Sealing process requirements are strict, and manual operation consistency is poor"
+      },
+      {
+        "title": "Cumbersome aging tests",
+        "desc": "Aging testing takes a long time, and manual operation efficiency is low"
+      },
+      {
+        "title": "Appearance inspection is challenging",
+        "desc": "Micro-defects are difficult to detect with the naked eye."
+      },
+      {
+        "title": "Strict packaging requirements",
+        "desc": "Capacitors have strict requirements for moisture-proof packaging, etc."
+      }
+    ],
+    "process": [
+      {
+        "title": "Winding process",
+        "desc": "High-speed precision winding machines complete precision winding of aluminum foil and paper media",
+        "step": "01"
+      },
+      {
+        "title": "Assembly process",
+        "desc": "Automated assembly systems complete assembly of components such as leads and terminals",
+        "step": "02"
+      },
+      {
+        "title": "Impregnation treatment",
+        "desc": "Vacuum impregnation equipment performs insulating oil impregnation.",
+        "step": "03"
+      },
+      {
+        "title": "Sealing process",
+        "desc": "Automated sealing systems ensure consistent sealing performance.",
+        "step": "04"
+      },
+      {
+        "title": "Aging test",
+        "desc": "Intelligent aging test systems enable batch testing.",
+        "step": "05"
+      },
+      {
+        "title": "Appearance inspection",
+        "desc": "Vision inspection systems automatically identify appearance defects.",
+        "step": "06"
+      },
+      {
+        "title": "Performance testing",
+        "desc": "Fully automatic test system completes electrical performance testing",
+        "step": "07"
+      },
+      {
+        "title": "Automatic packaging",
+        "desc": "Moisture-proof packaging system ensures safe product storage",
+        "step": "08"
+      }
+    ]
+  },
+  "36": {
+    "id": "36",
+    "category": "Home Appliances",
+    "name": "Air Conditioner Production Line Solution",
+    "image": "assets/images/uploads/20260731072831--6-display.webp",
+    "specs": [
+      "Full-line automation",
+      "Flexible production",
+      "Multi-model compatibility",
+      "Turnkey project"
+    ],
+    "summary": "Full-line automation solutions for manufacturers of complete AC indoor and outdoor units, achieving high-takt, high-quality mass production goals.",
+    "contentHtml": "<p>The AC production line solution is TXAM's full-line automation solution for manufacturers of complete AC indoor and outdoor units.</p>\n<h3>Solution Components</h3>\n<p>The full line covers the entire process including heat exchanger assembly, piping connection, vacuum evacuation, refrigerant charging, helium leak detection, electrical wiring, performance testing, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision heat exchanger assembly to ensure heat exchange efficiency</li>\n<li>Automated piping systems to significantly reduce leak rates</li>\n<li>High-precision charging systems for accurate refrigerant charge amounts</li>\n<li>Helium mass spectrometry leak detection with high sealing sensitivity</li>\n<li>Fast multi-model changeover with short setup times</li>\n<li>High level of full-line automation for increased production efficiency</li>\n</ul>\n<h3>Services</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+    "published": true,
+    "slug": "ac",
+    "sortOrder": 36,
+    "homeSlot": "",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
+    "updatedAt": "2026-07-31 07:30:55",
+    "painPoints": [
+      {
+        "title": "Heat Exchanger Assembly Challenges",
+        "desc": "Heat exchanger assembly requires high precision, and manual assembly is inefficient"
+      },
+      {
+        "title": "Complex Piping Connections",
+        "desc": "AC systems have many pipes and complex connection processes, making leaks easy"
+      },
+      {
+        "title": "High Precision Vacuum & Charging",
+        "desc": "Strict precision requirements for vacuum extraction and refrigerant charging"
+      },
+      {
+        "title": "Strict Helium Leak Detection Standards",
+        "desc": "Extremely high requirements for AC system sealing tests"
+      },
+      {
+        "title": "Slow Multi-model Switching",
+        "desc": "Numerous indoor and outdoor unit models lead to long changeover and commissioning times"
+      },
+      {
+        "title": "Complex Electrical Wiring",
+        "desc": "Electrical system wiring is complex, and manual wiring is prone to errors"
+      }
+    ],
+    "process": [
+      {
+        "title": "Heat Exchanger Assembly",
+        "desc": "Automated heat exchanger assembly system ensures precision assembly",
+        "step": "01"
+      },
+      {
+        "title": "Piping Connection",
+        "desc": "Robots automatically complete pipe cutting, flaring, and connection",
+        "step": "02"
+      },
+      {
+        "title": "Vacuum Extraction",
+        "desc": "Automatic vacuum system ensures proper system vacuum level",
+        "step": "03"
+      },
+      {
+        "title": "Refrigerant Charging",
+        "desc": "High-precision charging system ensures accurate refrigerant volume",
+        "step": "04"
+      },
+      {
+        "title": "Helium Leak Detection",
+        "desc": "Helium mass spectrometry leak detection system achieves high-precision sealing tests",
+        "step": "05"
+      },
+      {
+        "title": "Electrical Wiring",
+        "desc": "Standardized electrical wiring system ensures reliable connections",
+        "step": "06"
+      },
+      {
+        "title": "Performance Testing",
+        "desc": "Comprehensive performance testing system conducts thorough evaluations",
+        "step": "07"
+      },
+      {
+        "title": "Automatic Packaging",
+        "desc": "Automated packaging system enables efficient factory dispatch packaging",
+        "step": "08"
+      }
+    ]
+  },
+  "37": {
+    "id": "37",
+    "category": "Home Appliances",
+    "name": "Microwave Oven Production Line Solution",
+    "image": "assets/images/uploads/20260731072834--2-3--display.webp",
+    "specs": [
+      "Full-line automation",
+      "Flexible production",
+      "Multi-model compatibility",
+      "Turnkey project"
+    ],
+    "summary": "Full-line automation solutions for microwave oven manufacturers, covering cavity assembly, door installation, electrical wiring, and final inspection and packaging.",
+    "contentHtml": "<p>The microwave oven production line solution is a full-line automation solution provided by TXAM for microwave oven manufacturers.</p>\n<h3>Solution Components</h3>\n<p>The full line covers the entire process including cavity forming, magnetron installation, waveguide installation, door installation, electrical wiring, panel installation, performance testing, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Automated cavity forming with high dimensional accuracy</li>\n<li>Precise magnetron installation to ensure microwave performance</li>\n<li>Automated door installation for consistent sealing</li>\n<li>Standardized electrical wiring with high connection reliability</li>\n<li>Fast switching between multiple models for high capacity utilization</li>\n<li>High level of full-line automation for improved production efficiency</li>\n</ul>\n<h3>Services</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning, to after-sales service.</p>",
+    "published": true,
+    "slug": "microwave",
+    "sortOrder": 37,
+    "homeSlot": "",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
+    "updatedAt": "2026-07-31 07:29:29",
+    "painPoints": [
+      {
+        "title": "Cavity Assembly Challenges",
+        "desc": "Microwave oven cavities are large, making manual assembly labor-intensive and inefficient"
+      },
+      {
+        "title": "High Precision Door Installation",
+        "desc": "Door installation precision directly affects sealing performance and operational safety"
+      },
+      {
+        "title": "Complex Electrical Wiring",
+        "desc": "Microwave oven electrical systems are complex, and wiring is prone to errors"
+      },
+      {
+        "title": "Strict Magnetron Installation Requirements",
+        "desc": "Magnetron installation has strict requirements that affect product performance"
+      },
+      {
+        "title": "Extensive Testing Items",
+        "desc": "Microwave ovens require many inspection items, and manual inspection is inefficient"
+      },
+      {
+        "title": "Slow Multi-model Switching",
+        "desc": "With numerous models, changeover and debugging times are long, affecting production capacity"
+      }
+    ],
+    "process": [
+      {
+        "title": "Cavity Forming",
+        "desc": "Automated cavity forming system ensures dimensional accuracy",
+        "step": "01"
+      },
+      {
+        "title": "Magnetron installation",
+        "desc": "Precision installation system completes precise magnetron mounting",
+        "step": "02"
+      },
+      {
+        "title": "Waveguide installation",
+        "desc": "Automated waveguide installation system ensures reliable connections",
+        "step": "03"
+      },
+      {
+        "title": "Door assembly",
+        "desc": "Precision door installation system ensures flatness and sealing",
+        "step": "04"
+      },
+      {
+        "title": "Electrical wiring",
+        "desc": "Standardized electrical wiring system completes circuit connections",
+        "step": "05"
+      },
+      {
+        "title": "Panel installation",
+        "desc": "Automated panel installation system ensures a smooth exterior finish",
+        "step": "06"
+      },
+      {
+        "title": "Performance testing",
+        "desc": "Comprehensive performance testing system completes microwave leakage, power, and other inspections",
+        "step": "07"
+      },
+      {
+        "title": "Automatic packaging",
+        "desc": "Automated packaging system enables efficient factory dispatch packaging",
+        "step": "08"
+      }
+    ]
+  },
+  "38": {
+    "id": "38",
+    "category": "Home Appliances",
+    "name": "Coffee Machine Production Line Solution",
+    "image": "assets/images/uploads/20260731072833--3-3--display.webp",
+    "specs": [
+      "Precision Assembly",
+      "Functional Testing",
+      "Multi-Model Compatibility",
+      "Quality Assurance"
+    ],
+    "summary": "Turnkey automated production line solutions for coffee machine manufacturers, covering heating component assembly, water pump installation, and final inspection and packaging.",
+    "contentHtml": "<p>The coffee machine production line solution is a turnkey automated solution provided by TXAM for coffee machine manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The full line covers the entire process, including heating component assembly, water pump installation, water circuit sealing, temperature control system installation, appearance finishing, functional testing, air tightness testing, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision assembly of heating components ensures heating efficiency</li>\n<li>Automated water pump installation with precise and reliable positioning</li>\n<li>Water circuit sealing system ensures leak-free operation</li>\n<li>High temperature control accuracy with excellent temperature consistency</li>\n<li>Comprehensive functional testing ensures product quality</li>\n<li>Automated appearance finishing with high consistency</li>\n</ul>\n<h3>Services</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning, to after-sales service.</p>",
+    "published": true,
+    "slug": "coffee",
+    "sortOrder": 38,
+    "homeSlot": "",
+    "filterKey": "refrigerator",
+    "filterKeyEn": "refrigerator",
+    "updatedAt": "2026-08-01 00:54:59",
+    "painPoints": [
+      {
+        "title": "Heating Component Precision",
+        "desc": "Heating components of coffee machines require precision assembly with high accuracy requirements"
+      },
+      {
+        "title": "Water Pump Installation Challenges",
+        "desc": "Water pump installation space is compact, making manual installation difficult"
+      },
+      {
+        "title": "Strict Sealing Requirements",
+        "desc": "Water circuit system sealing requirements are strict; leaks can cause malfunctions"
+      },
+      {
+        "title": "High Temperature Control Precision",
+        "desc": "Temperature control system requires high precision, affecting coffee machine quality"
+      },
+      {
+        "title": "Complex Functional Testing",
+        "desc": "Coffee machine functional testing involves many items and complex processes"
+      },
+      {
+        "title": "High Appearance Standards",
+        "desc": "Coffee machine appearance requires exquisite finishing, and manual processing cannot ensure consistency"
+      }
+    ],
+    "process": [
+      {
+        "title": "Heating Component Assembly",
+        "desc": "Precision assembly system completes assembly of heating tubes, temperature sensors, etc.",
+        "step": "01"
+      },
+      {
+        "title": "Water Pump Installation",
+        "desc": "Automated water pump installation system ensures precise positioning",
+        "step": "02"
+      },
+      {
+        "title": "Waterway Sealing",
+        "desc": "Automated sealing system ensures reliable waterway connections",
+        "step": "03"
+      },
+      {
+        "title": "Temperature Control System Installation",
+        "desc": "Precision temperature control system installation ensures temperature control accuracy",
+        "step": "04"
+      },
+      {
+        "title": "Surface Finishing",
+        "desc": "Automated surface treatment system ensures consistent appearance",
+        "step": "05"
+      },
+      {
+        "title": "Functional Testing",
+        "desc": "Comprehensive functional testing system completes heating, pump pressure, and other tests",
+        "step": "06"
+      },
+      {
+        "title": "Airtightness Testing",
+        "desc": "Airtightness testing system ensures product sealing performance",
+        "step": "07"
+      },
+      {
+        "title": "Automatic Packaging",
+        "desc": "Automated packaging system achieves premium factory dispatch packaging",
+        "step": "08"
+      }
+    ]
+  },
+  "39": {
+    "id": "39",
+    "category": "3C Electronics",
+    "name": "Tablet Computer Production Line Solution",
+    "image": "assets/images/uploads/20260731072833--4-3--display.webp",
+    "specs": [
+      "Precision Assembly",
+      "Visual Inspection",
+      "Multi-Model Compatibility",
+      "Quality Assurance"
+    ],
+    "summary": "Full-line automation solutions for tablet computer manufacturers, covering display assembly, battery installation, motherboard assembly, and final inspection and packaging.",
+    "contentHtml": "<p>The tablet computer production line solution is TXAM's full-line automation solution for tablet computer manufacturers.</p>\n<h3>Solution Components</h3>\n<p>The full line covers the entire process including display module assembly, battery installation, motherboard assembly, cable connection, visual inspection, functional testing, appearance inspection, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision lamination of display modules with accuracy of &plusmn;0.1mm</li>\n<li>Automated battery installation compliant with safety standards</li>\n<li>Precision motherboard assembly with high placement accuracy</li>\n<li>AOI visual inspection with accurate defect recognition</li>\n<li>Full functional testing to ensure product quality</li>\n<li>Anti-static packaging to ensure product safety</li>\n</ul>\n<h3>Services</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning to after-sales service.</p>",
+    "published": true,
+    "slug": "tablet",
+    "sortOrder": 39,
+    "homeSlot": "",
+    "filterKey": "washer",
+    "filterKeyEn": "washer",
+    "updatedAt": "2026-07-31 07:30:09",
+    "painPoints": [
+      {
+        "title": "Display Assembly Precision",
+        "desc": "Extremely high precision required for tablet computer display module assembly"
+      },
+      {
+        "title": "Battery installation risks",
+        "desc": "Battery installation involves safety requirements, and manual operation carries risks"
+      },
+      {
+        "title": "Complex motherboard assembly",
+        "desc": "Motherboards have many components, making precision assembly challenging"
+      },
+      {
+        "title": "Abundance of small components",
+        "desc": "Tablet computers have many small components, making manual placement difficult"
+      },
+      {
+        "title": "Challenging visual inspection",
+        "desc": "Micro-defects are difficult to detect with the naked eye"
+      },
+      {
+        "title": "High cleanliness requirements",
+        "desc": "Tablet computer assembly demands strict cleanroom standards"
+      }
+    ],
+    "process": [
+      {
+        "title": "Display module assembly",
+        "desc": "Precision display module assembly system ensures accurate lamination",
+        "step": "01"
+      },
+      {
+        "title": "Battery installation",
+        "desc": "Automated battery installation system ensures safety and reliability",
+        "step": "02"
+      },
+      {
+        "title": "Motherboard assembly",
+        "desc": "Precision motherboard assembly system completes component placement",
+        "step": "03"
+      },
+      {
+        "title": "Flexible circuit connection",
+        "desc": "Automated flexible circuit connection system ensures reliable connectivity",
+        "step": "04"
+      },
+      {
+        "title": "Visual inspection",
+        "desc": "AOI visual inspection system automatically identifies defects",
+        "step": "05"
+      },
+      {
+        "title": "Functional testing",
+        "desc": "Comprehensive functional test system performs all functional tests",
+        "step": "06"
+      },
+      {
+        "title": "Appearance inspection",
+        "desc": "Automated appearance inspection system ensures product aesthetics",
+        "step": "07"
+      },
+      {
+        "title": "Automatic packaging",
+        "desc": "Automated packaging system enables anti-static factory packaging",
+        "step": "08"
+      }
+    ]
+  },
+  "40": {
+    "id": "40",
+    "category": "Automotive",
+    "name": "Automotive headlight production line solution",
+    "image": "assets/images/uploads/20260731072832--5-display.webp",
+    "specs": [
+      "Precision positioning",
+      "Sealing inspection",
+      "Multi-model compatibility",
+      "Quality assurance"
+    ],
+    "summary": "Turnkey automated production line solutions for automotive headlamp manufacturers, covering lens assembly, reflector installation, LED module assembly, and final packaging.",
+    "contentHtml": "<p>The headlamp production line solution is a turnkey automated solution provided by TXAM for automotive headlamp manufacturers.</p>\n<h3>Solution Composition</h3>\n<p>The complete line covers the entire process including lens assembly, reflector installation, LED module assembly, photometric testing, sealant application, air-tightness testing, appearance inspection, and automatic packaging.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Precision optical assembly ensures lighting performance</li>\n<li>Accurate LED module positioning for consistent light patterns</li>\n<li>Sealant application system for reliable sealing performance</li>\n<li>Sensitive air-tightness testing to ensure zero leakage</li>\n<li>Automated photometric testing for high pass rates</li>\n<li>Rapid multi-model changeover to meet market demands</li>\n</ul>\n<h3>Services</h3>\n<p>TXAM provides full-process support from solution design, equipment manufacturing, installation and commissioning, to after-sales service.</p>",
+    "published": true,
+    "slug": "headlight",
+    "sortOrder": 40,
+    "homeSlot": "",
+    "filterKey": "ac",
+    "filterKeyEn": "ac",
+    "updatedAt": "2026-07-31 07:30:28",
+    "painPoints": [
+      {
+        "title": "High optical precision requirements",
+        "desc": "Headlamp optical performance requirements are stringent, and assembly precision affects lighting effectiveness."
+      },
+      {
+        "title": "Critical sealing performance",
+        "desc": "Headlight sealing integrity directly impacts service life and safety"
+      },
+      {
+        "title": "Complex LED installation",
+        "desc": "LED module installation requires high precision, which affects the light pattern."
+      },
+      {
+        "title": "Frequent model changeovers",
+        "desc": "With numerous vehicle models, headlamp model changeovers are frequent."
+      },
+      {
+        "title": "Strict airtightness testing",
+        "desc": "Headlamp air-tightness testing requirements are strict, with no allowance for any leakage."
+      },
+      {
+        "title": "High aesthetic standards",
+        "desc": "Headlight appearance directly influences overall vehicle aesthetics"
+      }
+    ],
+    "process": [
+      {
+        "title": "Lens assembly",
+        "desc": "Precision lens assembly system ensures optical performance",
+        "step": "01"
+      },
+      {
+        "title": "Reflector installation",
+        "desc": "Automated reflector installation ensures optimal reflection efficiency",
+        "step": "02"
+      },
+      {
+        "title": "LED module assembly",
+        "desc": "Precision LED module installation ensures accurate light patterns",
+        "step": "03"
+      },
+      {
+        "title": "Light distribution testing",
+        "desc": "Automated light distribution testing system ensures compliance with optical standards",
+        "step": "04"
+      },
+      {
+        "title": "Sealant application",
+        "desc": "Precision sealant application system ensures reliable sealing performance",
+        "step": "05"
+      },
+      {
+        "title": "Airtightness testing",
+        "desc": "Airtightness testing system ensures reliable product sealing",
+        "step": "06"
+      },
+      {
+        "title": "Appearance inspection",
+        "desc": "Visual Appearance Inspection System Ensures Product Aesthetics",
+        "step": "07"
+      },
+      {
+        "title": "Automated Packaging",
+        "desc": "Automated Packaging System Ensures Secure Outbound Packaging",
+        "step": "08"
+      }
+    ]
+  }
+}

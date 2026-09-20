@@ -1,0 +1,22 @@
+{
+  "id": "13",
+  "category": "机器人集成",
+  "model": "TX-NS-RIP-001",
+  "name": "机器人一体化码垛方案",
+  "image": "assets/images/products/robot-palletizing-integrated.webp",
+  "specs": [
+    "功能集成",
+    "子母托盘",
+    "自动垫板",
+    "扫描功能"
+  ],
+  "summary": "更强大的集成码垛方案，包含子母托盘堆叠、自动垫板放置、扫描等特殊功能。",
+  "contentHtml": "<p>机器人一体化码垛方案是同兴高科为高端客户而研发的全功能码垛系统。</p>\n                    <h3>工作原理</h3>\n                    <p>在标准码垛功能基础上，集成子母托盘堆叠、自动垫板放置、扫描等功能，实现产线后段物流全流程自动化。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>功能完整，覆盖产线后段物流全流程</li>\n                        <li>子母托盘堆叠功能，适用更多场景</li>\n                        <li>自动垫板放置，减少人工干预</li>\n                        <li>扫描功能，实现物流信息可追溯</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 20,
+  "filterKey": "robot",
+  "filterKeyEn": "robot",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "23",
+  "category": "End-of-Line Packaging",
+  "model": "TX-NS-MAB Series",
+  "name": "Robotic End-of-line Bagging",
+  "image": "assets/images/products/robot-box-bagging.webp",
+  "specs": [
+    "Automatic Bagging",
+    "Robot Collaboration",
+    "Efficient Packaging",
+    "High Adaptability"
+  ],
+  "summary": "Works with robots to automatically complete the bagging process after product offloading, achieving full automation of downstream packaging.",
+  "contentHtml": "<p>The robotic off-line bagging machine is an automated equipment developed by TXAM for the post-packaging process.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment works with a six-axis robot to automatically pick up packaging bags and place them over products, enabling automated bagging for off-line products.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Robotic automation ensures high efficiency</li>\n                        <li>Precise bagging position for better product protection</li>\n                        <li>High level of automation reduces manual labor</li>\n                        <li>Adapts to various product sizes</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 13,
+  "filterKey": "packaging",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

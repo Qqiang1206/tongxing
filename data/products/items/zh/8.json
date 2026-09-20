@@ -1,0 +1,22 @@
+{
+  "id": "8",
+  "category": "锁付组装",
+  "model": "TX-NS-ASBS-01",
+  "name": "机器人自动背板螺丝机",
+  "image": "assets/images/products/zidongdabeibanluosi-001.webp",
+  "specs": [
+    "12个/批",
+    "1.8s/颗",
+    "扭矩可调",
+    "高效率"
+  ],
+  "summary": "可抓取并一次自动锁紧多达12颗背板螺丝，单颗扭矩实时可调，效率高达1.8秒/颗。",
+  "contentHtml": "<p>机器人自动背板螺丝机是同兴高科为精密锁付工艺而研发的自动化设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备采用机器人配合智能锁付系统，可一次抓取12颗螺丝并自动锁付于产品上。扭矩实时可调，确保每颗螺丝锁付力矩一致。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>可一次抓取12颗螺丝，减少供料频率</li>\n                        <li>锁付速度1.8秒/颗，效率极高</li>\n                        <li>扭矩实时可调，保障锁付质量</li>\n                        <li>适用于电视、教育显示器等背板锁付</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 6,
+  "filterKey": "screw",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

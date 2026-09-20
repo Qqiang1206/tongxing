@@ -1,0 +1,23 @@
+{
+  "hero": {
+    "title": "Core Manufacturing Matrix",
+    "lead": "From high-precision single flexible units to complete unmanned factory lines.<br class=\"hidden md:block\">Full-spectrum automation equipment for electronic manufacturing."
+  },
+  "filters": {
+    "all": "All Products",
+    "optical": "Optical Component Assembly",
+    "dispensing": "Dispensing Assembly",
+    "flip": "Flip Inspection",
+    "screw": "Screw Fastening Assembly",
+    "transfer": "Material Handling & Transfer",
+    "packaging": "End-of-Line Packaging",
+    "robot": "Robot Integration"
+  },
+  "pageKey": "products",
+  "lang": "en",
+  "seo": {
+    "title": "Products | TXAM - China's Leading Automation Equipment Supplier",
+    "description": "TXAM Product Center - Dispensing, flipping detection, screw driving, optical components, material handling, packaging. 30+ products",
+    "image": ""
+  }
+}

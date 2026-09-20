@@ -1,0 +1,290 @@
+{
+  "hero": {
+    "title": "19 лет интеллектуальное производство",
+    "lead": "Guangdong TXAM Интеллектуальное Оборудование Co., Ltd. (TXAM), технологии с 1998 года, официально основана в 2007 году в Шэньчжэне — национальном центре науки и технологий. Мы неизменно придерживаемся корпоративной философии «Преданность делу, Стабильное развитие, Репутация превыше всего, Качество превыше всего», стремясь предоставить мировым лидерам комплексные услуги по поставке интеллектуального оборудования."
+  },
+  "carousel": {
+    "sectionAriaLabel": "Производственные базы Шэньчжэнь и Хуэйчжоу",
+    "prevLabel": "Предыдущая база",
+    "nextLabel": "Следующая база",
+    "slides": [
+      {
+        "image": "assets/images/uploads/20260727000742-gc2-display.webp",
+        "imageAlt": "Головной завод в Шэньчжэне",
+        "fetchpriority": "high",
+        "tag": "Штаб-квартира в Шэньчжэне",
+        "title": "Головной завод в Шэньчжэне",
+        "desc": "НИОКР · Производство · Штаб-квартира · 19 лет основ интеллектуального производства",
+        "dotLabel": "Шэньчжэнь",
+        "dotAria": "Головной завод в Шэньчжэне"
+      },
+      {
+        "image": "assets/images/uploads/20260727233953-gc-display.webp",
+        "imageAlt": "Производственная база в Хуэйчжоу",
+        "tag": "База в Хуэйчжоу",
+        "title": "Производственная база в Хуэйчжоу",
+        "desc": "60 000 м² расширение мощностей · Обеспечение глобальных масштабных поставок",
+        "dotLabel": "Хуэйчжоу",
+        "dotAria": "Производственная база в Хуэйчжоу"
+      }
+    ]
+  },
+  "stats": {
+    "columns": 5,
+    "items": [
+      {
+        "value": "19",
+        "unit": "лет",
+        "label": "опыт производства нестандартного автоматизированного оборудования"
+      },
+      {
+        "value": "98",
+        "unit": "ед.",
+        "label": "ключевых изобретений и патентов"
+      },
+      {
+        "value": "11",
+        "unit": "крупных",
+        "label": "отраслей полного охвата"
+      },
+      {
+        "value": "10",
+        "unit": "0 тыс. м²",
+        "label": "Двухъядерные заводы в Шэньчжэне и Хуэйчжоу"
+      }
+    ]
+  },
+  "culture": {
+    "headlineHtml": "Предоставление выдающегося интеллектуального оборудования<br>для мировых предприятий первого класса.",
+    "pillars": [
+      {
+        "title": "【 Видение компании 】",
+        "bodyHtml": "Создание эталонного предприятия в области автоматизации<br>с высокой международной конкурентоспособностью."
+      },
+      {
+        "title": "【 Миссия компании 】",
+        "bodyHtml": "Вести эпоху интеллектуального производства Китая,<br>переопределяя глобальные стандарты поставок."
+      },
+      {
+        "title": "【 Основные ценности 】",
+        "bodyHtml": "Ориентация на клиента, сотрудничество с партнерами, взаимовыгодное развитие с TXAM.<br>Обеспечение безопасности как приоритет №1, стремление к эффективности №1."
+      }
+    ]
+  },
+  "timeline": {
+    "title": "История развития",
+    "subtitle": "Стабильная и последовательная эволюция интеллектуального производства.",
+    "events": [
+      {
+        "year": "1998/2007",
+        "side": "left",
+        "accent": true,
+        "yearAccent": false,
+        "leadHtml": "",
+        "bodyHtml": "Зарождение первоначальной технической команды. В 2007 году официально зарегистрирована в Шэньчжэне компания «Гуандун TXAM Intelligent Equipment Co., Ltd.», начав путь исследований и производства нестандартных автоматизированных линий.",
+        "mobileBody": "Официально зарегистрирована компания «Гуандун TXAM», начат путь производства нестандартных автоматизированных линий."
+      },
+      {
+        "year": "2015",
+        "side": "right",
+        "accent": false,
+        "yearAccent": false,
+        "leadHtml": "",
+        "bodyHtml": "Полномасштабное расширение бизнеса. Благодаря выдающемуся качеству, компания официально стала ключевым поставщиком интеллектуального производства для крупных предприятий бытовой техники и коммерческих дисплеев, таких как TCL, Skyworth, Midea, Konka, Changhong и других, закрепив лидирующие позиции в отрасли.",
+        "mobileBody": "Стала ключевым поставщиком для крупных предприятий, таких как TCL, Skyworth, Midea, Konka, Changhong."
+      },
+      {
+        "year": "2023",
+        "side": "left",
+        "accent": false,
+        "yearAccent": false,
+        "leadHtml": "",
+        "bodyHtml": "Создана исследовательская группа по интеллектуальному оборудованию для новой энергетики. С собственными разработками, такими как «циклический автоматический подъемник», компания произвела фурор на международной выставке аккумуляторов CIBF, полностью выйдя на рынок новой энергетики и складской логистики.",
+        "mobileBody": "Создана исследовательская группа по оборудованию для новой энергетики, представлено ключевое оборудование на выставке CIBF."
+      },
+      {
+        "year": "СЕЙЧАС",
+        "side": "right",
+        "accent": true,
+        "yearAccent": true,
+        "leadHtml": "Полностью сформирована структура двойной базы в Шэньчжэне и Хуэйчжоу площадью 100 000 м².",
+        "bodyHtml": "Самостоятельно разработанные ключевые технологии, такие как калибровка платформы UVW и подъем сверхбольших экранов, получили 98 патентов. Оборудование экспортируется в 15 стран и регионов, включая Северную Америку, Европу и Юго-Восточную Азию.",
+        "mobileBody": "Сформирована структура двойной базы площадью 100 000 м², получено 98 патентов, оборудование экспортируется в 15 стран."
+      }
+    ]
+  },
+  "credentials": {
+    "title": "Корпоративные квалификации и патенты",
+    "subtitle": "Золото не боится огня: реальные почетные грамоты и 98 патентных чертежей доказывают силу.",
+    "groups": [
+      {
+        "id": "honors",
+        "title": "Почетные квалификации",
+        "layout": "grid",
+        "items": [
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-gaoxinjishuqiyezhengshu.webp",
+            "imageAlt": "Сертификат высокотехнологичного предприятия"
+          },
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-chuangxinxingzhongxiaoqiye.jpg",
+            "imageAlt": "Инновационное малое предприятие"
+          },
+          {
+            "image": "assets/images/certifications/rongyuzizhi/guanfangzizhi-zhuanjingtexinzhongxiaoqiye.webp",
+            "imageAlt": "Специализированное малое предприятие"
+          }
+        ]
+      },
+      {
+        "id": "quality",
+        "title": "Сертификаты качества",
+        "layout": "marquee",
+        "marqueeDuration": "40s",
+        "items": [
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114404_97_27.jpg",
+            "imageAlt": "Сертификат качества"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114503_107_27.jpg",
+            "imageAlt": "Сертификат качества"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114504_108_27.jpg",
+            "imageAlt": "Сертификат качества"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114505_109_27.jpg",
+            "imageAlt": "Сертификат качества"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114506_110_27.jpg",
+            "imageAlt": "Сертификат качества"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114507_111_27.jpg",
+            "imageAlt": "Сертификат качества"
+          },
+          {
+            "image": "assets/images/certifications/zhiliangzizhi/weixintupian_20260330114508_112_27.jpg",
+            "imageAlt": "Сертификат качества"
+          }
+        ]
+      },
+      {
+        "id": "patents",
+        "title": "Патентные сертификаты",
+        "layout": "marquee",
+        "marqueeDuration": "60s",
+        "items": [
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114509_113_27.webp",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114511_115_27.webp",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114513_117_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114515_119_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114516_121_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114517_122_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114518_123_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_124_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114519_125_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          },
+          {
+            "image": "assets/images/certifications/zhuanlizizhi/weixintupian_20260330114520_126_27.jpg",
+            "imageAlt": "Патентный сертификат"
+          }
+        ]
+      }
+    ]
+  },
+  "clients": {
+    "title": "Наши клиенты",
+    "subtitle": "Единогласный выбор мировых производственных предприятий первого класса.",
+    "items": [
+      {
+        "image": "assets/images/clients/tcl.webp?v=20260912",
+        "imageAlt": "TCL"
+      },
+      {
+        "image": "assets/images/clients/chuangwei.webp?v=20260912",
+        "imageAlt": "Skyworth"
+      },
+      {
+        "image": "assets/images/clients/meide.webp?v=20260912",
+        "imageAlt": "Midea"
+      },
+      {
+        "image": "assets/images/clients/fushikang.webp?v=20260912",
+        "imageAlt": "Foxconn"
+      },
+      {
+        "image": "assets/images/clients/jingdongfang.webp?v=20260912",
+        "imageAlt": "BOE"
+      },
+      {
+        "image": "assets/images/clients/ningdeshidai.webp?v=20260912",
+        "imageAlt": "CATL"
+      },
+      {
+        "image": "assets/images/clients/zhouming.webp?v=20260912",
+        "imageAlt": "Unilumin"
+      },
+      {
+        "image": "assets/images/clients/qunchuangguangdian.webp?v=20260912",
+        "imageAlt": "Innolux"
+      },
+      {
+        "image": "assets/images/clients/lianxiang.webp?v=20260912",
+        "imageAlt": "Lenovo"
+      },
+      {
+        "image": "assets/images/clients/huike.webp?v=20260912",
+        "imageAlt": "HKC"
+      },
+      {
+        "image": "assets/images/clients/xiwo.webp?v=20260912",
+        "imageAlt": "Seewo"
+      },
+      {
+        "image": "assets/images/clients/kangjia.webp?v=20260912",
+        "imageAlt": "Konka"
+      },
+      {
+        "image": "assets/images/clients/changhong.webp?v=20260912",
+        "imageAlt": "Changhong"
+      }
+    ]
+  },
+  "pageKey": "about",
+  "lang": "ru",
+  "seo": {
+    "title": "О нас | TXAM - Ведущий поставщик автоматизации в Китае",
+    "description": "TXAM основана в Шэньчжэне, 19 лет в нестандартной автоматизации. Услуги умного оборудования для предприятий мирового класса",
+    "image": ""
+  }
+}

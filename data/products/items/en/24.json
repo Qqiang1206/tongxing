@@ -1,0 +1,22 @@
+{
+  "id": "24",
+  "category": "Robot Integration",
+  "model": "TX-NS-RBP Series",
+  "name": "Robotic Automatic Backplate Feeder",
+  "image": "assets/images/products/robot-auto-backplane.webp",
+  "specs": [
+    "Automatic Feeding",
+    "Accurate Positioning",
+    "High Efficiency",
+    "Quality Assurance"
+  ],
+  "summary": "Automated equipment for automatically placing backplanes into product assembly stations, working in coordination with robots to complete precision assembly.",
+  "contentHtml": "<p>The robotic automatic backplane placement machine is an automated device developed by TXAM for the backplane placement process.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a robot combined with a precision positioning system to automatically pick up and place backplanes onto the product assembly station. It works in coordination with assembly robots to achieve fully automated backplane installation.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Robotic automated placement for high efficiency</li>\n                        <li>Precise positioning ensures assembly accuracy</li>\n                        <li>High level of automation reduces manual intervention</li>\n                        <li>Stable quality control for consistent product output</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 14,
+  "filterKey": "robot",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

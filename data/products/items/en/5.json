@@ -1,0 +1,22 @@
+{
+  "id": "5",
+  "category": "Dispensing Assembly",
+  "model": "TX-NS-ASM Series",
+  "name": "Automatic Adhesive Sprayer",
+  "image": "assets/images/products/auto-dispenser.webp",
+  "specs": [
+    "0.6-0.8m/s Spray Speed",
+    "75\"-Full Size Compatible",
+    "Adhesive Block Melting Furnace",
+    "Multiple Model Options"
+  ],
+  "summary": "Evenly sprays glue onto target objects, suitable for larger-sized panels. High spraying efficiency and strong compatibility, from 75\" to full-size panels.",
+  "contentHtml": "<p>The automatic glue spraying machine is an automated device developed by TXAM for large-panel glue spraying needs.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a glue block melting furnace feeding method, heating and melting solid glue blocks, which are then evenly coated onto the product surface through a spray nozzle. The spraying speed is fast, and the coating is uniform.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Spraying speed of 0.6-0.8m/s, leading industry efficiency</li>\n                        <li>Compatible with sizes from 75\" to full size, wide application range</li>\n                        <li>Multiple models available: TX-NS-ASM-01/02/03</li>\n                        <li>Can be combined with vision or mechanical positioning</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 15,
+  "filterKey": "dispensing",
+  "filterKeyEn": "dispensing",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

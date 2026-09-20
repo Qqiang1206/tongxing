@@ -1,0 +1,22 @@
+{
+  "id": "4",
+  "category": "Dispensing Assembly",
+  "model": "TX-NS-AGD Series",
+  "name": "High-Precision Robotic Dispensing Machine",
+  "image": "assets/images/products/auto-dispensing.webp",
+  "specs": [
+    "±0.2mm Positioning",
+    "0.25s/Row",
+    "CAD Import",
+    "TCP/IP Communication"
+  ],
+  "summary": "Single-axis robot with multi-glue-gun matrix, positioning error ±0.2mm, single-line dispensing takes only 0.25 seconds. CAD drawings import seamlessly, one-click changeover.",
+  "contentHtml": "<p>The high-precision robotic dispensing machine is a core piece of equipment developed by TXAM for precision coating processes.</p>\n                    <h3>Working Principle</h3>\n                    <p>It utilizes a single-axis robot combined with a multi-nozzle matrix, achieving fast and uniform dispensing through a precision motion control system. It supports direct import of CAD drawings and automatic generation of dispensing paths.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Positioning error of only ±0.2mm, industry-leading precision</li>\n                        <li>Dispensing speed of 0.25 seconds per line, extremely high efficiency</li>\n                        <li>Supports one-click CAD drawing import for convenient changeovers</li>\n                        <li>TCP/IP communication protocol, easy integration into smart factory systems</li>\n                    </ul>\n                    <h3>Model Description</h3>\n                    <p>The TX-NS-AGD-01 uses a fixture tray format, while the TX-NS-AGD-02 uses direct backplane feeding; the main difference lies in the production line compatibility method.</p>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 3,
+  "filterKey": "dispensing",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

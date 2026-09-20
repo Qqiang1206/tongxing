@@ -1,0 +1,22 @@
+{
+  "id": "29",
+  "category": "后段包装",
+  "model": "TX-NS-MAB-M 系列",
+  "name": "人工辅助套袋",
+  "image": "assets/images/products/manual-bagging.webp",
+  "specs": [
+    "人工配合",
+    "辅助自动化",
+    "套袋包装",
+    "品质保障"
+  ],
+  "summary": "人工辅助套袋设备，配合自动化机械完成产品套袋包装。",
+  "contentHtml": "<p>人工辅助套袋机是同兴高科为套袋包装工序而研发的人工辅助设备。</p>\n                    <h3>工作原理</h3>\n                    <p>设备配合人工操作，实现套袋包装半自动化，提高包装效率的同时降低设备投入。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>人工与自动化结合，灵活高效</li>\n                        <li>套袋质量有保障</li>\n                        <li>降低设备投入成本</li>\n                        <li>操作简便，培训成本低</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 24,
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "6",
+  "category": "光学元件组装",
+  "model": "TX-NS-ALPS 系列",
+  "name": "自动放灯支架机",
+  "image": "assets/images/products/auto-light-bracket.webp",
+  "specs": [
+    "±0.2mm 定位",
+    "1s/个",
+    "振动盘供料",
+    "10-20个/批"
+  ],
+  "summary": "精准抓取并放置扩散支架，为显示设备光学组件提供稳定支撑。定位精准，抓取高速。",
+  "contentHtml": "<p>自动放灯支架机用于显示产品组装过程中扩散支架柱的精准放置。</p>\n                    <h3>工作原理</h3>\n                    <p>设备通过振动盘自动供料，机器人精准抓取支架柱并放置于指定位置。定位精度达±0.2mm，抓取速度1秒/个。</p>\n                    <h3>技术优势</h3>\n                    <ul>\n                        <li>定位精度±0.2mm，保障组装精度</li>\n                        <li>高速抓取，每小时可完成数千个</li>\n                        <li>振动盘自动供料，减少人工干预</li>\n                        <li>多种型号TX-NS-ALPS-01/02/03，适应不同尺寸及生产需求</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 16,
+  "filterKey": "optical",
+  "filterKeyEn": "optical",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

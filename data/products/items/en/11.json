@@ -1,0 +1,22 @@
+{
+  "id": "11",
+  "category": "Robot Integration",
+  "model": "TX-NS-PR Series",
+  "name": "6-Axis Robot Intelligent Palletizing System",
+  "image": "assets/images/products/robot-palletizing.webp",
+  "specs": [
+    "±0.5mm Precision",
+    "12s/piece",
+    "Simulator Palletizing",
+    "Stackable Pallet Compatibility"
+  ],
+  "summary": "Perfectly solves the challenge of heavy-duty finished product palletizing. Supports simulated machine palletizing and mother-daughter pallets, with precision controlled within ±0.5mm and speeds up to 12 seconds per piece.",
+  "contentHtml": "<p>The six-axis robot intelligent palletizing system is a core equipment developed by TXAM for automated logistics at the end of the production line.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a six-axis industrial robot (optional ABB, Yaskawa, etc.), combined with an intelligent control system to achieve automatic product palletizing. It supports simulated machine palletizing and mother-daughter pallets, with extremely strong compatibility.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Palletizing accuracy of ±0.5mm, neat and stable stacking</li>\n                        <li>Efficiency up to 12 seconds per piece</li>\n                        <li>Supports simulated machine palletizing and mother-daughter pallets</li>\n                        <li>Compatible with products of different sizes and shapes</li>\n                    </ul>\n                    <h3>Model Description</h3>\n                    <p>TX-NS-PR series (01/02/03) and integrated palletizing TX-NS-RIP-001, the latter being more powerful, including mother-daughter pallet stacking, automatic pad placement, scanning, etc.</p>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 4,
+  "filterKey": "robot",
+  "filterKeyEn": "logistics",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

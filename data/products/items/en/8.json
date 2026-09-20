@@ -1,0 +1,22 @@
+{
+  "id": "8",
+  "category": "Screw Fastening Assembly",
+  "model": "TX-NS-ASBS-01",
+  "name": "Robotic Automatic Back Panel Screwing Machine",
+  "image": "assets/images/products/zidongdabeibanluosi-001.webp",
+  "specs": [
+    "12 Pieces/Batch",
+    "1.8s/Screw",
+    "Adjustable Torque",
+    "High Efficiency"
+  ],
+  "summary": "Capable of picking up and automatically tightening up to 12 backplate screws at once, with real-time adjustable torque per screw and an efficiency of up to 1.8 seconds per screw.",
+  "contentHtml": "<p>The robot automatic backplane screw driving machine is an automated equipment developed by TXAM for precision fastening processes.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment uses a robot combined with an intelligent fastening system, capable of picking up 12 screws at once and automatically fastening them onto the product. Torque is adjustable in real time, ensuring consistent fastening torque for each screw.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Can pick up 12 screws at once, reducing feeding frequency</li>\n                        <li>Fastening speed of 1.8 seconds per screw, extremely efficient</li>\n                        <li>Real-time adjustable torque ensures fastening quality</li>\n                        <li>Suitable for backplane fastening of TVs, educational displays, and more</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 6,
+  "filterKey": "screw",
+  "filterKeyEn": "single",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

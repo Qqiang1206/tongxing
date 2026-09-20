@@ -1,0 +1,22 @@
+{
+  "id": "1",
+  "category": "Dispensing Assembly",
+  "model": "TX-NS-ALM-01",
+  "name": "Fully Automatic High-Precision Lamination Machine",
+  "image": "assets/images/products/auto-lamination-001.webp",
+  "specs": [
+    "±0.075mm Accuracy",
+    "80s Cycle Time",
+    "Constant Pressure Control",
+    "Multi-Size Compatibility"
+  ],
+  "summary": "Designed specifically for glass and display modules. Lamination accuracy refined to ±0.075mm, equipped with constant pressure control, cycle time as fast as 80 seconds.",
+  "contentHtml": "<p>The fully automatic high-precision laminating machine is a high-end intelligent equipment independently developed by TXAM, specifically designed for high-precision lamination of glass and display modules.</p>\n<h3>Working Principle</h3>\n<p>The equipment adopts a precision mechanical structure combined with an advanced motion control system to achieve automatic feeding, precise positioning, high-precision lamination, and pressure holding. The entire process is automatically controlled to ensure lamination accuracy and consistent quality.</p>\n<h3>Technical Advantages</h3>\n<ul>\n<li>Lamination accuracy reaches &plusmn;0.075mm, far exceeding industry standards</li>\n<li>Constant pressure function ensures firm lamination without bubbles</li>\n<li>80-second ultra-fast cycle time, greatly improving production efficiency</li>\n<li>Supports multiple product sizes with high flexibility</li>\n</ul>\n<h3>Application Fields</h3>\n<p>Widely used in glass lamination processes for electronic products such as televisions, educational displays, and commercial display screens.</p>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 6,
+  "filterKey": "dispensing",
+  "filterKeyEn": "dispensing",
+  "slug": "",
+  "updatedAt": "2026-08-01 00:52:26"
+}

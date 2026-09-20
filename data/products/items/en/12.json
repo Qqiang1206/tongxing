@@ -1,0 +1,22 @@
+{
+  "id": "12",
+  "category": "Robot Integration",
+  "model": "TX-NS-AET Series",
+  "name": "End-of-Line Upright Packaging & Automatic Case Packing System",
+  "image": "assets/images/products/auto-boxing.webp",
+  "specs": [
+    "20s/piece",
+    "Automatic Pallet Stacking",
+    "Mechanical Positioning",
+    "Fully Compatible"
+  ],
+  "summary": "Integrated automatic pallet stacking (skid), unboxing, forming, and full machine packing. Fully compatible with mechanical rigid positioning, completing single skid centering in 20 seconds.",
+  "contentHtml": "<p>The end-of-line automatic case packing system is an automated equipment developed by TXAM for the post-packaging process.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment integrates an automatic palletizer, case unpacker, case former, and case packer to achieve full automation of the post-production packaging process. One-touch operation automatically completes pallet stacking and centering.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Pallet centering cycle time is only 20 seconds per unit</li>\n                        <li>Mechanical rigid positioning for greater compatibility</li>\n                        <li>Allows a certain range of pallet offset</li>\n                        <li>Multiple models available: TX-NS-AET-01/02/03</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 7,
+  "filterKey": "robot",
+  "filterKeyEn": "logistics",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:55"
+}

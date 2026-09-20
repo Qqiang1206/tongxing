@@ -1,0 +1,22 @@
+{
+  "id": "29",
+  "category": "End-of-Line Packaging",
+  "model": "TX-NS-MAB-M Series",
+  "name": "Operator-Assisted Bagging",
+  "image": "assets/images/products/manual-bagging.webp",
+  "specs": [
+    "Manual Assistance",
+    "Assisted Automation",
+    "Bagging Packaging",
+    "Quality Assurance"
+  ],
+  "summary": "Manual-assisted bagging equipment, working with automated machinery to complete product bagging and packaging.",
+  "contentHtml": "<p>The manual-assisted bagging machine is an auxiliary equipment developed by TXAM for the bagging packaging process.</p>\n                    <h3>Working Principle</h3>\n                    <p>The equipment works in conjunction with manual operation to achieve semi-automated bagging packaging, improving packaging efficiency while reducing equipment investment.</p>\n                    <h3>Technical Advantages</h3>\n                    <ul>\n                        <li>Combination of manual and automated operation, flexible and efficient</li>\n                        <li>Guaranteed bagging quality</li>\n                        <li>Reduced equipment investment costs</li>\n                        <li>Easy operation with low training costs</li>\n                    </ul>",
+  "published": true,
+  "showInList": true,
+  "sortOrder": 24,
+  "filterKey": "packaging",
+  "filterKeyEn": "packaging",
+  "slug": "",
+  "updatedAt": "2026-07-29 03:10:56"
+}

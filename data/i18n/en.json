@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "solutions": "Solutions",
+    "products": "Products",
+    "news": "News",
+    "contact": "Contact Us"
+  },
+  "lang": {
+    "zh": "ZH",
+    "en": "EN",
+    "ru": "RU"
+  },
+  "common": {
+    "relatedProducts": "Related Products",
+    "relatedSolutions": "Related Solutions",
+    "relatedArticles": "Related Articles",
+    "coreParams": "Core Specifications",
+    "productFeatures": "Product Features",
+    "detailTitle": "Detailed Description",
+    "backToProducts": "Back to Products",
+    "backToSolutions": "Back to Solutions",
+    "breadcrumbHome": "Home",
+    "industryPainPoints": "Industry Pain Points",
+    "coreProcess": "Core Process Flow",
+    "applicationAreas": "Application Areas",
+    "techAdvantages": "Technical Advantages",
+    "finalCtaTitle": "Precision Manufacturing, TXAM Delivers",
+    "finalCtaSub": "Consulting, design, manufacturing, and after-sales for non-standard automated production lines — a one-stop service you can trust.",
+    "finalCtaButton": "Get a Custom Solution"
+  },
+  "footer": {
+    "tagline": "Excellence in Quality, Trust in Every Delivery.",
+    "wechatAlt": "WeChat",
+    "copyright": "© 2007-2026 Guangdong Tongxing High-Tech Intelligent Equipment Co., Ltd.",
+    "icp": "Guangdong ICP No. 16101583-1",
+    "icpUrl": "https://beian.miit.gov.cn/",
+    "wechatImage": "assets/images/brand/wechat-service.png",
+    "phone": "+86 136 3264 3748",
+    "email": "txgk@sztxgk.com",
+    "addressShenzhen": "No.2, Zone 1, Xiakeng Village, Tongde Community, Baolong Street, Longgang District, Shenzhen (Bldg A-C)",
+    "addressHuizhou": "Huizhou (60,000 m² smart manufacturing base, fully operational by end of 2026)"
+  }
+}
